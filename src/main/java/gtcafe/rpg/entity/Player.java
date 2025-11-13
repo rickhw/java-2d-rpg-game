@@ -53,7 +53,7 @@ public class Player extends Entity {
     }
 
     public void update() {
-        // if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+        if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
             if(keyHandler.upPressed) {
                 direction = "up";
             } else
@@ -99,7 +99,7 @@ public class Player extends Entity {
                 }
                 spriteCounter = 0;
             }
-        // }
+        }
     }
 
     public void draw(Graphics2D g2) {
