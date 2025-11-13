@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import gtcafe.rpg.entity.Player;
+import gtcafe.rpg.object.SuperObject;
 import gtcafe.rpg.tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable { 
@@ -32,10 +33,13 @@ public class GamePanel extends JPanel implements Runnable {
 
     TileManager tileManager = new TileManager(this);
     Thread gameThread;
-    public CollisionChecker collisionChecker = new CollisionChecker(this);
     KeyHandler keyHandler = new KeyHandler();
-    public Player player = new Player(this, keyHandler);    
 
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public AssetSetter assetSetter = new AssetSetter(this); // day7-4 add
+    public Player player = new Player(this, keyHandler);
+    public SuperObject obj[] = new SuperObject[10]; // day7-3 add: 10 slot for objects, display the 10 objs at the same time.
+    
     // set player's default position
     int playerX = 100;
     int playerY = 100;
@@ -48,6 +52,12 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
     }
+
+    // day7-4-1 start
+    public void setupGame() {
+        assetSetter.setObject();
+    }
+    // day7-4-1 end
 
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -141,7 +151,18 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
+        // TILE
         tileManager.draw(g2);
+
+        // day7-4-2 start
+        // OBJECT
+        for (int i=0; i<obj.length; i++) {
+            if (obj[i] != null)
+                obj[i].draw(g2, this);
+        }
+        // day7-4-2 end
+        
+        // PLAYER
         player.draw(g2);
 
         g2.dispose();
