@@ -2,16 +2,9 @@ package gtcafe.rpg;
 
 import gtcafe.rpg.entity.Entity;
 
-/**
- * Handles collision detection for entities with game tiles.
- */
 public class CollisionChecker {
     GamePanel gp;
 
-    /**
-     * Constructs a CollisionChecker with a reference to the GamePanel.
-     * @param gp The GamePanel instance, providing access to game-wide data like tile size and tile manager.
-     */
     public CollisionChecker(GamePanel gp) {
         this.gp = gp;
     }
@@ -53,34 +46,25 @@ public class CollisionChecker {
                 }
                 break;
             case "down":
-                // Calculate the row the entity would be in if it moved 'speed' pixels down
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
-                // Get the two tiles that the entity's bottom edge would potentially collide with
                 tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
-                // Check if either of these tiles has collision enabled
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
             case "left":
-                // Calculate the column the entity would be in if it moved 'speed' pixels left
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
-                // Get the two tiles that the entity's left edge would potentially collide with
                 tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
-                // Check if either of these tiles has collision enabled
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
             case "right":
-                // Calculate the column the entity would be in if it moved 'speed' pixels right
                 entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
-                // Get the two tiles that the entity's right edge would potentially collide with
                 tileNum1 = gp.tileManager.mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
-                // Check if either of these tiles has collision enabled
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
