@@ -21,6 +21,8 @@ public class Player extends Entity {
     public final int screenX; 
     public final int screenY;
 
+    int hasKey = 0; // day8-2: object reaction
+
     public Player(GamePanel gp, KeyHandler keyHandler) {
         this.gp = gp;
         this.keyHandler = keyHandler;
@@ -30,6 +32,8 @@ public class Player extends Entity {
         screenY = gp.screenHight / 2 - (gp.tileSize/2);
 
         solidArea = new Rectangle(8, 16, 32, 32);
+        solidAreaDefaultX = solidArea.x;    // day8-1
+        solidAreaDefaultY = solidArea.y;    // day8-1
 
         setDefaultValues();
         getPlayerImages();
@@ -84,8 +88,12 @@ public class Player extends Entity {
                 collisionOn = false;
                 gp.collisionChecker.checkTile(this);
 
-                // if no collision, move player
-                if (!collisionOn) {
+                // CHECK OBJECT COLLSISION
+                int objIndex = gp.collisionChecker.checktObject(this, true);    // day8-2
+                pickUpObject(objIndex);
+
+                // IF COLLISION IS FALSE, PLAYER CAN MOVE
+                if (collisionOn == false) {
                     switch (direction) {
                         case "up":
                             worldY -= speed;
@@ -115,6 +123,32 @@ public class Player extends Entity {
             }
         }
     }
+
+    // day8-2 object reaction: start
+    public void pickUpObject(int index) {
+        // 999 MEANS NOT TOUCH ANY OBJECT
+        if (index != 999) {
+            // gp.obj[index] = null;
+            String objName = gp.obj[index].name;
+
+            switch (objName) {
+                case "Key":
+                    hasKey ++;
+                    gp.obj[index] = null; // make key disappear
+                    System.out.println("HasKey: " + hasKey);
+                    break;
+                case "Door":
+                    if (hasKey > 0) {
+                        gp.obj[index] = null;
+                        hasKey--;
+                    }
+                    System.out.println("HasKey: " + hasKey);
+                    break;
+            }
+        }
+    }
+    // day8-2 end
+
 
     public void draw(Graphics2D g2) {
         // g2.setColor(Color.white);
