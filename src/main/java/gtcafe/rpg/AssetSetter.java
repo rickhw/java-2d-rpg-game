@@ -1,6 +1,7 @@
 // day7-4-1 start
 package gtcafe.rpg;
 
+import gtcafe.rpg.object.OBJ_Boots;
 import gtcafe.rpg.object.OBJ_Chest;
 import gtcafe.rpg.object.OBJ_Door;
 import gtcafe.rpg.object.OBJ_Key;
@@ -42,6 +43,12 @@ public class AssetSetter {
         gp.obj[6].worldX = 10 * gp.tileSize;
         gp.obj[6].worldY = 7 * gp.tileSize;
         // day7-4-3 end
+
+        // day9-1 start
+        gp.obj[7] = new OBJ_Boots();
+        gp.obj[7].worldX = 37 * gp.tileSize;
+        gp.obj[7].worldY = 42 * gp.tileSize;
+        // day9-1 end
 
     }
 }

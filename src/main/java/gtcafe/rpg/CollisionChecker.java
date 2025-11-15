@@ -43,6 +43,7 @@ public class CollisionChecker {
                 // Check if either of these tiles has collision enabled
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
+                    System.out.println("up collision with tile!");
                 }
                 break;
             case "down":
@@ -51,6 +52,7 @@ public class CollisionChecker {
                 tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
+                    System.out.println("down collision with tile!");
                 }
                 break;
             case "left":
@@ -59,6 +61,7 @@ public class CollisionChecker {
                 tileNum2 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
+                    System.out.println("left collision with tile!");
                 }
                 break;
             case "right":
@@ -67,6 +70,7 @@ public class CollisionChecker {
                 tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
+                    System.out.println("right collision with tile!");
                 }
                 break;
         }
