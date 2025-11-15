@@ -59,7 +59,7 @@ public class GamePanel extends JPanel implements Runnable {
     // day7-4-1 start
     public void setupGame() {
         assetSetter.setObject();
-        playMusic(0); // index with 0 => main music
+        playMusic(Sound.MAIN_THEME); // index with 0 => main music
     }
     // day7-4-1 end
 

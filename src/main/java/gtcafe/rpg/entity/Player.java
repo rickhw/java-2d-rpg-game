@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.KeyHandler;
+import gtcafe.rpg.Sound;
 
 public class Player extends Entity {
     GamePanel gp;
@@ -133,14 +134,14 @@ public class Player extends Entity {
 
             switch (objName) {
                 case "Key":
-                    gp.playSE(1); // day9-2
+                    gp.playSE(Sound.FX_COIN); // day9-2
                     hasKey ++;
                     gp.obj[index] = null; // make key disappear
                     System.out.println("HasKey: " + hasKey);
                     break;
                 case "Door":
                     if (hasKey > 0) {
-                        gp.playSE(3); // day9-2
+                        gp.playSE(Sound.FX_UNLOCK); // day9-2
                         gp.obj[index] = null;
                         hasKey--;
                     }
@@ -148,7 +149,7 @@ public class Player extends Entity {
                     break;
                 // day9-1 start
                 case "Boots":
-                    gp.playSE(2); // day9-2
+                    gp.playSE(Sound.FX_POWER_UP); // day9-2
                     speed += 2;
                     gp.obj[index] = null; // clean object
                     System.out.println("Got Boots, speed up!!");
