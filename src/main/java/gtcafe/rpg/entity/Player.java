@@ -22,7 +22,7 @@ public class Player extends Entity {
     public final int screenX; 
     public final int screenY;
 
-    int hasKey = 0; // day8-2: object reaction
+    public int hasKey = 0; // day8-2: object reaction
 
     public Player(GamePanel gp, KeyHandler keyHandler) {
         this.gp = gp;
@@ -137,6 +137,7 @@ public class Player extends Entity {
                     gp.playSE(Sound.FX_COIN); // day9-2
                     hasKey ++;
                     gp.obj[index] = null; // make key disappear
+                    gp.ui.showMessage("You got a key!"); // day10-3
                     System.out.println("HasKey: " + hasKey);
                     break;
                 case "Door":
@@ -144,6 +145,9 @@ public class Player extends Entity {
                         gp.playSE(Sound.FX_UNLOCK); // day9-2
                         gp.obj[index] = null;
                         hasKey--;
+                        gp.ui.showMessage("You opened the door!"); // day10-3
+                    } else {
+                        gp.ui.showMessage("You need a key!");  // day10-3
                     }
                     System.out.println("HasKey: " + hasKey);
                     break;
@@ -152,9 +156,18 @@ public class Player extends Entity {
                     gp.playSE(Sound.FX_POWER_UP); // day9-2
                     speed += 2;
                     gp.obj[index] = null; // clean object
+                    gp.ui.showMessage("Speed up!!");  // day10-3
                     System.out.println("Got Boots, speed up!!");
                     break;
                 // day9-1 end
+
+                // day10-3
+                case "Chest":
+                    gp.ui.gameFinished = true;
+                    gp.stopMusic();
+                    gp.playSE(Sound.FX_FANFARE);
+                    break;
+                // day10-3
             }
         }
     }
