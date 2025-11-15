@@ -4,6 +4,8 @@ package gtcafe.rpg.object;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+import gtcafe.rpg.entity.Player;
+
 public class OBJ_Door extends SuperObject{
     public OBJ_Door() {
         name = "Door";
@@ -14,6 +16,14 @@ public class OBJ_Door extends SuperObject{
         }
 
         collision = true;
+    }
+
+    @Override
+    public void interact(Player player) {
+        if (player.getKeyCount() > 0) {
+            player.decrementKeyCount();
+            this.toBeRemoved = true;
+        }
     }
 }
 // day7-4-3 end

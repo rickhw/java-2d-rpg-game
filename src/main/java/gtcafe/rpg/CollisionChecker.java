@@ -1,6 +1,7 @@
 package gtcafe.rpg;
 
 import gtcafe.rpg.entity.Entity;
+import java.awt.Rectangle;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -21,7 +22,7 @@ public class CollisionChecker {
         // Calculate the entity's solid area boundaries in world coordinates
         int entityLeftWorldX = entity.worldX + entity.solidArea.x;
         int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
-        int entityTopWorldY = entity.worldY + entity.solidArea.y;   
+        int entityTopWorldY = entity.worldY + entity.solidArea.y;
         int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 
         // Determine the current tile grid columns and rows that the entity's solid area occupies
@@ -34,7 +35,7 @@ public class CollisionChecker {
 
         // Predict the entity's future position and check for collision with tiles
         switch (entity.direction) {
-            case "up":
+            case UP:
                 // Calculate the row the entity would be in if it moved 'speed' pixels up
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
                 // Get the two tiles that the entity's top edge would potentially collide with
@@ -45,7 +46,7 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
                 break;
-            case "down":
+            case DOWN:
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
@@ -53,7 +54,7 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
                 break;
-            case "left":
+            case LEFT:
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileManager.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
@@ -61,7 +62,7 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
                 break;
-            case "right":
+            case RIGHT:
                 entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileManager.mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
@@ -72,89 +73,52 @@ public class CollisionChecker {
         }
     }
 
-    // day8-1 start
-    public int checktObject(Entity entity, boolean player) {
+    /**
+     * Checks if the entity is colliding with any objects and returns the index of the object.
+     * This check is performed for player entities to handle interactions.
+     *
+     * @param entity The entity to check for collisions.
+     * @param isPlayer True if the entity is the player.
+     * @return The index of the collided object if the entity is a player and a collision occurs, otherwise -1.
+     */
+    public int checkObject(Entity entity, boolean isPlayer) {
+        int index = -1;
 
-        int index = 999;    // ??
+        for (int i = 0; i < gp.obj.length; i++) {
+            if (gp.obj[i] != null) {
+                // Get entity's solid area position and predict its next move
+                Rectangle entityPredictedSolidArea = new Rectangle(
+                    entity.worldX + entity.solidArea.x,
+                    entity.worldY + entity.solidArea.y,
+                    entity.solidArea.width,
+                    entity.solidArea.height
+                );
 
-        // scan objs
-        for(int i=0; i<gp.obj.length; i++) {
-            if(gp.obj[i] != null) {
-
-                // Get entity's solid area position
-                entity.solidArea.x = entity.worldX + entity.solidArea.x;
-                entity.solidArea.y = entity.worldY + entity.solidArea.y;
-
-                // Get the object's solid area position
-                gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
-                gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
+                // Get object's solid area position
+                Rectangle objectSolidArea = new Rectangle(
+                    gp.obj[i].worldX + gp.obj[i].solidArea.x,
+                    gp.obj[i].worldY + gp.obj[i].solidArea.y,
+                    gp.obj[i].solidArea.width,
+                    gp.obj[i].solidArea.height
+                );
 
                 switch (entity.direction) {
-                    case "up":
-                        entity.solidArea.y -= entity.speed;
-                        // intersect() help check only limit object num.
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                            System.out.println("up collision");   
-                            if (gp.obj[i].collision) {
-                                entity.collisionOn = true;
-                            }
-                            if (player) {
-                                index = i; 
-                            }
-                            // NPC do nothing
-                        }
-                        break;
-                    case "down":
-                        entity.solidArea.y += entity.speed;
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                            System.out.println("down collision");   
-                            if (gp.obj[i].collision) {
-                                entity.collisionOn = true;
-                            }
-                            if (player) {
-                                index = i; 
-                            }
-                            // NPC do nothing
-                        }
-                        break;
-                    case "left":
-                        entity.solidArea.x -= entity.speed;
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                            System.out.println("left collision");   
-                            if (gp.obj[i].collision) {
-                                entity.collisionOn = true;
-                            }
-                            if (player) {
-                                index = i; 
-                            }
-                            // NPC do nothing
-                         }
-                       break;
-                    case "right":
-                        entity.solidArea.x += entity.speed;
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                            System.out.println("right collision");   
-                            if (gp.obj[i].collision) {
-                                entity.collisionOn = true;
-                            }
-                            if (player) {
-                                index = i; 
-                            }
-                            // NPC do nothing
-                         }
-                        break;
+                    case UP: entityPredictedSolidArea.y -= entity.speed; break;
+                    case DOWN: entityPredictedSolidArea.y += entity.speed; break;
+                    case LEFT: entityPredictedSolidArea.x -= entity.speed; break;
+                    case RIGHT: entityPredictedSolidArea.x += entity.speed; break;
                 }
 
-                // reset
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
-                gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
-                
+                if (entityPredictedSolidArea.intersects(objectSolidArea)) {
+                    if (gp.obj[i].collision) {
+                        entity.collisionOn = true;
+                    }
+                    if (isPlayer) {
+                        index = i;
+                    }
+                }
             }
         }
-
         return index;
     }
-    // day8-1 end
 }

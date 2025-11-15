@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.KeyHandler;
 
@@ -14,52 +15,48 @@ public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyHandler;
 
-    // Animation
-    private final int ANIMATION_SPEED = 10;
-
     // camera position
-    public final int screenX; 
+    public final int screenX;
     public final int screenY;
 
-    int hasKey = 0; // day8-2: object reaction
+    int hasKey = 0;
+
+    private final int ANIMATION_SPEED = 10;
 
     public Player(GamePanel gp, KeyHandler keyHandler) {
         this.gp = gp;
         this.keyHandler = keyHandler;
 
-        // camera position
-        screenX = gp.screenWidth / 2 - (gp.tileSize/2);
-        screenY = gp.screenHight / 2 - (gp.tileSize/2);
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHight / 2 - (gp.tileSize / 2);
 
         solidArea = new Rectangle(8, 16, 32, 32);
-        solidAreaDefaultX = solidArea.x;    // day8-1
-        solidAreaDefaultY = solidArea.y;    // day8-1
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
 
         setDefaultValues();
         getPlayerImages();
     }
 
     public void setDefaultValues() {
-        // start position
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
-        
         speed = 5;
-        direction = "down";
+        direction = Direction.DOWN;
     }
 
     public void getPlayerImages() {
-        up1 = setup("/gtcafe/rpg/assets/player/boy_up_1.png");
-        up2 = setup("/gtcafe/rpg/assets/player/boy_up_2.png");
-        down1 = setup("/gtcafe/rpg/assets/player/boy_down_1.png");
-        down2 = setup("/gtcafe/rpg/assets/player/boy_down_2.png");
-        left1 = setup("/gtcafe/rpg/assets/player/boy_left_1.png");
-        left2 = setup("/gtcafe/rpg/assets/player/boy_left_2.png");
-        right1 = setup("/gtcafe/rpg/assets/player/boy_right_1.png");
-        right2 = setup("/gtcafe/rpg/assets/player/boy_right_2.png");
+        up1 = loadImage("/gtcafe/rpg/assets/player/boy_up_1.png");
+        up2 = loadImage("/gtcafe/rpg/assets/player/boy_up_2.png");
+        down1 = loadImage("/gtcafe/rpg/assets/player/boy_down_1.png");
+        down2 = loadImage("/gtcafe/rpg/assets/player/boy_down_2.png");
+        left1 = loadImage("/gtcafe/rpg/assets/player/boy_left_1.png");
+        left2 = loadImage("/gtcafe/rpg/assets/player/boy_left_2.png");
+        right1 = loadImage("/gtcafe/rpg/assets/player/boy_right_1.png");
+        right2 = loadImage("/gtcafe/rpg/assets/player/boy_right_2.png");
     }
 
-    public BufferedImage setup(String imagePath) {
+    private BufferedImage loadImage(String imagePath) {
         BufferedImage image = null;
         try {
             image = ImageIO.read(getClass().getResourceAsStream(imagePath));
@@ -70,106 +67,95 @@ public class Player extends Entity {
     }
 
     public void update() {
+        // We only move and animate if a key is being pressed
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
-            String newDirection = null;
-            if(keyHandler.upPressed) {
-                newDirection = "up";
-            } else if(keyHandler.downPressed) {
-                newDirection = "down";
-            } else if(keyHandler.leftPressed) {
-                newDirection = "left";
-            } else if(keyHandler.rightPressed) {
-                newDirection = "right";
-            }
+            handleInputAndMove();
+            updateAnimation();
+        }
+    }
 
-            if (newDirection != null) {
-                direction = newDirection;
-                // check tile collision
-                collisionOn = false;
-                gp.collisionChecker.checkTile(this);
+    private void handleInputAndMove() {
+        if (keyHandler.upPressed) {
+            direction = Direction.UP;
+        } else if (keyHandler.downPressed) {
+            direction = Direction.DOWN;
+        } else if (keyHandler.leftPressed) {
+            direction = Direction.LEFT;
+        } else if (keyHandler.rightPressed) {
+            direction = Direction.RIGHT;
+        }
 
-                // CHECK OBJECT COLLSISION
-                int objIndex = gp.collisionChecker.checktObject(this, true);    // day8-2
-                pickUpObject(objIndex);
+        // Check for collisions
+        collisionOn = false;
+        gp.collisionChecker.checkTile(this);
+        int objIndex = gp.collisionChecker.checkObject(this, true);
+        interactWithObject(objIndex);
 
-                // IF COLLISION IS FALSE, PLAYER CAN MOVE
-                if (collisionOn == false) {
-                    switch (direction) {
-                        case "up":
-                            worldY -= speed;
-                            break;
-                        case "down":
-                            worldY += speed;
-                            break;
-                        case "left":
-                            worldX -= speed;
-                            break;
-                        case "right":
-                            worldX += speed;
-                            break;
-                    }
-                }
-            }
-    
-            // animation 
-            spriteCounter++;
-            if(spriteCounter > ANIMATION_SPEED) {
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else if (spriteNum == 2) {
-                    spriteNum = 1;
-                }
-                spriteCounter = 0;
+        // If no collision, player can move
+        if (!collisionOn) {
+            switch (direction) {
+                case UP: worldY -= speed; break;
+                case DOWN: worldY += speed; break;
+                case LEFT: worldX -= speed; break;
+                case RIGHT: worldX += speed; break;
             }
         }
     }
 
-    // day8-2 object reaction: start
-    public void pickUpObject(int index) {
-        // 999 MEANS NOT TOUCH ANY OBJECT
-        if (index != 999) {
-            // gp.obj[index] = null;
-            String objName = gp.obj[index].name;
+    private void updateAnimation() {
+        spriteCounter++;
+        if (spriteCounter > ANIMATION_SPEED) {
+            if (spriteNum == 1) {
+                spriteNum = 2;
+            } else if (spriteNum == 2) {
+                spriteNum = 1;
+            }
+            spriteCounter = 0;
+        }
+    }
 
-            switch (objName) {
-                case "Key":
-                    hasKey ++;
-                    gp.obj[index] = null; // make key disappear
-                    System.out.println("HasKey: " + hasKey);
-                    break;
-                case "Door":
-                    if (hasKey > 0) {
-                        gp.obj[index] = null;
-                        hasKey--;
-                    }
-                    System.out.println("HasKey: " + hasKey);
-                    break;
+    public void interactWithObject(int index) {
+        if (index != -1) {
+            // Let the object handle the interaction
+            gp.obj[index].interact(this);
+
+            // Check if the object should be removed after interaction
+            if (gp.obj[index].toBeRemoved) {
+                gp.obj[index] = null;
             }
         }
     }
-    // day8-2 end
 
+    public int getKeyCount() {
+        return hasKey;
+    }
+
+    public void incrementKeyCount() {
+        hasKey++;
+        // TODO: Add a UI update to show key count
+    }
+
+    public void decrementKeyCount() {
+        hasKey--;
+        // TODO: Add a UI update to show key count
+    }
 
     public void draw(Graphics2D g2) {
-        // g2.setColor(Color.white);
-        // g2.fillRect(x, y, gp.tileSize, gp.tileSize);
-
         BufferedImage image = null;
-        switch(direction) {
-            case "up":
+        switch (direction) {
+            case UP:
                 image = (spriteNum == 1) ? up1 : up2;
                 break;
-            case "down":
+            case DOWN:
                 image = (spriteNum == 1) ? down1 : down2;
                 break;
-            case "left":
+            case LEFT:
                 image = (spriteNum == 1) ? left1 : left2;
                 break;
-            case "right":
+            case RIGHT:
                 image = (spriteNum == 1) ? right1 : right2;
                 break;
         }
-
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);    }
-
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    }
 }
