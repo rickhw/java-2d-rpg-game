@@ -34,9 +34,11 @@ public class GamePanel extends JPanel implements Runnable {
     // SYSTEM
     TileManager tileManager = new TileManager(this);
     KeyHandler keyHandler = new KeyHandler();
-    Sound sound = new Sound();
+    Sound music = new Sound();
+    Sound soundEffect = new Sound();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this); // day7-4 add
+    public UI ui = new UI(this);
     Thread gameThread;
 
     // ENTITY and OBJECT
@@ -59,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
     // day7-4-1 start
     public void setupGame() {
         assetSetter.setObject();
-        playMusic(Sound.MAIN_THEME); // index with 0 => main music
+        playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
     }
     // day7-4-1 end
 
@@ -149,10 +151,9 @@ public class GamePanel extends JPanel implements Runnable {
         player.update();
     }
 
-
+    // paint every loop
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D) g;
 
         // TILE
@@ -169,25 +170,27 @@ public class GamePanel extends JPanel implements Runnable {
         // PLAYER
         player.draw(g2);
 
+        // UI
+        ui.draw(g2);
+
         g2.dispose();
 
     }
 
     //day9-2: start
     public void playMusic(int i) {
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
+        music.setFile(i);
+        music.play();
+        music.loop();
     }
 
     public void stopMusic() {
-        sound.stop();
+        music.stop();
     }
 
     public void playSE(int i) {
-        sound.setFile(i);
-        sound.play();
+        soundEffect.setFile(i);
+        soundEffect.play();
     }
-
     // day9-2 end
 }

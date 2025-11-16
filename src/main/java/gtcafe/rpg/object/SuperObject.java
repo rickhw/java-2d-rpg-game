@@ -4,6 +4,9 @@ package gtcafe.rpg.object;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import gtcafe.rpg.GamePanel;
 
@@ -30,5 +33,15 @@ public class SuperObject {
         }
     }
     // day7-4-2 end
+
+
+    protected void initObject(String name, String imagePath) {
+        this.name = name;
+        try {
+            this.image = ImageIO.read(getClass().getResourceAsStream(imagePath));
+        } catch (IOException e ) {
+            e.printStackTrace();
+        }
+    }
 }
 // day7-2-1 end
