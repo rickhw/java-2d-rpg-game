@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.Utils;
 
 public class SuperObject {
     public BufferedImage image;
@@ -18,6 +19,13 @@ public class SuperObject {
     public Rectangle solidArea = new Rectangle(0,0,48,48);  // day8-1
     public int solidAreaDefaultX = 0; // day8-1
     public int solidAreaDefaultY = 0; // day8-1
+    Utils uTools = new Utils();
+
+    GamePanel gp;
+
+    public SuperObject(GamePanel gp) {
+        this.gp = gp;
+    }
 
     // day7-4-2 start, copy from TileManager.java#draw()
     public void draw(Graphics2D g2, GamePanel gp) {
@@ -39,6 +47,7 @@ public class SuperObject {
         this.name = name;
         try {
             this.image = ImageIO.read(getClass().getResourceAsStream(imagePath));
+            uTools.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e ) {
             e.printStackTrace();
         }
