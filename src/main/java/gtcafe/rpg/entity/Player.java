@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.KeyHandler;
 import gtcafe.rpg.Sound;
+import gtcafe.rpg.Utils;
 
 public class Player extends Entity {
     GamePanel gp;
@@ -50,20 +51,22 @@ public class Player extends Entity {
     }
 
     public void getPlayerImages() {
-        up1 = setup("/gtcafe/rpg/assets/player/boy_up_1.png");
-        up2 = setup("/gtcafe/rpg/assets/player/boy_up_2.png");
-        down1 = setup("/gtcafe/rpg/assets/player/boy_down_1.png");
-        down2 = setup("/gtcafe/rpg/assets/player/boy_down_2.png");
-        left1 = setup("/gtcafe/rpg/assets/player/boy_left_1.png");
-        left2 = setup("/gtcafe/rpg/assets/player/boy_left_2.png");
-        right1 = setup("/gtcafe/rpg/assets/player/boy_right_1.png");
-        right2 = setup("/gtcafe/rpg/assets/player/boy_right_2.png");
+        up1 = setup("boy_up_1");
+        up2 = setup("boy_up_2");
+        down1 = setup("boy_down_1");
+        down2 = setup("boy_down_2");
+        left1 = setup("boy_left_1");
+        left2 = setup("boy_left_2");
+        right1 = setup("boy_right_1");
+        right2 = setup("boy_right_2");
     }
 
-    public BufferedImage setup(String imagePath) {
+    public BufferedImage setup(String imageName) {
+        Utils uTools = new Utils();
         BufferedImage image = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream(imagePath));
+            image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/player/" + imageName + ".png"));
+            image = uTools.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -194,6 +197,8 @@ public class Player extends Entity {
                 break;
         }
 
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);    }
+        // g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);   // day11-2 delete
+        g2.drawImage(image, screenX, screenY, null);  // day11-2 add
+    }
 
 }

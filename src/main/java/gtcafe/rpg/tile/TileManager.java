@@ -2,12 +2,14 @@ package gtcafe.rpg.tile;
 
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.Utils;
 
 public class TileManager {
     
@@ -26,29 +28,23 @@ public class TileManager {
     }
 
     public void getTileImage() {
+        setup(0, "grass", false);
+        setup(1, "wall", true);
+        setup(2, "water", true);
+        setup(3, "earth", false);
+        setup(4, "tree", true);
+        setup(5, "sand", false);
+    }
+
+    public void setup(int index, String imageName, boolean collision) {
+        Utils uTools = new Utils();
         try {
-            tiles[0] = new Tile();
-            tiles[0].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tiles/grass.png"));
+            tiles[index] = new Tile();
+            tiles[index].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tiles/" + imageName + ".png"));
+            tiles[index].image = uTools.scaleImage(tiles[index].image, gp.tileSize, gp.tileSize);
+            tiles[index].collision = collision;
 
-            tiles[1] = new Tile();
-            tiles[1].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tiles/wall.png"));
-            tiles[1].collision = true;
-
-            tiles[2] = new Tile();
-            tiles[2].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tiles/water.png"));
-            tiles[2].collision = true;
-
-            tiles[3] = new Tile();
-            tiles[3].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tiles/earth.png"));
-
-            tiles[4] = new Tile();
-            tiles[4].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tiles/tree.png"));
-            tiles[4].collision = true;
-
-            tiles[5] = new Tile();
-            tiles[5].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tiles/sand.png"));
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -101,7 +97,8 @@ public class TileManager {
                      worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                      worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                 
-                 g2.drawImage(tiles[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                //  g2.drawImage(tiles[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                 g2.drawImage(tiles[tileNum].image, screenX, screenY, null); // day11-2: don't need scale the images for performance
              }
 //            g2.drawImage(tiles[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             worldCol++;
