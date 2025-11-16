@@ -12,11 +12,13 @@ public class UI {
     GamePanel gp;
     Font arial_40, arial_80B;
     BufferedImage keyImage;
+
+    // status
     public boolean messageOn = false;
     public String message = "";
-    int messageCounter = 0; // for hidden message
     public boolean gameFinished = false;
-
+    
+    int messageCounter = 0; // for hidden message
     double playTime;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
@@ -84,7 +86,7 @@ public class UI {
                 g2.setFont(g2.getFont().deriveFont(30F));
                 g2.drawString(message, gp.tileSize/2, gp.tileSize*5);
                 messageCounter++;
-
+                // 2 seconds
                 if (messageCounter > 120) {
                     messageCounter = 0;
                     messageOn = false;

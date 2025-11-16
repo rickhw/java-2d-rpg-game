@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
     // day7-4-1 start
     public void setupGame() {
         assetSetter.setObject();
-        playMusic(Sound.MAIN_THEME); // index with 0 => main music
+        playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
     }
     // day7-4-1 end
 
@@ -151,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
         player.update();
     }
 
-
+    // paint every loop
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;

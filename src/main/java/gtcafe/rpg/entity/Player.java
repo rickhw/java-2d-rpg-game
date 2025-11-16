@@ -165,7 +165,7 @@ public class Player extends Entity {
                 case "Chest":
                     gp.ui.gameFinished = true;
                     gp.stopMusic();
-                    gp.playSE(Sound.FX_FANFARE);
+                    gp.playSE(Sound.MUSIC__FANFARE);
                     break;
                 // day10-3
             }
