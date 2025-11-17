@@ -76,8 +76,8 @@ public class CollisionChecker {
         }
     }
 
-    // day8-1 start
-    public int checktObject(Entity entity, boolean player) {
+    // OBJECT REACTION 
+    public int checkObject(Entity entity, boolean player) {
 
         int index = 999;    // ??
 
@@ -160,5 +160,4 @@ public class CollisionChecker {
 
         return index;
     }
-    // day8-1 end
 }

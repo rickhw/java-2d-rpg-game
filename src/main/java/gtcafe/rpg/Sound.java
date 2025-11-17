@@ -1,4 +1,3 @@
-// day9-1 start
 package gtcafe.rpg;
 
 import java.net.URL;
@@ -49,4 +48,3 @@ public class Sound {
         clip.stop();
     }
 }
-// day9-1 end

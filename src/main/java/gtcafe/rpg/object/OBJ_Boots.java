@@ -1,4 +1,3 @@
-// day9-1 start
 package gtcafe.rpg.object;
 
 import gtcafe.rpg.GamePanel;
@@ -10,4 +9,3 @@ public class OBJ_Boots extends SuperObject {
         initObject("Boots","/gtcafe/rpg/assets/objects/boots.png"); 
     }
 }
-// day9-1 end
