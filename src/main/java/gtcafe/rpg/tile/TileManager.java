@@ -120,7 +120,6 @@ public class TileManager {
         }
     }
 
-    
     public void draw(Graphics2D g2) {
 
         int worldCol = 0;
@@ -149,5 +148,4 @@ public class TileManager {
             }
         }
     }
-
 }

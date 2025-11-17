@@ -40,7 +40,6 @@ public class SuperObject {
         }
     }
 
-
     protected void initObject(String name, String imagePath) {
         this.name = name;
         try {
