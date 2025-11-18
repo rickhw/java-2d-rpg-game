@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.KeyHandler;
-import gtcafe.rpg.Sound;
 import gtcafe.rpg.Utils;
 
 public class Player extends Entity {
@@ -23,8 +22,6 @@ public class Player extends Entity {
     public final int screenX; 
     public final int screenY;
 
-    public int hasKey = 0; // day8-2: object reaction
-
     public Player(GamePanel gp, KeyHandler keyHandler) {
         this.gp = gp;
         this.keyHandler = keyHandler;
@@ -34,8 +31,8 @@ public class Player extends Entity {
         screenY = gp.screenHight / 2 - (gp.tileSize/2);
 
         solidArea = new Rectangle(8, 16, 32, 32);
-        solidAreaDefaultX = solidArea.x;    // day8-1
-        solidAreaDefaultY = solidArea.y;    // day8-1
+        solidAreaDefaultX = solidArea.x;  
+        solidAreaDefaultY = solidArea.y;  
 
         setDefaultValues();
         getPlayerImages();
@@ -88,12 +85,12 @@ public class Player extends Entity {
 
             if (newDirection != null) {
                 direction = newDirection;
-                // check tile collision
+                // CHECK TILE COLLISION
                 collisionOn = false;
                 gp.collisionChecker.checkTile(this);
 
                 // CHECK OBJECT COLLSISION
-                int objIndex = gp.collisionChecker.checktObject(this, true);    // day8-2
+                int objIndex = gp.collisionChecker.checkObject(this, true);
                 pickUpObject(objIndex);
 
                 // IF COLLISION IS FALSE, PLAYER CAN MOVE
@@ -115,7 +112,7 @@ public class Player extends Entity {
                 }
             }
     
-            // animation 
+            // ANIMATION
             spriteCounter++;
             if(spriteCounter > ANIMATION_SPEED) {
                 if (spriteNum == 1) {
@@ -128,59 +125,14 @@ public class Player extends Entity {
         }
     }
 
-    // day8-2 object reaction: start
+    // OBJECT REACTION
     public void pickUpObject(int index) {
         // 999 MEANS NOT TOUCH ANY OBJECT
         if (index != 999) {
-            // gp.obj[index] = null;
-            String objName = gp.obj[index].name;
-
-            switch (objName) {
-                case "Key":
-                    gp.playSE(Sound.FX_COIN); // day9-2
-                    hasKey ++;
-                    gp.obj[index] = null; // make key disappear
-                    gp.ui.showMessage("You got a key!"); // day10-3
-                    System.out.println("HasKey: " + hasKey);
-                    break;
-                case "Door":
-                    if (hasKey > 0) {
-                        gp.playSE(Sound.FX_UNLOCK); // day9-2
-                        gp.obj[index] = null;
-                        hasKey--;
-                        gp.ui.showMessage("You opened the door!"); // day10-3
-                    } else {
-                        gp.ui.showMessage("You need a key!");  // day10-3
-                    }
-                    System.out.println("HasKey: " + hasKey);
-                    break;
-                // day9-1 start
-                case "Boots":
-                    gp.playSE(Sound.FX_POWER_UP); // day9-2
-                    speed += 2;
-                    gp.obj[index] = null; // clean object
-                    gp.ui.showMessage("Speed up!!");  // day10-3
-                    System.out.println("Got Boots, speed up!!");
-                    break;
-                // day9-1 end
-
-                // day10-3
-                case "Chest":
-                    gp.ui.gameFinished = true;
-                    gp.stopMusic();
-                    gp.playSE(Sound.MUSIC__FANFARE);
-                    break;
-                // day10-3
-            }
         }
     }
-    // day8-2 end
-
 
     public void draw(Graphics2D g2) {
-        // g2.setColor(Color.white);
-        // g2.fillRect(x, y, gp.tileSize, gp.tileSize);
-
         BufferedImage image = null;
         switch(direction) {
             case "up":
@@ -197,8 +149,6 @@ public class Player extends Entity {
                 break;
         }
 
-        // g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);   // day11-2 delete
-        g2.drawImage(image, screenX, screenY, null);  // day11-2 add
+        g2.drawImage(image, screenX, screenY, null);
     }
-
 }

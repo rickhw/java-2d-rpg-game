@@ -23,8 +23,6 @@ public class TileManager {
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
-        // loadMap("/gtcafe/rpg/assets/maps/map01.txt");
-        // loadMap("/gtcafe/rpg/assets/maps/world01.txt");
         loadMap("/gtcafe/rpg/assets/maps/worldV2.txt");
     }
 
@@ -122,7 +120,6 @@ public class TileManager {
         }
     }
 
-    
     public void draw(Graphics2D g2) {
 
         int worldCol = 0;
@@ -141,10 +138,8 @@ public class TileManager {
                      worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                      worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                 
-                //  g2.drawImage(tiles[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-                 g2.drawImage(tiles[tileNum].image, screenX, screenY, null); // day11-2: don't need scale the images for performance
+                 g2.drawImage(tiles[tileNum].image, screenX, screenY, null);
              }
-//            g2.drawImage(tiles[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             worldCol++;
 
             if (worldCol == gp.maxWorldCol) {
@@ -153,5 +148,4 @@ public class TileManager {
             }
         }
     }
-
 }

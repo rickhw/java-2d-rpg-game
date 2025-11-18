@@ -5,8 +5,14 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed;
+    GamePanel gp;
 
+    // DEBUG
     boolean checkDrawTime = false;
+
+    public KeyHandler(GamePanel gp) {
+        this.gp = gp;
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -29,15 +35,21 @@ public class KeyHandler implements KeyListener {
             rightPressed = true;
         }
 
+        if (code == KeyEvent.VK_P) {
+            if (gp.gameState == GamePanel.STATE_PLAY) {
+                gp.gameState = GamePanel.STATE_PAUSE;
+            } else if (gp.gameState == GamePanel.STATE_PAUSE) {
+                gp.gameState = GamePanel.STATE_PLAY;
+            } 
+        }
+        // DEBUG
         if (code == KeyEvent.VK_T) {
             if(checkDrawTime == false) {
                 checkDrawTime = true;
             } else if (checkDrawTime = true) {
                 checkDrawTime = false;
             }
-
         }
-
     }
 
     @Override
@@ -57,5 +69,4 @@ public class KeyHandler implements KeyListener {
             rightPressed = false;
         }
     } 
-    
 }

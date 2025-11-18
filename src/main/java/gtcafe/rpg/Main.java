@@ -16,7 +16,7 @@ public class Main {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
-        gamePanel.setupGame(); // day7-4-1
+        gamePanel.setupGame();
         gamePanel.startGameThread();
     }
 }

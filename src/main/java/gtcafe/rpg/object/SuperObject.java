@@ -1,4 +1,3 @@
-// day7-2-1 start
 package gtcafe.rpg.object;
 
 import java.awt.Graphics2D;
@@ -16,9 +15,9 @@ public class SuperObject {
     public String name;
     public boolean collision = false;
     public int worldX, worldY;
-    public Rectangle solidArea = new Rectangle(0,0,48,48);  // day8-1
-    public int solidAreaDefaultX = 0; // day8-1
-    public int solidAreaDefaultY = 0; // day8-1
+    public Rectangle solidArea = new Rectangle(0,0,48,48); 
+    public int solidAreaDefaultX = 0;
+    public int solidAreaDefaultY = 0;
     Utils uTools = new Utils();
 
     GamePanel gp;
@@ -27,7 +26,7 @@ public class SuperObject {
         this.gp = gp;
     }
 
-    // day7-4-2 start, copy from TileManager.java#draw()
+    // copy from TileManager.java#draw()
     public void draw(Graphics2D g2, GamePanel gp) {
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
@@ -40,8 +39,6 @@ public class SuperObject {
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
     }
-    // day7-4-2 end
-
 
     protected void initObject(String name, String imagePath) {
         this.name = name;
@@ -53,4 +50,3 @@ public class SuperObject {
         }
     }
 }
-// day7-2-1 end

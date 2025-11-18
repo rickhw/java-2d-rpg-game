@@ -25,15 +25,13 @@ public class GamePanel extends JPanel implements Runnable {
     // World Map settings
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
-    // public final int worldWidth = tileSize * maxWorldCol; // 2400 pixels
-    // public final int worldHeight = tileSize * maxWorldRow; // 2400 pixels
 
     // FPS
     final int FPS = 60;
 
     // SYSTEM
     TileManager tileManager = new TileManager(this);
-    KeyHandler keyHandler = new KeyHandler();
+    KeyHandler keyHandler = new KeyHandler(this);
     Sound music = new Sound();
     Sound soundEffect = new Sound();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
@@ -44,6 +42,11 @@ public class GamePanel extends JPanel implements Runnable {
     // ENTITY and OBJECT
     public Player player = new Player(this, keyHandler);
     public SuperObject obj[] = new SuperObject[10]; // day7-3 add: 10 slot for objects, display the 10 objs at the same time.
+
+    // GAME STATE
+    public int gameState;
+    public final static int STATE_PLAY = 1;
+    public final static int STATE_PAUSE = 2;
     
     // set player's default position
     int playerX = 100;
@@ -58,12 +61,12 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
-    // day7-4-1 start
     public void setupGame() {
         assetSetter.setObject();
         playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
+
+        gameState = STATE_PLAY;
     }
-    // day7-4-1 end
 
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -136,19 +139,11 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        // if(keyHandler.upPressed) {
-        //     playerY -= playerSpeed;
-        // }
-        // if(keyHandler.downPressed) {
-        //     playerY += playerSpeed;
-        // }
-        // if(keyHandler.leftPressed) {
-        //     playerX -= playerSpeed;
-        // }
-        // if(keyHandler.rightPressed) {
-        //     playerX += playerSpeed;
-        // }
-        player.update();
+        if (gameState == STATE_PLAY)
+            player.update();
+        else if (gameState == STATE_PAUSE) {
+            // nothing, we don't update the player info
+        }
     }
 
     // paint every loop
@@ -156,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // day11-1: DEBUG
+        // DEBUG
         long drawStart = 0;
         if (keyHandler.checkDrawTime) 
             drawStart = System.nanoTime();
@@ -164,13 +159,11 @@ public class GamePanel extends JPanel implements Runnable {
         // TILE
         tileManager.draw(g2);
 
-        // day7-4-2 start
         // OBJECT
         for (int i=0; i<obj.length; i++) {
             if (obj[i] != null)
                 obj[i].draw(g2, this);
         }
-        // day7-4-2 end
         
         // PLAYER
         player.draw(g2);
@@ -178,7 +171,7 @@ public class GamePanel extends JPanel implements Runnable {
         // UI
         ui.draw(g2);
 
-        // day11-1
+        // DEBUG
         if (keyHandler.checkDrawTime) {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
@@ -191,7 +184,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
-    //day9-2: start
     public void playMusic(int i) {
         music.setFile(i);
         music.play();
@@ -206,5 +198,4 @@ public class GamePanel extends JPanel implements Runnable {
         soundEffect.setFile(i);
         soundEffect.play();
     }
-    // day9-2 end
 }
