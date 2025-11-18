@@ -113,7 +113,7 @@ public class GamePanel extends JPanel implements Runnable {
     // Game loop 2: Delta/Accumulator method
     @Override
     public void run() {
-        double drawInterval = 1000000000 / FPS; // 0.016666 seconds per frame
+        double drawInterval = 1000000000 / FPS; // ~= 16,666,666.6666666667
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -127,15 +127,17 @@ public class GamePanel extends JPanel implements Runnable {
             timer += currentTime - lastTime;
             lastTime = currentTime;
 
+            // 畫的時間在 FPS 範圍裡, 也就是 delta 大於 drawInterval
             if(delta >= 1) {
                 update();
-                repaint();
+                repaint();  // call paintComponent by parent class
+                // System.out.printf("[GamePanel#run] delta: [%s], drawCount: [%s], timer: [%s] \n", delta, drawCount, timer);
                 delta--;
                 drawCount++;
             }
 
             if (timer >= 1000000000) {
-                System.out.println("[GamePanel#run] FPS: " + drawCount);
+                System.out.printf("[GamePanel#run] FPS: [%s], drawCount: [%s], timer: [%s] \n", FPS, drawCount, timer);
                 drawCount = 0;
                 timer = 0;
             }
