@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.object.SuperObject;
 import gtcafe.rpg.tile.TileManager;
@@ -27,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = 50;
 
     // FPS
-    final int FPS = 60;
+    public final int FPS = 60;
 
     // SYSTEM
     TileManager tileManager = new TileManager(this);
@@ -42,6 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
     // ENTITY and OBJECT
     public Player player = new Player(this, keyHandler);
     public SuperObject obj[] = new SuperObject[10]; // day7-3 add: 10 slot for objects, display the 10 objs at the same time.
+    public Entity npc[] = new Entity[10];
 
     // GAME STATE
     public int gameState;
@@ -63,7 +65,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() {
         assetSetter.setObject();
+        assetSetter.setNPC();
         playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
+        stopMusic();
 
         gameState = STATE_PLAY;
     }
@@ -109,7 +113,7 @@ public class GamePanel extends JPanel implements Runnable {
     // Game loop 2: Delta/Accumulator method
     @Override
     public void run() {
-        double drawInterval = 1000000000 / FPS; // 0.016666 seconds per frame
+        double drawInterval = 1000000000 / FPS; // ~= 16,666,666.6666666667
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -123,15 +127,17 @@ public class GamePanel extends JPanel implements Runnable {
             timer += currentTime - lastTime;
             lastTime = currentTime;
 
+            // 畫的時間在 FPS 範圍裡, 也就是 delta 大於 drawInterval
             if(delta >= 1) {
                 update();
-                repaint();
+                repaint();  // call paintComponent by parent class
+                // System.out.printf("[GamePanel#run] delta: [%s], drawCount: [%s], timer: [%s] \n", delta, drawCount, timer);
                 delta--;
                 drawCount++;
             }
 
             if (timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
+                System.out.printf("[GamePanel#run] FPS: [%s], drawCount: [%s], timer: [%s] \n", FPS, drawCount, timer);
                 drawCount = 0;
                 timer = 0;
             }
@@ -139,9 +145,13 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if (gameState == STATE_PLAY)
+        if (gameState == STATE_PLAY) {
             player.update();
-        else if (gameState == STATE_PAUSE) {
+            for(int i=0; i<npc.length; i++) {
+                if(npc[i] != null) 
+                    npc[i].update();
+            }
+        } else if (gameState == STATE_PAUSE) {
             // nothing, we don't update the player info
         }
     }
@@ -165,6 +175,12 @@ public class GamePanel extends JPanel implements Runnable {
                 obj[i].draw(g2, this);
         }
         
+        // NPC
+        for (int i=0; i<npc.length; i++) {
+            if (npc[i] != null)
+                npc[i].draw(g2);
+        }
+
         // PLAYER
         player.draw(g2);
 
@@ -177,7 +193,7 @@ public class GamePanel extends JPanel implements Runnable {
             long passed = drawEnd - drawStart;
             g2.setColor(Color.red);
             g2.drawString("Draw Time: "+passed, 10, 400);
-            System.out.println("Draw Time: "+passed);
+            System.out.println("[GamePanel#paintComponent] Draw Time: "+passed);
         }
 
         g2.dispose();

@@ -111,7 +111,7 @@ public class TileManager {
                     col = 0;
                     row++;
                 }
-                System.out.println("col: " + col + " row: " + row);
+                System.out.println("[TileManager#loadMap] col: " + col + " row: " + row);
             }
             br.close();
 
