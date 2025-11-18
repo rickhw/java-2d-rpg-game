@@ -3,27 +3,23 @@ package gtcafe.rpg.entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.KeyHandler;
-import gtcafe.rpg.Utils;
 
 public class Player extends Entity {
-    GamePanel gp;
     KeyHandler keyHandler;
 
     // Animation
-    private final int ANIMATION_SPEED = 10;
+    public final static int ANIMATION_SPEED = 10;
 
     // camera position
     public final int screenX; 
     public final int screenY;
 
     public Player(GamePanel gp, KeyHandler keyHandler) {
-        this.gp = gp;
+        super(gp);
+
         this.keyHandler = keyHandler;
 
         // camera position
@@ -48,26 +44,15 @@ public class Player extends Entity {
     }
 
     public void getPlayerImages() {
-        up1 = setup("boy_up_1");
-        up2 = setup("boy_up_2");
-        down1 = setup("boy_down_1");
-        down2 = setup("boy_down_2");
-        left1 = setup("boy_left_1");
-        left2 = setup("boy_left_2");
-        right1 = setup("boy_right_1");
-        right2 = setup("boy_right_2");
-    }
-
-    public BufferedImage setup(String imageName) {
-        Utils uTools = new Utils();
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/player/" + imageName + ".png"));
-            image = uTools.scaleImage(image, gp.tileSize, gp.tileSize);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
+        String packagePath = "/gtcafe/rpg/assets/player/";
+        up1 = setup(packagePath + "boy_up_1");
+        up2 = setup(packagePath + "boy_up_2");
+        down1 = setup(packagePath + "boy_down_1");
+        down2 = setup(packagePath + "boy_down_2");
+        left1 = setup(packagePath + "boy_left_1");
+        left2 = setup(packagePath + "boy_left_2");
+        right1 = setup(packagePath + "boy_right_1");
+        right2 = setup(packagePath + "boy_right_2");
     }
 
     public void update() {
@@ -93,6 +78,10 @@ public class Player extends Entity {
                 int objIndex = gp.collisionChecker.checkObject(this, true);
                 pickUpObject(objIndex);
 
+                // CHECK NPC COLLISION
+                int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
+                interactNPC(npcIndex);
+
                 // IF COLLISION IS FALSE, PLAYER CAN MOVE
                 if (collisionOn == false) {
                     switch (direction) {
@@ -110,17 +99,17 @@ public class Player extends Entity {
                             break;
                     }
                 }
-            }
-    
-            // ANIMATION
-            spriteCounter++;
-            if(spriteCounter > ANIMATION_SPEED) {
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else if (spriteNum == 2) {
-                    spriteNum = 1;
+
+                // ANIMATION
+                spriteCounter++;
+                if(spriteCounter > ANIMATION_SPEED) {
+                    if (spriteNum == 1) {
+                        spriteNum = 2;
+                    } else if (spriteNum == 2) {
+                        spriteNum = 1;
+                    }
+                    spriteCounter = 0;
                 }
-                spriteCounter = 0;
             }
         }
     }
@@ -130,6 +119,12 @@ public class Player extends Entity {
         // 999 MEANS NOT TOUCH ANY OBJECT
         if (index != 999) {
         }
+    }
+
+    public void interactNPC(int index) {
+        if (index != 999) {
+            System.out.println("[Player#interactNPC] You are hitting an NPC!!");
+        } 
     }
 
     public void draw(Graphics2D g2) {
@@ -148,7 +143,6 @@ public class Player extends Entity {
                 image = (spriteNum == 1) ? right1 : right2;
                 break;
         }
-
         g2.drawImage(image, screenX, screenY, null);
     }
 }
