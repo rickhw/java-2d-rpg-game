@@ -1,9 +1,9 @@
 package gtcafe.rpg;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.text.DecimalFormat;
 
 public class UI {
     GamePanel gp;
@@ -14,10 +14,9 @@ public class UI {
     public boolean messageOn = false;
     public String message = "";
     public boolean gameFinished = false;
+    public String currentDialogue;
     
     int messageCounter = 0; // for hidden message
-    double playTime;
-    DecimalFormat dFormat = new DecimalFormat("#0.00");
 
     public UI (GamePanel gp) {
         this.gp = gp;
@@ -34,14 +33,51 @@ public class UI {
         g2.setFont(arial_40);
         g2.setColor(Color.white);
         
-        if(gp.gameState == GamePanel.STATE_PLAY) {
+        // PLAY STATE
+        if(gp.gameState == GamePanel.PLAY_STATE) {
             // Do playState stuff later
         }
 
-        if (gp.gameState == GamePanel.STATE_PAUSE) {
+        // PAUSE STATE
+        if (gp.gameState == GamePanel.PAUSE_STATE) {
             drawPauseScreen();
         }
+
+        // DIALOGUE STATE
+        if (gp.gameState == GamePanel.DIALOGUE_STATE) {
+            drawDialogusScreen();
+        }
     }
+
+    public void drawDialogusScreen() {
+        // WINDOW
+        int x = gp.tileSize * 2;
+        int y = gp.tileSize / 2;
+        int width = gp.screenWidth - (gp.tileSize * 4);
+        int height = gp.tileSize * 4;
+        drawSubWindow(x, y, width, height);
+
+        // Draw Text on DialogWindow
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
+        x += gp.tileSize;
+        y += gp.tileSize;
+        for(String line : currentDialogue.split("\n")) { 
+            g2.drawString(line, x, y);
+            y += 40;
+        }
+    }
+
+    public void drawSubWindow(int x, int y, int width, int height) {
+        Color c = new Color(0, 0, 0, 200); // Black, alpha value = 200, make the color transparent.
+        g2.setColor(c);
+        g2.fillRoundRect(x, y, width, height, 35, 35);  // draw rectangle
+
+        c = new Color(255, 255, 255); // White
+        g2.setColor(c);
+        g2.setStroke(new BasicStroke(5));
+        g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
+    }
+
 
     public void showMessage(String text) {
         message = text;
