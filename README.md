@@ -1,4 +1,8 @@
 
+## Version
+
+- v1.0.0: Day1-Day12
+
 
 ## 功能列表 (Feature List)
 
