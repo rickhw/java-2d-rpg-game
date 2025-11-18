@@ -14,7 +14,7 @@ import gtcafe.rpg.tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable { 
     // Screen settings
-    final int originalTileSize = 16; // 16x16
+    final int originalTileSize = 16; // 16x16 pixel
     final int scale = 4;
 
     public final int tileSize = originalTileSize * scale; // 48x48 tile
@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // SYSTEM
     TileManager tileManager = new TileManager(this);
-    KeyHandler keyHandler = new KeyHandler(this);
+    public KeyHandler keyHandler = new KeyHandler(this);
     Sound music = new Sound();
     Sound soundEffect = new Sound();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
@@ -47,8 +47,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     // GAME STATE
     public int gameState;
-    public final static int STATE_PLAY = 1;
-    public final static int STATE_PAUSE = 2;
+    public final static int PLAY_STATE = 1;
+    public final static int PAUSE_STATE = 2;
+    public final static int DIALOGUE_STATE = 3;
     
     // set player's default position
     int playerX = 100;
@@ -69,7 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
         playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
         stopMusic();
 
-        gameState = STATE_PLAY;
+        gameState = PLAY_STATE;
     }
 
     public void startGameThread() {
@@ -145,13 +146,13 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if (gameState == STATE_PLAY) {
+        if (gameState == PLAY_STATE) {
             player.update();
             for(int i=0; i<npc.length; i++) {
                 if(npc[i] != null) 
                     npc[i].update();
             }
-        } else if (gameState == STATE_PAUSE) {
+        } else if (gameState == PAUSE_STATE) {
             // nothing, we don't update the player info
         }
     }
@@ -192,7 +193,7 @@ public class GamePanel extends JPanel implements Runnable {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
             g2.setColor(Color.red);
-            g2.drawString("Draw Time: "+passed, 10, 400);
+            g2.drawString("Draw Time: " + passed, 10, 400);
             System.out.println("[GamePanel#paintComponent] Draw Time: "+passed);
         }
 

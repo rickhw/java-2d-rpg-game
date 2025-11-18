@@ -31,6 +31,9 @@ public class Entity {
     public boolean collisionOn = false;
     public int actionLockCounter = 0;   // To set the counter for action, to avoid quick update by FPS number.
 
+    String dialogues[] = new String[20];
+    int dialogueIndex = 0;
+
     public Entity(GamePanel gp) {
         this.gp = gp;
     }
@@ -51,6 +54,31 @@ public class Entity {
 
     }
 
+    public void speak() {
+        if (dialogues[dialogueIndex] == null) {
+            dialogueIndex = 0; // go back to index zero to avoid the NPE.
+        }
+
+        gp.ui.currentDialogue = dialogues[dialogueIndex];
+        dialogueIndex++;
+
+        // make the NPC talks to player by face.
+        switch (gp.player.direction) {
+            case "up":
+                direction = "down";
+                break;
+            case "down":
+                direction = "up";
+                break;
+            case "left":
+                direction = "right";
+                break;
+            case "right":
+                direction = "left";
+                break;
+        }
+    }
+
     public void update() {
         setAction();
 
@@ -59,7 +87,7 @@ public class Entity {
         gp.collisionChecker.checkObject(this, false);
         gp.collisionChecker.checkPlayer(this);
 
-        // IF COLLISION IS FALSE, PLAYER CAN MOVE
+        // IF COLLISION IS FALSE, ENTITY CAN MOVE
         if (collisionOn == false) {
             switch (direction) {
                 case "up":
@@ -87,7 +115,6 @@ public class Entity {
             }
             spriteCounter = 0;
         }
-
     }
 
     public void draw(Graphics2D g2) {

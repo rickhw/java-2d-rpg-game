@@ -56,7 +56,7 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+        if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.enterPressed) {
             String newDirection = null;
             if(keyHandler.upPressed) {
                 newDirection = "up";
@@ -68,7 +68,13 @@ public class Player extends Entity {
                 newDirection = "right";
             }
 
-            if (newDirection != null) {
+            if (keyHandler.enterPressed == true) {
+                // CHECK NPC COLLISION
+                int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
+                interactNPC(npcIndex);
+            }
+
+            if (newDirection != null ) {
                 direction = newDirection;
                 // CHECK TILE COLLISION
                 collisionOn = false;
@@ -122,9 +128,14 @@ public class Player extends Entity {
     }
 
     public void interactNPC(int index) {
-        if (index != 999) {
+        if (index != 999) { // means player touch NPC
             System.out.println("[Player#interactNPC] You are hitting an NPC!!");
+            if (gp.keyHandler.enterPressed == true) {
+                gp.gameState = GamePanel.DIALOGUE_STATE;
+                gp.npc[index].speak();
+            }
         } 
+        gp.keyHandler.enterPressed = false;
     }
 
     public void draw(Graphics2D g2) {
