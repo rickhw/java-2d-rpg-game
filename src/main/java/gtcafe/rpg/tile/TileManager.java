@@ -111,9 +111,9 @@ public class TileManager {
                     col = 0;
                     row++;
                 }
-                System.out.println("[TileManager#loadMap] col: " + col + " row: " + row);
             }
             br.close();
+            System.out.println("[TileManager#loadMap] finished to load map, col: " + col + " row: " + row);
 
         } catch (Exception e) {
             e.printStackTrace();
