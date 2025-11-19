@@ -105,7 +105,6 @@ public class CollisionChecker {
                             if (player) {
                                 index = i; 
                             }
-                            // NPC do nothing
                         }
                         break;
                     case "down":
@@ -118,7 +117,6 @@ public class CollisionChecker {
                             if (player) {
                                 index = i; 
                             }
-                            // NPC do nothing
                         }
                         break;
                     case "left":
@@ -131,7 +129,6 @@ public class CollisionChecker {
                             if (player) {
                                 index = i; 
                             }
-                            // NPC do nothing
                          }
                        break;
                     case "right":
@@ -144,7 +141,6 @@ public class CollisionChecker {
                             if (player) {
                                 index = i; 
                             }
-                            // NPC do nothing
                          }
                         break;
                 }

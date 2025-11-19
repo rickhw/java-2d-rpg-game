@@ -57,9 +57,9 @@ public class NPC_OldMan extends Entity {
 
     public void setDialogue() {
         // https://en.wikipedia.org/wiki/Arrow_in_the_knee
-        dialogues[0] = "Hello, Rick! I used to be an adventurer like you. Then I took \nan arrow in the knee...";
-        dialogues[1] = "So you've come to this island to fin the treasure?";
-        dialogues[2] = "I used to be a great wizard but now ... I'm a bit too old \nfor taking an adventure.";
+        dialogues[0] = "Hello, Rick! I used to be an adventurer like \nyou. Then I took an arrow in the knee...";
+        dialogues[1] = "So you've come to this island to fin the \ntreasure?";
+        dialogues[2] = "I used to be a great wizard but now ... I'm \na bit too old for taking an adventure.";
         dialogues[3] = "Well, good luck on you.";
         dialogues[4] = "Hey, you, you're finally awake."; // https://www.youtube.com/watch?v=_WZCvQ5J3pk
     }

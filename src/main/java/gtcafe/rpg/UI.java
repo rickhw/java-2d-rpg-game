@@ -68,7 +68,7 @@ public class UI {
     }
 
     public void drawSubWindow(int x, int y, int width, int height) {
-        Color c = new Color(0, 0, 0, 200); // Black, alpha value = 200, make the color transparent.
+        Color c = new Color(0, 0, 0, 180); // Black, alpha value = 200, make the color transparent.
         g2.setColor(c);
         g2.fillRoundRect(x, y, width, height, 35, 35);  // draw rectangle
 
@@ -87,7 +87,7 @@ public class UI {
     public void drawPauseScreen() {
         String text = "PAUSED";
         int x = getXforCenterText(text);
-        int y = gp.screenHight / 2 ;
+        int y = gp.screenHeight / 2 ;
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
         g2.drawString(text, x, y);
     }

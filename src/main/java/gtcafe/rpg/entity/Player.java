@@ -22,9 +22,9 @@ public class Player extends Entity {
 
         this.keyHandler = keyHandler;
 
-        // camera position
+        // Player 在 Screen 的起始座標, 起始後不會改動. camera position
         screenX = gp.screenWidth / 2 - (gp.tileSize/2);
-        screenY = gp.screenHight / 2 - (gp.tileSize/2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize/2);
 
         solidArea = new Rectangle(8, 16, 32, 32);
         solidAreaDefaultX = solidArea.x;  
@@ -35,11 +35,11 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        // start position
+        // player 在整個世界地圖的座標起始位置
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         
-        speed = 5;
+        speed = 5;  // 每個 Frame 移動 5 個 pixel, 每秒移動 5 * 60 = 300 pixel / 48 = 6 tiles
         direction = "down";
     }
 
