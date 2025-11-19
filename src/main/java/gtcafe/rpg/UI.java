@@ -3,12 +3,19 @@ package gtcafe.rpg;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class UI {
     GamePanel gp;
     Graphics2D g2;
-    Font arial_40, arial_80B;
+    // Font arial_40, arial_80B;
+    // Custom Font:
+    // - pixel font: https://00ff.booth.pm/items/2958237
+    // - https://fontsgeek.com/fonts/purisa-bold
+    Font maruMonica, purisaB;    
 
     // status
     public boolean messageOn = false;
@@ -20,8 +27,24 @@ public class UI {
 
     public UI (GamePanel gp) {
         this.gp = gp;
-        arial_40 = new Font(("Arial"), Font.PLAIN, 40);
-        arial_80B = new Font(("Arial"), Font.BOLD, 80);
+        loadFont();;
+    }
+
+    private void loadFont() {
+        // arial_40 = new Font(("Arial"), Font.PLAIN, 40);
+        // arial_80B = new Font(("Arial"), Font.BOLD, 80);
+        // load Fonts
+        try {
+            InputStream is = getClass().getResourceAsStream("/gtcafe/rpg/assets/font/x12y16pxMaruMonica.ttf");
+            maruMonica = Font.createFont(Font.TRUETYPE_FONT, is);
+
+            is = getClass().getResourceAsStream("/gtcafe/rpg/assets/font/Purisa Bold.ttf");
+            purisaB = Font.createFont(Font.TRUETYPE_FONT, is);
+        }  catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
    
     // include game loop: 60 times per second
@@ -30,7 +53,8 @@ public class UI {
 
         this.g2 = g2;
 
-        g2.setFont(arial_40);
+        g2.setFont(maruMonica);
+        // g2.setFont(purisaB);
         g2.setColor(Color.white);
         
         // PLAY STATE
