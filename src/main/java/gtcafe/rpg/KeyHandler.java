@@ -22,6 +22,72 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
+        // TITLE STATE
+        if(gp.ui.titleScreenState == 0) {
+            if (gp.gameState == GamePanel.TITLE_STATE) {
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                    gp.ui.commandNum--;
+                    if (gp.ui.commandNum < 0) {
+                        gp.ui.commandNum = 2;
+                    }
+                }
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                    gp.ui.commandNum++;
+                    if (gp.ui.commandNum > 2) {
+                        gp.ui.commandNum = 0;
+                    }
+                }
+                if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+                    if (gp.ui.commandNum == 0) {
+                        // gp.gameState = GamePanel.PLAY_STATE;
+                        gp.ui.titleScreenState = 1;
+                    }
+                    if (gp.ui.commandNum == 1) {
+                        // TODO
+                    }
+                    if (gp.ui.commandNum == 2) {
+                        System.exit(0);
+                    }
+                }
+            }
+        }
+        else if(gp.ui.titleScreenState == 1) {
+            if (gp.gameState == GamePanel.TITLE_STATE) {
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                    gp.ui.commandNum--;
+                    if (gp.ui.commandNum < 0) {
+                        gp.ui.commandNum = 3;
+                    }
+                }
+                if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                    gp.ui.commandNum++;
+                    if (gp.ui.commandNum > 3) {
+                        gp.ui.commandNum = 0;
+                    }
+                }
+                if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+                    if (gp.ui.commandNum == 0) {
+                        System.out.print("Do some fighter specific stuff!");
+                        gp.gameState = GamePanel.PLAY_STATE;
+                        gp.playMusic(Sound.MUSIC__MAIN_THEME);
+                    }
+                    if (gp.ui.commandNum == 1) {
+                        System.out.print("Do some thief specific stuff!");
+                        gp.gameState = GamePanel.PLAY_STATE;
+                        gp.playMusic(Sound.MUSIC__MAIN_THEME);
+                    }
+                    if (gp.ui.commandNum == 2) {
+                        System.out.print("Do some sorcerer specific stuff!");
+                        gp.gameState = GamePanel.PLAY_STATE;
+                        gp.playMusic(Sound.MUSIC__MAIN_THEME);
+                    }
+                    if (gp.ui.commandNum == 3) {
+                        gp.ui.titleScreenState = 0;
+                    }
+                }
+            }
+        }
+
         // PLAY STATE
         if (gp.gameState == GamePanel.PLAY_STATE) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
@@ -44,6 +110,7 @@ public class KeyHandler implements KeyListener {
 
             if (code == KeyEvent.VK_P) {
                 gp.gameState = GamePanel.PAUSE_STATE;
+                gp.stopMusic();
             }
 
             // DEBUG
