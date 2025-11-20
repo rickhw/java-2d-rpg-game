@@ -8,4 +8,6 @@
 - v2.2.0: 
     - Day#15: Dialogues
     - Day#16: Custom Font, set the dialog text using pixel font by https://00ff.booth.pm/items/2958237
+    - Day#17: Title Screen and Scense
+    - Day#18: Player Life
     

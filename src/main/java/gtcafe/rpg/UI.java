@@ -5,8 +5,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+
+import gtcafe.rpg.object.OBJ_Heart;
+import gtcafe.rpg.object.SuperObject;
 
 public class UI {
     GamePanel gp;
@@ -15,7 +19,8 @@ public class UI {
     // Custom Font:
     // - pixel font: https://00ff.booth.pm/items/2958237
     // - https://fontsgeek.com/fonts/purisa-bold
-    Font maruMonica, purisaB;    
+    Font maruMonica, purisaB;
+    BufferedImage heart_full, heart_half, heart_blank;
 
     // status
     public boolean messageOn = false;
@@ -29,12 +34,20 @@ public class UI {
     // a sub state
     // 0: the first screen
     // 1: the second screen ..
-    public int titleScreenState = 0;    
+    public int titleScreenState = 0;
+
+
 
 
     public UI (GamePanel gp) {
         this.gp = gp;
         loadFont();;
+
+        // CREATE HUD OBJECT
+        SuperObject heart = new OBJ_Heart(gp);
+        heart_full = heart.image;
+        heart_half = heart.image2;
+        heart_blank = heart.image3;
     }
 
     private void loadFont() {
@@ -72,17 +85,55 @@ public class UI {
         // PLAY STATE
         if(gp.gameState == GamePanel.PLAY_STATE) {
             // Do playState stuff later
+            drawPlayerLife();
         }
 
         // PAUSE STATE
         if (gp.gameState == GamePanel.PAUSE_STATE) {
+            drawPlayerLife();
             drawPauseScreen();
         }
 
         // DIALOGUE STATE
         if (gp.gameState == GamePanel.DIALOGUE_STATE) {
+            drawPlayerLife();
             drawDialogusScreen();
         }
+    }
+
+    private void drawPlayerLife() {
+
+        gp.player.life = 5; // For Test.
+
+        int x = gp.tileSize / 2;
+        int y = gp.tileSize / 2;
+        int i = 0;
+
+        // DRAW MAX HEART
+        while (i < gp.player.maxLife / 2 ) {
+            g2.drawImage(heart_blank, x, y, null);
+            i++;
+            x += gp.tileSize;
+        }
+
+        // RESET
+        x = gp.tileSize / 2;
+        y = gp.tileSize / 2;
+        i = 0;
+
+        // DRAW CURRENT LIFE
+        while (i < gp.player.life) {
+            g2.drawImage(heart_half, x, y, null);
+            i++;
+
+            // replace heart_helf
+            if (i < gp.player.life) {
+                g2.drawImage(heart_full, x, y, null);
+            }
+            i++;
+            x += gp.tileSize;
+        }
+
     }
 
     private void drawTitleScreen() {
