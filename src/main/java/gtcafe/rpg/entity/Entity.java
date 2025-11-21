@@ -21,7 +21,7 @@ public class Entity {
 
     // Animation
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public Direction direction;
+    public Direction direction = Direction.DOWN;
 
     // Sprite animation
     public int spriteCounter = 0;
@@ -35,6 +35,10 @@ public class Entity {
     String dialogues[] = new String[20];
     int dialogueIndex = 0;
 
+    public BufferedImage image, image2, image3;
+    public String name;
+    public boolean collision = false;
+
     // CHARACTER STATUS: share player and monster
     public int maxLife;
     public int life;
@@ -47,7 +51,7 @@ public class Entity {
         Utils uTools = new Utils();
         BufferedImage image = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
+            image = ImageIO.read(getClass().getResourceAsStream(imagePath));
             image = uTools.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace();
