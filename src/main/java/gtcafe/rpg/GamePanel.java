@@ -46,8 +46,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     // ENTITY and OBJECT
     public Player player = new Player(this, keyHandler);
-    public Entity obj[] = new Entity[10]; // day7-3 add: 10 slot for objects, display the 10 objs at the same time.
+    public Entity obj[] = new Entity[10]; 
     public Entity npc[] = new Entity[10];
+    public Entity monster[] = new Entity[20];
     ArrayList<Entity> entityList = new ArrayList<>();
 
     // GAME STATE: for different purpose for game, 
@@ -72,6 +73,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         assetSetter.setObject();
         assetSetter.setNPC();
+        assetSetter.setMonster();
         // playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
         // stopMusic();
 
@@ -154,9 +156,12 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == GameState.PLAY_STATE) {
             player.update();
             for(int i=0; i<npc.length; i++) {
-                if(npc[i] != null) 
-                    npc[i].update();
+                if(npc[i] != null) npc[i].update();
             }
+            for(int i=0; i<monster.length; i++) {
+                if(monster[i] != null) monster[i].update();
+            }
+
         } else if (gameState == GameState.PAUSE_STATE) {
             // nothing, we don't update the player info
         }
@@ -186,6 +191,9 @@ public class GamePanel extends JPanel implements Runnable {
             }
             for(int i=0; i<obj.length; i++) {
                 if(obj[i] != null) { entityList.add(obj[i]); }
+            }
+            for(int i=0; i<monster.length; i++) {
+                if(monster[i] != null) { entityList.add(monster[i]); }
             }
 
             // SORT

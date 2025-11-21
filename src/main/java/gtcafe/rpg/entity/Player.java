@@ -1,5 +1,8 @@
 package gtcafe.rpg.entity;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -40,6 +43,10 @@ public class Player extends Entity {
         // player 在整個世界地圖的座標起始位置
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
+
+        // for testing
+        // worldX = gp.tileSize * 12;
+        // worldY = gp.tileSize * 15;
         
         speed = 5;  // 每個 Frame 移動 5 個 pixel, 每秒移動 5 * 60 = 300 pixel / 48 = 6 tiles
         direction = Direction.DOWN;
@@ -99,6 +106,10 @@ public class Player extends Entity {
                 int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
                 interactNPC(npcIndex);
 
+                // CHECK MONSTER COLLISION
+                int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+                contactMonster(monsterIndex);   // player receives damage
+
                 // CHECKT EVENT
                 gp.eventHandler.checkEvent();
 
@@ -145,7 +156,26 @@ public class Player extends Entity {
                 } 
             }
         }
+
+        // This needs to be outside of key if statement!
+        if (invincible == true) {
+            invincibleCounter++;
+            if(invincibleCounter > 60) { // Frame Counter
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
     }
+
+    private void contactMonster(int index) {
+        if (index != 999) {
+            System.out.println("[Player#contactMonster] You are hitting a Monster!!");
+            if (invincible == false) {   
+                life -= 1;  // just for testing
+                invincible = true;
+            }
+        }
+    } 
 
     // OBJECT REACTION
     public void pickUpObject(int index) {
@@ -162,25 +192,31 @@ public class Player extends Entity {
                 gp.npc[index].speak();
             }
         } 
-        // gp.keyHandler.enterPressed = false;
     }
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
         switch(direction) {
-            case UP:
-                image = (spriteNum == 1) ? up1 : up2;
-                break;
-            case DOWN:
-                image = (spriteNum == 1) ? down1 : down2;
-                break;
-            case LEFT:
-                image = (spriteNum == 1) ? left1 : left2;
-                break;
-            case RIGHT:
-                image = (spriteNum == 1) ? right1 : right2;
-                break;
+            case UP -> image = (spriteNum == 1) ? up1 : up2;
+            case DOWN -> image = (spriteNum == 1) ? down1 : down2;
+            case LEFT -> image = (spriteNum == 1) ? left1 : left2;
+            case RIGHT -> image = (spriteNum == 1) ? right1 : right2;
+            default -> throw new IllegalArgumentException("Unexpected value: " + direction);
         }
+
+        // Visual effect to invincible state
+        if (invincible == true) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+
         g2.drawImage(image, screenX, screenY, null);
+
+        // reset alpha
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+        // DEBUG
+        g2.setFont(new Font("Arial", Font.PLAIN, 26));
+        g2.setColor(Color.white);
+        g2.drawString("Invincible: "+invincibleCounter, 10, 400);
     }
 }
