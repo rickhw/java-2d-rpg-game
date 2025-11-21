@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.Utils;
 
@@ -20,7 +21,7 @@ public class Entity {
 
     // Animation
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public String direction;
+    public Direction direction;
 
     // Sprite animation
     public int spriteCounter = 0;
@@ -68,18 +69,11 @@ public class Entity {
 
         // make the NPC talks to player by face.
         switch (gp.player.direction) {
-            case "up":
-                direction = "down";
-                break;
-            case "down":
-                direction = "up";
-                break;
-            case "left":
-                direction = "right";
-                break;
-            case "right":
-                direction = "left";
-                break;
+            case UP -> direction = Direction.DOWN;
+            case DOWN -> direction = Direction.UP;
+            case LEFT -> direction = Direction.RIGHT;
+            case RIGHT -> direction = Direction.LEFT;
+            default -> throw new IllegalArgumentException("Unexpected value: " + gp.player.direction);
         }
     }
 
@@ -94,16 +88,16 @@ public class Entity {
         // IF COLLISION IS FALSE, ENTITY CAN MOVE
         if (collisionOn == false) {
             switch (direction) {
-                case "up":
+                case UP:
                     worldY -= speed;
                     break;
-                case "down":
+                case DOWN:
                     worldY += speed;
                     break;
-                case "left":
+                case LEFT:
                     worldX -= speed;
                     break;
-                case "right":
+                case RIGHT:
                     worldX += speed;
                     break;
             }
@@ -132,18 +126,11 @@ public class Entity {
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                     
             switch(direction) {
-                case "up":
-                    image = (spriteNum == 1) ? up1 : up2;
-                    break;
-                case "down":
-                    image = (spriteNum == 1) ? down1 : down2;
-                    break;
-                case "left":
-                    image = (spriteNum == 1) ? left1 : left2;
-                    break;
-                case "right":
-                    image = (spriteNum == 1) ? right1 : right2;
-                    break;
+                case UP -> image = (spriteNum == 1) ? up1 : up2;
+                case DOWN -> image = (spriteNum == 1) ? down1 : down2;
+                case LEFT -> image = (spriteNum == 1) ? left1 : left2;
+                case RIGHT -> image = (spriteNum == 1) ? right1 : right2;
+                default -> throw new IllegalArgumentException("Unexpected value: " + direction);
             }
                     
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
