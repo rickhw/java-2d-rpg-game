@@ -14,7 +14,15 @@
 - Event for Damage Pit, Healing Pool, Teleport Tile
 
 
-### Youtube Template
+### v2.3.0
+
+- Event2: Advanced Mechanics
+
+
+
+
+---
+## Youtube Template
 
 Title: `[GameDevLog][v2.2.0][Dev] Custom Font, Title Screen, Player Life, Event (20251121)`
 

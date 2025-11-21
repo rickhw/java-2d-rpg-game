@@ -2,6 +2,7 @@ package gtcafe.rpg.entity;
 
 import java.util.Random;
 
+import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 
 public class NPC_OldMan extends Entity {
@@ -9,7 +10,7 @@ public class NPC_OldMan extends Entity {
     public NPC_OldMan(GamePanel gp) {
         super(gp);
 
-        direction = "down";
+        direction = Direction.DOWN;
         speed = 1;
 
         getImages();
@@ -38,16 +39,16 @@ public class NPC_OldMan extends Entity {
             int i = r.nextInt(100) + 1; // pick up a number from 1 to 100
 
             if (i <= 25) {
-                direction = "up";
+                direction = Direction.UP;
             }
             if (i > 25 && i <= 50) {
-                direction = "down";
+                direction = Direction.DOWN;
             }
             if (i > 50 && i <= 75) {
-                direction = "left";
+                direction = Direction.LEFT;
             }
             if (i > 75 && i <= 100) {
-                direction = "right";
+                direction = Direction.RIGHT;
             }
             actionLockCounter = 0;
 

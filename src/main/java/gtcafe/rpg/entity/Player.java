@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.GameState;
 import gtcafe.rpg.KeyHandler;
@@ -41,7 +42,7 @@ public class Player extends Entity {
         worldY = gp.tileSize * 21;
         
         speed = 5;  // 每個 Frame 移動 5 個 pixel, 每秒移動 5 * 60 = 300 pixel / 48 = 6 tiles
-        direction = "down";
+        direction = Direction.DOWN;
         
         // PLAYER STATUS
         maxLife = 6;
@@ -62,15 +63,15 @@ public class Player extends Entity {
 
     public void update() {
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.enterPressed) {
-            String newDirection = null;
+            Direction newDirection = null;
             if(keyHandler.upPressed) {
-                newDirection = "up";
+                newDirection = Direction.UP;
             } else if(keyHandler.downPressed) {
-                newDirection = "down";
+                newDirection = Direction.DOWN;
             } else if(keyHandler.leftPressed) {
-                newDirection = "left";
+                newDirection = Direction.LEFT;
             } else if(keyHandler.rightPressed) {
-                newDirection = "right";
+                newDirection = Direction.RIGHT;
             }
 
             // TODO
@@ -106,16 +107,16 @@ public class Player extends Entity {
                 // IF COLLISION IS FALSE, PLAYER CAN MOVE
                 if (collisionOn == false) {
                     switch (direction) {
-                        case "up":
+                        case UP:
                             worldY -= speed;
                             break;
-                        case "down":
+                        case DOWN:
                             worldY += speed;
                             break;
-                        case "left":
+                        case LEFT:
                             worldX -= speed;
                             break;
-                        case "right":
+                        case RIGHT:
                             worldX += speed;
                             break;
                     }
@@ -167,16 +168,16 @@ public class Player extends Entity {
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
         switch(direction) {
-            case "up":
+            case UP:
                 image = (spriteNum == 1) ? up1 : up2;
                 break;
-            case "down":
+            case DOWN:
                 image = (spriteNum == 1) ? down1 : down2;
                 break;
-            case "left":
+            case LEFT:
                 image = (spriteNum == 1) ? left1 : left2;
                 break;
-            case "right":
+            case RIGHT:
                 image = (spriteNum == 1) ? right1 : right2;
                 break;
         }
