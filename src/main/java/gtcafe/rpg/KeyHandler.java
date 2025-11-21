@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, musicPressed;
     GamePanel gp;
 
     // DEBUG
@@ -24,7 +24,7 @@ public class KeyHandler implements KeyListener {
 
         // TITLE STATE
         if(gp.ui.titleScreenState == 0) {
-            if (gp.gameState == GamePanel.TITLE_STATE) {
+            if (gp.gameState == GameState.TITLE_STATE) {
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     gp.ui.commandNum--;
                     if (gp.ui.commandNum < 0) {
@@ -39,7 +39,6 @@ public class KeyHandler implements KeyListener {
                 }
                 if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                     if (gp.ui.commandNum == 0) {
-                        // gp.gameState = GamePanel.PLAY_STATE;
                         gp.ui.titleScreenState = 1;
                     }
                     if (gp.ui.commandNum == 1) {
@@ -52,7 +51,7 @@ public class KeyHandler implements KeyListener {
             }
         }
         else if(gp.ui.titleScreenState == 1) {
-            if (gp.gameState == GamePanel.TITLE_STATE) {
+            if (gp.gameState == GameState.TITLE_STATE) {
                 if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                     gp.ui.commandNum--;
                     if (gp.ui.commandNum < 0) {
@@ -67,18 +66,18 @@ public class KeyHandler implements KeyListener {
                 }
                 if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
                     if (gp.ui.commandNum == 0) {
-                        System.out.print("Do some fighter specific stuff!");
-                        gp.gameState = GamePanel.PLAY_STATE;
+                        System.out.println("Do some fighter specific stuff!");
+                        gp.gameState = GameState.PLAY_STATE;
                         gp.playMusic(Sound.MUSIC__MAIN_THEME);
                     }
                     if (gp.ui.commandNum == 1) {
-                        System.out.print("Do some thief specific stuff!");
-                        gp.gameState = GamePanel.PLAY_STATE;
+                        System.out.println("Do some thief specific stuff!");
+                        gp.gameState = GameState.PLAY_STATE;
                         gp.playMusic(Sound.MUSIC__MAIN_THEME);
                     }
                     if (gp.ui.commandNum == 2) {
-                        System.out.print("Do some sorcerer specific stuff!");
-                        gp.gameState = GamePanel.PLAY_STATE;
+                        System.out.println("Do some sorcerer specific stuff!");
+                        gp.gameState = GameState.PLAY_STATE;
                         gp.playMusic(Sound.MUSIC__MAIN_THEME);
                     }
                     if (gp.ui.commandNum == 3) {
@@ -89,7 +88,7 @@ public class KeyHandler implements KeyListener {
         }
 
         // PLAY STATE
-        if (gp.gameState == GamePanel.PLAY_STATE) {
+        if (gp.gameState == GameState.PLAY_STATE) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                 upPressed = true;
             }
@@ -109,7 +108,7 @@ public class KeyHandler implements KeyListener {
 
 
             if (code == KeyEvent.VK_P) {
-                gp.gameState = GamePanel.PAUSE_STATE;
+                gp.gameState = GameState.PAUSE_STATE;
                 gp.stopMusic();
             }
 
@@ -124,19 +123,31 @@ public class KeyHandler implements KeyListener {
         }
         
         // PAUSE STATE
-        else if (gp.gameState == GamePanel.PAUSE_STATE) {
+        else if (gp.gameState == GameState.PAUSE_STATE) {
             if (code == KeyEvent.VK_P) {
-                gp.gameState = GamePanel.PLAY_STATE;
+                gp.gameState = GameState.PLAY_STATE;
             }
         }
 
         // DIALOGUE STATE
-        else if (gp.gameState == GamePanel.DIALOGUE_STATE) {
+        else if (gp.gameState == GameState.DIALOGUE_STATE) {
             if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                gp.gameState = GamePanel.PLAY_STATE;
+                gp.gameState = GameState.PLAY_STATE;
             }
         }
 
+        // MUSIC EVENT
+        if (code == KeyEvent.VK_M) {
+            if (gp.bgmState == true) {
+                gp.stopMusic();
+                gp.bgmState = false;
+                // musicPressed = false;
+            } else if (gp.bgmState == false) {
+                gp.playMusic(Sound.MUSIC__MAIN_THEME);
+                gp.bgmState = true;
+                // musicPressed = true;
+            }
+        }
     }
 
     @Override
