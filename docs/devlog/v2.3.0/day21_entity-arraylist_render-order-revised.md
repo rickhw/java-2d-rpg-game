@@ -9,7 +9,7 @@ https://www.youtube.com/watch?v=eNlcG1v0ofY&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4
     - If an entity B is below an entity B, we draw enetiy B later
     - We use their worldY to compare.
     - it's work for single NPC, but if we have multiple NPCs, it doesn't work.
-- Switching fomr SuperObject to Entity. We will not use SupperObject any more.
+- Switching from SuperObject to Entity. We will not use SupperObject any more.
 - Creating an ArrayList of Entity
     - We sort the order of the array. The entity that has the lowest worldY comes in index 0.
     - We draw entities in order of their worldY value.

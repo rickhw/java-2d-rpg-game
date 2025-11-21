@@ -31,6 +31,10 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public int actionLockCounter = 0;   // To set the counter for action, to avoid quick update by FPS number.
+    public boolean invincible = false;  // 暫時無敵
+    public int invincibleCounter = 0; 
+
+    public int type; // 0: player, 1: npc, 2: monster
 
     String dialogues[] = new String[20];
     int dialogueIndex = 0;
@@ -87,7 +91,18 @@ public class Entity {
         collisionOn = false;
         gp.collisionChecker.checkTile(this);
         gp.collisionChecker.checkObject(this, false);
-        gp.collisionChecker.checkPlayer(this);
+        gp.collisionChecker.checkEntity(this, gp.npc);
+        gp.collisionChecker.checkEntity(this, gp.monster);
+        boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
+
+        // handle: monster attack player
+        if (this.type == 2 && contactPlayer == true) {
+            if (gp.player.invincible == false) {
+                // we can give damage
+                gp.player.life -= 1;
+                gp.player.invincible = true;
+            }
+        }
 
         // IF COLLISION IS FALSE, ENTITY CAN MOVE
         if (collisionOn == false) {

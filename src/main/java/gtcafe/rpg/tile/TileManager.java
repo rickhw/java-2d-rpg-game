@@ -86,6 +86,7 @@ public class TileManager {
             tiles[index].image = uTools.scaleImage(tiles[index].image, gp.tileSize, gp.tileSize);
             tiles[index].collision = collision;
 
+            // System.out.printf("index: [%s], tiles[index].image: [%s]\n", index, tiles[index].image);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -136,7 +137,7 @@ public class TileManager {
 
             // 增加條件, 只畫 screen 的部分, 而不是整個大地圖
             // 畫的時候，往外延伸一格，避免畫面不順的感覺
-            if ((worldX * gp.tileSize) > (gp.player.worldX - gp.player.screenX) &&
+            if ((worldX + gp.tileSize) > (gp.player.worldX - gp.player.screenX) &&
                 (worldX - gp.tileSize) < (gp.player.worldX + gp.player.screenX) &&
                 (worldY + gp.tileSize) > (gp.player.worldY - gp.player.screenY) &&
                 (worldY - gp.tileSize) < (gp.player.worldY + gp.player.screenY)) {

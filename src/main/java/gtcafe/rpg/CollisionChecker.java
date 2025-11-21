@@ -74,9 +74,14 @@ public class CollisionChecker {
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
                     // System.out.println("[CollisionChecker#checkTile] right collision!");
+                    
                 }
                 break;
         }
+
+        // if (entity.collisionOn = true) {
+        //     System.out.println("[Collision#checkPlayer] Entity hitting tiles.");
+        // }
     }
 
     // OBJECT REACTION 
@@ -97,57 +102,16 @@ public class CollisionChecker {
                 gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
 
                 switch (entity.direction) {
-                    case UP:
-                        entity.solidArea.y -= entity.speed;
-                        // intersect() help check only limit object num.
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                            // System.out.println("[CollisionChecker#checkObject] up collision");   
-                            if (gp.obj[i].collision) {
-                                entity.collisionOn = true;
-                            }
-                            if (player) {
-                                index = i; 
-                            }
-                        }
-                        break;
-                    case DOWN:
-                        entity.solidArea.y += entity.speed;
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                            // System.out.println("[CollisionChecker#checkObject] down collision");   
-                            if (gp.obj[i].collision) {
-                                entity.collisionOn = true;
-                            }
-                            if (player) {
-                                index = i; 
-                            }
-                        }
-                        break;
-                    case LEFT:
-                        entity.solidArea.x -= entity.speed;
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                            // System.out.println("[CollisionChecker#checkObject] left collision");   
-                            if (gp.obj[i].collision) {
-                                entity.collisionOn = true;
-                            }
-                            if (player) {
-                                index = i; 
-                            }
-                         }
-                       break;
-                    case RIGHT:
-                        entity.solidArea.x += entity.speed;
-                        if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                            // System.out.println("[CollisionChecker#checkObject] right collision");   
-                            if (gp.obj[i].collision) {
-                                entity.collisionOn = true;
-                            }
-                            if (player) {
-                                index = i; 
-                            }
-                         }
-                        break;
+                    case UP -> entity.solidArea.y -= entity.speed;
+                    case DOWN -> entity.solidArea.y += entity.speed;
+                    case LEFT -> entity.solidArea.x -= entity.speed;
+                    case RIGHT -> entity.solidArea.x += entity.speed;
                 }
-
+                // intersect() help check only limit object num.
+                if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
+                    if (gp.obj[i].collision) { entity.collisionOn = true; }
+                    if (player) { index = i; }
+                }
                 // reset
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
@@ -178,39 +142,18 @@ public class CollisionChecker {
                 target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
 
                 switch (entity.direction) {
-                    case UP:
-                        entity.solidArea.y -= entity.speed;
-                        // intersect() help check only limit object num.
-                        if (entity.solidArea.intersects(target[i].solidArea)) {
-                            // System.out.println("[CollisionChecker#checkEntity] up collision");   
-                            entity.collisionOn = true;
-                            index = i; 
-                        }
-                        break;
-                    case DOWN:
-                        entity.solidArea.y += entity.speed;
-                        if (entity.solidArea.intersects(target[i].solidArea)) {
-                            // System.out.println("[CollisionChecker#checkEntity] down collision");   
-                            entity.collisionOn = true;
-                            index = i; 
-                        }
-                        break;
-                    case LEFT:
-                        entity.solidArea.x -= entity.speed;
-                        if (entity.solidArea.intersects(target[i].solidArea)) {
-                            // System.out.println("[CollisionChecker#checkEntity] left collision");   
-                            entity.collisionOn = true;
-                            index = i; 
-                         }
-                       break;
-                    case RIGHT:
-                        entity.solidArea.x += entity.speed;
-                        if (entity.solidArea.intersects(target[i].solidArea)) {
-                            // System.out.println("[CollisionChecker#checkEntity] right collision");   
-                            entity.collisionOn = true;
-                            index = i; 
-                         }
-                        break;
+                    case UP -> entity.solidArea.y -= entity.speed;
+                    case DOWN -> entity.solidArea.y += entity.speed;
+                    case LEFT -> entity.solidArea.x -= entity.speed;
+                    case RIGHT -> entity.solidArea.x += entity.speed;
+                }
+                // intersect() help check only limit object num.
+                if (entity.solidArea.intersects(target[i].solidArea)) {
+                    if (target[i] != entity) {
+                        entity.collisionOn = true;
+                        index = i; 
+                        System.out.println("[Collision#checkPlayer] Entity hitting entity, maybe monstoer to NPC/Player, or NPC to monster/Player,");
+                    }
                 }
 
                 // reset
@@ -226,8 +169,10 @@ public class CollisionChecker {
         return index;
     }
 
-    // day13: check the npc if hit player
-    public void checkPlayer(Entity entity) {
+    // check the npc if hit player
+    public boolean checkPlayer(Entity entity) {
+
+        boolean contactPlayer = false;
 
         // Get entity's solid area position
         entity.solidArea.x = entity.worldX + entity.solidArea.x;
@@ -238,41 +183,25 @@ public class CollisionChecker {
         gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
 
         switch (entity.direction) {
-            case UP:
-                entity.solidArea.y -= entity.speed;
-                // intersect() help check only limit object num.
-                if (entity.solidArea.intersects(gp.player.solidArea)) {
-                    // System.out.println("[CollisionChecker#checkPlayer] up collision");   
-                    entity.collisionOn = true;
-                }
-                break;
-            case DOWN:
-                entity.solidArea.y += entity.speed;
-                if (entity.solidArea.intersects(gp.player.solidArea)) {
-                    // System.out.println("[CollisionChecker#checkPlayer] down collision");   
-                    entity.collisionOn = true;
-                }
-                break;
-            case LEFT:
-                entity.solidArea.x -= entity.speed;
-                if (entity.solidArea.intersects(gp.player.solidArea)) {
-                    // System.out.println("[CollisionChecker#checkPlayer] left collision");   
-                    entity.collisionOn = true;
-                }
-                break;
-            case RIGHT:
-                entity.solidArea.x += entity.speed;
-                if (entity.solidArea.intersects(gp.player.solidArea)) {
-                    // System.out.println("[CollisionChecker#checkPlayer] right collision");   
-                    entity.collisionOn = true;
-                }
-                break;
+            case UP -> entity.solidArea.y -= entity.speed;
+            case DOWN -> entity.solidArea.y += entity.speed;
+            case LEFT -> entity.solidArea.x -= entity.speed;
+            case RIGHT -> entity.solidArea.x += entity.speed;
         }
 
+        // intersect() help check only limit object num.
+        if (entity.solidArea.intersects(gp.player.solidArea)) {
+            // System.out.println("[CollisionChecker#checkPlayer] up collision");   
+            entity.collisionOn = true;
+            contactPlayer = true; // for monster attack player
+            System.out.println("[Collision#checkPlayer] Entity hitting player");
+        }
         // reset
         entity.solidArea.x = entity.solidAreaDefaultX;
         entity.solidArea.y = entity.solidAreaDefaultY;
         gp.player.solidArea.x = gp.player.solidAreaDefaultX;
         gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+
+        return contactPlayer;
     }
 }
