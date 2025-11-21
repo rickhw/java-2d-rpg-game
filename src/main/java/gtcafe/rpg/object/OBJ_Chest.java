@@ -1,10 +1,12 @@
 package gtcafe.rpg.object;
 
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.entity.Entity;
 
-public class OBJ_Chest extends SuperObject {
+public class OBJ_Chest extends Entity {
     public OBJ_Chest(GamePanel gp) {
         super(gp);
-        initObject("Chest","/gtcafe/rpg/assets/objects/chest.png"); 
+        name = "Chest";
+        down1 = setup("/gtcafe/rpg/assets/objects/chest.png");
     }
 }

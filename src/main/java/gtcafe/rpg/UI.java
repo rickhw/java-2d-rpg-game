@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.object.OBJ_Heart;
-import gtcafe.rpg.object.SuperObject;
 
 public class UI {
     GamePanel gp;
@@ -41,16 +41,13 @@ public class UI {
         loadFont();;
 
         // CREATE HUD OBJECT
-        SuperObject heart = new OBJ_Heart(gp);
+        Entity heart = new OBJ_Heart(gp);
         heart_full = heart.image;
         heart_half = heart.image2;
         heart_blank = heart.image3;
     }
 
     private void loadFont() {
-        // arial_40 = new Font(("Arial"), Font.PLAIN, 40);
-        // arial_80B = new Font(("Arial"), Font.BOLD, 80);
-        // load Fonts
         try {
             InputStream is = getClass().getResourceAsStream("/gtcafe/rpg/assets/font/x12y16pxMaruMonica.ttf");
             maruMonica = Font.createFont(Font.TRUETYPE_FONT, is);
@@ -69,7 +66,6 @@ public class UI {
     public void draw(Graphics2D g2) {
 
         this.g2 = g2;
-
         g2.setFont(maruMonica);
         // g2.setFont(purisaB);
         g2.setColor(Color.white);
@@ -81,7 +77,6 @@ public class UI {
 
         // PLAY STATE
         if(gp.gameState == GameState.PLAY_STATE) {
-            // Do playState stuff later
             drawPlayerLife();
         }
 
