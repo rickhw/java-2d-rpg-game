@@ -36,9 +36,6 @@ public class UI {
     // 1: the second screen ..
     public int titleScreenState = 0;
 
-
-
-
     public UI (GamePanel gp) {
         this.gp = gp;
         loadFont();;
@@ -78,24 +75,24 @@ public class UI {
         g2.setColor(Color.white);
         
         // TITLE STATE
-        if (gp.gameState == GamePanel.TITLE_STATE) {
+        if (gp.gameState == GameState.TITLE_STATE) {
             drawTitleScreen();
         }
 
         // PLAY STATE
-        if(gp.gameState == GamePanel.PLAY_STATE) {
+        if(gp.gameState == GameState.PLAY_STATE) {
             // Do playState stuff later
             drawPlayerLife();
         }
 
         // PAUSE STATE
-        if (gp.gameState == GamePanel.PAUSE_STATE) {
+        if (gp.gameState == GameState.PAUSE_STATE) {
             drawPlayerLife();
             drawPauseScreen();
         }
 
         // DIALOGUE STATE
-        if (gp.gameState == GamePanel.DIALOGUE_STATE) {
+        if (gp.gameState == GameState.DIALOGUE_STATE) {
             drawPlayerLife();
             drawDialogusScreen();
         }
@@ -103,7 +100,7 @@ public class UI {
 
     private void drawPlayerLife() {
 
-        gp.player.life = 5; // For Test.
+        // gp.player.life = 5; // For Test.
 
         int x = gp.tileSize / 2;
         int y = gp.tileSize / 2;
@@ -133,17 +130,16 @@ public class UI {
             i++;
             x += gp.tileSize;
         }
-
     }
 
     private void drawTitleScreen() {
         if (titleScreenState == 0) {
-            g2.setColor(new Color(0, 0, 0));
+            g2.setColor(new Color(30, 30, 30));
             g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
             // TITLE NAME
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
-            String text = "Blue Boy Adventure";
+            String text = "Rick Boy Adventure";
             int x = getXforCenterText(text);
             int y = gp.tileSize * 3;
 

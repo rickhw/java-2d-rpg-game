@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.GameState;
 import gtcafe.rpg.KeyHandler;
 
 public class Player extends Entity {
@@ -72,11 +73,16 @@ public class Player extends Entity {
                 newDirection = "right";
             }
 
+            // TODO
             if (keyHandler.enterPressed == true) {
                 // CHECK NPC COLLISION
                 int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
                 interactNPC(npcIndex);
+
+                // CHECKT EVENT
+                gp.eventHandler.checkEvent();
             }
+            gp.keyHandler.enterPressed = false;
 
             if (newDirection != null ) {
                 direction = newDirection;
@@ -91,6 +97,11 @@ public class Player extends Entity {
                 // CHECK NPC COLLISION
                 int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
                 interactNPC(npcIndex);
+
+                // CHECKT EVENT
+                gp.eventHandler.checkEvent();
+
+                gp.keyHandler.enterPressed = false;
 
                 // IF COLLISION IS FALSE, PLAYER CAN MOVE
                 if (collisionOn == false) {
@@ -110,7 +121,7 @@ public class Player extends Entity {
                     }
                 }
 
-                // ANIMATION
+                // ANIMATION for working
                 spriteCounter++;
                 if(spriteCounter > ANIMATION_SPEED) {
                     if (spriteNum == 1) {
@@ -120,6 +131,17 @@ public class Player extends Entity {
                     }
                     spriteCounter = 0;
                 }
+            } else {
+                // ANIMATION for Standing
+                spriteCounter++;
+                if(spriteCounter > ANIMATION_SPEED) {
+                    if (spriteNum == 1) {
+                        spriteNum = 2;
+                    } else if (spriteNum == 2) {
+                        spriteNum = 1;
+                    }
+                    spriteCounter = 0;
+                } 
             }
         }
     }
@@ -135,11 +157,11 @@ public class Player extends Entity {
         if (index != 999) { // means player touch NPC
             System.out.println("[Player#interactNPC] You are hitting an NPC!!");
             if (gp.keyHandler.enterPressed == true) {
-                gp.gameState = GamePanel.DIALOGUE_STATE;
+                gp.gameState = GameState.DIALOGUE_STATE;
                 gp.npc[index].speak();
             }
         } 
-        gp.keyHandler.enterPressed = false;
+        // gp.keyHandler.enterPressed = false;
     }
 
     public void draw(Graphics2D g2) {

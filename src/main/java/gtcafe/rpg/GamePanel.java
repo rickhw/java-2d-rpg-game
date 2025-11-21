@@ -39,6 +39,7 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this); // day7-4 add
     public UI ui = new UI(this);
+    public EventHandler eventHandler = new EventHandler(this);
     Thread gameThread;
 
     // ENTITY and OBJECT
@@ -48,11 +49,14 @@ public class GamePanel extends JPanel implements Runnable {
 
     // GAME STATE: for different purpose for game, 
     // for example, guide screen, intro story screen, menu screen ... etc.
-    public int gameState;
-    public final static int TITLE_STATE = 0;
-    public final static int PLAY_STATE = 1;
-    public final static int PAUSE_STATE = 2;
-    public final static int DIALOGUE_STATE = 3;
+    // public int gameState;
+    // public final static int TITLE_STATE = 0;
+    // public final static int PLAY_STATE = 1;
+    // public final static int PAUSE_STATE = 2;
+    // public final static int DIALOGUE_STATE = 3;
+    public GameState gameState;
+
+    public boolean bgmState = true;
     
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -65,10 +69,10 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         assetSetter.setObject();
         assetSetter.setNPC();
-        playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
-        stopMusic();
+        // playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
+        // stopMusic();
 
-        gameState = TITLE_STATE;
+        gameState = GameState.TITLE_STATE;
     }
 
     public void startGameThread() {
@@ -135,21 +139,22 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                System.out.printf("[GamePanel#run] FPS: [%s], drawCount: [%s], timer: [%s] \n", FPS, drawCount, timer);
-                drawCount = 0;
+                // System.out.printf("[GamePanel#run] FPS: [%s], drawCount: [%s], timer: [%s] \n", FPS, drawCount, timer);
+                System.out.printf("[GameLoop] FPS: [%s], drawCount: [%s]\n", FPS, drawCount);
+                // drawCount = 0;
                 timer = 0;
             }
         }
     }
 
     public void update() {
-        if (gameState == PLAY_STATE) {
+        if (gameState == GameState.PLAY_STATE) {
             player.update();
             for(int i=0; i<npc.length; i++) {
                 if(npc[i] != null) 
                     npc[i].update();
             }
-        } else if (gameState == PAUSE_STATE) {
+        } else if (gameState == GameState.PAUSE_STATE) {
             // nothing, we don't update the player info
         }
     }
@@ -165,7 +170,7 @@ public class GamePanel extends JPanel implements Runnable {
             drawStart = System.nanoTime();
 
         // TITLE SCREEN
-        if (gameState == TITLE_STATE) {
+        if (gameState == GameState.TITLE_STATE) {
             ui.draw(g2);
         } else {
             // TILE
