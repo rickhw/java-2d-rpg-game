@@ -1,5 +1,6 @@
 package gtcafe.rpg.entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -13,37 +14,37 @@ import gtcafe.rpg.Utils;
 
 // a blueprint
 public class Entity {
+    // 2D Animation
     GamePanel gp;
-
-    // Position
-    public int worldX, worldY;
-    public int speed;
-
-    // Animation
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public Direction direction = Direction.DOWN;
-
-    // Sprite animation
-    public int spriteCounter = 0;
-    public int spriteNum = 1;
-
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
-    public int solidAreaDefaultX, solidAreaDefaultY;
-    public boolean collisionOn = false;
-    public int actionLockCounter = 0;   // To set the counter for action, to avoid quick update by FPS number.
-    public boolean invincible = false;  // 暫時無敵
-    public int invincibleCounter = 0; 
-
-    public int type; // 0: player, 1: npc, 2: monster
-
-    String dialogues[] = new String[20];
-    int dialogueIndex = 0;
-
+    public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
     public BufferedImage image, image2, image3;
-    public String name;
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle attackArea = new Rectangle(0, 0, 0, 0);    // Hit deteciton, be overwrite by subclass
+    public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
+    String dialogues[] = new String[20];
 
-    // CHARACTER STATUS: share player and monster
+    // STATE
+    public int worldX, worldY;
+    public Direction direction = Direction.DOWN;
+    public int spriteNum = 1;
+    int dialogueIndex = 0;
+    public boolean collisionOn = false;
+    public boolean invincible = false;  // 暫時無敵
+    boolean attacking = false;
+    boolean showInfo = false;   // for debugging, show the screenX, screenY
+
+    // COUNTER
+    public int spriteCounter = 0;
+    public int actionLockCounter = 0;   // To set the counter for action, to avoid quick update by FPS number.
+    public int invincibleCounter = 0;
+    public int drawCounter = 0;         // for debugging, show the screenX, screenY
+
+    // CHARACTER ATTRIBUTES: share player and monster
+    public int type; // 0: player, 1: npc, 2: monster
+    public String name;
+    public int speed;
     public int maxLife;
     public int life;
 
@@ -51,12 +52,12 @@ public class Entity {
         this.gp = gp;
     }
 
-    public BufferedImage setup(String imagePath) {
+    public BufferedImage setup(String imagePath, int width, int height) {
         Utils uTools = new Utils();
         BufferedImage image = null;
         try {
             image = ImageIO.read(getClass().getResourceAsStream(imagePath));
-            image = uTools.scaleImage(image, gp.tileSize, gp.tileSize);
+            image = uTools.scaleImage(image, width, height);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,6 +133,15 @@ public class Entity {
             }
             spriteCounter = 0;
         }
+
+        // Keep the invincible state
+        if (invincible == true) {
+            invincibleCounter++;
+            if(invincibleCounter > 40) { // Default Frame Counter
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
     }
 
     public void draw(Graphics2D g2) {
@@ -143,7 +153,7 @@ public class Entity {
                 worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-                    
+
             switch(direction) {
                 case UP -> image = (spriteNum == 1) ? up1 : up2;
                 case DOWN -> image = (spriteNum == 1) ? down1 : down2;
@@ -151,8 +161,16 @@ public class Entity {
                 case RIGHT -> image = (spriteNum == 1) ? right1 : right2;
                 default -> throw new IllegalArgumentException("Unexpected value: " + direction);
             }
-                    
+
+            // Visual effect to transparent the entity for invincible state
+            if (invincible == true) {
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+            }
+
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+            // reset the alpha value for next frame
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
 }

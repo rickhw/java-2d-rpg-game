@@ -1,23 +1,29 @@
 
 ## Release Notes
 
-- v1.0.0: Day1-Day12
-- v2.1.0: 
-    - Day#13: Pause Screen, House Keeping
-    - Day#14: Add NPC_OldMan, including collision detection with Tiles and Player.
+### v2.3.0
 
-### [GameDevLog][v2.2.0][Dev] Custom Font, Title Screen, Player Life, Event (20251121)
+- Event2: Advanced Mechanics
+- Rendering Optimization
+- Collision Detection of Player/Monster/NPC/Tiles
+- The first monster: Green Slime
+- Hit Detection
+
+### v2.2.0
 
 - Custom Font, set the dialog text using pixel font by https://00ff.booth.pm/items/2958237
 - Title Screen and Scense
 - Player Life
 - Event for Damage Pit, Healing Pool, Teleport Tile
 
+### v2.1.0
 
-### v2.3.0
+- Pause Screen, House Keeping
+- Add NPC_OldMan, including collision detection with Tiles and Player.
 
-- Event2: Advanced Mechanics
+### v1.0.0
 
+- Prototype
 
 
 

@@ -21,7 +21,7 @@ public class CollisionChecker {
         // Calculate the entity's solid area boundaries in world coordinates
         int entityLeftWorldX = entity.worldX + entity.solidArea.x;
         int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
-        int entityTopWorldY = entity.worldY + entity.solidArea.y;   
+        int entityTopWorldY = entity.worldY + entity.solidArea.y;
         int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 
         // Determine the current tile grid columns and rows that the entity's solid area occupies
@@ -43,7 +43,6 @@ public class CollisionChecker {
                 // Check if either of these tiles has collision enabled
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
-                    // System.out.println("[CollisionChecker#checkTile] up collision!");
                 }
                 break;
 
@@ -53,7 +52,6 @@ public class CollisionChecker {
                 tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
-                    // System.out.println("[CollisionChecker#checkTile] down collision!");
                 }
                 break;
 
@@ -63,7 +61,6 @@ public class CollisionChecker {
                 tileNum2 = gp.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
-                    // System.out.println("[CollisionChecker#checkTile] left collision!");
                 }
                 break;
 
@@ -73,18 +70,16 @@ public class CollisionChecker {
                 tileNum2 = gp.tileManager.mapTileNum[entityRightCol][entityBottomRow];
                 if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
                     entity.collisionOn = true;
-                    // System.out.println("[CollisionChecker#checkTile] right collision!");
-                    
                 }
                 break;
         }
 
-        // if (entity.collisionOn = true) {
-        //     System.out.println("[Collision#checkPlayer] Entity hitting tiles.");
-        // }
+        if (entity.collisionOn = true && gp.debugMode) {
+            System.out.println("[Collision#checkPlayer] Entity hitting tiles.");
+        }
     }
 
-    // OBJECT REACTION 
+    // OBJECT REACTION
     public int checkObject(Entity entity, boolean player) {
 
         int index = 999;    // ??
@@ -117,7 +112,7 @@ public class CollisionChecker {
                 entity.solidArea.y = entity.solidAreaDefaultY;
                 gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
                 gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
-                
+
             }
         }
 
@@ -151,8 +146,8 @@ public class CollisionChecker {
                 if (entity.solidArea.intersects(target[i].solidArea)) {
                     if (target[i] != entity) {
                         entity.collisionOn = true;
-                        index = i; 
-                        System.out.println("[Collision#checkPlayer] Entity hitting entity, maybe monstoer to NPC/Player, or NPC to monster/Player,");
+                        index = i;
+                        if (gp.debugMode) System.out.println("[Collision#checkPlayer] Entity hitting entity, monster/NPC/Player");
                     }
                 }
 
@@ -164,7 +159,7 @@ public class CollisionChecker {
             }
         }
 
-        // System.out.printf("EntityCollision, index: [%s]\n", index);   
+        // System.out.printf("EntityCollision, index: [%s]\n", index);
 
         return index;
     }
@@ -191,10 +186,10 @@ public class CollisionChecker {
 
         // intersect() help check only limit object num.
         if (entity.solidArea.intersects(gp.player.solidArea)) {
-            // System.out.println("[CollisionChecker#checkPlayer] up collision");   
+            // System.out.println("[CollisionChecker#checkPlayer] up collision");
             entity.collisionOn = true;
             contactPlayer = true; // for monster attack player
-            System.out.println("[Collision#checkPlayer] Entity hitting player");
+            if (gp.debugMode) System.out.println("[Collision#checkPlayer] Entity hitting player");
         }
         // reset
         entity.solidArea.x = entity.solidAreaDefaultX;
