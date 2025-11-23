@@ -8,6 +8,7 @@
 - Collision Detection of Player/Monster/NPC/Tiles
 - The first monster: Green Slime
 - Hit Detection
+- Health Bar & Death Animation
 
 ### v2.2.0
 

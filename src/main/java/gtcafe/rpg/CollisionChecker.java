@@ -74,9 +74,9 @@ public class CollisionChecker {
                 break;
         }
 
-        if (entity.collisionOn = true && gp.debugMode) {
-            System.out.println("[Collision#checkPlayer] Entity hitting tiles.");
-        }
+        // if (entity.collisionOn = true && gp.debugMode) {
+        //     System.out.println("[Collision#checkPlayer] Entity hitting tiles.");
+        // }
     }
 
     // OBJECT REACTION
@@ -147,7 +147,7 @@ public class CollisionChecker {
                     if (target[i] != entity) {
                         entity.collisionOn = true;
                         index = i;
-                        if (gp.debugMode) System.out.println("[Collision#checkPlayer] Entity hitting entity, monster/NPC/Player");
+                        // if (gp.debugMode) System.out.println("[Collision#checkPlayer] Entity hitting entity, monster/NPC/Player");
                     }
                 }
 
@@ -189,7 +189,7 @@ public class CollisionChecker {
             // System.out.println("[CollisionChecker#checkPlayer] up collision");
             entity.collisionOn = true;
             contactPlayer = true; // for monster attack player
-            if (gp.debugMode) System.out.println("[Collision#checkPlayer] Entity hitting player");
+            // if (gp.debugMode) System.out.println("[Collision#checkPlayer] Entity hitting player");
         }
         // reset
         entity.solidArea.x = entity.solidAreaDefaultX;

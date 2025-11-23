@@ -1,6 +1,7 @@
 package gtcafe.rpg.entity;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -10,7 +11,8 @@ import javax.imageio.ImageIO;
 
 import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.Utils;
+import gtcafe.rpg.Graphics2DUtils;
+import gtcafe.rpg.Sound;
 
 // a blueprint
 public class Entity {
@@ -24,6 +26,7 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
     String dialogues[] = new String[20];
+    Graphics2DUtils g2Utils = new Graphics2DUtils();
 
     // STATE
     public int worldX, worldY;
@@ -34,12 +37,17 @@ public class Entity {
     public boolean invincible = false;  // 暫時無敵
     boolean attacking = false;
     boolean showInfo = false;   // for debugging, show the screenX, screenY
+    public boolean alive = true;
+    public boolean dying = false;
+    boolean hpBarOn = false;
 
     // COUNTER
     public int spriteCounter = 0;
     public int actionLockCounter = 0;   // To set the counter for action, to avoid quick update by FPS number.
     public int invincibleCounter = 0;
     public int drawCounter = 0;         // for debugging, show the screenX, screenY
+    int dyingCounter = 0;
+    int hpBarCounter = 0;
 
     // CHARACTER ATTRIBUTES: share player and monster
     public int type; // 0: player, 1: npc, 2: monster
@@ -53,7 +61,7 @@ public class Entity {
     }
 
     public BufferedImage setup(String imagePath, int width, int height) {
-        Utils uTools = new Utils();
+        Graphics2DUtils uTools = new Graphics2DUtils();
         BufferedImage image = null;
         try {
             image = ImageIO.read(getClass().getResourceAsStream(imagePath));
@@ -68,6 +76,9 @@ public class Entity {
 
     }
 
+    // overwirte by subclass
+    public void damageReaction() {}
+    
     public void speak() {
         if (dialogues[dialogueIndex] == null) {
             dialogueIndex = 0; // go back to index zero to avoid the NPE.
@@ -100,6 +111,7 @@ public class Entity {
         if (this.type == 2 && contactPlayer == true) {
             if (gp.player.invincible == false) {
                 // we can give damage
+                gp.playSE(Sound.FX_RECEIVE_DAMAGE);
                 gp.player.life -= 1;
                 gp.player.invincible = true;
             }
@@ -162,15 +174,67 @@ public class Entity {
                 default -> throw new IllegalArgumentException("Unexpected value: " + direction);
             }
 
+            // Monster HP Bar
+            if (type == 2 && hpBarOn == true) {    // type 2 is monster
+
+                double oneScale = (double) gp.tileSize / maxLife;
+                double hpBarValue = oneScale * life;    // find the col length of bar
+
+                g2.setColor(new Color(35,35,30)); 
+                g2.fillRect(screenX - 1 , screenY - 16, gp.tileSize+2, 10+2);
+
+                g2.setColor(new Color(255,0,30)); 
+                g2.fillRect(screenX, screenY - 15, (int)hpBarValue, 10);
+
+                hpBarCounter ++;
+
+                // hpBar disapper after 5s
+                if (hpBarCounter > 300) {
+                    hpBarCounter = 0;
+                    hpBarOn = false;
+                }
+            }
+
             // Visual effect to transparent the entity for invincible state
             if (invincible == true) {
-                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+                hpBarOn = true;
+                hpBarCounter = 0;
+                g2Utils.changeAlpha(g2, 0.4f);
+            }
+            
+            // monster dying
+            if (dying == true) {
+                dyingAnimation(g2);
             }
 
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
             // reset the alpha value for next frame
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+            g2Utils.changeAlpha(g2, 1f);
         }
     }
+
+
+    // Monster Death Effect
+    private void dyingAnimation(Graphics2D g2) {
+        dyingCounter++;
+        int i = 5;
+
+        if (dyingCounter <= i) { g2Utils.changeAlpha(g2, 0f); }
+        if (dyingCounter > i && dyingCounter <= i*2) { g2Utils.changeAlpha(g2, 1f); }
+        if (dyingCounter > i*2 && dyingCounter <= i*3) { g2Utils.changeAlpha(g2, 0f); }
+        if (dyingCounter > i*3 && dyingCounter <= i*4) { g2Utils.changeAlpha(g2, 1f); }
+        if (dyingCounter > i*4 && dyingCounter <= i*5) { g2Utils.changeAlpha(g2, 0f); }
+        if (dyingCounter > i*5 && dyingCounter <= i*6) { g2Utils.changeAlpha(g2, 1f); }
+        if (dyingCounter > i*6 && dyingCounter <= i*7) { g2Utils.changeAlpha(g2, 0f); }
+        if (dyingCounter > i*7 && dyingCounter <= i*8) { g2Utils.changeAlpha(g2, 1f); }
+
+        if (dyingCounter > i*8) {
+            dyingCounter = 0;
+            dying = false;
+            alive = false;
+        }
+    }
+
+
 }
