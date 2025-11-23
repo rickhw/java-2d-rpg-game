@@ -12,10 +12,12 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.Utils;
 
 public class TileManager {
-    
+
     GamePanel gp;
     public Tile[] tiles;
     public int mapTileNum[][];
+    boolean showInfo = false;
+    int drawCounter = 0;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -23,7 +25,7 @@ public class TileManager {
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
-        loadMap("/gtcafe/rpg/assets/maps/worldV3.txt");
+        loadMap("/gtcafe/rpg/assets/maps/worldV2.txt");
     }
 
     public void getTileImage() {
@@ -85,8 +87,6 @@ public class TileManager {
             tiles[index].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tilesV2/" + imageName + ".png"));
             tiles[index].image = uTools.scaleImage(tiles[index].image, gp.tileSize, gp.tileSize);
             tiles[index].collision = collision;
-
-            // System.out.printf("index: [%s], tiles[index].image: [%s]\n", index, tiles[index].image);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,7 +114,7 @@ public class TileManager {
                 }
             }
             br.close();
-            System.out.println("[TileManager#loadMap] finished to load map, col: " + col + " row: " + row);
+            System.out.println("[TileManager#loadMap] finished to load map");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,6 +126,15 @@ public class TileManager {
 
         int worldCol = 0;
         int worldRow = 0;
+
+        // For Debugging
+        if (drawCounter < 60) {
+            drawCounter++;
+            showInfo = false;
+        } else {
+            drawCounter = 0;
+            showInfo = true;
+        }
 
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
             int tileNum = mapTileNum[worldCol][worldRow];
@@ -141,7 +150,11 @@ public class TileManager {
                 (worldX - gp.tileSize) < (gp.player.worldX + gp.player.screenX) &&
                 (worldY + gp.tileSize) > (gp.player.worldY - gp.player.screenY) &&
                 (worldY - gp.tileSize) < (gp.player.worldY + gp.player.screenY)) {
-                    
+
+                if (showInfo && gp.debugMode) {
+                    System.out.printf("tileNum: [%s], worldCol:[%s], worldRow: [%s], screenX: [%s], screenY: [%s]\n", tileNum, worldCol, worldRow, screenX, screenY);
+                }
+
                 g2.drawImage(tiles[tileNum].image, screenX, screenY, null);
             }
             worldCol++;

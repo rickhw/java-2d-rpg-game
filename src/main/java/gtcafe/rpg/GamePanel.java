@@ -14,11 +14,11 @@ import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.tile.TileManager;
 
-public class GamePanel extends JPanel implements Runnable { 
+public class GamePanel extends JPanel implements Runnable {
     // Tile Settings
     final int originalTileSize = 16; // 16x16 pixel
     final int scale = 3;
-    
+
     // SCREEN SETTINGS
     public final int tileSize = originalTileSize * scale; // 48x48 pixel
     public final int maxScreenCol = 16;
@@ -46,22 +46,17 @@ public class GamePanel extends JPanel implements Runnable {
 
     // ENTITY and OBJECT
     public Player player = new Player(this, keyHandler);
-    public Entity obj[] = new Entity[10]; 
+    public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[10];
     public Entity monster[] = new Entity[20];
     ArrayList<Entity> entityList = new ArrayList<>();
 
-    // GAME STATE: for different purpose for game, 
+    // GAME STATE: for different purpose for game,
     // for example, guide screen, intro story screen, menu screen ... etc.
-    // public int gameState;
-    // public final static int TITLE_STATE = 0;
-    // public final static int PLAY_STATE = 1;
-    // public final static int PAUSE_STATE = 2;
-    // public final static int DIALOGUE_STATE = 3;
     public GameState gameState;
-
     public boolean bgmState = true;
-    
+    public boolean debugMode = false;
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -84,8 +79,8 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
-    
-    // Game loop 1: Sleep 
+
+    // Game loop 1: Sleep
     // @Override
     // public void run() {
     //     double drawInterval = 1000000000 / FPS; // 0.016666 seconds per frame
@@ -174,7 +169,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // DEBUG
         long drawStart = 0;
-        if (keyHandler.checkDrawTime) 
+        if (keyHandler.checkDrawTime)
             drawStart = System.nanoTime();
 
         // TITLE SCREEN
@@ -208,7 +203,7 @@ public class GamePanel extends JPanel implements Runnable {
             // DRAW ENTITIES
             for(int i=0; i<entityList.size(); i++) { entityList.get(i).draw(g2); }
             // CLEAN ENTITY LIST
-            for(int i=0; i<entityList.size(); i++) { entityList.remove(i); }
+            entityList.clear();
 
             // UI
             ui.draw(g2);

@@ -2,10 +2,11 @@ package gtcafe.rpg;
 
 import gtcafe.rpg.entity.NPC_OldMan;
 import gtcafe.rpg.monster.MON_GreenSlime;
-import gtcafe.rpg.object.OBJ_Door;
 
 public class AssetSetter {
+
     GamePanel gp;
+
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
     }
@@ -16,7 +17,6 @@ public class AssetSetter {
         // gp.obj[0] = new OBJ_Door(gp);
         // gp.obj[0].worldX = gp.tileSize * 21;
         // gp.obj[0].worldY = gp.tileSize * 22;
-
         // gp.obj[1] = new OBJ_Door(gp);
         // gp.obj[1].worldX = gp.tileSize * 23;
         // gp.obj[1].worldY = gp.tileSize * 25;
@@ -31,7 +31,7 @@ public class AssetSetter {
         // gp.npc[1] = new NPC_OldMan(gp);
         // gp.npc[1].worldX = gp.tileSize * 11;
         // gp.npc[1].worldY = gp.tileSize * 21;
-    
+
         // gp.npc[2] = new NPC_OldMan(gp);
         // gp.npc[2].worldX = gp.tileSize * 31;
         // gp.npc[2].worldY = gp.tileSize * 21;
@@ -63,5 +63,4 @@ public class AssetSetter {
         // gp.monster[1].worldX = gp.tileSize * 13;
         // gp.monster[1].worldY = gp.tileSize * 11;
     }
-
 }
