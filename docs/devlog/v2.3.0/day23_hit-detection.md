@@ -6,12 +6,15 @@ https://www.youtube.com/watch?v=HL39xRzPpm4&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4
 - Finetine the code
     - GameLoop: Clear EntityArray
     - Fix the starting dialogues by pressing ENTER alone + WASD
+    - Add debugMode flag to GamePanel
 - Attack Animation
     - Load and scale attack images
     - Player attack animation
         - for up and left, due to the image position, need the excpetion handle the positions.
 - Hit Detection
-    - invisible
+    - hit detection
+    - hit damage
+    - monster hitting invincible
 
 
 ## Video Summary
