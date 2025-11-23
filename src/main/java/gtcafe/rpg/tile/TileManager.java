@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 
 import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.Utils;
+import gtcafe.rpg.Graphics2DUtils;
 
 public class TileManager {
 
@@ -81,7 +81,7 @@ public class TileManager {
     }
 
     public void setup(int index, String imageName, boolean collision) {
-        Utils uTools = new Utils();
+        Graphics2DUtils uTools = new Graphics2DUtils();
         try {
             tiles[index] = new Tile();
             tiles[index].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tilesV2/" + imageName + ".png"));

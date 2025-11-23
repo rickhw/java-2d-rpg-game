@@ -11,6 +11,7 @@ import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.GameState;
 import gtcafe.rpg.KeyHandler;
+import gtcafe.rpg.Sound;
 
 public class Player extends Entity {
     KeyHandler keyHandler;
@@ -91,8 +92,7 @@ public class Player extends Entity {
             attacking();
         }
 
-        else if (keyHandler.upPressed || keyHandler.downPressed ||
-                keyHandler.leftPressed || keyHandler.rightPressed ||
+        else if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed ||
                 keyHandler.enterPressed) {
 
             if(keyHandler.upPressed) {
@@ -235,10 +235,14 @@ public class Player extends Entity {
             Entity monster = gp.monster[index];
             // give some damge
             if (monster.invincible == false) {
-                monster.life -= 2;
+                gp.playSE(Sound.FX_HIT_MONSTER);
+                monster.life -= 1;
                 monster.invincible = true;
+                monster.damageReaction();
+
+                // handling monster dying
                 if(monster.life <= 0) {
-                    gp.monster[index] = null;
+                    gp.monster[index].dying = true;
                 }
             }
         } else {
@@ -250,6 +254,7 @@ public class Player extends Entity {
         if (index != 999) {
             System.out.println("[Player#contactMonster] You are hitting a Monster!!");
             if (invincible == false) {
+                gp.playSE(Sound.FX_RECEIVE_DAMAGE);
                 life -= 1;  // just for testing
                 invincible = true;
             }
@@ -275,6 +280,7 @@ public class Player extends Entity {
             } else {
                 // player doesn't get NPC index
                 System.out.println("[Player#interactNPC] You are attacking!");
+                gp.playSE(Sound.FX_SWING_WEAPON);
                 attacking = true;
             }
         }
@@ -321,13 +327,13 @@ public class Player extends Entity {
 
         // Visual effect to invincible state
         if (invincible == true) {
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+            g2Utils.changeAlpha(g2, 0.3f);
         }
 
         g2.drawImage(image, tempScreenX, tempScreenY, null);
 
         // reset alpha
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        g2Utils.changeAlpha(g2, 1f);
 
         // DEBUG
         if (gp.debugMode) {
@@ -336,4 +342,5 @@ public class Player extends Entity {
             g2.drawString("Invincible: " + invincibleCounter, 10, 400);
         }
     }
+
 }

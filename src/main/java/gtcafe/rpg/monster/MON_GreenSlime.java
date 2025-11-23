@@ -65,4 +65,9 @@ public class MON_GreenSlime extends Entity {
             System.out.println("[MON_GreenSlime#setAction] direction: " + direction);   
         }
     }
+
+    public void damageReaction() {
+        actionLockCounter = 0;
+        direction = gp.player.direction;
+    }
 }

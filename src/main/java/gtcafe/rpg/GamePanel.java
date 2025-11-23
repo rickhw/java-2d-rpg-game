@@ -80,6 +80,31 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
+
+    public void update() {
+        if (gameState == GameState.PLAY_STATE) {
+            player.update();
+            for(int i=0; i<npc.length; i++) {
+                if(npc[i] != null) npc[i].update();
+            }
+            for(int i=0; i<monster.length; i++) {
+                if(monster[i] != null) {
+                    if (monster[i].alive == true && monster[i].dying == false) {
+                        monster[i].update();
+                    }
+                    if (monster[i].alive == false) {
+                        monster[i] = null;
+                    }
+
+                }
+            }
+
+        } else if (gameState == GameState.PAUSE_STATE) {
+            // nothing, we don't update the player info
+        }
+    }
+
+
     // Game loop 1: Sleep
     // @Override
     // public void run() {
@@ -144,21 +169,6 @@ public class GamePanel extends JPanel implements Runnable {
                 // drawCount = 0;
                 timer = 0;
             }
-        }
-    }
-
-    public void update() {
-        if (gameState == GameState.PLAY_STATE) {
-            player.update();
-            for(int i=0; i<npc.length; i++) {
-                if(npc[i] != null) npc[i].update();
-            }
-            for(int i=0; i<monster.length; i++) {
-                if(monster[i] != null) monster[i].update();
-            }
-
-        } else if (gameState == GameState.PAUSE_STATE) {
-            // nothing, we don't update the player info
         }
     }
 
