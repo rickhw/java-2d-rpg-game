@@ -111,7 +111,7 @@ public class Entity {
         if (this.type == 2 && contactPlayer == true) {
             if (gp.player.invincible == false) {
                 // we can give damage
-                gp.playSE(Sound.FX_RECEIVE_DAMAGE);
+                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
                 gp.player.life -= 1;
                 gp.player.invincible = true;
             }

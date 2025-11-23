@@ -235,7 +235,7 @@ public class Player extends Entity {
             Entity monster = gp.monster[index];
             // give some damge
             if (monster.invincible == false) {
-                gp.playSE(Sound.FX_HIT_MONSTER);
+                gp.playSoundEffect(Sound.FX_HIT_MONSTER);
                 monster.life -= 1;
                 monster.invincible = true;
                 monster.damageReaction();
@@ -254,7 +254,7 @@ public class Player extends Entity {
         if (index != 999) {
             System.out.println("[Player#contactMonster] You are hitting a Monster!!");
             if (invincible == false) {
-                gp.playSE(Sound.FX_RECEIVE_DAMAGE);
+                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
                 life -= 1;  // just for testing
                 invincible = true;
             }
@@ -280,7 +280,7 @@ public class Player extends Entity {
             } else {
                 // player doesn't get NPC index
                 System.out.println("[Player#interactNPC] You are attacking!");
-                gp.playSE(Sound.FX_SWING_WEAPON);
+                gp.playSoundEffect(Sound.FX_SWING_WEAPON);
                 attacking = true;
             }
         }

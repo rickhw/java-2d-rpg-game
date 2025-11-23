@@ -95,7 +95,6 @@ public class GamePanel extends JPanel implements Runnable {
                     if (monster[i].alive == false) {
                         monster[i] = null;
                     }
-
                 }
             }
 
@@ -103,7 +102,6 @@ public class GamePanel extends JPanel implements Runnable {
             // nothing, we don't update the player info
         }
     }
-
 
     // Game loop 1: Sleep
     // @Override
@@ -241,7 +239,7 @@ public class GamePanel extends JPanel implements Runnable {
         music.stop();
     }
 
-    public void playSE(int i) {
+    public void playSoundEffect(int i) {
         soundEffect.setFile(i);
         soundEffect.play();
     }
