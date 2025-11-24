@@ -23,11 +23,12 @@ public class Sound {
     public final static int FX_SWING_WEAPON = 7;
 
     public Sound() {
-        soundURL[MUSIC__MAIN_THEME] = getClass().getResource("/gtcafe/rpg/assets/sound/BlueBoyAdventure.wav");
+        soundURL[MUSIC__MAIN_THEME] = getClass().getResource("/gtcafe/rpg/assets/bgm/BlueBoyAdventure.wav");
+        soundURL[MUSIC__FANFARE] = getClass().getResource("/gtcafe/rpg/assets/bgm/fanfare.wav");
+
         soundURL[FX_COIN] = getClass().getResource("/gtcafe/rpg/assets/sound/coin.wav");
         soundURL[FX_POWER_UP] = getClass().getResource("/gtcafe/rpg/assets/sound/powerup.wav");
         soundURL[FX_UNLOCK] = getClass().getResource("/gtcafe/rpg/assets/sound/unlock.wav");
-        soundURL[MUSIC__FANFARE] = getClass().getResource("/gtcafe/rpg/assets/sound/fanfare.wav");
 
         soundURL[FX_HIT_MONSTER] = getClass().getResource("/gtcafe/rpg/assets/sound/hitmonster.wav");
         soundURL[FX_RECEIVE_DAMAGE] = getClass().getResource("/gtcafe/rpg/assets/sound/receivedamage.wav");
@@ -39,7 +40,6 @@ public class Sound {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

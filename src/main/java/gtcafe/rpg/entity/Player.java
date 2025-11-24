@@ -1,6 +1,5 @@
 package gtcafe.rpg.entity;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -12,6 +11,8 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.GameState;
 import gtcafe.rpg.KeyHandler;
 import gtcafe.rpg.Sound;
+import gtcafe.rpg.object.OBJ_Shield_Wood;
+import gtcafe.rpg.object.OBJ_Sword_Normal;
 
 public class Player extends Entity {
     KeyHandler keyHandler;
@@ -22,6 +23,8 @@ public class Player extends Entity {
     // camera position
     public final int screenX;
     public final int screenY;
+
+    public boolean attackCanceled = false;
 
     public Player(GamePanel gp, KeyHandler keyHandler) {
         super(gp);
@@ -50,15 +53,34 @@ public class Player extends Entity {
         worldY = gp.tileSize * 21;
 
         // for testing
-        // worldX = gp.tileSize * 12;
-        // worldY = gp.tileSize * 15;
+        // worldX = gp.tileSize * 10;
+        // worldY = gp.tileSize * 13;
 
         speed = 5;  // 每個 Frame 移動 5 個 pixel, 每秒移動 5 * 60 = 300 pixel / 48 = 6 tiles
         direction = Direction.DOWN;
 
         // PLAYER STATUS
+        level = 1;
         maxLife = 6;
         life = maxLife;
+        strength = 1;       // the more strength he has, the more damage he gives.
+        dexterity = 1;      // the more dexterity the has, the less damage he receives.
+        exp = 1;
+        nextLevelExp = 5;
+        coin = 0;
+        currentWeapon = new OBJ_Sword_Normal(gp);
+        currentShield = new OBJ_Shield_Wood(gp);
+
+        attack = getAttack();       // 計算攻擊力, 由 strength and weapon 決定
+        defense = getDefense();     // 計算防禦力, 由 dexterity and shield 決定
+    }
+
+    public int getDefense() {
+        return defense = dexterity * currentShield.defenseValue;
+    }
+
+    public int getAttack() {
+        return attack = strength * currentWeapon.attackValue;
     }
 
     public void getPlayerImages() {
@@ -134,6 +156,14 @@ public class Player extends Entity {
                     default -> throw new IllegalArgumentException("Unexpected value: " + direction);
                 }
             }
+
+            if (keyHandler.enterPressed == true && attackCanceled == false) {
+                gp.playSoundEffect(Sound.FX_SWING_WEAPON);
+                attacking = true;
+                spriteCounter = 0;
+            }
+            attackCanceled = false;
+            gp.keyHandler.enterPressed = false;
 
             // RESET enterPressed
             gp.keyHandler.enterPressed = false;
@@ -273,16 +303,10 @@ public class Player extends Entity {
         if (gp.keyHandler.enterPressed == true) {
             if (index != 999) { // means player touch NPC
                 System.out.println("[Player#interactNPC] You are hitting an NPC!!");
-                if (gp.keyHandler.enterPressed == true) {
-                    gp.gameState = GameState.DIALOGUE_STATE;
-                    gp.npc[index].speak();
-                }
-            } else {
-                // player doesn't get NPC index
-                System.out.println("[Player#interactNPC] You are attacking!");
-                gp.playSoundEffect(Sound.FX_SWING_WEAPON);
-                attacking = true;
-            }
+                attackCanceled = true;
+                gp.gameState = GameState.DIALOGUE_STATE;
+                gp.npc[index].speak();
+            } 
         }
     }
 

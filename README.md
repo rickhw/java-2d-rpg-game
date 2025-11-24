@@ -3,12 +3,13 @@
 
 ### v2.3.0
 
-- Event2: Advanced Mechanics
-- Rendering Optimization
-- Collision Detection of Player/Monster/NPC/Tiles
-- The first monster: Green Slime
+- Monster: Green Slime
+    - Collision Detection of Player/Monster/NPC/Tiles
 - Hit Detection
-- Health Bar & Death Animation
+- Monster Health Bar & Death Animation
+- Character Status
+- Event: Advanced Mechanics
+- Rendering Optimization
 
 ### v2.2.0
 
