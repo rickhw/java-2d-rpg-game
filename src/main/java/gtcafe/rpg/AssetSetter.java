@@ -33,13 +33,13 @@ public class AssetSetter {
 
 
         // For Testing
-        // gp.npc[1] = new NPC_OldMan(gp);
-        // gp.npc[1].worldX = gp.tileSize * 11;
-        // gp.npc[1].worldY = gp.tileSize * 21;
+        gp.npc[2] = new NPC_OldMan(gp);
+        gp.npc[2].worldX = gp.tileSize * 10;
+        gp.npc[2].worldY = gp.tileSize * 11;
 
-        // gp.npc[2] = new NPC_OldMan(gp);
-        // gp.npc[2].worldX = gp.tileSize * 31;
-        // gp.npc[2].worldY = gp.tileSize * 21;
+        gp.npc[3] = new NPC_OldMan(gp);
+        gp.npc[3].worldX = gp.tileSize * 10;
+        gp.npc[3].worldY = gp.tileSize * 10;
 
         // gp.npc[3] = new NPC_OldMan(gp);
         // gp.npc[3].worldX = gp.tileSize * 21;
@@ -68,12 +68,12 @@ public class AssetSetter {
         gp.monster[3].worldY = gp.tileSize * 39;
 
         // for testing
-        // gp.monster[0] = new MON_GreenSlime(gp);
-        // gp.monster[0].worldX = gp.tileSize * 12;
-        // gp.monster[0].worldY = gp.tileSize * 10;
+        gp.monster[4] = new MON_GreenSlime(gp);
+        gp.monster[4].worldX = gp.tileSize * 11;
+        gp.monster[4].worldY = gp.tileSize * 8;
 
-        // gp.monster[1] = new MON_GreenSlime(gp);
-        // gp.monster[1].worldX = gp.tileSize * 13;
-        // gp.monster[1].worldY = gp.tileSize * 11;
+        gp.monster[5] = new MON_GreenSlime(gp);
+        gp.monster[5].worldX = gp.tileSize * 11;
+        gp.monster[5].worldY = gp.tileSize * 9;
     }
 }

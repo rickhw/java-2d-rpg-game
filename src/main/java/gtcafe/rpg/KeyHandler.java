@@ -21,156 +21,25 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-
-        // TITLE STATE for intro
-        // if(gp.ui.titleScreenState == 0) {
-        //     if (gp.gameState == GameState.TITLE_STATE) {
-        //         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-        //             gp.ui.commandNum--;
-        //             if (gp.ui.commandNum < 0) {
-        //                 gp.ui.commandNum = 2;
-        //             }
-        //         }
-        //         if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-        //             gp.ui.commandNum++;
-        //             if (gp.ui.commandNum > 2) {
-        //                 gp.ui.commandNum = 0;
-        //             }
-        //         }
-        //         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-        //             if (gp.ui.commandNum == 0) {
-        //                 gp.ui.titleScreenState = 1;
-        //             }
-        //             if (gp.ui.commandNum == 1) {
-        //                 // TODO
-        //             }
-        //             if (gp.ui.commandNum == 2) {
-        //                 System.exit(0);
-        //             }
-        //         }
-        //     }
-        // }
-        // else if(gp.ui.titleScreenState == 1) {
-        //     if (gp.gameState == GameState.TITLE_STATE) {
-        //         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-        //             gp.ui.commandNum--;
-        //             if (gp.ui.commandNum < 0) {
-        //                 gp.ui.commandNum = 3;
-        //             }
-        //         }
-        //         if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-        //             gp.ui.commandNum++;
-        //             if (gp.ui.commandNum > 3) {
-        //                 gp.ui.commandNum = 0;
-        //             }
-        //         }
-        //         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-        //             if (gp.ui.commandNum == 0) {
-        //                 System.out.println("Do some fighter specific stuff!");
-        //                 gp.gameState = GameState.PLAY_STATE;
-        //                 // gp.playMusic(Sound.MUSIC__MAIN_THEME);
-        //             }
-        //             if (gp.ui.commandNum == 1) {
-        //                 System.out.println("Do some thief specific stuff!");
-        //                 gp.gameState = GameState.PLAY_STATE;
-        //                 // gp.playMusic(Sound.MUSIC__MAIN_THEME);
-        //             }
-        //             if (gp.ui.commandNum == 2) {
-        //                 System.out.println("Do some sorcerer specific stuff!");
-        //                 gp.gameState = GameState.PLAY_STATE;
-        //                 // gp.playMusic(Sound.MUSIC__MAIN_THEME);
-        //             }
-        //             if (gp.ui.commandNum == 3) {
-        //                 gp.ui.titleScreenState = 0;
-        //             }
-        //         }
-        //     }
-        // }
-
         if (gp.gameState == GameState.TITLE_STATE) {
-            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                gp.ui.commandNum--;
-                if (gp.ui.commandNum < 0) {
-                    gp.ui.commandNum = 3;
-                }
-            }
-            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                gp.ui.commandNum++;
-                if (gp.ui.commandNum > 3) {
-                    gp.ui.commandNum = 0;
-                }
-            }
-            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                if (gp.ui.commandNum == 0) {
-                    System.out.println("Do some fighter specific stuff!");
-                    gp.gameState = GameState.PLAY_STATE;
-                    // gp.playMusic(Sound.MUSIC__MAIN_THEME);
-                }
-                if (gp.ui.commandNum == 1) {
-                    System.out.println("Do some thief specific stuff!");
-                    gp.gameState = GameState.PLAY_STATE;
-                    // gp.playMusic(Sound.MUSIC__MAIN_THEME);
-                }
-                if (gp.ui.commandNum == 2) {
-                    System.out.println("Do some sorcerer specific stuff!");
-                    gp.gameState = GameState.PLAY_STATE;
-                    // gp.playMusic(Sound.MUSIC__MAIN_THEME);
-                }
-                if (gp.ui.commandNum == 3) {
-                    gp.ui.titleScreenState = 0;
-                }
-            }
+            titleState(code);
         }
 
         // PLAY STATE
         else if (gp.gameState == GameState.PLAY_STATE) {
-            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-                upPressed = true;
-            }
-            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-                downPressed = true;
-            }
-            if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
-                leftPressed = true;
-            }
-            if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
-                rightPressed = true;
-            }
-
-            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                enterPressed = true;
-            }
-
-
-            if (code == KeyEvent.VK_P) {
-                gp.gameState = GameState.PAUSE_STATE;
-                gp.stopMusic();
-            }
-
-            // DEBUG
-            if (code == KeyEvent.VK_T) {
-                if(checkDrawTime == false) {
-                    checkDrawTime = true;
-                    gp.debugMode = true;
-                } else if (checkDrawTime = true) {
-                    checkDrawTime = false;
-                    gp.debugMode = false;
-                }
-            }
+            playState(code);
         }
-
         // PAUSE STATE
         else if (gp.gameState == GameState.PAUSE_STATE) {
-            if (code == KeyEvent.VK_P) {
-                gp.gameState = GameState.PLAY_STATE;
-            }
+           pauseState(code);
         }
-
         // DIALOGUE STATE
         else if (gp.gameState == GameState.DIALOGUE_STATE) {
-            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                gp.gameState = GameState.PLAY_STATE;
-            }
+            dialogueState(code);
+        }
+        // CHARACTER STATE
+        else if (gp.gameState == GameState.CHARACTER_STATE) {
+            characterState(code);
         }
 
         // MUSIC EVENT
@@ -186,6 +55,7 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -204,4 +74,97 @@ public class KeyHandler implements KeyListener {
             rightPressed = false;
         }
     }
+
+    private void titleState(int code) {
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            gp.ui.commandNum--;
+            if (gp.ui.commandNum < 0) {
+                gp.ui.commandNum = 3;
+            }
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            gp.ui.commandNum++;
+            if (gp.ui.commandNum > 3) {
+                gp.ui.commandNum = 0;
+            }
+        }
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+            if (gp.ui.commandNum == 0) {
+                System.out.println("Do some fighter specific stuff!");
+                gp.gameState = GameState.PLAY_STATE;
+                // gp.playMusic(Sound.MUSIC__MAIN_THEME);
+            }
+            if (gp.ui.commandNum == 1) {
+                System.out.println("Do some thief specific stuff!");
+                gp.gameState = GameState.PLAY_STATE;
+                // gp.playMusic(Sound.MUSIC__MAIN_THEME);
+            }
+            if (gp.ui.commandNum == 2) {
+                System.out.println("Do some sorcerer specific stuff!");
+                gp.gameState = GameState.PLAY_STATE;
+                // gp.playMusic(Sound.MUSIC__MAIN_THEME);
+            }
+            if (gp.ui.commandNum == 3) {
+                gp.ui.titleScreenState = 0;
+            }
+        }
+    }
+
+    private void playState(int code) {
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            upPressed = true;
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            downPressed = true;
+        }
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            leftPressed = true;
+        }
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+            rightPressed = true;
+        }
+
+        if (code == KeyEvent.VK_C) {
+            gp.gameState = GameState.CHARACTER_STATE;
+        }
+
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+            enterPressed = true;
+        }
+
+        if (code == KeyEvent.VK_P) {
+            gp.gameState = GameState.PAUSE_STATE;
+            gp.stopMusic();
+        }
+
+        // DEBUG
+        if (code == KeyEvent.VK_T) {
+            if(checkDrawTime == false) {
+                checkDrawTime = true;
+                gp.debugMode = true;
+            } else if (checkDrawTime = true) {
+                checkDrawTime = false;
+                gp.debugMode = false;
+            }
+        }
+    }
+
+    private void pauseState(int code) {
+        if (code == KeyEvent.VK_P) {
+            gp.gameState = GameState.PLAY_STATE;
+        }
+    }
+
+    private void dialogueState(int code) {
+        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+            gp.gameState = GameState.PLAY_STATE;
+        }
+    }
+
+    private void characterState(int code) {
+        if (code == KeyEvent.VK_C) {
+            gp.gameState = GameState.PLAY_STATE;
+        }
+    }
+
 }
