@@ -6,7 +6,7 @@ https://www.youtube.com/watch?v=EQSNROlVwoc&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4
 - Fix Bug: attackCanceled and Attacking flag
 - Character Status
 - Character Screen
-
+- finetune
 
 
 ---
