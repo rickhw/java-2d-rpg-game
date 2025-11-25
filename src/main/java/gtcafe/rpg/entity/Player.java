@@ -11,7 +11,7 @@ import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.GameState;
 import gtcafe.rpg.KeyHandler;
-import gtcafe.rpg.SoundEffect;
+import gtcafe.rpg.Sound;
 import gtcafe.rpg.object.OBJ_Key;
 import gtcafe.rpg.object.OBJ_Shield_Wood;
 import gtcafe.rpg.object.OBJ_Sword_Normal;
@@ -41,10 +41,12 @@ public class Player extends Entity {
         screenX = gp.screenWidth / 2 - (gp.tileSize/2);
         screenY = gp.screenHeight / 2 - (gp.tileSize/2);
 
+        // SOLID AREA
         solidArea = new Rectangle(8, 16, 32, 32);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
+        // ATTACK AREA
         attackArea.width = 36;
         attackArea.height = 36;
 
@@ -86,7 +88,6 @@ public class Player extends Entity {
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
-
     }
 
     public int getDefense() {
@@ -94,6 +95,7 @@ public class Player extends Entity {
     }
 
     public int getAttack() {
+        attackArea = currentWeapon.attackArea;
         return attack = strength * currentWeapon.attackValue;
     }
 
@@ -111,14 +113,28 @@ public class Player extends Entity {
 
     public void getPlayerAttackImage() {
         String packagePath = "/gtcafe/rpg/assets/player_attack/";
-        attackUp1 = setup(packagePath + "boy_attack_up_1.png", gp.tileSize, gp.tileSize*2);
-        attackUp2 = setup(packagePath + "boy_attack_up_2.png", gp.tileSize, gp.tileSize*2);
-        attackDown1 = setup(packagePath + "boy_attack_down_1.png", gp.tileSize, gp.tileSize*2);
-        attackDown2 = setup(packagePath + "boy_attack_down_2.png", gp.tileSize, gp.tileSize*2);
-        attackLeft1 = setup(packagePath + "boy_attack_left_1.png", gp.tileSize*2, gp.tileSize);
-        attackLeft2 = setup(packagePath + "boy_attack_left_2.png", gp.tileSize*2, gp.tileSize);
-        attackRight1 = setup(packagePath + "boy_attack_right_1.png", gp.tileSize*2, gp.tileSize);
-        attackRight2 = setup(packagePath + "boy_attack_right_2.png", gp.tileSize*2, gp.tileSize);
+
+        if (currentWeapon.type == EntityType.SWORD) {
+            attackUp1 = setup(packagePath + "boy_attack_up_1.png", gp.tileSize, gp.tileSize*2);
+            attackUp2 = setup(packagePath + "boy_attack_up_2.png", gp.tileSize, gp.tileSize*2);
+            attackDown1 = setup(packagePath + "boy_attack_down_1.png", gp.tileSize, gp.tileSize*2);
+            attackDown2 = setup(packagePath + "boy_attack_down_2.png", gp.tileSize, gp.tileSize*2);
+            attackLeft1 = setup(packagePath + "boy_attack_left_1.png", gp.tileSize*2, gp.tileSize);
+            attackLeft2 = setup(packagePath + "boy_attack_left_2.png", gp.tileSize*2, gp.tileSize);
+            attackRight1 = setup(packagePath + "boy_attack_right_1.png", gp.tileSize*2, gp.tileSize);
+            attackRight2 = setup(packagePath + "boy_attack_right_2.png", gp.tileSize*2, gp.tileSize);
+        }
+        if (currentWeapon.type == EntityType.AXE) {
+            attackUp1 = setup(packagePath + "boy_axe_up_1.png", gp.tileSize, gp.tileSize*2);
+            attackUp2 = setup(packagePath + "boy_axe_up_2.png", gp.tileSize, gp.tileSize*2);
+            attackDown1 = setup(packagePath + "boy_axe_down_1.png", gp.tileSize, gp.tileSize*2);
+            attackDown2 = setup(packagePath + "boy_axe_down_2.png", gp.tileSize, gp.tileSize*2);
+            attackLeft1 = setup(packagePath + "boy_axe_left_1.png", gp.tileSize*2, gp.tileSize);
+            attackLeft2 = setup(packagePath + "boy_axe_left_2.png", gp.tileSize*2, gp.tileSize);
+            attackRight1 = setup(packagePath + "boy_axe_right_1.png", gp.tileSize*2, gp.tileSize);
+            attackRight2 = setup(packagePath + "boy_axe_right_2.png", gp.tileSize*2, gp.tileSize);
+        }
+        
     }
 
     public void update() {
@@ -172,7 +188,7 @@ public class Player extends Entity {
             }
 
             if (keyHandler.enterPressed == true && attackCanceled == false) {
-                gp.playSoundEffect(SoundEffect.FX_SWING_WEAPON);
+                gp.playSoundEffect(Sound.FX_SWING_WEAPON);
                 attacking = true;
                 spriteCounter = 0;
             }
@@ -262,7 +278,6 @@ public class Player extends Entity {
             worldY = currentWorldY;
             solidArea.width = solidAreaWidth;
             solidArea.height = solidAreaHeight;
-
         }
 
         if (spriteCounter > 25) {
@@ -279,7 +294,7 @@ public class Player extends Entity {
             Entity monster = gp.monster[index];
             // give some damge
             if (monster.invincible == false) {
-                gp.playSoundEffect(SoundEffect.FX_HIT_MONSTER);
+                gp.playSoundEffect(Sound.FX_HIT_MONSTER);
 
                 int damage = attack - gp.monster[index].defense;
                 if (damage < 0) { damage = 1; }
@@ -316,7 +331,7 @@ public class Player extends Entity {
             attack = getAttack();
             defense = getDefense();
 
-            gp.playSoundEffect(SoundEffect.FX__LEVELUP);
+            gp.playSoundEffect(Sound.FX__LEVELUP);
 
             gp.gameState = GameState.DIALOGUE_STATE;
             gp.ui.currentDialogue = "You are level #" + level + " now!\n"
@@ -325,12 +340,33 @@ public class Player extends Entity {
         }
     }
 
+    public void selectItem() {
+        int itemIndex = gp.ui.getItemIndexOnSlot();
+
+        if (itemIndex < inventory.size()) {
+            Entity selectedItem = inventory.get(itemIndex);
+            if (selectedItem.type == EntityType.SWORD || selectedItem.type == EntityType.AXE) {
+                currentWeapon = selectedItem;
+                attack = getAttack();
+                getPlayerAttackImage();
+            }
+            if (selectedItem.type == EntityType.SHIELD) {
+                currentShield= selectedItem;
+                defense = getDefense();
+            }
+            if (selectedItem.type == EntityType.CONSUMABLE) {
+                selectedItem.use(this);
+                inventory.remove(itemIndex);
+            }
+        }
+    }
+
     // 被 Monster 攻擊
     private void contactMonster(int index) {
         if (index != 999) {
             System.out.println("[Player#contactMonster] You are attacking by Monster!!");
             if (invincible == false) {
-                gp.playSoundEffect(SoundEffect.FX_RECEIVE_DAMAGE);
+                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
                 
                 // Monster 攻擊力 - Player 的防禦力
                 int damage = gp.monster[index].attack - defense;
@@ -346,6 +382,16 @@ public class Player extends Entity {
     public void pickUpObject(int index) {
         // 999 MEANS NOT TOUCH ANY OBJECT
         if (index != 999) {
+            String text;
+            if (inventory.size() != maxInventorySize) {
+                inventory.add(gp.obj[index]);
+                gp.playSoundEffect(Sound.FX_COIN);
+                text = "Got a " + gp.obj[index].name + "!";
+            } else {
+                text = "You cannot carry any more!";
+            }
+            gp.ui.addMessage(text);
+            gp.obj[index] = null;
         }
     }
 

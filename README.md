@@ -6,6 +6,12 @@
 - Scrolling Message
 - Leveling Up
 - Inventory
+    - Inventory size = 4 * 5
+    - Select the item and show the description.
+- Equipment and Use Items: 
+    - New Items: Axe, Blue Shield, Potion
+    - Set the equip: sword or shield
+    - Use the Potion to recovery life.
 
 ### v2.3.0
 

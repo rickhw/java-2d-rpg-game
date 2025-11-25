@@ -37,8 +37,9 @@ public class GamePanel extends JPanel implements Runnable {
     // SYSTEM
     public TileManager tileManager = new TileManager(this);
     public KeyHandler keyHandler = new KeyHandler(this);
-    Sound music = new Music();
-    Sound soundEffect = new SoundEffect();
+    Sound sound = new Sound();
+    // Sound music = new Music();
+    // Sound soundEffect = new SoundEffect();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this); // day7-4 add
     public UI ui = new UI(this);
@@ -70,7 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
         assetSetter.setObject();
         assetSetter.setNPC();
         assetSetter.setMonster();
-        playBackgroundMusic(Music.MUSIC__MAIN_THEME); // index with 0 => main music
+        playBackgroundMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
         stopBackgroundMusic();
 
         gameState = GameState.TITLE_STATE;
@@ -240,17 +241,17 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void playBackgroundMusic(int i) {
-        music.setFile(i);
-        music.play();
-        music.loop();
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
     }
 
     public void stopBackgroundMusic() {
-        music.stop();
+        sound.stop();
     }
 
     public void playSoundEffect(int i) {
-        soundEffect.setFile(i);
-        soundEffect.play();
+        sound.setFile(i);
+        sound.play();
     }
 }

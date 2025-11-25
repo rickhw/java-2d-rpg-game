@@ -125,6 +125,14 @@ public class UI {
 
         // DRAW PLAYER's ITEMS
         for(int i=0; i< gp.player.inventory.size(); i++) {
+
+            // EQUIP CURSOR; 用底色強調目前已經安裝的武器/防具
+            if (gp.player.inventory.get(i) == gp.player.currentWeapon ||
+                    gp.player.inventory.get(i) == gp.player.currentShield) {
+                g2.setColor(new Color(240,190,90));
+                g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
+            }
+
             g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
             slotX += slotSize;
 
@@ -159,6 +167,7 @@ public class UI {
         int itemIndex = getItemIndexOnSlot();
         if (itemIndex < gp.player.inventory.size()) {
             String desc = gp.player.inventory.get(itemIndex).description;
+            // g2Utils.drawSubWindow(g2, dFrameX, dFrameY, dFrameWidth, dFrameHeight);
             for (String line: desc.split("\n")) {
                 g2.drawString(line, textX, textY);
                 textY += 32;
@@ -167,7 +176,7 @@ public class UI {
 
     }
 
-    private int getItemIndexOnSlot() {
+    public int getItemIndexOnSlot() {
         int itemIndex = slotCol + (slotRow * 5);
         return itemIndex;
     }
