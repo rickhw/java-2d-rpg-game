@@ -5,12 +5,14 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.GameState;
 import gtcafe.rpg.KeyHandler;
-import gtcafe.rpg.Sound;
+import gtcafe.rpg.SoundEffect;
+import gtcafe.rpg.object.OBJ_Key;
 import gtcafe.rpg.object.OBJ_Shield_Wood;
 import gtcafe.rpg.object.OBJ_Sword_Normal;
 
@@ -25,6 +27,10 @@ public class Player extends Entity {
     public final int screenY;
 
     public boolean attackCanceled = false;
+
+    // INVENTORY
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
 
     public Player(GamePanel gp, KeyHandler keyHandler) {
         super(gp);
@@ -45,6 +51,7 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImages();
         getPlayerAttackImage();
+        setItems();
     }
 
     public void setDefaultValues() {
@@ -73,6 +80,13 @@ public class Player extends Entity {
 
         attack = getAttack();       // 計算攻擊力, 由 strength and weapon 決定
         defense = getDefense();     // 計算防禦力, 由 dexterity and shield 決定
+    }
+
+    public void setItems() {
+        inventory.add(currentWeapon);
+        inventory.add(currentShield);
+        inventory.add(new OBJ_Key(gp));
+
     }
 
     public int getDefense() {
@@ -158,7 +172,7 @@ public class Player extends Entity {
             }
 
             if (keyHandler.enterPressed == true && attackCanceled == false) {
-                gp.playSoundEffect(Sound.FX_SWING_WEAPON);
+                gp.playSoundEffect(SoundEffect.FX_SWING_WEAPON);
                 attacking = true;
                 spriteCounter = 0;
             }
@@ -265,7 +279,7 @@ public class Player extends Entity {
             Entity monster = gp.monster[index];
             // give some damge
             if (monster.invincible == false) {
-                gp.playSoundEffect(Sound.FX_HIT_MONSTER);
+                gp.playSoundEffect(SoundEffect.FX_HIT_MONSTER);
 
                 int damage = attack - gp.monster[index].defense;
                 if (damage < 0) { damage = 1; }
@@ -302,7 +316,7 @@ public class Player extends Entity {
             attack = getAttack();
             defense = getDefense();
 
-            gp.playSoundEffect(Sound.FX__LEVELUP);
+            gp.playSoundEffect(SoundEffect.FX__LEVELUP);
 
             gp.gameState = GameState.DIALOGUE_STATE;
             gp.ui.currentDialogue = "You are level #" + level + " now!\n"
@@ -316,7 +330,7 @@ public class Player extends Entity {
         if (index != 999) {
             System.out.println("[Player#contactMonster] You are attacking by Monster!!");
             if (invincible == false) {
-                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
+                gp.playSoundEffect(SoundEffect.FX_RECEIVE_DAMAGE);
                 
                 // Monster 攻擊力 - Player 的防禦力
                 int damage = gp.monster[index].attack - defense;
@@ -350,9 +364,9 @@ public class Player extends Entity {
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
 
-        if (showInfo && gp.debugMode) {
-            System.out.printf("[Player#draw] screenX: [%s], screenY: [%s], worldX: [%s], worldY: [%s]\n", screenX, screenY, worldX, worldY);
-        }
+        // if (showInfo && gp.debugMode) {
+        //     System.out.printf("[Player#draw] screenX: [%s], screenY: [%s], worldX: [%s], worldY: [%s]\n", screenX, screenY, worldX, worldY);
+        // }
 
         // for specify cases
         int tempScreenX = screenX;
@@ -400,7 +414,7 @@ public class Player extends Entity {
         if (gp.debugMode) {
             g2.setFont(new Font("Arial", Font.PLAIN, 26));
             g2.setColor(Color.white);
-            g2.drawString("Invincible: " + invincibleCounter, 10, 400);
+            g2.drawString("Invincible: " + invincibleCounter, 8, 400);
         }
     }
 

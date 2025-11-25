@@ -3,6 +3,9 @@
 
 ### v2.4.x
 
+- Scrolling Message
+- Leveling Up
+- Inventory
 
 ### v2.3.0
 

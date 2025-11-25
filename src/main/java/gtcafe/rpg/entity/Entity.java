@@ -12,6 +12,7 @@ import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.Graphics2DUtils;
 import gtcafe.rpg.Sound;
+import gtcafe.rpg.SoundEffect;
 
 // a blueprint
 public class Entity {
@@ -69,6 +70,7 @@ public class Entity {
     // ITEM ATTRIBUTES
     public int attackValue;     // 攻擊力
     public int defenseValue;    // 防禦力
+    public String description = "";
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -125,7 +127,7 @@ public class Entity {
         if (this.type == 2 && contactPlayer == true) {
             if (gp.player.invincible == false) {
                 // we can give damage
-                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
+                gp.playSoundEffect(SoundEffect.FX_RECEIVE_DAMAGE);
 
                 //  攻擊力 - Player 的防禦力
                 int damage = attack - gp.player.defense;

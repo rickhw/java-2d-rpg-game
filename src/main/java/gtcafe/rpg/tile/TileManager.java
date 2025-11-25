@@ -151,9 +151,9 @@ public class TileManager {
                 (worldY + gp.tileSize) > (gp.player.worldY - gp.player.screenY) &&
                 (worldY - gp.tileSize) < (gp.player.worldY + gp.player.screenY)) {
 
-                if (showInfo && gp.debugMode) {
-                    System.out.printf("tileNum: [%s], worldCol:[%s], worldRow: [%s], screenX: [%s], screenY: [%s]\n", tileNum, worldCol, worldRow, screenX, screenY);
-                }
+                // if (showInfo && gp.debugMode) {
+                //     System.out.printf("tileNum: [%s], worldCol:[%s], worldRow: [%s], screenX: [%s], screenY: [%s]\n", tileNum, worldCol, worldRow, screenX, screenY);
+                // }
 
                 g2.drawImage(tiles[tileNum].image, screenX, screenY, null);
             }
