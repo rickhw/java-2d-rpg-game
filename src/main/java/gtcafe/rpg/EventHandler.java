@@ -105,6 +105,8 @@ public class EventHandler {
             gp.player.life = gp.player.maxLife;
             gp.playSoundEffect(Sound.FX_COIN);
             System.out.println("[EventHandler#healingPool] Player's life has been recovered!");
+
+            gp.assetSetter.setMonster(); // restore the monsters.
         }
     }
 }

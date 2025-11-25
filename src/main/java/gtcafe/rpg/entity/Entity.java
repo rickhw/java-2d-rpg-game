@@ -1,6 +1,5 @@
 package gtcafe.rpg.entity;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -127,7 +126,12 @@ public class Entity {
             if (gp.player.invincible == false) {
                 // we can give damage
                 gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
-                gp.player.life -= 1;
+
+                //  攻擊力 - Player 的防禦力
+                int damage = attack - gp.player.defense;
+                if (damage < 0) { damage = 0; }
+
+                gp.player.life -= damage;
                 gp.player.invincible = true;
             }
         }

@@ -1,6 +1,5 @@
 package gtcafe.rpg;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -8,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.object.OBJ_Heart;
@@ -24,12 +24,12 @@ public class UI {
 
     // status
     public boolean messageOn = false;
-    public String message = "";
     public boolean gameFinished = false;
     public String currentDialogue;
     
-    int messageCounter = 0; // for hidden message
     public int commandNum = 0;
+    ArrayList<String> message = new ArrayList<>();
+    ArrayList<Integer> messageCounter = new ArrayList<>();
 
     // a sub state
     // 0: the first screen
@@ -81,6 +81,7 @@ public class UI {
         // PLAY STATE
         if(gp.gameState == GameState.PLAY_STATE) {
             drawPlayerLife();
+            drawMessage();
         }
 
         // PAUSE STATE
@@ -96,6 +97,33 @@ public class UI {
         }
         if (gp.gameState == GameState.CHARACTER_STATE) {
             drawCharacterScreen();
+        }
+    }
+
+    private void drawMessage() {
+        int msgX = gp.tileSize;
+        int msgY = gp.tileSize * 4;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24F));
+
+        for (int i=0; i<message.size(); i++) {
+            if (message.get(i) != null) {
+                // shadow
+                g2.setColor(Color.black);
+                g2.drawString(message.get(i), msgX+2, msgY+2);
+
+                g2.setColor(Color.white);
+                g2.drawString(message.get(i), msgX, msgY);
+
+                int counter = messageCounter.get(i) + 1; // messageCounter++
+                messageCounter.set(i, counter); // increase the counter number
+                msgY += 30; // for next message
+
+                // remove message after 180 frame (3 second)
+                if (messageCounter.get(i) > 180) {
+                    message.remove(i);
+                    messageCounter.remove(i);
+                }
+            }
         }
     }
 
@@ -345,9 +373,9 @@ public class UI {
         }
     }
 
-    public void showMessage(String text) {
-        message = text;
-        messageOn = true;
+    public void addMessage(String text) {
+        message.add(text);
+        messageCounter.add(0);
     }
 
     public void drawPauseScreen() {

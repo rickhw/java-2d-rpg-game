@@ -21,10 +21,12 @@ public class Sound {
     public final static int FX_HIT_MONSTER = 5;
     public final static int FX_RECEIVE_DAMAGE= 6;
     public final static int FX_SWING_WEAPON = 7;
+    public final static int FX__LEVELUP = 8;
 
     public Sound() {
         soundURL[MUSIC__MAIN_THEME] = getClass().getResource("/gtcafe/rpg/assets/bgm/BlueBoyAdventure.wav");
         soundURL[MUSIC__FANFARE] = getClass().getResource("/gtcafe/rpg/assets/bgm/fanfare.wav");
+        
 
         soundURL[FX_COIN] = getClass().getResource("/gtcafe/rpg/assets/sound/coin.wav");
         soundURL[FX_POWER_UP] = getClass().getResource("/gtcafe/rpg/assets/sound/powerup.wav");
@@ -33,6 +35,8 @@ public class Sound {
         soundURL[FX_HIT_MONSTER] = getClass().getResource("/gtcafe/rpg/assets/sound/hitmonster.wav");
         soundURL[FX_RECEIVE_DAMAGE] = getClass().getResource("/gtcafe/rpg/assets/sound/receivedamage.wav");
         soundURL[FX_SWING_WEAPON] = getClass().getResource("/gtcafe/rpg/assets/sound/swingweapon.wav");
+
+        soundURL[FX__LEVELUP] = getClass().getResource("/gtcafe/rpg/assets/sound/levelup.wav");
     }
 
     public void setFile(int i) {
