@@ -132,6 +132,15 @@ public class KeyHandler implements KeyListener {
             enterPressed = true;
         }
 
+        if (code == KeyEvent.VK_Z) {
+            gp.assetSetter.setMonster();
+        }
+
+        if (code == KeyEvent.VK_X) {
+            gp.player.life = gp.player.maxLife;
+        }
+
+
         if (code == KeyEvent.VK_P) {
             gp.gameState = GameState.PAUSE_STATE;
             gp.stopMusic();

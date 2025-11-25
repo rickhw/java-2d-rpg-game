@@ -65,7 +65,7 @@ public class Player extends Entity {
         life = maxLife;
         strength = 1;       // the more strength he has, the more damage he gives.
         dexterity = 1;      // the more dexterity the has, the less damage he receives.
-        exp = 1;
+        exp = 0;
         nextLevelExp = 5;
         coin = 0;
         currentWeapon = new OBJ_Sword_Normal(gp);
@@ -260,19 +260,30 @@ public class Player extends Entity {
 
     public void damageMonster(int index) {
         if (index != 999) {
-            System.out.println("Player hiting the monster!!");
+            System.out.println("Player is hiting the monster!!");
 
             Entity monster = gp.monster[index];
             // give some damge
             if (monster.invincible == false) {
                 gp.playSoundEffect(Sound.FX_HIT_MONSTER);
-                monster.life -= 1;
+
+                int damage = attack - gp.monster[index].defense;
+                if (damage < 0) { damage = 1; }
+
+                monster.life -= damage;
+                gp.ui.addMessage(damage + " damage!");
                 monster.invincible = true;
                 monster.damageReaction();
 
                 // handling monster dying
                 if(monster.life <= 0) {
                     gp.monster[index].dying = true;
+                    exp += gp.monster[index].exp;
+
+                    gp.ui.addMessage("Killed the " + gp.monster[index].name + "!");
+                    gp.ui.addMessage("Exp +" + gp.monster[index].exp + "!");
+
+                    checkLevelUp();
                 }
             }
         } else {
@@ -280,12 +291,38 @@ public class Player extends Entity {
         }
     }
 
+    private void checkLevelUp() {
+        if (exp >= nextLevelExp) {
+            System.out.printf("[Player#checkLevelUp] exp: [%s], nextLevelExp: [%s]\n", exp, nextLevelExp);
+            level++;
+            nextLevelExp = nextLevelExp * 2;
+            maxLife += 2; // one heart
+            strength++;
+            dexterity++;
+            attack = getAttack();
+            defense = getDefense();
+
+            gp.playSoundEffect(Sound.FX__LEVELUP);
+
+            gp.gameState = GameState.DIALOGUE_STATE;
+            gp.ui.currentDialogue = "You are level #" + level + " now!\n"
+                + "You feel stronger!";
+
+        }
+    }
+
+    // 被 Monster 攻擊
     private void contactMonster(int index) {
         if (index != 999) {
-            System.out.println("[Player#contactMonster] You are hitting a Monster!!");
+            System.out.println("[Player#contactMonster] You are attacking by Monster!!");
             if (invincible == false) {
                 gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
-                life -= 1;  // just for testing
+                
+                // Monster 攻擊力 - Player 的防禦力
+                int damage = gp.monster[index].attack - defense;
+                if (damage < 0) { damage = 1; }
+
+                life -= damage;
                 invincible = true;
             }
         }
