@@ -37,8 +37,8 @@ public class GamePanel extends JPanel implements Runnable {
     // SYSTEM
     public TileManager tileManager = new TileManager(this);
     public KeyHandler keyHandler = new KeyHandler(this);
-    Sound music = new Sound();
-    Sound soundEffect = new Sound();
+    Sound music = new Music();
+    Sound soundEffect = new SoundEffect();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this); // day7-4 add
     public UI ui = new UI(this);
@@ -70,8 +70,8 @@ public class GamePanel extends JPanel implements Runnable {
         assetSetter.setObject();
         assetSetter.setNPC();
         assetSetter.setMonster();
-        playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
-        stopMusic();
+        playBackgroundMusic(Music.MUSIC__MAIN_THEME); // index with 0 => main music
+        stopBackgroundMusic();
 
         gameState = GameState.TITLE_STATE;
     }
@@ -163,7 +163,6 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                // System.out.printf("[GamePanel#run] FPS: [%s], drawCount: [%s], timer: [%s] \n", FPS, drawCount, timer);
                 System.out.printf("[GameLoop] FPS: [%s], drawCount: [%s]\n", FPS, drawCount);
                 // drawCount = 0;
                 timer = 0;
@@ -240,13 +239,13 @@ public class GamePanel extends JPanel implements Runnable {
         g2.dispose();
     }
 
-    public void playMusic(int i) {
+    public void playBackgroundMusic(int i) {
         music.setFile(i);
         music.play();
         music.loop();
     }
 
-    public void stopMusic() {
+    public void stopBackgroundMusic() {
         music.stop();
     }
 

@@ -45,10 +45,10 @@ public class KeyHandler implements KeyListener {
         // MUSIC EVENT
         if (code == KeyEvent.VK_M) {
             if (gp.bgmState == true) {
-                gp.stopMusic();
+                gp.stopBackgroundMusic();
                 gp.bgmState = false;
             } else if (gp.bgmState == false) {
-                gp.playMusic(Sound.MUSIC__MAIN_THEME);
+                gp.playBackgroundMusic(Music.MUSIC__MAIN_THEME);
                 gp.bgmState = true;
             }
         }
@@ -146,7 +146,7 @@ public class KeyHandler implements KeyListener {
 
         if (code == KeyEvent.VK_P) {
             gp.gameState = GameState.PAUSE_STATE;
-            gp.stopMusic();
+            gp.stopBackgroundMusic();
         }
 
         // DEBUG
@@ -177,6 +177,31 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_C) {
             gp.gameState = GameState.PLAY_STATE;
         }
-    }
+        // Move the cursor in inventory
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            if (gp.ui.slotRow != 0) {
+                gp.ui.slotRow--;
+                gp.playSoundEffect(SoundEffect.FX__CURSOR);
+            }
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            if (gp.ui.slotRow != 3) {
+                gp.ui.slotRow++;
+                gp.playSoundEffect(SoundEffect.FX__CURSOR);
+            }
+        }
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            if (gp.ui.slotCol != 0) {
+                gp.ui.slotCol--;
+                gp.playSoundEffect(SoundEffect.FX__CURSOR);
+            }
+        }
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+            if (gp.ui.slotCol != 4) {
+                gp.ui.slotCol++;
+                gp.playSoundEffect(SoundEffect.FX__CURSOR);
+            }
+        }
+   }
 
 }

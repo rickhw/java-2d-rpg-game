@@ -8,5 +8,6 @@ public class OBJ_Key extends Entity {
         super(gp);
         name = "Key";
         down1 = setup("/gtcafe/rpg/assets/objects/key.png", gp.tileSize, gp.tileSize);
+        description = "[" + name + "]\nIt opens a door.";
     }
 }
