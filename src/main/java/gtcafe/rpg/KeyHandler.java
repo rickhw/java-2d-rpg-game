@@ -48,7 +48,7 @@ public class KeyHandler implements KeyListener {
                 gp.stopBackgroundMusic();
                 gp.bgmState = false;
             } else if (gp.bgmState == false) {
-                gp.playBackgroundMusic(Music.MUSIC__MAIN_THEME);
+                gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
                 gp.bgmState = true;
             }
         }
@@ -180,27 +180,31 @@ public class KeyHandler implements KeyListener {
         // Move the cursor in inventory
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
             if (gp.ui.slotRow != 0) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
                 gp.ui.slotRow--;
-                gp.playSoundEffect(SoundEffect.FX__CURSOR);
             }
         }
         if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
             if (gp.ui.slotRow != 3) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
                 gp.ui.slotRow++;
-                gp.playSoundEffect(SoundEffect.FX__CURSOR);
             }
         }
         if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
             if (gp.ui.slotCol != 0) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
                 gp.ui.slotCol--;
-                gp.playSoundEffect(SoundEffect.FX__CURSOR);
             }
         }
         if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
             if (gp.ui.slotCol != 4) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
                 gp.ui.slotCol++;
-                gp.playSoundEffect(SoundEffect.FX__CURSOR);
             }
+        }
+
+        if (code == KeyEvent.VK_ENTER) {
+            gp.player.selectItem();
         }
    }
 

@@ -5,6 +5,7 @@ import java.util.Random;
 import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
+import gtcafe.rpg.entity.EntityType;
 
 public class MON_GreenSlime extends Entity {
     GamePanel gp;
@@ -13,7 +14,7 @@ public class MON_GreenSlime extends Entity {
         super(gp);
         this.gp = gp;
         
-        type = 2;
+        type = EntityType.MONSTER;
         name = "GreenSlime";
         speed = 1;
         maxLife = 4;

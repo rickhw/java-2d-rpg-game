@@ -12,12 +12,11 @@ import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.Graphics2DUtils;
 import gtcafe.rpg.Sound;
-import gtcafe.rpg.SoundEffect;
 
 // a blueprint
 public class Entity {
     // 2D Animation
-    GamePanel gp;
+    public GamePanel gp;
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
     public BufferedImage image, image2, image3;
@@ -50,7 +49,6 @@ public class Entity {
     int hpBarCounter = 0;
 
     // CHARACTER ATTRIBUTES: share player and monster
-    public int type; // 0: player, 1: npc, 2: monster
     public String name;
     public int speed;
     public int maxLife;
@@ -72,6 +70,9 @@ public class Entity {
     public int defenseValue;    // 防禦力
     public String description = "";
 
+    // TYPES
+    public EntityType type; // 0: player, 1: npc, 2: monster
+
     public Entity(GamePanel gp) {
         this.gp = gp;
     }
@@ -88,13 +89,13 @@ public class Entity {
         return image;
     }
 
-    public void setAction() {
-
-    }
-
+    // overwirte by subclass
+    public void setAction() {}
     // overwirte by subclass
     public void damageReaction() {}
-    
+    // overwrite by subclass
+    public void use(Entity entity) {}
+
     public void speak() {
         if (dialogues[dialogueIndex] == null) {
             dialogueIndex = 0; // go back to index zero to avoid the NPE.
@@ -124,10 +125,10 @@ public class Entity {
         boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
 
         // handle: monster attack player
-        if (this.type == 2 && contactPlayer == true) {
+        if (this.type == EntityType.MONSTER && contactPlayer == true) {
             if (gp.player.invincible == false) {
                 // we can give damage
-                gp.playSoundEffect(SoundEffect.FX_RECEIVE_DAMAGE);
+                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
 
                 //  攻擊力 - Player 的防禦力
                 int damage = attack - gp.player.defense;
@@ -196,7 +197,7 @@ public class Entity {
             }
 
             // Monster HP Bar
-            if (type == 2 && hpBarOn == true) {    // type 2 is monster
+            if (type == EntityType.MONSTER && hpBarOn == true) {    // type 2 is monster
 
                 double oneScale = (double) gp.tileSize / maxLife;
                 double hpBarValue = oneScale * life;    // find the col length of bar
@@ -234,7 +235,6 @@ public class Entity {
             g2Utils.changeAlpha(g2, 1f);
         }
     }
-
 
     // Monster Death Effect
     private void dyingAnimation(Graphics2D g2) {
