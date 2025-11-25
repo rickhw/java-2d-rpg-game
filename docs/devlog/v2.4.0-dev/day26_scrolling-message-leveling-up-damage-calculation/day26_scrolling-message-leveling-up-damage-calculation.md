@@ -7,6 +7,10 @@ https://www.youtube.com/watch?v=842b2VpWsMQ&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4
 - battle message
 - exp and level up
 
+### Useful Debug Functions
+
+- Show the WorldX/Y, Col/Row
+- Refreshing the map file
 
 ---
 ## Video Summary (By Chrome Extension)

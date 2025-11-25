@@ -2,6 +2,7 @@ package gtcafe.rpg;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int FPS = 60;
 
     // SYSTEM
-    TileManager tileManager = new TileManager(this);
+    public TileManager tileManager = new TileManager(this);
     public KeyHandler keyHandler = new KeyHandler(this);
     Sound music = new Sound();
     Sound soundEffect = new Sound();
@@ -69,8 +70,8 @@ public class GamePanel extends JPanel implements Runnable {
         assetSetter.setObject();
         assetSetter.setNPC();
         assetSetter.setMonster();
-        // playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
-        // stopMusic();
+        playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
+        stopMusic();
 
         gameState = GameState.TITLE_STATE;
     }
@@ -177,7 +178,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // DEBUG
         long drawStart = 0;
-        if (keyHandler.checkDrawTime)
+        if (keyHandler.showDebugText)
             drawStart = System.nanoTime();
 
         // TITLE SCREEN
@@ -218,12 +219,22 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         // DEBUG
-        if (keyHandler.checkDrawTime) {
+        if (keyHandler.showDebugText) {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
+
+            g2.setFont(new Font("Arial", Font.PLAIN, 20));
             g2.setColor(Color.red);
-            g2.drawString("Draw Time: " + passed, 10, 400);
-            System.out.println("[GamePanel#paintComponent] Draw Time: "+passed);
+
+            int x = 11;
+            int y = 400;
+            int lineHeight = 20;
+            g2.drawString("WorldX: " + player.worldX, x, y); y += lineHeight;
+            g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
+            g2.drawString("Col: " + (player.worldX + player.solidArea.x)/tileSize, x, y); y += lineHeight;
+            g2.drawString("Row: " + (player.worldY + player.solidArea.y)/tileSize, x, y); y += lineHeight;
+            g2.drawString("Draw Time: " + passed, x, y);
+            // System.out.println("[GamePanel#paintComponent] Draw Time: "+passed);
         }
 
         g2.dispose();
