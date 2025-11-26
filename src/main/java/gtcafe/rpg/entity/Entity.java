@@ -35,7 +35,7 @@ public class Entity {
     public boolean collisionOn = false;
     public boolean invincible = false;  // 暫時無敵
     boolean attacking = false;
-    boolean showInfo = false;   // for debugging, show the screenX, screenY
+    // boolean showInfo = false;   // for debugging, show the screenX, screenY
     public boolean alive = true;
     public boolean dying = false;
     boolean hpBarOn = false;
@@ -44,34 +44,40 @@ public class Entity {
     public int spriteCounter = 0;
     public int actionLockCounter = 0;   // To set the counter for action, to avoid quick update by FPS number.
     public int invincibleCounter = 0;
-    public int drawCounter = 0;         // for debugging, show the screenX, screenY
+    // public int drawCounter = 0;         // for debugging, show the screenX, screenY
+    public int shotAvailableCounter = 0;    // to avoid double shoot
     int dyingCounter = 0;
     int hpBarCounter = 0;
 
     // CHARACTER ATTRIBUTES: share player and monster
     public String name;
     public int speed;
-    public int maxLife;
-    public int life;    
+    public int maxLife; // 最大生命值
+    public int life;    // 目前生命值
+    public int maxMana; // 最大法力
+    public int mana;    // 現在的法力
 
     public int level;
-    public int strength;
-    public int dexterity;
-    public int attack;
-    public int defense;
+    public int strength;    // 力量
+    public int dexterity;   // 敏捷
+    public int attack;      // 攻擊力, 透過 getAttack() 計算
+    public int defense;     // 防禦力, 透過 getDefense() 計算
+    
     public int exp;
     public int nextLevelExp;
     public int coin;
     public Entity currentWeapon;
     public Entity currentShield;
+    public Projectiles projectiles; // 拋射物
 
     // ITEM ATTRIBUTES
     public int attackValue;     // 攻擊力
     public int defenseValue;    // 防禦力
     public String description = "";
+    public int useCost; // spend mana
 
     // TYPES
-    public EntityType type; // 0: player, 1: npc, 2: monster
+    public EntityType type; 
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -252,7 +258,7 @@ public class Entity {
 
         if (dyingCounter > i*8) {
             dyingCounter = 0;
-            dying = false;
+            // dying = false;
             alive = false;
         }
     }

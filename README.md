@@ -1,6 +1,11 @@
 
 ## Release Notes
 
+### v2.5.x
+
+- Add projectlies (拋射物), the example is fireball.
+
+
 ### v2.4.x
 
 - Scrolling Message
