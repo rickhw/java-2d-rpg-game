@@ -12,6 +12,7 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.GameState;
 import gtcafe.rpg.KeyHandler;
 import gtcafe.rpg.Sound;
+import gtcafe.rpg.object.OBJ_Fireball;
 import gtcafe.rpg.object.OBJ_Key;
 import gtcafe.rpg.object.OBJ_Shield_Wood;
 import gtcafe.rpg.object.OBJ_Sword_Normal;
@@ -79,6 +80,7 @@ public class Player extends Entity {
         coin = 0;
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        projectiles = new OBJ_Fireball(gp);
 
         attack = getAttack();       // 計算攻擊力, 由 strength and weapon 決定
         defense = getDefense();     // 計算防禦力, 由 dexterity and shield 決定
@@ -90,6 +92,7 @@ public class Player extends Entity {
         inventory.add(new OBJ_Key(gp));
     }
 
+    // 計算防禦力: 考慮盾牌以及敏捷
     public int getDefense() {
         return defense = dexterity * currentShield.defenseValue;
     }
@@ -221,6 +224,19 @@ public class Player extends Entity {
             }
         }
 
+        // cannot shot
+        if (gp.keyHandler.shotKeyPressed == true && projectiles.alive == false && shotAvailableCounter == 30) {
+            // SET DEFAULT COORDINATES, DIRECTION AND USER
+            projectiles.set(worldX, worldY, direction, true, this);
+
+            // ADD IT TO THE LIST
+            gp.projectilesList.add(projectiles);
+
+            shotAvailableCounter = 0;   // reset counter once player shoot.
+
+            gp.playSoundEffect(Sound.FX__BURNING);
+        }
+
         // This needs to be outside of key if statement!
         if (invincible == true) {
             invincibleCounter++;
@@ -230,181 +246,18 @@ public class Player extends Entity {
             }
         }
 
-        if (drawCounter > 60) {
-            drawCounter = 0;
-            showInfo = true;
-        } else {
-            drawCounter++;
-            showInfo = false;
-        }
-    }
-
-    private void attacking() {
-        // MAKE ATTACKING ANIMATION
-        spriteCounter++;
-
-        // show image 1 (spriteNum1): 0-5 frame
-        if (spriteCounter <= 5) {
-            spriteNum = 1;
-        }
-        // show image 2 (spriteNum2): 6-25 frame
-        if (spriteCounter > 5 && spriteCounter <= 25) {
-            spriteNum = 2;
-
-            // save the current worldX, worldY and solidArea. for checking the attacking
-            int currentWorldX = worldX;
-            int currentWorldY = worldY;
-            int solidAreaWidth = solidArea.width;
-            int solidAreaHeight = solidArea.height;
-
-            // Adjust player's workdX/Y for the attackArea
-            switch (direction) {
-                case UP: worldY -= attackArea.height; break;
-                case DOWN: worldY += attackArea.height; break;
-                case LEFT: worldX -= attackArea.width; break;
-                case RIGHT: worldX += attackArea.width; break;
-            }
-
-            // attackArea becomes solidArea
-            solidArea.width = attackArea.width;
-            solidArea.height = attackArea.height;
-
-            // check monster collision with the updated worldX/Y and solidArea
-            int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex);
-
-            // restore position
-            worldX = currentWorldX;
-            worldY = currentWorldY;
-            solidArea.width = solidAreaWidth;
-            solidArea.height = solidAreaHeight;
+        // to avoid double shoot the projectiles for next 30 frames
+        if (shotAvailableCounter < 30) {
+            shotAvailableCounter++;
         }
 
-        if (spriteCounter > 25) {
-            spriteNum = 1;
-            spriteCounter = 0;
-            attacking = false;
-        }
-    }
-
-    public void damageMonster(int index) {
-        if (index != 999) {
-            System.out.println("Player is hiting the monster!!");
-
-            Entity monster = gp.monster[index];
-            // give some damge
-            if (monster.invincible == false) {
-                gp.playSoundEffect(Sound.FX_HIT_MONSTER);
-
-                int damage = attack - gp.monster[index].defense;
-                if (damage < 0) { damage = 1; }
-
-                monster.life -= damage;
-                gp.ui.addMessage(damage + " damage!");
-                monster.invincible = true;
-                monster.damageReaction();
-
-                // handling monster dying
-                if(monster.life <= 0) {
-                    gp.monster[index].dying = true;
-                    exp += gp.monster[index].exp;
-
-                    gp.ui.addMessage("Killed the " + gp.monster[index].name + "!");
-                    gp.ui.addMessage("Exp +" + gp.monster[index].exp + "!");
-
-                    checkLevelUp();
-                }
-            }
-        } else {
-            System.out.println("Player hiting miss!!");
-        }
-    }
-
-    private void checkLevelUp() {
-        if (exp >= nextLevelExp) {
-            System.out.printf("[Player#checkLevelUp] exp: [%s], nextLevelExp: [%s]\n", exp, nextLevelExp);
-            level++;
-            nextLevelExp = nextLevelExp * 2;
-            maxLife += 2; // one heart
-            strength++;
-            dexterity++;
-            attack = getAttack();
-            defense = getDefense();
-
-            gp.playSoundEffect(Sound.FX__LEVELUP);
-
-            gp.gameState = GameState.DIALOGUE_STATE;
-            gp.ui.currentDialogue = "You are level #" + level + " now!\n"
-                + "You feel stronger!";
-
-        }
-    }
-
-    public void selectItem() {
-        int itemIndex = gp.ui.getItemIndexOnSlot();
-
-        if (itemIndex < inventory.size()) {
-            Entity selectedItem = inventory.get(itemIndex);
-            if (selectedItem.type == EntityType.SWORD || selectedItem.type == EntityType.AXE) {
-                currentWeapon = selectedItem;
-                attack = getAttack();
-                getPlayerAttackImage();
-            }
-            if (selectedItem.type == EntityType.SHIELD) {
-                currentShield= selectedItem;
-                defense = getDefense();
-            }
-            if (selectedItem.type == EntityType.CONSUMABLE) {
-                selectedItem.use(this);
-                inventory.remove(itemIndex);
-            }
-        }
-    }
-
-    // 被 Monster 攻擊
-    private void contactMonster(int index) {
-        if (index != 999) {
-            System.out.println("[Player#contactMonster] You are attacking by Monster!!");
-            if (invincible == false) {
-                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
-                
-                // Monster 攻擊力 - Player 的防禦力
-                int damage = gp.monster[index].attack - defense;
-                if (damage < 0) { damage = 1; }
-
-                life -= damage;
-                invincible = true;
-            }
-        }
-    }
-
-    // OBJECT REACTION
-    public void pickUpObject(int index) {
-        // 999 MEANS NOT TOUCH ANY OBJECT
-        if (index != 999) {
-            String text;
-            if (inventory.size() != maxInventorySize) {
-                inventory.add(gp.obj[index]);
-                gp.playSoundEffect(Sound.FX_COIN);
-                text = "Got a " + gp.obj[index].name + "!";
-            } else {
-                text = "You cannot carry any more!";
-            }
-            gp.ui.addMessage(text);
-            gp.obj[index] = null;
-        }
-    }
-
-    public void interactNPC(int index) {
-
-        if (gp.keyHandler.enterPressed == true) {
-            if (index != 999) { // means player touch NPC
-                System.out.println("[Player#interactNPC] You are hitting an NPC!!");
-                attackCanceled = true;
-                gp.gameState = GameState.DIALOGUE_STATE;
-                gp.npc[index].speak();
-            } 
-        }
+        // if (drawCounter > 60) {
+        //     drawCounter = 0;
+        //     showInfo = true;
+        // } else {
+        //     drawCounter++;
+        //     showInfo = false;
+        // }
     }
 
     public void draw(Graphics2D g2) {
@@ -461,6 +314,179 @@ public class Player extends Entity {
             g2.setFont(new Font("Arial", Font.PLAIN, 26));
             g2.setColor(Color.white);
             g2.drawString("Invincible: " + invincibleCounter, 8, 400);
+        }
+    }
+
+    // Player 跟地圖上的物件的互動
+    public void pickUpObject(int index) {
+        // 999 MEANS NOT TOUCH ANY OBJECT
+        if (index != 999) {
+            String text;
+            if (inventory.size() != maxInventorySize) {
+                inventory.add(gp.obj[index]);
+                gp.playSoundEffect(Sound.FX_COIN);
+                text = "Got a " + gp.obj[index].name + "!";
+            } else {
+                text = "You cannot carry any more!";
+            }
+            gp.ui.addMessage(text);
+            gp.obj[index] = null;
+        }
+    }
+
+    // Player 跟 NPC 互動
+    public void interactNPC(int index) {
+
+        if (gp.keyHandler.enterPressed == true) {
+            if (index != 999) { // means player touch NPC
+                System.out.println("[Player#interactNPC] You are hitting an NPC!!");
+                attackCanceled = true;
+                gp.gameState = GameState.DIALOGUE_STATE;
+                gp.npc[index].speak();
+            } 
+        }
+    }
+
+    // 正在攻擊的計算
+    private void attacking() {
+        // MAKE ATTACKING ANIMATION
+        spriteCounter++;
+
+        // show image 1 (spriteNum1): 0-5 frame
+        if (spriteCounter <= 5) {
+            spriteNum = 1;
+        }
+        // show image 2 (spriteNum2): 6-25 frame
+        if (spriteCounter > 5 && spriteCounter <= 25) {
+            spriteNum = 2;
+
+            // save the current worldX, worldY and solidArea. for checking the attacking
+            int currentWorldX = worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+
+            // Adjust player's workdX/Y for the attackArea
+            switch (direction) {
+                case UP: worldY -= attackArea.height; break;
+                case DOWN: worldY += attackArea.height; break;
+                case LEFT: worldX -= attackArea.width; break;
+                case RIGHT: worldX += attackArea.width; break;
+            }
+
+            // attackArea becomes solidArea
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            // check monster collision with the updated worldX/Y and solidArea
+            int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+            damageMonster(monsterIndex, attack);
+
+            // restore position
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
+        }
+
+        if (spriteCounter > 25) {
+            spriteNum = 1;
+            spriteCounter = 0;
+            attacking = false;
+        }
+    }
+
+    // 計算 Player 攻擊怪物的值
+    public void damageMonster(int index, int attack) {
+        if (index != 999) {
+            System.out.println("Player is hiting the monster!!");
+
+            Entity monster = gp.monster[index];
+            // give some damge
+            if (monster.invincible == false) {
+                gp.playSoundEffect(Sound.FX_HIT_MONSTER);
+
+                int damage = attack - gp.monster[index].defense;
+                if (damage < 0) { damage = 1; }
+
+                monster.life -= damage;
+                gp.ui.addMessage(damage + " damage!");
+                monster.invincible = true;
+                monster.damageReaction();
+
+                // handling monster dying
+                if(monster.life <= 0) {
+                    gp.monster[index].dying = true;
+                    exp += gp.monster[index].exp;
+
+                    gp.ui.addMessage("Killed the " + gp.monster[index].name + "!");
+                    gp.ui.addMessage("Exp +" + gp.monster[index].exp + "!");
+
+                    checkLevelUp();
+                }
+            }
+        } else {
+            System.out.println("Player hiting miss!!");
+        }
+    }
+
+    // 計算 Player 被 Monster 攻擊後生命值的損失
+    public void contactMonster(int index) {
+        if (index != 999) {
+            System.out.println("[Player#contactMonster] Monster are attacking Player!!");
+            if (invincible == false && gp.monster[index].dying == false) {
+                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
+                
+                // Monster 攻擊力 - Player 的防禦力
+                int damage = gp.monster[index].attack - defense;
+                if (damage < 0) { damage = 1; }
+
+                life -= damage;
+                invincible = true;
+            }
+        }
+    }
+
+    // 檢查是否提升等級
+    private void checkLevelUp() {
+        if (exp >= nextLevelExp) {
+            System.out.printf("[Player#checkLevelUp] exp: [%s], nextLevelExp: [%s]\n", exp, nextLevelExp);
+            level++;
+            nextLevelExp = nextLevelExp * 2;
+            maxLife += 2; // one heart
+            strength++;
+            dexterity++;
+            attack = getAttack();
+            defense = getDefense();
+
+            gp.playSoundEffect(Sound.FX__LEVELUP);
+
+            gp.gameState = GameState.DIALOGUE_STATE;
+            gp.ui.currentDialogue = "You are level #" + level + " now!\n"
+                + "You feel stronger!";
+
+        }
+    }
+
+    // 選擇 Inventory 裡的東西
+    public void selectItem() {
+        int itemIndex = gp.ui.getItemIndexOnSlot();
+
+        if (itemIndex < inventory.size()) {
+            Entity selectedItem = inventory.get(itemIndex);
+            if (selectedItem.type == EntityType.SWORD || selectedItem.type == EntityType.AXE) {
+                currentWeapon = selectedItem;
+                attack = getAttack();
+                getPlayerAttackImage();
+            }
+            if (selectedItem.type == EntityType.SHIELD) {
+                currentShield= selectedItem;
+                defense = getDefense();
+            }
+            if (selectedItem.type == EntityType.CONSUMABLE) {
+                selectedItem.use(this);
+                inventory.remove(itemIndex);
+            }
         }
     }
 

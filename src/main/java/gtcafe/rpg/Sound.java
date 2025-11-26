@@ -23,6 +23,7 @@ public class Sound {
     
     public final static int FX__LEVELUP = 8;
     public final static int FX__CURSOR = 9;
+    public final static int FX__BURNING = 10;
 
     public Sound () {
         soundURL[MUSIC__MAIN_THEME] = getClass().getResource("/gtcafe/rpg/assets/bgm/BlueBoyAdventure.wav");
@@ -38,6 +39,7 @@ public class Sound {
 
         soundURL[FX__LEVELUP] = getClass().getResource("/gtcafe/rpg/assets/sound/levelup.wav");
         soundURL[FX__CURSOR] = getClass().getResource("/gtcafe/rpg/assets/sound/cursor.wav");
+        soundURL[FX__BURNING] = getClass().getResource("/gtcafe/rpg/assets/sound/burning.wav");
     }
 
 

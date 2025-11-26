@@ -157,7 +157,7 @@ public class UI {
         int dFrameX = frameX;
         int dFrameY = frameY + frameHeight;
         int dFrameWidth = frameWidth;
-        int dFrameHeight = gp.tileSize * 3;
+        int dFrameHeight = gp.tileSize * 4;
         g2Utils.drawSubWindow(g2, dFrameX, dFrameY, dFrameWidth, dFrameHeight);
         // DRAW DESCRIPTION TEXT
         int textX = dFrameX + 20;
