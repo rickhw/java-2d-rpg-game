@@ -1,41 +1,37 @@
 
+slideshare.net/slideshow/ch02-api-governance/257455431#2
 
-https://www.youtube.com/watch?v=RoNr6opGjWc&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq&index=35
+# Breaking Objects 
 
-# Item Drops
+- Destructible Tiles
+    - new image: dry tree, trunk
+    - chagne the worldv2 map
+- Item Requirement
+- Effecting the Destroyed Tree
+- Check the collision for NPC or monster
 
-- Add new OBJ_COIN, and EntityType.PICKUPONLY
-- For OBJ_Heart/Mana/Coin
-    - Set type as PICKUPONLY, set Value
-    - Add use() to calc the logic
-- Reuse OBJ_Heart/Mana to draw to map via AssetSetter.java
-- Drop the items when monster die.
-    - checkDrop() and dropItem() in Entity
-    - Monster checkDrop() by random
-    - dropItem in monster position
 ---
 
 # Video Summary
 
-### 🚀 新增火球系統
-- 實施了**投射物系統**，允許玩家消耗**法力**發射火球。
-- 殺死怪物後，隨機掉落物品，提高遊戲挑戰性。
+### 🌲 可破壞的瓦片
+- **增強互動性**：新增了一種可以被玩家摧毀的瓦片（如乾燥的樹木），類似於其他沙盒遊戲中的概念（例如 Minecraft 和 Terraria）。
+- **物件分類**：將這些可摧毀的物件命名為 **互動瓦片**，為了管理代碼結構進行了新的封裝。
 
-### 🎮 物品掉落機制
-- 加入了新物品，包括**銅幣**，用於提升玩家的貨幣數量，但不存入背包。
-- 每個怪物的掉落物品是隨機的，設定了不同掉落機率。
+### ⚙️ 代碼實現
+- **類別結構**：創建了 `interactive tile` 類，並且擴展了乾燥樹的類別以實施可摧毀功能。
+- **繪製邏輯**：將這些互動瓦片作為普通瓦片進行更新與繪製，而不是將它們單獨添加到實體列表中。
 
-### 🔧 除錯與優化
-- 移除**實體類別**中不必要的圖片寬度和高度參數，提高代碼整潔性。
-- 更新物品類別，移動共用方法至**玩家類別**，減少冗餘代碼。
+### 🔨 物品需求
+- **武器檢查**：設定玩家要使用特定工具（如斧頭）才能摧毀某些瓦片，這樣增強了遊戲的挑戰性。
 
-### 🍬 餵食物品與效果
-- 物品如**全心**和**法力水晶**可放置在地圖上，玩家可以拾取並恢復生命或法力值。
-- 新增**立即效果**的物品類型，提升玩家互動性。
+### 🌳 垂死效果
+- **生命系統**：在可破壞的瓦片上實施生命值系統，玩家需要多次攻擊來摧毀物件，增加了遊戲的策略性。
+- **可視效果**：在摧毀的樹木幻影中留下樹樁，並增加了切割音效以增強遊戲沉浸感。
 
-### 🐉 怪物掉落設定
-- 每個怪物死亡時會隨機決定掉落物品，根據設定的機率分配不同物品。
-- 透過**隨機數生成器**實現掉落的多樣性，讓玩家在探索中獲得驚喜。
+### 🎮 遊戲設計意義
+- **互動性增強**：可破壞的瓦片不僅增強了遊戲的互動性，還創造出大量角色行為的可能性，例如需要特定物品才能進入新的區域。
+- **激勵玩家探索**：設計上促使玩家找到新的物品或武器，以便解鎖隱藏路徑。 
 
-### 🏆 未來發展
-- 計劃進一步擴展掉落物品的範圍，包括稀有裝備，以增加遊戲的深度和趣味性。
+### 🌟 未來展望
+- **粒子效果**：計劃在未來的更新中添加粒子效果，例如在攻擊時產生的視覺效果，進一步提升遊戲的趣味性和視覺吸引力。

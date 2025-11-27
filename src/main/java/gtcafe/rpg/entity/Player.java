@@ -12,9 +12,9 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.GameState;
 import gtcafe.rpg.KeyHandler;
 import gtcafe.rpg.Sound;
+import gtcafe.rpg.object.OBJ_Axe;
 import gtcafe.rpg.object.OBJ_Fireball;
 import gtcafe.rpg.object.OBJ_Key;
-import gtcafe.rpg.object.OBJ_Rock;
 import gtcafe.rpg.object.OBJ_Shield_Wood;
 import gtcafe.rpg.object.OBJ_Sword_Normal;
 
@@ -83,7 +83,8 @@ public class Player extends Entity {
         exp = 0;
         nextLevelExp = 5;
         coin = 0;
-        currentWeapon = new OBJ_Sword_Normal(gp);
+        // currentWeapon = new OBJ_Sword_Normal(gp);
+        currentWeapon = new OBJ_Axe(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectiles = new OBJ_Fireball(gp);
         // projectiles = new OBJ_Rock(gp);
@@ -182,6 +183,9 @@ public class Player extends Entity {
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
             contactMonster(monsterIndex);   // player receives damage
 
+            // CHECK INTERACTIVE TILES
+            int iTileIndex = gp.collisionChecker.checkEntity(this, gp.iTile);
+
             // CHECKT EVENT
             gp.eventHandler.checkEvent();
 
@@ -217,7 +221,8 @@ public class Player extends Entity {
                 }
                 spriteCounter = 0;
             }
-        } else {
+        } 
+        else {
             // ANIMATION for Standing
             spriteCounter++;
             if(spriteCounter > ANIMATION_SPEED) {
@@ -408,6 +413,10 @@ public class Player extends Entity {
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
             damageMonster(monsterIndex, attack);
 
+            // check player attack the interactive tiles
+            int iTileIndex = gp.collisionChecker.checkEntity(this, gp.iTile);
+            damageInteractiveTiles(iTileIndex);
+
             // restore position
             worldX = currentWorldX;
             worldY = currentWorldY;
@@ -419,6 +428,23 @@ public class Player extends Entity {
             spriteNum = 1;
             spriteCounter = 0;
             attacking = false;
+        }
+    }
+
+    // 計算 Player 毀壞 Interactive Tiles 的邏輯
+    private void damageInteractiveTiles(int i) {
+        if (i != 999                                        // 1. Tile Index 是否在合理位置
+                && gp.iTile[i].destructible == true         // 2. 判斷 Tiles 是否已經宣告成可摧毀的物件
+                && gp.iTile[i].isCorrectItem(this) == true  // 3. 判斷目前 Entity (Player) 的武器，是否可以摧毀 Tiles
+                && gp.iTile[i].invincible == false          // 4. 是否在暫時無敵狀態
+            ) { 
+            gp.iTile[i].playSoundEffect();
+            gp.iTile[i].life --;
+            gp.iTile[i].invincible = true;
+
+            if (gp.iTile[i].life == 0) {
+                gp.iTile[i] = gp.iTile[i].getDestroyedForm();
+            }
         }
     }
 

@@ -15,6 +15,7 @@ import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.entity.Projectiles;
 import gtcafe.rpg.tile.TileManager;
+import gtcafe.rpg.tile.interactive.InteractiveTile;
 
 public class GamePanel extends JPanel implements Runnable {
     // Tile Settings
@@ -50,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[10];
     public Entity monster[] = new Entity[20];
+    public InteractiveTile iTile[] = new InteractiveTile[50];
     public ArrayList<Projectiles> projectilesList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
 
@@ -71,6 +73,7 @@ public class GamePanel extends JPanel implements Runnable {
         assetSetter.setObject();
         assetSetter.setNPC();
         assetSetter.setMonster();
+        assetSetter.setInteractiveTiles();
         playBackgroundMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
         stopBackgroundMusic();
 
@@ -109,6 +112,12 @@ public class GamePanel extends JPanel implements Runnable {
                     if (projectilesList.get(i).alive == false) {
                         projectilesList.remove(i);
                     }
+                }
+            }
+            // UPDATE INTERACTIVE_TILES
+            for (int i=0; i<iTile.length; i++) {
+                if (iTile[i] != null) {
+                    iTile[i].update();
                 }
             }
 
@@ -199,6 +208,10 @@ public class GamePanel extends JPanel implements Runnable {
         } else {
             // TILE
             tileManager.draw(g2);
+            // INTERACTIVE TILES
+            for(int i=0; i<iTile.length; i++) {
+                if(iTile[i] != null) { iTile[i].draw(g2); }
+            }
 
             // ADD ENTITY TO THE LIST
             entityList.add(player);

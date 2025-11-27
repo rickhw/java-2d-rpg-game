@@ -3,7 +3,11 @@
 
 ### v2.6.x
 
-- Item Drops
+- Monster Item Drops
+    - Coin, Heart, Mana
+- Interactive Tiles: Player can destroy the tree.
+    - only for Axe
+    - Collision detection for NPC and Monster
 
 
 ### v2.5.x
