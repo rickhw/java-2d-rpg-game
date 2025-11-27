@@ -150,8 +150,8 @@ public class KeyHandler implements KeyListener {
 
         if (code == KeyEvent.VK_X) {
             gp.player.life = gp.player.maxLife;
+            gp.player.mana = gp.player.maxMana;
         }
-
 
         if (code == KeyEvent.VK_P) {
             gp.gameState = GameState.PAUSE_STATE;

@@ -7,7 +7,8 @@ public enum EntityType {
     SWORD(3),
     AXE(4),
     SHIELD(5),
-    CONSUMABLE(6)
+    CONSUMABLE(6),
+    PICKUPONLY(7)   // Coin
     ;
 
     int value;

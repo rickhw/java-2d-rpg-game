@@ -6,6 +6,9 @@ import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
+import gtcafe.rpg.object.OBJ_Coin_Bronze;
+import gtcafe.rpg.object.OBJ_Heart;
+import gtcafe.rpg.object.OBJ_ManaCrystal;
 import gtcafe.rpg.object.OBJ_Rock;
 
 public class MON_GreenSlime extends Entity {
@@ -85,5 +88,22 @@ public class MON_GreenSlime extends Entity {
     public void damageReaction() {
         actionLockCounter = 0;
         direction = gp.player.direction;
+    }
+
+    // called when monster die (GamePanel.update())
+    public void checkDrop() {
+        // CAST A DIE
+        int i = new Random().nextInt(100) + 1;
+
+        // SET THE MONSTER DROP
+        if (i < 50) {
+            dropItem(new OBJ_Coin_Bronze(gp));
+        }
+        if (i >= 50 && i < 75) {
+            dropItem(new OBJ_Heart(gp));
+        }
+        if (i >= 75 && i < 100) {
+            dropItem(new OBJ_ManaCrystal(gp));
+        }
     }
 }
