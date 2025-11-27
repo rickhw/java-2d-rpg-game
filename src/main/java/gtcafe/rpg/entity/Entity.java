@@ -56,6 +56,7 @@ public class Entity {
     public int life;    // 目前生命值
     public int maxMana; // 最大法力
     public int mana;    // 現在的法力
+    public int ammo;    // 現在的彈藥數 for OBJ_Rock
 
     public int level;
     public int strength;    // 力量
@@ -132,17 +133,7 @@ public class Entity {
 
         // handle: monster attack player
         if (this.type == EntityType.MONSTER && contactPlayer == true) {
-            if (gp.player.invincible == false) {
-                // we can give damage
-                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
-
-                //  攻擊力 - Player 的防禦力
-                int damage = attack - gp.player.defense;
-                if (damage < 0) { damage = 0; }
-
-                gp.player.life -= damage;
-                gp.player.invincible = true;
-            }
+            damagePlayer(attack);
         }
 
         // IF COLLISION IS FALSE, ENTITY CAN MOVE
@@ -182,6 +173,12 @@ public class Entity {
                 invincibleCounter = 0;
             }
         }
+
+        // to avoid double shoot the projectiles for next 30 frames
+        if (shotAvailableCounter < 30) {
+            shotAvailableCounter++;
+        }
+
     }
 
     public void draw(Graphics2D g2) {
@@ -239,6 +236,20 @@ public class Entity {
 
             // reset the alpha value for next frame
             g2Utils.changeAlpha(g2, 1f);
+        }
+    }
+
+    public void damagePlayer(int attack) {
+        if (gp.player.invincible == false) {
+            // we can give damage
+            gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
+
+            //  攻擊力 - Player 的防禦力
+            int damage = attack - gp.player.defense;
+            if (damage < 0) { damage = 0; }
+
+            gp.player.life -= damage;
+            gp.player.invincible = true;
         }
     }
 

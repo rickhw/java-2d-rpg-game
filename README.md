@@ -4,7 +4,7 @@
 ### v2.5.x
 
 - Add projectlies (拋射物), the example is fireball.
-
+- Monster Projectiles and Mana
 
 ### v2.4.x
 

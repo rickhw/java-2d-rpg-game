@@ -6,6 +6,7 @@ import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
+import gtcafe.rpg.object.OBJ_Rock;
 
 public class MON_GreenSlime extends Entity {
     GamePanel gp;
@@ -22,6 +23,7 @@ public class MON_GreenSlime extends Entity {
         attack = 2;
         defense = 0;
         exp = 2; // how much can get the exp
+        projectiles = new OBJ_Rock(gp);
 
         solidArea.x = 3;
         solidArea.y = 18;
@@ -45,6 +47,7 @@ public class MON_GreenSlime extends Entity {
     }
 
     // Setting Slime's behavior
+    // call 60 times per second
     public void setAction() {
         actionLockCounter++;
 
@@ -64,9 +67,18 @@ public class MON_GreenSlime extends Entity {
             if (i > 75 && i <= 100) {
                 direction = Direction.RIGHT;
             }
-            actionLockCounter = 0;
+            actionLockCounter = 0;   
+            
+            // System.out.println("[MON_GreenSlime#setAction] direction: " + direction);   
+        }
 
-            System.out.println("[MON_GreenSlime#setAction] direction: " + direction);   
+        // logic to shoot the projectiles
+        int i = new Random().nextInt(100) + 1;
+        if (i > 99 && projectiles.alive == false) {
+            projectiles.set(worldX, worldY, direction, true, this);
+            gp.projectilesList.add(projectiles);
+
+            shotAvailableCounter = 0;
         }
     }
 

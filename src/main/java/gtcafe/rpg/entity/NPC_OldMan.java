@@ -52,7 +52,7 @@ public class NPC_OldMan extends Entity {
             }
             actionLockCounter = 0;
 
-            System.out.println("[NPC_OldMan#setAction] direction: " + direction);   
+            // System.out.println("[NPC_OldMan#setAction] direction: " + direction);   
         }
     }
 

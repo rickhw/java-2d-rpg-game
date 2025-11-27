@@ -1,6 +1,7 @@
 package gtcafe.rpg.object;
 
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Projectiles;
 
 public class OBJ_Fireball extends Projectiles {
@@ -10,7 +11,7 @@ public class OBJ_Fireball extends Projectiles {
         this.gp = gp;
 
         name = "Fireball";
-        speed = 6;
+        speed = 5;
         maxLife = 80;   // 80 frame 後會消失
         life = maxLife;
         attack = 3;
@@ -31,5 +32,20 @@ public class OBJ_Fireball extends Projectiles {
         left2 = setup(packagePath + "fireball_left_2.png", gp.tileSize, gp.tileSize);
         right1 = setup(packagePath + "fireball_right_1.png", gp.tileSize, gp.tileSize);
         right2 = setup(packagePath + "fireball_right_2.png", gp.tileSize, gp.tileSize);
+    }
+
+    // 判斷是否有足夠的魔力值可以使用
+    public boolean haveResource(Entity user) {
+        boolean haveResource = false;
+        if (user.mana >= useCost) {
+            haveResource = true;
+        }
+
+        return haveResource;
+    }
+
+    // 減去使用者的魔力值
+    public void subtractResource(Entity user) {
+        user.mana -= useCost;
     }
 }
