@@ -265,6 +265,10 @@ public class Player extends Entity {
             shotAvailableCounter++;
         }
 
+        // Check the life value to avoid grant to maxLife
+        // such player pick the heart.
+        if (life > maxLife) { life = maxLife; }
+        if (mana > maxMana) { mana = maxMana; }
         // if (drawCounter > 60) {
         //     drawCounter = 0;
         //     showInfo = true;
@@ -335,16 +339,24 @@ public class Player extends Entity {
     public void pickUpObject(int index) {
         // 999 MEANS NOT TOUCH ANY OBJECT
         if (index != 999) {
-            String text;
-            if (inventory.size() != maxInventorySize) {
-                inventory.add(gp.obj[index]);
-                gp.playSoundEffect(Sound.FX_COIN);
-                text = "Got a " + gp.obj[index].name + "!";
-            } else {
-                text = "You cannot carry any more!";
+            // PICKUP ONLY ITEMS, ex: Coin
+            if (gp.obj[index].type == EntityType.PICKUPONLY) {
+                gp.obj[index].use(this);
+                gp.obj[index] = null;
+            } 
+            // INVENTORY ITEMS
+            else {
+                String text;
+                if (inventory.size() != maxInventorySize) {
+                    inventory.add(gp.obj[index]);
+                    gp.playSoundEffect(Sound.FX_COIN);
+                    text = "Got a " + gp.obj[index].name + "!";
+                } else {
+                    text = "You cannot carry any more!";
+                }
+                gp.ui.addMessage(text);
+                gp.obj[index] = null;
             }
-            gp.ui.addMessage(text);
-            gp.obj[index] = null;
         }
     }
 
@@ -468,6 +480,7 @@ public class Player extends Entity {
             level++;
             nextLevelExp = nextLevelExp * 2;
             maxLife += 2; // one heart
+            maxMana += 1; // one mana
             strength++;
             dexterity++;
             attack = getAttack();
@@ -478,7 +491,6 @@ public class Player extends Entity {
             gp.gameState = GameState.DIALOGUE_STATE;
             gp.ui.currentDialogue = "You are level #" + level + " now!\n"
                 + "You feel stronger!";
-
         }
     }
 

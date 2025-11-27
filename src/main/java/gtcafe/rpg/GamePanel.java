@@ -95,6 +95,7 @@ public class GamePanel extends JPanel implements Runnable {
                         monster[i].update();
                     }
                     if (monster[i].alive == false) {
+                        monster[i].checkDrop(); // when monster die, check the dropped items.
                         monster[i] = null;
                     }
                 }

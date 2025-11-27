@@ -1,6 +1,11 @@
 
 ## Release Notes
 
+### v2.6.x
+
+- Item Drops
+
+
 ### v2.5.x
 
 - Add projectlies (拋射物), the example is fireball.

@@ -72,6 +72,7 @@ public class Entity {
     public Projectiles projectiles; // 拋射物
 
     // ITEM ATTRIBUTES
+    public int value;
     public int attackValue;     // 攻擊力
     public int defenseValue;    // 防禦力
     public String description = "";
@@ -232,7 +233,7 @@ public class Entity {
                 dyingAnimation(g2);
             }
 
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(image, screenX, screenY, null); // setup() has re-scale the image, we don't need pass weight and height any more.
 
             // reset the alpha value for next frame
             g2Utils.changeAlpha(g2, 1f);
@@ -274,5 +275,21 @@ public class Entity {
         }
     }
 
+
+    public void checkDrop() {
+    }
+
+    // Handle the dropItem action
+    public void dropItem(Entity droppedItem) {
+        for (int i=0; i< gp.obj.length; i++ ) {
+            if (gp.obj[i] == null) {
+                gp.obj[i] = droppedItem;
+                // the dead monster's worldX/Y
+                gp.obj[i].worldX = worldX; 
+                gp.obj[i].worldY = worldY;
+                break; // break the check.
+            }
+        }
+    }
 
 }
