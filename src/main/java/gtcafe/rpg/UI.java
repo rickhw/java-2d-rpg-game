@@ -39,10 +39,8 @@ public class UI {
     // 1: the second screen ..
     public int titleScreenState = 0;
 
-
     public int slotCol = 0;
     public int slotRow = 0;
-
 
     Graphics2DUtils g2Utils = new Graphics2DUtils();
 
@@ -370,7 +368,7 @@ public class UI {
 
             // TITLE NAME
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
-            String text = "Rick Boy Adventure";
+            String text = "M/A Legend";
             int x = getXforCenterText(text);
             int y = gp.tileSize * 3;
 
