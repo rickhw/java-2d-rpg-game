@@ -14,6 +14,7 @@ import gtcafe.rpg.KeyHandler;
 import gtcafe.rpg.Sound;
 import gtcafe.rpg.object.OBJ_Fireball;
 import gtcafe.rpg.object.OBJ_Key;
+import gtcafe.rpg.object.OBJ_Rock;
 import gtcafe.rpg.object.OBJ_Shield_Wood;
 import gtcafe.rpg.object.OBJ_Sword_Normal;
 
@@ -73,6 +74,10 @@ public class Player extends Entity {
         level = 1;
         maxLife = 6;
         life = maxLife;
+        maxMana = 4;
+        mana = maxMana;
+        ammo = 10;          // for Demo the Rock
+
         strength = 1;       // the more strength he has, the more damage he gives.
         dexterity = 1;      // the more dexterity the has, the less damage he receives.
         exp = 0;
@@ -81,6 +86,7 @@ public class Player extends Entity {
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectiles = new OBJ_Fireball(gp);
+        // projectiles = new OBJ_Rock(gp);
 
         attack = getAttack();       // 計算攻擊力, 由 strength and weapon 決定
         defense = getDefense();     // 計算防禦力, 由 dexterity and shield 決定
@@ -224,11 +230,19 @@ public class Player extends Entity {
             }
         }
 
-        // cannot shot
-        if (gp.keyHandler.shotKeyPressed == true && projectiles.alive == false && shotAvailableCounter == 30) {
+        // check if can shoot the projectiles
+        // 1. 按下發射按鈕
+        // 2. 拋射物目前沒有發射
+        // 3. 拋射物目前還沒有畫出來 (30 FPS)
+        // 4. Player 目前的魔力值足夠發射 (根據 Mana 值以及 Projectiles 需要消耗的值判斷)
+        if (gp.keyHandler.shotKeyPressed == true && projectiles.alive == false && 
+                shotAvailableCounter == 30 && projectiles.haveResource(this) == true) {
             // SET DEFAULT COORDINATES, DIRECTION AND USER
             projectiles.set(worldX, worldY, direction, true, this);
 
+            // SUBTRACT THE COST (MANA, AMMO 彈藥, etc.)
+            projectiles.subtractResource(this);
+            
             // ADD IT TO THE LIST
             gp.projectilesList.add(projectiles);
 

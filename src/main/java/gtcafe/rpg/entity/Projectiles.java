@@ -32,7 +32,11 @@ public class Projectiles extends Entity {
             }
         }
         if (user != gp.player) {
-
+            boolean contacPlayer = gp.collisionChecker.checkPlayer(this);
+            if (gp.player.invincible == false && contacPlayer == true) {
+                damagePlayer(attack);
+                alive = false;
+            }
         }
 
         switch (direction) {
@@ -52,5 +56,18 @@ public class Projectiles extends Entity {
             spriteNum = (spriteNum == 1 ? 2 : 1);
             spriteCounter = 0;
         }
+    }
+
+    // 判斷是否有足夠的魔力值可以使用
+    // overwrite by subclass
+    public boolean haveResource(Entity user) {
+        boolean haveResource = false;
+        return haveResource;
+    }
+
+    // 減去使用者的魔力值
+    // overwrite by subclass
+    public void subtractResource(Entity user) {
+
     }
 }
