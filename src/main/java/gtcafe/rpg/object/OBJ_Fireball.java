@@ -11,8 +11,8 @@ public class OBJ_Fireball extends Projectiles {
         this.gp = gp;
 
         name = "Fireball";
-        speed = 5;
-        maxLife = 80;   // 80 frame 後會消失
+        speed = 8;
+        maxLife = 120;   // 80 frame 後會消失
         life = maxLife;
         attack = 3;
         useCost = 1;    // 花費 1 個魔力

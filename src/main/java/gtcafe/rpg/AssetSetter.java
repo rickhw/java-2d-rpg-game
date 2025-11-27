@@ -8,6 +8,8 @@ import gtcafe.rpg.object.OBJ_Heart;
 import gtcafe.rpg.object.OBJ_ManaCrystal;
 import gtcafe.rpg.object.OBJ_Postion_Red;
 import gtcafe.rpg.object.OBJ_Shield_Blue;
+import gtcafe.rpg.object.OBJ_Sword_Normal;
+import gtcafe.rpg.tile.interactive.IT_DryTree;
 
 public class AssetSetter {
 
@@ -36,7 +38,7 @@ public class AssetSetter {
         gp.obj[i].worldY = gp.tileSize * 21;
 
         i++;
-        gp.obj[i] = new OBJ_Axe(gp);
+        gp.obj[i] = new OBJ_Sword_Normal(gp);
         gp.obj[i].worldX = gp.tileSize * 33;
         gp.obj[i].worldY = gp.tileSize * 21;
 
@@ -144,6 +146,26 @@ public class AssetSetter {
         gp.monster[i] = new MON_GreenSlime(gp);
         gp.monster[i].worldX = gp.tileSize * 35;
         gp.monster[i].worldY = gp.tileSize * 39;
+
+    }
+
+    public void setInteractiveTiles() {
+        int i = 0;
+        gp.iTile[i++] = new IT_DryTree(gp, 27, 12);
+        gp.iTile[i++] = new IT_DryTree(gp, 28, 12);
+        gp.iTile[i++] = new IT_DryTree(gp, 29, 12);
+        gp.iTile[i++] = new IT_DryTree(gp, 30, 12);
+        gp.iTile[i++] = new IT_DryTree(gp, 31, 12);
+        gp.iTile[i++] = new IT_DryTree(gp, 32, 12);
+        gp.iTile[i++] = new IT_DryTree(gp, 33, 12);
+
+        // for testing
+        gp.iTile[i++] = new IT_DryTree(gp, 30, 20);
+        gp.iTile[i++] = new IT_DryTree(gp, 30, 21);
+        gp.iTile[i++] = new IT_DryTree(gp, 30, 22);
+        gp.iTile[i++] = new IT_DryTree(gp, 20, 20);
+        gp.iTile[i++] = new IT_DryTree(gp, 20, 21);
+        gp.iTile[i++] = new IT_DryTree(gp, 20, 22);
 
     }
 }
