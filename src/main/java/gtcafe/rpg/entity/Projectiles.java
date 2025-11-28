@@ -26,6 +26,7 @@ public class Projectiles extends Entity {
         if (user == gp.player) {
             // if the projectile hits a monster, it dies (disappers).
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+            // player attack monster
             if (monsterIndex != 999) {
                 gp.player.damageMonster(monsterIndex, attack);
                 generateParticle(user.projectiles, gp.monster[monsterIndex]);
@@ -34,6 +35,7 @@ public class Projectiles extends Entity {
         }
         if (user != gp.player) {
             boolean contacPlayer = gp.collisionChecker.checkPlayer(this);
+            // monster attack player
             if (gp.player.invincible == false && contacPlayer == true) {
                 damagePlayer(attack);
                 generateParticle(user.projectiles, gp.player);
@@ -46,6 +48,7 @@ public class Projectiles extends Entity {
             case DOWN -> worldY += speed;
             case LEFT -> worldX -= speed;
             case RIGHT -> worldX += speed;
+            default -> throw new IllegalArgumentException("Unexpected value: " + direction);
         }
 
         life--;

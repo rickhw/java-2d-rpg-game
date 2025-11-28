@@ -315,7 +315,12 @@ public class Entity {
         int maxLife = 0;
         return maxLife;
     }
-
+    
+    /**
+     * 
+     * @param generator 像是 Fireball, Rock, DryTree 都是粒子特效的產生者
+     * @param target 粒子特效的主要目標, DryTree, Player, Monster ... etc.
+     */
     public void generateParticle(Entity generator, Entity target) {
         Color color = generator.getParticleColor();
         int size = generator.getParticleSize();
@@ -323,10 +328,11 @@ public class Entity {
         int maxLife = generator.getParitcleMaxLife();
         
         // 產生四個粒子
-        Particle p1 = new Particle(gp, generator, color, size, speed, maxLife, -2, -1);
-        Particle p2 = new Particle(gp, generator, color, size, speed, maxLife, 2, -1);
-        Particle p3 = new Particle(gp, generator, color, size, speed, maxLife, -2, 1);
-        Particle p4 = new Particle(gp, generator, color, size, speed, maxLife, 2, 1);
+        Particle p1 = new Particle(gp, target, color, size, speed, maxLife, -2, -1);
+        Particle p2 = new Particle(gp, target, color, size, speed, maxLife, 2, -1);
+        Particle p3 = new Particle(gp, target, color, size, speed, maxLife, -2, 1);
+        Particle p4 = new Particle(gp, target, color, size, speed, maxLife, 2, 1);
+        
         gp.particleList.add(p1);
         gp.particleList.add(p2);
         gp.particleList.add(p3);
