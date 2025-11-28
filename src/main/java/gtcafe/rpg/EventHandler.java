@@ -47,8 +47,8 @@ public class EventHandler {
 
         if (canTouchEvent) {
             // damagePit
-            if (hit(27,16,Direction.RIGHT)) { damagePit(27, 16, GameState.DIALOGUE_STATE); }
-            if (hit(23,19,Direction.ANY)) { damagePit(27, 16, GameState.DIALOGUE_STATE); }
+            // if (hit(27,16,Direction.RIGHT)) { damagePit(27, 16, GameState.DIALOGUE_STATE); }
+            // if (hit(23,19,Direction.ANY)) { damagePit(27, 16, GameState.DIALOGUE_STATE); }
 
             // water side
             if (hit(23,12,Direction.UP) == true) { healingPool(23, 12, GameState.DIALOGUE_STATE); }

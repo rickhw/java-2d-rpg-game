@@ -16,7 +16,6 @@ import gtcafe.rpg.object.OBJ_Axe;
 import gtcafe.rpg.object.OBJ_Fireball;
 import gtcafe.rpg.object.OBJ_Key;
 import gtcafe.rpg.object.OBJ_Shield_Wood;
-import gtcafe.rpg.object.OBJ_Sword_Normal;
 
 public class Player extends Entity {
     KeyHandler keyHandler;
@@ -333,11 +332,11 @@ public class Player extends Entity {
         g2Utils.changeAlpha(g2, 1f);
 
         // DEBUG
-        if (gp.debugMode) {
-            g2.setFont(new Font("Arial", Font.PLAIN, 26));
-            g2.setColor(Color.white);
-            g2.drawString("Invincible: " + invincibleCounter, 8, 400);
-        }
+        // if (gp.debugMode) {
+        //     g2.setFont(new Font("Arial", Font.PLAIN, 26));
+        //     g2.setColor(Color.white);
+        //     g2.drawString("Invincible: " + invincibleCounter, 5, 400);
+        // }
     }
 
     // Player 跟地圖上的物件的互動
