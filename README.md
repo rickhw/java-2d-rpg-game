@@ -5,10 +5,15 @@
 
 - Monster Item Drops
     - Coin, Heart, Mana
-- Interactive Tiles: Player can destroy the tree.
+- Destructible Ties (Interactive Tiles): Player can destroy the tree.
     - only for Axe
     - Collision detection for NPC and Monster
-
+- Particles (粒子效果)
+    - Gravity
+    - Particle Effect to: 
+        - Play cuts the dry tree
+        - Play attacks monster with projectiles (fireball)
+        - monster attacks player with projectiles (rock)
 
 ### v2.5.x
 

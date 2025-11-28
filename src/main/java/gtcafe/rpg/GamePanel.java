@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity monster[] = new Entity[20];
     public InteractiveTile iTile[] = new InteractiveTile[50];
     public ArrayList<Projectiles> projectilesList = new ArrayList<>();
+    public ArrayList<Entity> particleList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
 
     // GAME STATE: for different purpose for game,
@@ -70,62 +71,21 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() {
+        gameState = GameState.TITLE_STATE;
+
         assetSetter.setObject();
         assetSetter.setNPC();
         assetSetter.setMonster();
         assetSetter.setInteractiveTiles();
+
         playBackgroundMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
         stopBackgroundMusic();
-
-        gameState = GameState.TITLE_STATE;
     }
 
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
-
-
-    public void update() {
-        if (gameState == GameState.PLAY_STATE) {
-            player.update();
-            for(int i=0; i<npc.length; i++) {
-                if(npc[i] != null) npc[i].update();
-            }
-            for(int i=0; i<monster.length; i++) {
-                if(monster[i] != null) {
-                    if (monster[i].alive == true && monster[i].dying == false) {
-                        monster[i].update();
-                    }
-                    if (monster[i].alive == false) {
-                        monster[i].checkDrop(); // when monster die, check the dropped items.
-                        monster[i] = null;
-                    }
-                }
-            }
-
-            for(int i=0; i<projectilesList.size(); i++) {
-                if(projectilesList.get(i) != null) {
-                    if (projectilesList.get(i).alive == true) {
-                        projectilesList.get(i).update();
-                    }
-                    if (projectilesList.get(i).alive == false) {
-                        projectilesList.remove(i);
-                    }
-                }
-            }
-            // UPDATE INTERACTIVE_TILES
-            for (int i=0; i<iTile.length; i++) {
-                if (iTile[i] != null) {
-                    iTile[i].update();
-                }
-            }
-
-        } else if (gameState == GameState.PAUSE_STATE) {
-            // nothing, we don't update the player info
-        }
-    }
-
     // Game loop 1: Sleep
     // @Override
     // public void run() {
@@ -192,17 +152,77 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    // call by GameLoop
+    public void update() {
+        if (gameState == GameState.PLAY_STATE) {
+            // 1. PLAYER
+            player.update();
+
+            // 2. NPC
+            for(int i=0; i<npc.length; i++) {
+                if(npc[i] != null) npc[i].update();
+            }
+
+            // 3. MONSTER
+            for(int i=0; i<monster.length; i++) {
+                if(monster[i] != null) {
+                    if (monster[i].alive == true && monster[i].dying == false) {
+                        monster[i].update();
+                    }
+                    if (monster[i].alive == false) {
+                        monster[i].checkDrop(); // when monster die, check the dropped items.
+                        monster[i] = null;
+                    }
+                }
+            }
+
+            // 4. PROJECTILES
+            for(int i=0; i<projectilesList.size(); i++) {
+                if(projectilesList.get(i) != null) {
+                    if (projectilesList.get(i).alive == true) {
+                        projectilesList.get(i).update();
+                    }
+                    if (projectilesList.get(i).alive == false) {
+                        projectilesList.remove(i);
+                    }
+                }
+            }
+
+            // 5. SCAN PARTICLES
+            for(int i=0; i<particleList.size(); i++) {
+                if(particleList.get(i) != null) {
+                    if (particleList.get(i).alive == true) {
+                        particleList.get(i).update();
+                    }
+                    if (particleList.get(i).alive == false) {
+                        particleList.remove(i);
+                    }
+                }
+            }
+
+            // 6. INTERACTIVE_TILES
+            for (int i=0; i<iTile.length; i++) {
+                if (iTile[i] != null) {
+                    iTile[i].update();
+                }
+            }
+        } 
+        else if (gameState == GameState.PAUSE_STATE) {
+            // nothing, we don't update the player info
+        }
+    }
+
     // paint every loop
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // DEBUG
+        // 0. DEBUG
         long drawStart = 0;
         if (keyHandler.showDebugText)
             drawStart = System.nanoTime();
 
-        // TITLE SCREEN
+        // 1. TITLE SCREEN
         if (gameState == GameState.TITLE_STATE) {
             ui.draw(g2);
         } else {
@@ -226,6 +246,9 @@ public class GamePanel extends JPanel implements Runnable {
             }
             for(int i=0; i<projectilesList.size(); i++) {
                 if(projectilesList.get(i) != null) { entityList.add(projectilesList.get(i)); }
+            }
+            for(int i=0; i<particleList.size(); i++) {
+                if(particleList.get(i) != null) { entityList.add(particleList.get(i)); }
             }
 
             // SORT
