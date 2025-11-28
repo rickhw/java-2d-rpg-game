@@ -20,7 +20,7 @@ public class Entity {
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
     public BufferedImage image, image2, image3;
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);   // 碰撞偵測
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);    // Hit deteciton, be overwrite by subclass
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
@@ -291,6 +291,46 @@ public class Entity {
                 break; // break the check.
             }
         }
+    }
+
+    // 粒子 (Particle) 效果使用
+    // always overwrite by subclass
+    public Color getParticleColor() {
+        Color color = null;
+        return color;
+    }
+
+    public int getParticleSize() {
+        int size = 0; // 6 pixels
+        return size;
+    }
+
+    // how fast it can fly
+    public int getParticleSpeed() {
+        int speed = 0;
+        return speed;
+    }
+
+    public int getParitcleMaxLife() {
+        int maxLife = 0;
+        return maxLife;
+    }
+
+    public void generateParticle(Entity generator, Entity target) {
+        Color color = generator.getParticleColor();
+        int size = generator.getParticleSize();
+        int speed = generator.getParticleSpeed();
+        int maxLife = generator.getParitcleMaxLife();
+        
+        // 產生四個粒子
+        Particle p1 = new Particle(gp, generator, color, size, speed, maxLife, -2, -1);
+        Particle p2 = new Particle(gp, generator, color, size, speed, maxLife, 2, -1);
+        Particle p3 = new Particle(gp, generator, color, size, speed, maxLife, -2, 1);
+        Particle p4 = new Particle(gp, generator, color, size, speed, maxLife, 2, 1);
+        gp.particleList.add(p1);
+        gp.particleList.add(p2);
+        gp.particleList.add(p3);
+        gp.particleList.add(p4);
     }
 
 }

@@ -139,8 +139,10 @@ public class TileManager {
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
             int tileNum = mapTileNum[worldCol][worldRow];
 
+            // 計算 世界地圖 的座標
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
+            // 計算 攝影機角度 的 螢幕座標
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 

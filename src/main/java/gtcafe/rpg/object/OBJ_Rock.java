@@ -1,5 +1,7 @@
 package gtcafe.rpg.object;
 
+import java.awt.Color;
+
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Projectiles;
@@ -47,5 +49,29 @@ public class OBJ_Rock extends Projectiles {
     // 減去使用者的彈藥數
     public void subtractResource(Entity user) {
         user.ammo -= useCost;
+    }
+
+
+    // Particle 粒子效果的參數
+    public Color getParticleColor() {
+        Color color = new Color(40,50,0);
+        return color;
+    }
+
+    public int getParticleSize() {
+        int size = 10; // 10 pixels
+        return size;
+    }
+
+    // how fast it can fly
+    public int getParticleSpeed() {
+        int speed = 1;
+        return speed;
+    }
+
+    // 出現多久？ 20 frame 數量 (0.33 second)
+    public int getParitcleMaxLife() {
+        int maxLife = 20;
+        return maxLife;
     }
 }
