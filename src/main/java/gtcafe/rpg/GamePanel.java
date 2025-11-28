@@ -42,6 +42,7 @@ public class GamePanel extends JPanel implements Runnable {
     int screenHeight2 = screenHeight;
     BufferedImage tempScreen;
     Graphics2D g2;
+    public boolean fullScreenOn = false;
 
     // FPS
     public final int FPS = 60;
@@ -50,7 +51,8 @@ public class GamePanel extends JPanel implements Runnable {
     // SYSTEM
     public TileManager tileManager = new TileManager(this);
     public KeyHandler keyHandler = new KeyHandler(this);
-    Sound sound = new Sound();
+    Sound music = new Sound();
+    Sound soundEffect = new Sound();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this); // day7-4 add
     public UI ui = new UI(this);
@@ -415,17 +417,17 @@ public class GamePanel extends JPanel implements Runnable {
     // }
 
     public void playBackgroundMusic(int i) {
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
+        music.setFile(i);
+        music.play();
+        music.loop();
     }
 
     public void stopBackgroundMusic() {
-        sound.stop();
+        music.stop();
     }
 
     public void playSoundEffect(int i) {
-        sound.setFile(i);
-        sound.play();
+        soundEffect.setFile(i);
+        soundEffect.play();
     }
 }
