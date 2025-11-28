@@ -102,8 +102,8 @@ public class GamePanel extends JPanel implements Runnable {
         assetSetter.setMonster();
         assetSetter.setInteractiveTiles();
 
-        // playBackgroundMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
-        // stopBackgroundMusic();
+        playBackgroundMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
+        stopBackgroundMusic();
 
         gameState = GameState.TITLE_STATE;
 
@@ -113,7 +113,7 @@ public class GamePanel extends JPanel implements Runnable {
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB_PRE);
         g2 = (Graphics2D) tempScreen.getGraphics();
 
-        setFullScreen();
+        // setFullScreen();
     }
 
     public void startGameThread() {
