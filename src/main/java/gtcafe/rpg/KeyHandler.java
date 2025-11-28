@@ -43,22 +43,30 @@ public class KeyHandler implements KeyListener {
             characterState(code);
         }
 
-        // MUSIC EVENT
-        if (code == KeyEvent.VK_M) {
-            if (gp.bgmState == true) {
-                gp.stopBackgroundMusic();
-                gp.bgmState = false;
-            } else if (gp.bgmState == false) {
-                gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
-                gp.bgmState = true;
-            }
+        // OPTIONS STATE
+        else if (gp.gameState == GameState.OPTIONS_STATE) {
+            optionsState(code);
         }
 
-        // refresh the map data for debugging
+        // // MUSIC EVENT
+        // if (code == KeyEvent.VK_M) {
+        //     if (gp.bgmState == true) {
+        //         gp.stopBackgroundMusic();
+        //         gp.bgmState = false;
+        //     } else if (gp.bgmState == false) {
+        //         gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
+        //         gp.bgmState = true;
+        //     }
+        // }
+
+        // For Debugging
+        // refresh the map data
         if (code == KeyEvent.VK_R) {
             gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/worldV2.txt");
         }
     }
+
+
 
 
     @Override
@@ -100,7 +108,7 @@ public class KeyHandler implements KeyListener {
             if (gp.ui.commandNum == 0) {
                 System.out.println("Do some fighter specific stuff!");
                 gp.gameState = GameState.PLAY_STATE;
-                // gp.playMusic(Sound.MUSIC__MAIN_THEME);
+                gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }
             if (gp.ui.commandNum == 1) {
                 System.out.println("Do some thief specific stuff!");
@@ -144,19 +152,15 @@ public class KeyHandler implements KeyListener {
             enterPressed = true;
         }
 
-        if (code == KeyEvent.VK_Z) {
-            gp.assetSetter.setMonster();
-        }
-
-        if (code == KeyEvent.VK_X) {
-            gp.player.life = gp.player.maxLife;
-            gp.player.mana = gp.player.maxMana;
-        }
-
         if (code == KeyEvent.VK_P) {
             gp.gameState = GameState.PAUSE_STATE;
             gp.stopBackgroundMusic();
         }
+
+        if (code == KeyEvent.VK_ESCAPE) {
+            gp.gameState = GameState.OPTIONS_STATE;
+        }
+
 
         // DEBUG
         if (code == KeyEvent.VK_T) {
@@ -168,6 +172,17 @@ public class KeyHandler implements KeyListener {
                 gp.debugMode = false;
             }
         }
+
+        // For Debugging
+        if (code == KeyEvent.VK_Z) {
+            gp.assetSetter.setMonster();
+        }
+
+        if (code == KeyEvent.VK_X) {
+            gp.player.life = gp.player.maxLife;
+            gp.player.mana = gp.player.maxMana;
+        }
+
     }
 
     private void pauseState(int code) {
@@ -217,4 +232,64 @@ public class KeyHandler implements KeyListener {
         }
    }
 
+    private void optionsState(int code) {
+        if (code == KeyEvent.VK_ESCAPE) {
+            gp.gameState = GameState.PLAY_STATE;
+        }
+
+        if (code == KeyEvent.VK_ENTER) {
+            enterPressed = true;
+        }
+
+        int maxCommandNum = 0;
+        switch (gp.ui.subState) {
+            case 0: maxCommandNum = 5; break; // max 
+            case 3: maxCommandNum = 1; break; // max 
+        }
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            gp.ui.commandNum--;
+            gp.playSoundEffect(Sound.FX__CURSOR);
+            if (gp.ui.commandNum < 0) {
+                gp.ui.commandNum = maxCommandNum; // loop the cursor
+            }
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            gp.ui.commandNum++;
+            gp.playSoundEffect(Sound.FX__CURSOR);
+            if (gp.ui.commandNum > maxCommandNum) { 
+                gp.ui.commandNum = 0;
+            }
+        }
+
+        // Volume desrease
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            if (gp.ui.subState == 0) {
+                if (gp.ui.commandNum == 1 && gp.music.volumeScale > 0) {
+                    gp.music.volumeScale--;
+                    gp.music.checkVolume();
+                    gp.playSoundEffect(Sound.FX__CURSOR);
+                }
+                if (gp.ui.commandNum == 2 && gp.soundEffect.volumeScale > 0) {
+                    gp.soundEffect.volumeScale--;
+                    // gp.soundEffect.checkVolume();
+                    gp.playSoundEffect(Sound.FX__CURSOR);
+                }
+            }
+        }
+        // Volume desrease
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+            if (gp.ui.subState == 0) {
+                if (gp.ui.commandNum == 1 && gp.music.volumeScale < 5) {
+                    gp.music.volumeScale++;
+                    gp.music.checkVolume();
+                    gp.playSoundEffect(Sound.FX__CURSOR);
+                }
+                if (gp.ui.commandNum == 2 && gp.soundEffect.volumeScale < 5) {
+                    gp.soundEffect.volumeScale++;
+                    gp.playSoundEffect(Sound.FX__CURSOR);
+                }
+            }
+        }
+
+    }
 }

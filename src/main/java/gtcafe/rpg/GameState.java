@@ -6,6 +6,7 @@ public enum GameState {
     PAUSE_STATE(2, "Pause Mode"),
     DIALOGUE_STATE(3, "Dialogue Mode"),
     CHARACTER_STATE(4, "Character State"),
+    OPTIONS_STATE(5, "Options State"),
     
     ;
 
