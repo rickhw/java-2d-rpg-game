@@ -115,7 +115,7 @@ public class UI {
 
     private void drawInventory() {
         // FRAME
-        int frameX = gp.tileSize * 9;
+        int frameX = gp.tileSize * 13;
         int frameY = gp.tileSize;
         int frameWidth = gp.tileSize * 6;
         int frameHeight = gp.tileSize * 5;
@@ -367,6 +367,7 @@ public class UI {
             g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
             // TITLE NAME
+            g2.setFont(purisaB);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
             String text = "M/A Legend";
             int x = getXforCenterText(text);
@@ -481,11 +482,13 @@ public class UI {
     }
 
     public void drawPauseScreen() {
+        g2.setFont(purisaB);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
+
         String text = "PAUSED";
         int x = getXforCenterText(text);
         int y = gp.screenHeight / 2 ;
-        g2.setFont(purisaB);
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
+        
         g2.drawString(text, x, y);
     }
 
