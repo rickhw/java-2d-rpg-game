@@ -31,8 +31,9 @@ public class Particle extends Entity {
         worldY = generator.worldY + offset;
     }
 
+    // 粒子效果的演算法，配合 GameLoop 的 FPS
     public void update() {
-        life --;
+        life--;
 
         // Gravity
         if (life < maxLife/3) {

@@ -2,7 +2,6 @@ package gtcafe.rpg;
 
 import gtcafe.rpg.entity.NPC_OldMan;
 import gtcafe.rpg.monster.MON_GreenSlime;
-import gtcafe.rpg.object.OBJ_Axe;
 import gtcafe.rpg.object.OBJ_Coin_Bronze;
 import gtcafe.rpg.object.OBJ_Heart;
 import gtcafe.rpg.object.OBJ_ManaCrystal;

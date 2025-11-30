@@ -314,7 +314,7 @@ public class GamePanel extends JPanel implements Runnable {
         // DEBUG
         if (keyHandler.showDebugText) {
             long drawEnd = System.nanoTime();
-            long passed = drawEnd - drawStart;
+            long duration = drawEnd - drawStart;
 
             g2.setFont(new Font("Arial", Font.PLAIN, 20));
             g2.setColor(Color.red);
@@ -326,6 +326,7 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
             g2.drawString("Col: " + (player.worldX + player.solidArea.x)/tileSize, x, y); y += lineHeight;
             g2.drawString("Row: " + (player.worldY + player.solidArea.y)/tileSize, x, y); y += lineHeight;
+            g2.drawString("Duration: " + duration, x, y); y += lineHeight;
             g2.drawString("Draw Count: " + drawCount, x, y);
             // System.out.println("[GamePanel#paintComponent] Draw Time: "+passed);
         }
