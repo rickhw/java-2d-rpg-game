@@ -21,7 +21,7 @@ public class Projectiles extends Entity {
     }
 
     public void update() {
-        int mapIndex = gp.currentMap.value;
+        int mapIndex = gp.currentMap.index;
 
         // check collision
         if (user == gp.player) {

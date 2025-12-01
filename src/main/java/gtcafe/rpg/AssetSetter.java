@@ -23,7 +23,7 @@ public class AssetSetter {
     // instantiate objects
     public void setObject() {
         int i = 0;
-        int mapIndex = Map.WORLD_MAP.value;
+        int mapIndex = Map.WORLD_MAP.index;
         
         gp.obj[mapIndex][i] = new OBJ_Coin_Bronze(gp);
         gp.obj[mapIndex][i].worldX = gp.tileSize * 25;
@@ -76,7 +76,7 @@ public class AssetSetter {
 
     public void setNPC() {
         int i = 0;
-        int mapIndex = Map.WORLD_MAP.value;
+        int mapIndex = Map.WORLD_MAP.index;
 
         gp.npc[mapIndex][i] = new NPC_OldMan(gp);
         gp.npc[mapIndex][i].worldX = gp.tileSize * 18;
@@ -91,7 +91,7 @@ public class AssetSetter {
         // For Testing
         // i++;
         i = 0;
-        mapIndex = Map.INTERIOR_01.value;
+        mapIndex = Map.INTERIOR_01.index;
         gp.npc[mapIndex][i] = new NPC_OldMan(gp);
         gp.npc[mapIndex][i].worldX = gp.tileSize * 10;
         gp.npc[mapIndex][i].worldY = gp.tileSize * 11;
@@ -112,7 +112,7 @@ public class AssetSetter {
 
     public void setMonster() {
         int i = 0;
-        int mapIndex = Map.WORLD_MAP.value;
+        int mapIndex = Map.WORLD_MAP.index;
 
         gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
         gp.monster[mapIndex][i].worldX = gp.tileSize * 23;
@@ -163,7 +163,7 @@ public class AssetSetter {
 
     public void setInteractiveTiles() {
         int i = 0;
-        int mapIndex = Map.WORLD_MAP.value;
+        int mapIndex = Map.WORLD_MAP.index;
 
         gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 27, 12);
         gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 28, 12);

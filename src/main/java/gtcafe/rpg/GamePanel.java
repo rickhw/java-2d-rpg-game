@@ -225,20 +225,20 @@ public class GamePanel extends JPanel implements Runnable {
 
             // 2. NPC
             for(int i=0; i<npc[1].length; i++) {
-                if(npc[currentMap.value][i] != null) {
-                    npc[currentMap.value][i].update();
+                if(npc[currentMap.index][i] != null) {
+                    npc[currentMap.index][i].update();
                 }
             }
 
             // 3. MONSTER
             for(int i=0; i<monster[1].length; i++) {
-                if(monster[currentMap.value][i] != null) {
-                    if (monster[currentMap.value][i].alive == true && monster[currentMap.value][i].dying == false) {
-                        monster[currentMap.value][i].update();
+                if(monster[currentMap.index][i] != null) {
+                    if (monster[currentMap.index][i].alive == true && monster[currentMap.index][i].dying == false) {
+                        monster[currentMap.index][i].update();
                     }
-                    if (monster[currentMap.value][i].alive == false) {
-                        monster[currentMap.value][i].checkDrop(); // when monster die, check the dropped items.
-                        monster[currentMap.value][i] = null;
+                    if (monster[currentMap.index][i].alive == false) {
+                        monster[currentMap.index][i].checkDrop(); // when monster die, check the dropped items.
+                        monster[currentMap.index][i] = null;
                     }
                 }
             }
@@ -269,8 +269,8 @@ public class GamePanel extends JPanel implements Runnable {
 
             // 6. INTERACTIVE_TILES
             for (int i=0; i<iTile[1].length; i++) {
-                if (iTile[currentMap.value][i] != null) {
-                    iTile[currentMap.value][i].update();
+                if (iTile[currentMap.index][i] != null) {
+                    iTile[currentMap.index][i].update();
                 }
             }
         } 
@@ -296,19 +296,19 @@ public class GamePanel extends JPanel implements Runnable {
             tileManager.draw(g2);
             // INTERACTIVE TILES
             for(int i=0; i<iTile[1].length; i++) {
-                if(iTile[currentMap.value][i] != null) { iTile[currentMap.value][i].draw(g2); }
+                if(iTile[currentMap.index][i] != null) { iTile[currentMap.index][i].draw(g2); }
             }
 
             // ADD ENTITY TO THE LIST
             entityList.add(player);
             for(int i=0; i<npc[1].length; i++) {
-                if(npc[currentMap.value][i] != null) { entityList.add(npc[currentMap.value][i]); }
+                if(npc[currentMap.index][i] != null) { entityList.add(npc[currentMap.index][i]); }
             }
             for(int i=0; i<obj[1].length; i++) {
-                if(obj[currentMap.value][i] != null) { entityList.add(obj[currentMap.value][i]); }
+                if(obj[currentMap.index][i] != null) { entityList.add(obj[currentMap.index][i]); }
             }
             for(int i=0; i<monster[1].length; i++) {
-                if(monster[currentMap.value][i] != null) { entityList.add(monster[currentMap.value][i]); }
+                if(monster[currentMap.index][i] != null) { entityList.add(monster[currentMap.index][i]); }
             }
 
             for(int i=0; i<projectilesList.size(); i++) {

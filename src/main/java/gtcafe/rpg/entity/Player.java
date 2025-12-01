@@ -166,7 +166,8 @@ public class Player extends Entity {
             attacking();
         }
 
-        else if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed ||
+        else if (keyHandler.upPressed || keyHandler.downPressed || 
+                keyHandler.leftPressed || keyHandler.rightPressed ||
                 keyHandler.enterPressed) {
 
             if(keyHandler.upPressed) {
@@ -355,7 +356,7 @@ public class Player extends Entity {
 
     // Player 跟地圖上的物件的互動
     public void pickUpObject(int index) {
-        int mapIndex = gp.currentMap.value;
+        int mapIndex = gp.currentMap.index;
         // 999 MEANS NOT TOUCH ANY OBJECT
         if (index != 999) {
             // PICKUP ONLY ITEMS, ex: Coin
@@ -381,7 +382,7 @@ public class Player extends Entity {
 
     // Player 跟 NPC 互動
     public void interactNPC(int index) {
-        int mapIndex = gp.currentMap.value;
+        int mapIndex = gp.currentMap.index;
         if (gp.keyHandler.enterPressed == true) {
             if (index != 999) { // means player touch NPC
                 System.out.println("[Player#interactNPC] You are hitting an NPC!!");
@@ -447,7 +448,7 @@ public class Player extends Entity {
 
     // 計算 Player 毀壞 Interactive Tiles 的邏輯
     private void damageInteractiveTiles(int i) {
-        int mapIndex = gp.currentMap.value;
+        int mapIndex = gp.currentMap.index;
         if (i != 999                                        // 1. Tile Index 是否在合理位置
                 && gp.iTile[mapIndex][i].destructible == true         // 2. 判斷 Tiles 是否已經宣告成可摧毀的物件
                 && gp.iTile[mapIndex][i].isCorrectItem(this) == true  // 3. 判斷目前 Entity (Player) 的武器，是否可以摧毀 Tiles
@@ -468,7 +469,7 @@ public class Player extends Entity {
 
     // 計算 Player 攻擊怪物的值
     public void damageMonster(int index, int attack) {
-        int mapIndex = gp.currentMap.value;
+        int mapIndex = gp.currentMap.index;
         if (index != 999) {
             System.out.println("Player is hiting the monster!!");
 
@@ -503,7 +504,7 @@ public class Player extends Entity {
 
     // 計算 Player 被 Monster 攻擊後生命值的損失
     public void contactMonster(int index) {
-        int mapIndex = gp.currentMap.value;
+        int mapIndex = gp.currentMap.index;
         if (index != 999) {
             System.out.println("[Player#contactMonster] Monster are attacking Player!!");
             if (invincible == false && gp.monster[mapIndex][index].dying == false) {

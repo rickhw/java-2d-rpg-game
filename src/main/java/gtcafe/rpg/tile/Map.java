@@ -5,11 +5,11 @@ public enum Map {
     INTERIOR_01(1, "Interior01"),   // // 室內
     ;
 
-    public int value;
+    public int index;
     public String name;
 
-    private Map(int value, String name) {
-        this.value = value;
+    private Map(int index, String name) {
+        this.index = index;
         this.name = name;
     }
 }

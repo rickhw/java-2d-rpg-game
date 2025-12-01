@@ -44,6 +44,41 @@ public class EventHandler {
         }
     }
 
+    // check the event collision
+    public boolean hit(Map map, int col, int row, Direction requiredDirection) {
+        boolean hit = false;
+        int mapIndex = map.index;
+
+        if (mapIndex == gp.currentMap.index) {
+            gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
+            gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
+
+            eventRect[mapIndex][col][row].x = col * gp.tileSize + eventRect[mapIndex][col][row].x;
+            eventRect[mapIndex][col][row].y = row * gp.tileSize + eventRect[mapIndex][col][row].y;
+
+            // checking if player's solidArea is colliding with eventRect's solidArea
+            if (gp.player.solidArea.intersects(eventRect[mapIndex][col][row]) && 
+                eventRect[mapIndex][col][row].eventDone == false)  // happen one time only
+            {
+                if (gp.player.direction == requiredDirection || requiredDirection == Direction.ANY) {
+                    hit = true;
+
+                    previousEventX = gp.player.worldX;
+                    previousEventY = gp.player.worldY;
+                }
+            }
+
+            gp.player.solidArea.x = gp.player.solidAreaDefaultX;
+            gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+            eventRect[mapIndex][col][row].x = eventRect[mapIndex][col][row].eventRectDefaultX;
+            eventRect[mapIndex][col][row].y = eventRect[mapIndex][col][row].eventRectDefaultY;
+        }
+
+        
+        return hit;
+    }
+
+
     public void checkEvent() {
 
         // Check if the player character is more than 1 tile away from the last event
@@ -93,40 +128,6 @@ public class EventHandler {
 
     }
 
-    // check the event collision
-    public boolean hit(Map map, int col, int row, Direction requiredDirection) {
-        boolean hit = false;
-        int mapIndex = map.value;
-
-        if (mapIndex == gp.currentMap.value) {
-            gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-            gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
-
-            eventRect[mapIndex][col][row].x = col * gp.tileSize + eventRect[mapIndex][col][row].x;
-            eventRect[mapIndex][col][row].y = row * gp.tileSize + eventRect[mapIndex][col][row].y;
-
-            // checking if player's solidArea is colliding with eventRect's solidArea
-            if (gp.player.solidArea.intersects(eventRect[mapIndex][col][row]) && 
-                eventRect[mapIndex][col][row].eventDone == false)  // happen one time only
-            {
-                if (gp.player.direction == requiredDirection || requiredDirection == Direction.ANY) {
-                    hit = true;
-
-                    previousEventX = gp.player.worldX;
-                    previousEventY = gp.player.worldY;
-                }
-            }
-
-            gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-            gp.player.solidArea.y = gp.player.solidAreaDefaultY;
-            eventRect[mapIndex][col][row].x = eventRect[mapIndex][col][row].eventRectDefaultX;
-            eventRect[mapIndex][col][row].y = eventRect[mapIndex][col][row].eventRectDefaultY;
-        }
-
-        
-        return hit;
-    }
-
     public void healingPool(GameState gameState) {
         if (gp.keyHandler.enterPressed == true) {
             gp.gameState = gameState;
@@ -137,7 +138,7 @@ public class EventHandler {
             gp.playSoundEffect(Sound.FX_COIN);
             // System.out.println("[EventHandler#healingPool] Player's life has been recovered!");
 
-            gp.assetSetter.setMonster(); // restore the monsters.
+            // gp.assetSetter.setMonster(); // restore the monsters.
         }
     }
 }

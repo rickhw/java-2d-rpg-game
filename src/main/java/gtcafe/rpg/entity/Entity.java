@@ -282,7 +282,7 @@ public class Entity {
 
     // Handle the dropItem action
     public void dropItem(Entity droppedItem) {
-        int mapIndex = gp.currentMap.value;
+        int mapIndex = gp.currentMap.index;
         for (int i=0; i< gp.obj[1].length; i++ ) {
             if (gp.obj[mapIndex][i] == null) {
                 gp.obj[mapIndex][i] = droppedItem;

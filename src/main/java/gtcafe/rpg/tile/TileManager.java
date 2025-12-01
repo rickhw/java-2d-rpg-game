@@ -111,7 +111,7 @@ public class TileManager {
                 while (col < gp.maxWorldCol) {
                     String numbers[] = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
-                    mapTileNum[map.value][col][row] = num;
+                    mapTileNum[map.index][col][row] = num;
                     col++;
                 }
                 if(col == gp.maxWorldCol) {
@@ -120,7 +120,7 @@ public class TileManager {
                 }
             }
             br.close();
-            System.out.printf("[TileManager#loadMap] finished to load map: [%s], index: [%s]\n", map.name, map.value);
+            System.out.printf("[TileManager#loadMap] finished to load map: [%s], index: [%s]\n", map.name, map.index);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,7 +143,7 @@ public class TileManager {
         }
 
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
-            int tileNum = mapTileNum[gp.currentMap.value][worldCol][worldRow];
+            int tileNum = mapTileNum[gp.currentMap.index][worldCol][worldRow];
 
             // 計算 世界地圖 的座標
             int worldX = worldCol * gp.tileSize;

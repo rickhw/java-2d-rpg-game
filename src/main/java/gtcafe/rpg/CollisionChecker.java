@@ -31,7 +31,7 @@ public class CollisionChecker {
         int entityBottomRow = entityBottomWorldY / gp.tileSize;
 
         int tileNum1, tileNum2; // To store the IDs of the two tiles being checked for collision
-        int mapIndex = gp.currentMap.value;
+        int mapIndex = gp.currentMap.index;
 
         // Predict the entity's future position and check for collision with tiles
         switch (entity.direction) {
@@ -84,7 +84,7 @@ public class CollisionChecker {
     public int checkObject(Entity entity, boolean player) {
 
         int index = 999;    // ??
-        int mapIndex = gp.currentMap.value;
+        int mapIndex = gp.currentMap.index;
 
         // scan objs
         for(int i=0; i<gp.obj[1].length; i++) {
@@ -124,7 +124,7 @@ public class CollisionChecker {
     public int checkEntity(Entity entity, Entity[][] target) {
 
         int index = 999;    // ??
-        int mapIndex = gp.currentMap.value;
+        int mapIndex = gp.currentMap.index;
 
         // scan objs
         for(int i=0; i<target[1].length; i++) {
