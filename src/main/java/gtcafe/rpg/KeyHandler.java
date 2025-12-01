@@ -48,16 +48,10 @@ public class KeyHandler implements KeyListener {
             optionsState(code);
         }
 
-        // // MUSIC EVENT
-        // if (code == KeyEvent.VK_M) {
-        //     if (gp.bgmState == true) {
-        //         gp.stopBackgroundMusic();
-        //         gp.bgmState = false;
-        //     } else if (gp.bgmState == false) {
-        //         gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
-        //         gp.bgmState = true;
-        //     }
-        // }
+        // GAME OVER STATE
+        else if (gp.gameState == GameState.GAME_OVER_STATE) {
+            gameOverState(code);
+        }
 
         // For Debugging
         // refresh the map data
@@ -289,4 +283,37 @@ public class KeyHandler implements KeyListener {
         }
 
     }
+
+    private void gameOverState(int code) {
+        // CURSOR
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            gp.ui.commandNum--;
+            if (gp.ui.commandNum < 0) {
+                gp.ui.commandNum = 1;
+            }
+            gp.playSoundEffect(Sound.FX__CURSOR);
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            gp.ui.commandNum++;
+            if (gp.ui.commandNum < 1) {
+                gp.ui.commandNum = 0;
+            }
+            gp.playSoundEffect(Sound.FX__CURSOR);
+        }
+
+        if (code == KeyEvent.VK_ENTER) {
+            // Retry
+            if (gp.ui.commandNum == 0) {
+                gp.gameState = GameState.PLAY_STATE;
+                gp.retry();
+            }
+            // Restore
+            else if (gp.ui.commandNum == 1) {
+                gp.ui.commandNum = 0;  //
+                gp.gameState = GameState.TITLE_STATE;
+                gp.restart();
+            }
+        }
+    }
+
 }

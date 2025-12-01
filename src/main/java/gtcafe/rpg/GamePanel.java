@@ -71,9 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
     ArrayList<Entity> entityList = new ArrayList<>();
 
     // GAME STATE: for different purpose for game,
-    // for example, guide screen, intro story screen, menu screen ... etc.
     public GameState gameState;
-    public boolean bgmState = true;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -118,6 +116,25 @@ public class GamePanel extends JPanel implements Runnable {
         if (fullScreenOn == true) {
             setFullScreen();
         }
+    }
+
+    public void retry() {
+        player.setDefaultPosition();
+        player.restoreLifeAndMana();        
+        assetSetter.setNPC();
+        assetSetter.setMonster();
+    }
+
+    public void restart() {
+        player.setDefaultValues();
+        player.setDefaultPosition();
+        player.restoreLifeAndMana();
+        player.setItems();
+
+        assetSetter.setObject();
+        assetSetter.setNPC();
+        assetSetter.setMonster();
+        assetSetter.setInteractiveTiles();
     }
 
     public void startGameThread() {
