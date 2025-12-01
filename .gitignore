@@ -25,3 +25,6 @@ Thumbs.db
 !gradle-wrapper.jar
 !gradlew
 !gradlew.bat
+
+# Config
+config.txt
