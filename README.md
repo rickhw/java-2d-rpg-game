@@ -6,7 +6,8 @@
 - Full Screen Mode
     - create a buffered image, draw everything to buffered image
     - draw the buffered image to screen which get from graphic device.
-
+- Options Menu and Saving Config
+- Game Over State
 
 ### v2.6.x
 
