@@ -1,11 +1,14 @@
 
 ## Release Notes
 
+### 3.0.x
+
+- Transition between maps.
+
+
 ### v2.7.x
 
 - Full Screen Mode
-    - create a buffered image, draw everything to buffered image
-    - draw the buffered image to screen which get from graphic device.
 - Options Menu and Saving Config
 - Game Over State
 

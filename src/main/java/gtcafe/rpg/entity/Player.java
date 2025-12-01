@@ -91,8 +91,8 @@ public class Player extends Entity {
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
 
-        // for testing
-        // worldX = gp.tileSize * 10;
+        // for testing the interior map
+        // worldX = gp.tileSize * 12;
         // worldY = gp.tileSize * 13;
 
         direction = Direction.DOWN; 
@@ -166,7 +166,8 @@ public class Player extends Entity {
             attacking();
         }
 
-        else if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed ||
+        else if (keyHandler.upPressed || keyHandler.downPressed || 
+                keyHandler.leftPressed || keyHandler.rightPressed ||
                 keyHandler.enterPressed) {
 
             if(keyHandler.upPressed) {
@@ -290,6 +291,7 @@ public class Player extends Entity {
         // Check if game over
         if (life <= 0) {
             gp.gameState = GameState.GAME_OVER_STATE;
+            gp.ui.commandNum = -1;
             gp.stopBackgroundMusic();
             gp.playSoundEffect(Sound.FX__GAME_OVER);
         }
@@ -354,38 +356,39 @@ public class Player extends Entity {
 
     // Player 跟地圖上的物件的互動
     public void pickUpObject(int index) {
+        int mapIndex = gp.currentMap.index;
         // 999 MEANS NOT TOUCH ANY OBJECT
         if (index != 999) {
             // PICKUP ONLY ITEMS, ex: Coin
-            if (gp.obj[index].type == EntityType.PICKUPONLY) {
-                gp.obj[index].use(this);
-                gp.obj[index] = null;
+            if (gp.obj[mapIndex][index].type == EntityType.PICKUPONLY) {
+                gp.obj[mapIndex][index].use(this);
+                gp.obj[mapIndex][index] = null;
             } 
             // INVENTORY ITEMS
             else {
                 String text;
                 if (inventory.size() != maxInventorySize) {
-                    inventory.add(gp.obj[index]);
+                    inventory.add(gp.obj[mapIndex][index]);
                     gp.playSoundEffect(Sound.FX_COIN);
-                    text = "Got a " + gp.obj[index].name + "!";
+                    text = "Got a " + gp.obj[mapIndex][index].name + "!";
                 } else {
                     text = "You cannot carry any more!";
                 }
                 gp.ui.addMessage(text);
-                gp.obj[index] = null;
+                gp.obj[mapIndex][index] = null;
             }
         }
     }
 
     // Player 跟 NPC 互動
     public void interactNPC(int index) {
-
+        int mapIndex = gp.currentMap.index;
         if (gp.keyHandler.enterPressed == true) {
             if (index != 999) { // means player touch NPC
                 System.out.println("[Player#interactNPC] You are hitting an NPC!!");
                 attackCanceled = true;
                 gp.gameState = GameState.DIALOGUE_STATE;
-                gp.npc[index].speak();
+                gp.npc[mapIndex][index].speak();
             } 
         }
     }
@@ -445,35 +448,37 @@ public class Player extends Entity {
 
     // 計算 Player 毀壞 Interactive Tiles 的邏輯
     private void damageInteractiveTiles(int i) {
+        int mapIndex = gp.currentMap.index;
         if (i != 999                                        // 1. Tile Index 是否在合理位置
-                && gp.iTile[i].destructible == true         // 2. 判斷 Tiles 是否已經宣告成可摧毀的物件
-                && gp.iTile[i].isCorrectItem(this) == true  // 3. 判斷目前 Entity (Player) 的武器，是否可以摧毀 Tiles
-                && gp.iTile[i].invincible == false          // 4. 是否在暫時無敵狀態
+                && gp.iTile[mapIndex][i].destructible == true         // 2. 判斷 Tiles 是否已經宣告成可摧毀的物件
+                && gp.iTile[mapIndex][i].isCorrectItem(this) == true  // 3. 判斷目前 Entity (Player) 的武器，是否可以摧毀 Tiles
+                && gp.iTile[mapIndex][i].invincible == false          // 4. 是否在暫時無敵狀態
             ) { 
-            gp.iTile[i].playSoundEffect();
-            gp.iTile[i].life --;
-            gp.iTile[i].invincible = true;
+            gp.iTile[mapIndex][i].playSoundEffect();
+            gp.iTile[mapIndex][i].life --;
+            gp.iTile[mapIndex][i].invincible = true;
 
             // PARTICAL 粒子效果
-            generateParticle(gp.iTile[i], gp.iTile[i]);
+            generateParticle(gp.iTile[mapIndex][i], gp.iTile[mapIndex][i]);
 
-            if (gp.iTile[i].life == 0) {
-                gp.iTile[i] = gp.iTile[i].getDestroyedForm();
+            if (gp.iTile[mapIndex][i].life == 0) {
+                gp.iTile[mapIndex][i] = gp.iTile[mapIndex][i].getDestroyedForm();
             }
         }
     }
 
     // 計算 Player 攻擊怪物的值
     public void damageMonster(int index, int attack) {
+        int mapIndex = gp.currentMap.index;
         if (index != 999) {
             System.out.println("Player is hiting the monster!!");
 
-            Entity monster = gp.monster[index];
+            Entity monster = gp.monster[mapIndex][index];
             // give some damge
             if (monster.invincible == false) {
                 gp.playSoundEffect(Sound.FX_HIT_MONSTER);
 
-                int damage = attack - gp.monster[index].defense;
+                int damage = attack - monster.defense;
                 if (damage < 0) { damage = 1; }
 
                 monster.life -= damage;
@@ -483,11 +488,11 @@ public class Player extends Entity {
 
                 // handling monster dying
                 if(monster.life <= 0) {
-                    gp.monster[index].dying = true;
-                    exp += gp.monster[index].exp;
+                    monster.dying = true;
+                    exp += monster.exp;
 
-                    gp.ui.addMessage("Killed the " + gp.monster[index].name + "!");
-                    gp.ui.addMessage("Exp +" + gp.monster[index].exp + "!");
+                    gp.ui.addMessage("Killed the " + monster.name + "!");
+                    gp.ui.addMessage("Exp +" + monster.exp + "!");
 
                     checkLevelUp();
                 }
@@ -499,13 +504,14 @@ public class Player extends Entity {
 
     // 計算 Player 被 Monster 攻擊後生命值的損失
     public void contactMonster(int index) {
+        int mapIndex = gp.currentMap.index;
         if (index != 999) {
             System.out.println("[Player#contactMonster] Monster are attacking Player!!");
-            if (invincible == false && gp.monster[index].dying == false) {
+            if (invincible == false && gp.monster[mapIndex][index].dying == false) {
                 gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
                 
                 // Monster 攻擊力 - Player 的防禦力
-                int damage = gp.monster[index].attack - defense;
+                int damage = gp.monster[mapIndex][index].attack - defense;
                 if (damage < 0) { damage = 1; }
 
                 life -= damage;
