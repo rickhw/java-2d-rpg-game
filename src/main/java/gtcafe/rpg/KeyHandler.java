@@ -92,36 +92,33 @@ public class KeyHandler implements KeyListener {
     }
 
     private void titleState(int code) {
+        // Control the Cursor
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
             gp.ui.commandNum--;
             if (gp.ui.commandNum < 0) {
-                gp.ui.commandNum = 3;
+                gp.ui.commandNum = 2;
             }
         }
         if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
             gp.ui.commandNum++;
-            if (gp.ui.commandNum > 3) {
+            if (gp.ui.commandNum > 2) {
                 gp.ui.commandNum = 0;
             }
         }
+
+        // Handle the options
         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
             if (gp.ui.commandNum == 0) {
-                System.out.println("Do some fighter specific stuff!");
                 gp.gameState = GameState.PLAY_STATE;
                 gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }
             if (gp.ui.commandNum == 1) {
-                System.out.println("Do some thief specific stuff!");
+                System.out.println("Load save");
                 gp.gameState = GameState.PLAY_STATE;
-                // gp.playMusic(Sound.MUSIC__MAIN_THEME);
             }
             if (gp.ui.commandNum == 2) {
-                System.out.println("Do some sorcerer specific stuff!");
                 gp.gameState = GameState.PLAY_STATE;
-                // gp.playMusic(Sound.MUSIC__MAIN_THEME);
-            }
-            if (gp.ui.commandNum == 3) {
-                gp.ui.titleScreenState = 0;
+                System.exit(0);
             }
         }
     }
@@ -166,10 +163,10 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_T) {
             if(showDebugText == false) {
                 showDebugText = true;
-                gp.debugMode = true;
+                // gp.debugMode = true;
             } else if (showDebugText = true) {
                 showDebugText = false;
-                gp.debugMode = false;
+                // gp.debugMode = false;
             }
         }
 

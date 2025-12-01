@@ -57,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter assetSetter = new AssetSetter(this); // day7-4 add
     public UI ui = new UI(this);
     public EventHandler eventHandler = new EventHandler(this);
+    Config config = new Config(this);
     Thread gameThread;
 
     // ENTITY and OBJECT
@@ -73,7 +74,6 @@ public class GamePanel extends JPanel implements Runnable {
     // for example, guide screen, intro story screen, menu screen ... etc.
     public GameState gameState;
     public boolean bgmState = true;
-    public boolean debugMode = false;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -115,7 +115,9 @@ public class GamePanel extends JPanel implements Runnable {
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB_PRE);
         g2 = (Graphics2D) tempScreen.getGraphics();
 
-        // setFullScreen();
+        if (fullScreenOn == true) {
+            setFullScreen();
+        }
     }
 
     public void startGameThread() {
