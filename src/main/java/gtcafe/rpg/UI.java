@@ -161,6 +161,7 @@ public class UI {
             g2.drawString(">", textX-25, textY);
             if (gp.keyHandler.enterPressed == true) {
                 subState = 0;
+                gp.stopBackgroundMusic();
                 gp.gameState = GameState.TITLE_STATE;
             }
         }
@@ -266,6 +267,7 @@ public class UI {
         volumeWidth = 24 * gp.soundEffect.volumeScale;
         g2.fillRect(textX, textY, volumeWidth, 24);
 
+        gp.config.saveConfig();
     }
 
     public void options_fullScreenNotification(int frameX, int frameY) {
@@ -311,10 +313,10 @@ public class UI {
 
         // DISPLAY THE ASIGNED KEY
         textX = frameX + gp.tileSize * 6;
-        textY = frameY = gp.tileSize * 2;
+        textY = frameY = gp.tileSize * 3;
         g2.drawString("WASD", textX, textY); textY += gp.tileSize;
-        g2.drawString("ENTER", textX, textY); textY += gp.tileSize;
-        g2.drawString("F", textX, textY); textY += gp.tileSize;
+        g2.drawString("ENTER/SPACE", textX, textY); textY += gp.tileSize;
+        g2.drawString("F/J", textX, textY); textY += gp.tileSize;
         g2.drawString("P", textX, textY); textY += gp.tileSize;
         g2.drawString("ESC", textX, textY); textY += gp.tileSize;
 
