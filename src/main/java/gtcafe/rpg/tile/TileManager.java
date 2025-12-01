@@ -15,17 +15,19 @@ public class TileManager {
 
     GamePanel gp;
     public Tile[] tiles;
-    public int mapTileNum[][];
+    public int mapTileNum[][][];    // first dimension to store the map name
     boolean showInfo = false;
     int drawCounter = 0;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
         tiles = new Tile[50];
-        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
+        mapTileNum = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
+        
 
         getTileImage();
-        loadMap("/gtcafe/rpg/assets/maps/worldV2.txt");
+        loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Map.WORLD_MAP);
+        loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Map.INTERIOR_01);
     }
 
     public void getTileImage() {
@@ -78,6 +80,10 @@ public class TileManager {
 
         setup(40, "wall", true);
         setup(41, "tree", true);
+
+        setup(42, "hut", false); // 小屋
+        setup(43, "floor01", false);
+        setup(44, "table01", true);
     }
 
     public void setup(int index, String imageName, boolean collision) {
@@ -92,7 +98,7 @@ public class TileManager {
         }
     }
 
-    public void loadMap(String mapPath) {
+    public void loadMap(String mapPath, Map map) {
         try {
             InputStream is = getClass().getResourceAsStream(mapPath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -105,7 +111,7 @@ public class TileManager {
                 while (col < gp.maxWorldCol) {
                     String numbers[] = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
-                    mapTileNum[col][row] = num;
+                    mapTileNum[map.value][col][row] = num;
                     col++;
                 }
                 if(col == gp.maxWorldCol) {
@@ -114,7 +120,7 @@ public class TileManager {
                 }
             }
             br.close();
-            System.out.println("[TileManager#loadMap] finished to load map");
+            System.out.printf("[TileManager#loadMap] finished to load map: [%s], index: [%s]\n", map.name, map.value);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,7 +143,7 @@ public class TileManager {
         }
 
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
-            int tileNum = mapTileNum[worldCol][worldRow];
+            int tileNum = mapTileNum[gp.currentMap.value][worldCol][worldRow];
 
             // 計算 世界地圖 的座標
             int worldX = worldCol * gp.tileSize;

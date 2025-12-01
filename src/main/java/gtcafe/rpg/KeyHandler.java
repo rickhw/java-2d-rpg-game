@@ -3,6 +3,9 @@ package gtcafe.rpg;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import gtcafe.rpg.tile.Map;
+import gtcafe.rpg.tile.TileManager;
+
 public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, musicPressed;
     public boolean shotKeyPressed; // means shot projectiles
@@ -56,12 +59,16 @@ public class KeyHandler implements KeyListener {
         // For Debugging
         // refresh the map data
         if (code == KeyEvent.VK_R) {
-            gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/worldV2.txt");
+            switch(gp.currentMap) {
+                case WORLD_MAP:
+                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Map.WORLD_MAP);
+                    break;
+                case INTERIOR_01:
+                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Map.INTERIOR_01); 
+                    break;
+            }
         }
     }
-
-
-
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -306,6 +313,7 @@ public class KeyHandler implements KeyListener {
             if (gp.ui.commandNum == 0) {
                 gp.gameState = GameState.PLAY_STATE;
                 gp.retry();
+                gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }
             // Restore
             else if (gp.ui.commandNum == 1) {

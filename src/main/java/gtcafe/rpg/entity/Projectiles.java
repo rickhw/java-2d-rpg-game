@@ -21,6 +21,7 @@ public class Projectiles extends Entity {
     }
 
     public void update() {
+        int mapIndex = gp.currentMap.value;
 
         // check collision
         if (user == gp.player) {
@@ -29,7 +30,7 @@ public class Projectiles extends Entity {
             // player attack monster
             if (monsterIndex != 999) {
                 gp.player.damageMonster(monsterIndex, attack);
-                generateParticle(user.projectiles, gp.monster[monsterIndex]);
+                generateParticle(user.projectiles, gp.monster[mapIndex][monsterIndex]);
                 alive = false;
             }
         }

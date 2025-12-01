@@ -30,6 +30,7 @@ public class Sound {
     public final static int FX__BURNING = 10;
     public final static int FX__CUT_TREE = 11;
     public final static int FX__GAME_OVER = 12;
+    public final static int FX__STAIRS = 13;
 
     public Sound () {
         soundURL[MUSIC__MAIN_THEME] = getClass().getResource("/gtcafe/rpg/assets/bgm/BlueBoyAdventure.wav");
@@ -48,6 +49,7 @@ public class Sound {
         soundURL[FX__BURNING] = getClass().getResource("/gtcafe/rpg/assets/sound/burning.wav");
         soundURL[FX__CUT_TREE] = getClass().getResource("/gtcafe/rpg/assets/sound/cuttree.wav");
         soundURL[FX__GAME_OVER] = getClass().getResource("/gtcafe/rpg/assets/sound/gameover.wav");
+        soundURL[FX__STAIRS] = getClass().getResource("/gtcafe/rpg/assets/sound/stairs.wav");
     }
 
 

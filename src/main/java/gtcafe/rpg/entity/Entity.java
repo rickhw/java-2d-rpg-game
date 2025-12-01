@@ -282,12 +282,13 @@ public class Entity {
 
     // Handle the dropItem action
     public void dropItem(Entity droppedItem) {
-        for (int i=0; i< gp.obj.length; i++ ) {
-            if (gp.obj[i] == null) {
-                gp.obj[i] = droppedItem;
+        int mapIndex = gp.currentMap.value;
+        for (int i=0; i< gp.obj[1].length; i++ ) {
+            if (gp.obj[mapIndex][i] == null) {
+                gp.obj[mapIndex][i] = droppedItem;
                 // the dead monster's worldX/Y
-                gp.obj[i].worldX = worldX; 
-                gp.obj[i].worldY = worldY;
+                gp.obj[mapIndex][i].worldX = worldX; 
+                gp.obj[mapIndex][i].worldY = worldY;
                 break; // break the check.
             }
         }

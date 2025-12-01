@@ -1,9 +1,11 @@
 package gtcafe.rpg;
 
+import gtcafe.rpg.tile.Map;
+
 public class EventHandler {
     
     GamePanel gp;
-    EventRect eventRect[][];
+    EventRect eventRect[][][];
 
     // prevent the event happen repeatly.
     int previousEventX, previousEventY;
@@ -12,25 +14,32 @@ public class EventHandler {
     public EventHandler(GamePanel gp) {
         this.gp = gp;
 
-        eventRect = new EventRect[gp.maxWorldRow][gp.maxWorldRow];
+        eventRect = new EventRect[gp.maxMap][gp.maxWorldRow][gp.maxWorldRow];
 
         // 為整個 世界地圖 建立 EventRect 二維矩陣
         int col = 0;
         int row = 0;
-        while( col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        int map = 0;
+        while( map < gp.maxMap && col < gp.maxWorldCol && row < gp.maxWorldRow) {
             // 用來判斷是否觸發事件的範圍
-            eventRect[col][row] = new EventRect();
-            eventRect[col][row].x = 23;
-            eventRect[col][row].y = 23;
-            eventRect[col][row].width = 2;
-            eventRect[col][row].height = 2; // small
-            eventRect[col][row].eventRectDefaultX = eventRect[col][row].x;
-            eventRect[col][row].eventRectDefaultY = eventRect[col][row].y;
+            eventRect[map][col][row] = new EventRect();
+            eventRect[map][col][row].x = 23;
+            eventRect[map][col][row].y = 23;
+            eventRect[map][col][row].width = 2;
+            eventRect[map][col][row].height = 2; // small
+            eventRect[map][col][row].eventRectDefaultX = eventRect[map][col][row].x;
+            eventRect[map][col][row].eventRectDefaultY = eventRect[map][col][row].y;
 
             col++;
             if( col == gp.maxWorldCol) {
                 col = 0;
                 row++;
+
+                // reset event for each map
+                if (row == gp.maxWorldRow) {
+                    row = 0; 
+                    map++;
+                }
             }
         }
     }
@@ -47,20 +56,37 @@ public class EventHandler {
 
         if (canTouchEvent) {
             // damagePit
-            // if (hit(27,16,Direction.RIGHT)) { damagePit(27, 16, GameState.DIALOGUE_STATE); }
-            // if (hit(23,19,Direction.ANY)) { damagePit(27, 16, GameState.DIALOGUE_STATE); }
+            if (hit(Map.WORLD_MAP, 27,16,Direction.RIGHT)) { damagePit(GameState.DIALOGUE_STATE); }
+            else if (hit(Map.WORLD_MAP, 23,19,Direction.ANY)) { damagePit(GameState.DIALOGUE_STATE); }
 
             // water side
-            if (hit(23,12,Direction.UP) == true) { healingPool(23, 12, GameState.DIALOGUE_STATE); }
+            else if (hit(Map.WORLD_MAP, 23,12,Direction.UP)) { healingPool(GameState.DIALOGUE_STATE); }
+
+            // 
+            else if (hit(Map.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Map.INTERIOR_01, 12, 13); }
+            else if (hit(Map.INTERIOR_01, 12,13,Direction.ANY)) { teleport(Map.WORLD_MAP, 10, 39); }
         }
     }
 
-    private void damagePit(int col, int row, GameState gameState) {
+    // update player's position
+    private void teleport(Map map, int col, int row) {
+        gp.currentMap = map;
+        gp.player.worldX = gp.tileSize * col;
+        gp.player.worldY = gp.tileSize * row;
+        // 紀錄 player 座標
+        previousEventX = gp.player.worldX;
+        previousEventY = gp.player.worldY;
+
+        canTouchEvent = false;
+
+        gp.playSoundEffect(Sound.FX__STAIRS);
+    }
+
+    private void damagePit(GameState gameState) {
         gp.gameState = gameState;
         gp.ui.currentDialogue = "You fall into a pit!";
         gp.player.life -= 1;
 
-        // eventRect[col][row].eventDone = true;
         canTouchEvent = false;
         System.out.println("[EventHandler#damagePit] Player are hit! Lost helf heart!");
         System.out.printf("[EventHandler#damagePit] Player.Life: [%s]\n", gp.player.life);
@@ -68,36 +94,40 @@ public class EventHandler {
     }
 
     // check the event collision
-    public boolean hit(int col, int row, Direction requiredDirection) {
+    public boolean hit(Map map, int col, int row, Direction requiredDirection) {
         boolean hit = false;
+        int mapIndex = map.value;
 
-        gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-        gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
+        if (mapIndex == gp.currentMap.value) {
+            gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
+            gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
 
-        eventRect[col][row].x = col * gp.tileSize + eventRect[col][row].x;
-        eventRect[col][row].y = row * gp.tileSize + eventRect[col][row].y;
+            eventRect[mapIndex][col][row].x = col * gp.tileSize + eventRect[mapIndex][col][row].x;
+            eventRect[mapIndex][col][row].y = row * gp.tileSize + eventRect[mapIndex][col][row].y;
 
-        // checking if player's solidArea is colliding with eventRect's solidArea
-        if (gp.player.solidArea.intersects(eventRect[col][row]) && 
-            eventRect[col][row].eventDone == false)  // happen one time only
-        {
-            if (gp.player.direction == requiredDirection || requiredDirection == Direction.ANY) {
-                hit = true;
+            // checking if player's solidArea is colliding with eventRect's solidArea
+            if (gp.player.solidArea.intersects(eventRect[mapIndex][col][row]) && 
+                eventRect[mapIndex][col][row].eventDone == false)  // happen one time only
+            {
+                if (gp.player.direction == requiredDirection || requiredDirection == Direction.ANY) {
+                    hit = true;
 
-                previousEventX = gp.player.worldX;
-                previousEventY = gp.player.worldY;
+                    previousEventX = gp.player.worldX;
+                    previousEventY = gp.player.worldY;
+                }
             }
+
+            gp.player.solidArea.x = gp.player.solidAreaDefaultX;
+            gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+            eventRect[mapIndex][col][row].x = eventRect[mapIndex][col][row].eventRectDefaultX;
+            eventRect[mapIndex][col][row].y = eventRect[mapIndex][col][row].eventRectDefaultY;
         }
 
-        gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-        gp.player.solidArea.y = gp.player.solidAreaDefaultY;
-        eventRect[col][row].x = eventRect[col][row].eventRectDefaultX;
-        eventRect[col][row].y = eventRect[col][row].eventRectDefaultY;
-
+        
         return hit;
     }
 
-    public void healingPool(int col, int row, GameState gameState) {
+    public void healingPool(GameState gameState) {
         if (gp.keyHandler.enterPressed == true) {
             gp.gameState = gameState;
             gp.player.attackCanceled = true;
