@@ -58,24 +58,17 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        // player 在整個世界地圖的座標起始位置
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
 
-        // for testing
-        // worldX = gp.tileSize * 10;
-        // worldY = gp.tileSize * 13;
+        setDefaultPosition();;
 
         speed = 5;  // 每個 Frame 移動 5 個 pixel, 每秒移動 5 * 60 = 300 pixel / 48 = 6 tiles
-        direction = Direction.DOWN;
 
         // PLAYER STATUS
         level = 1;
         maxLife = 6;
-        life = maxLife;
         maxMana = 4;
-        mana = maxMana;
         ammo = 10;          // for Demo the Rock
+        restoreLifeAndMana();
 
         strength = 1;       // the more strength he has, the more damage he gives.
         dexterity = 1;      // the more dexterity the has, the less damage he receives.
@@ -92,7 +85,27 @@ public class Player extends Entity {
         defense = getDefense();     // 計算防禦力, 由 dexterity and shield 決定
     }
 
+
+    public void setDefaultPosition() {
+        // player 在整個世界地圖的座標起始位置
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
+
+        // for testing
+        // worldX = gp.tileSize * 10;
+        // worldY = gp.tileSize * 13;
+
+        direction = Direction.DOWN; 
+    }
+
+    public void restoreLifeAndMana() {
+        life = maxLife;
+        mana = maxMana;
+        invincible = false;
+    }
+
     public void setItems() {
+        inventory.clear();  // for restart/retry the game
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
@@ -273,13 +286,13 @@ public class Player extends Entity {
         // such player pick the heart.
         if (life > maxLife) { life = maxLife; }
         if (mana > maxMana) { mana = maxMana; }
-        // if (drawCounter > 60) {
-        //     drawCounter = 0;
-        //     showInfo = true;
-        // } else {
-        //     drawCounter++;
-        //     showInfo = false;
-        // }
+       
+        // Check if game over
+        if (life <= 0) {
+            gp.gameState = GameState.GAME_OVER_STATE;
+            gp.stopBackgroundMusic();
+            gp.playSoundEffect(Sound.FX__GAME_OVER);
+        }
     }
 
     public void draw(Graphics2D g2) {

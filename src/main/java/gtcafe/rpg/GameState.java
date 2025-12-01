@@ -7,6 +7,7 @@ public enum GameState {
     DIALOGUE_STATE(3, "Dialogue Mode"),
     CHARACTER_STATE(4, "Character State"),
     OPTIONS_STATE(5, "Options State"),
+    GAME_OVER_STATE(5, "Game Over State"),
     
     ;
 
