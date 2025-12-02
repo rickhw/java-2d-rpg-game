@@ -1,7 +1,5 @@
 package gtcafe.rpg.entity;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -28,10 +26,6 @@ public class Player extends Entity {
     public final int screenY;
 
     public boolean attackCanceled = false;
-
-    // INVENTORY
-    public ArrayList<Entity> inventory = new ArrayList<>();
-    public final int maxInventorySize = 20;
 
     public Player(GamePanel gp, KeyHandler keyHandler) {
         super(gp);
@@ -74,7 +68,7 @@ public class Player extends Entity {
         dexterity = 1;      // the more dexterity the has, the less damage he receives.
         exp = 0;
         nextLevelExp = 5;
-        coin = 0;
+        coin = 1000;
         // currentWeapon = new OBJ_Sword_Normal(gp);
         currentWeapon = new OBJ_Axe(gp);
         currentShield = new OBJ_Shield_Wood(gp);
@@ -88,12 +82,12 @@ public class Player extends Entity {
 
     public void setDefaultPosition() {
         // player 在整個世界地圖的座標起始位置
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        // worldX = gp.tileSize * 23;
+        // worldY = gp.tileSize * 21;
 
         // for testing the interior map
-        // worldX = gp.tileSize * 12;
-        // worldY = gp.tileSize * 13;
+        worldX = gp.tileSize * 10;
+        worldY = gp.tileSize * 41;
 
         direction = Direction.DOWN; 
     }
@@ -543,7 +537,7 @@ public class Player extends Entity {
 
     // 選擇 Inventory 裡的東西
     public void selectItem() {
-        int itemIndex = gp.ui.getItemIndexOnSlot();
+        int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);
 
         if (itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);

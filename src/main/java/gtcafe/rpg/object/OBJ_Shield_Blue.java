@@ -12,5 +12,6 @@ public class OBJ_Shield_Blue extends Entity {
         down1 = setup("/gtcafe/rpg/assets/objects/shield_blue.png", gp.tileSize, gp.tileSize);
         defenseValue = 2;
         description = "[" + name + "]\nA shiny blue shield.\nDefense: " + defenseValue;
+        price = 300;
     }
 }

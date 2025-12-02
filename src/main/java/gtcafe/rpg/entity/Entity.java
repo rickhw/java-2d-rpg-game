@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -26,6 +27,7 @@ public class Entity {
     public boolean collision = false;
     String dialogues[] = new String[20];
     Graphics2DUtils g2Utils = new Graphics2DUtils();
+    int animationSpeed = 24;
 
     // STATE
     public int worldX, worldY;
@@ -77,6 +79,11 @@ public class Entity {
     public int defenseValue;    // 防禦力
     public String description = "";
     public int useCost; // spend mana
+    public int price;
+
+    // INVENTORY
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
 
     // TYPES
     public EntityType type; 
@@ -158,7 +165,7 @@ public class Entity {
 
         // ANIMATION
         spriteCounter++;
-        if(spriteCounter > Player.ANIMATION_SPEED) {
+        if(spriteCounter > animationSpeed) {
             if (spriteNum == 1) {
                 spriteNum = 2;
             } else if (spriteNum == 2) {

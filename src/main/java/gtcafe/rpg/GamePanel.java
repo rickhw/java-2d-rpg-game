@@ -8,9 +8,11 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import javax.swing.JPanel;
 
@@ -210,7 +212,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                System.out.printf("[GameLoop] FPS: [%s], GameState: [%s], CurrentMap: [%s]\n", FPS, gameState, currentMap.name);
+                SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+                System.out.printf("%s [GameLoop] FPS: [%s], State: [%s], Current: [%s]\n", sdFormat.format(new Date()), FPS, gameState, currentMap.name);
                 // drawCount = 0;
                 timer = 0;
             }

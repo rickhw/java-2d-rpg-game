@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import gtcafe.rpg.tile.Map;
-import gtcafe.rpg.tile.TileManager;
 
 public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, musicPressed;
@@ -51,6 +50,11 @@ public class KeyHandler implements KeyListener {
             optionsState(code);
         }
 
+        // Trade STATE
+        else if (gp.gameState == GameState.TRADE_STATE) {
+            tradeState(code);
+        }
+
         // GAME OVER STATE
         else if (gp.gameState == GameState.GAME_OVER_STATE) {
             gameOverState(code);
@@ -69,6 +73,7 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -199,36 +204,67 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_C) {
             gp.gameState = GameState.PLAY_STATE;
         }
-        // Move the cursor in inventory
-        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
-            if (gp.ui.slotRow != 0) {
-                gp.playSoundEffect(Sound.FX__CURSOR);
-                gp.ui.slotRow--;
-            }
-        }
-        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
-            if (gp.ui.slotRow != 3) {
-                gp.playSoundEffect(Sound.FX__CURSOR);
-                gp.ui.slotRow++;
-            }
-        }
-        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
-            if (gp.ui.slotCol != 0) {
-                gp.playSoundEffect(Sound.FX__CURSOR);
-                gp.ui.slotCol--;
-            }
-        }
-        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
-            if (gp.ui.slotCol != 4) {
-                gp.playSoundEffect(Sound.FX__CURSOR);
-                gp.ui.slotCol++;
-            }
-        }
-
         if (code == KeyEvent.VK_ENTER) {
             gp.player.selectItem();
         }
-   }
+        playerInventory(code);
+    }
+
+    // Move the cursor in inventory
+    public void playerInventory(int code) {
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            if (gp.ui.playerSlotRow != 0) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
+                gp.ui.playerSlotRow--;
+            }
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            if (gp.ui.playerSlotRow != 3) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
+                gp.ui.playerSlotRow++;
+            }
+        }
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            if (gp.ui.playerSlotCol != 0) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
+                gp.ui.playerSlotCol--;
+            }
+        }
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+            if (gp.ui.playerSlotCol != 4) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
+                gp.ui.playerSlotCol++;
+            }
+        }
+    }
+
+    public void npcInventory(int code) {
+        if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+            if (gp.ui.npcSlotRow != 0) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
+                gp.ui.npcSlotRow--;
+            }
+        }
+        if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+            if (gp.ui.npcSlotRow != 3) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
+                gp.ui.npcSlotRow++;
+            }
+        }
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            if (gp.ui.npcSlotCol != 0) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
+                gp.ui.npcSlotCol--;
+            }
+        }
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+            if (gp.ui.npcSlotCol != 4) {
+                gp.playSoundEffect(Sound.FX__CURSOR);
+                gp.ui.npcSlotCol++;
+            }
+        }
+    }
+
 
     private void optionsState(int code) {
         if (code == KeyEvent.VK_ESCAPE) {
@@ -324,4 +360,38 @@ public class KeyHandler implements KeyListener {
         }
     }
 
+    private void tradeState(int code) {
+        if (code == KeyEvent.VK_ENTER) {
+            enterPressed = true;
+        }
+
+        if (gp.ui.subState == 0) {
+            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                gp.ui.commandNum--;
+                if(gp.ui.commandNum < 0) {
+                    gp.ui.commandNum = 2;
+                }
+                gp.playSoundEffect(Sound.FX__CURSOR);
+            }
+            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                gp.ui.commandNum++;
+                if (gp.ui.commandNum > 2) {
+                    gp.ui.commandNum = 0;
+                }
+                gp.playSoundEffect(Sound.FX__CURSOR);
+            }
+        }
+        if (gp.ui.subState == 1) {
+            npcInventory(code);
+            if (code == KeyEvent.VK_ESCAPE) {
+                gp.ui.subState = 0;
+            }
+        }
+        if (gp.ui.subState == 2) {
+            playerInventory(code);
+            if (code == KeyEvent.VK_ESCAPE) {
+                gp.ui.subState = 0;
+            }
+        }
+    }
 }
