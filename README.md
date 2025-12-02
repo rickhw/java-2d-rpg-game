@@ -1,10 +1,11 @@
 
 ## Release Notes
 
-### 3.0.x
+### v2.8.x
 
 - Transition between maps.
-
+    - Transition effect
+- Trade System: Buy and Sell
 
 ### v2.7.x
 
@@ -74,22 +75,24 @@
 ---
 ## Youtube Template
 
-Title: `[GameDevLog][v2.2.0][Dev] Custom Font, Title Screen, Player Life, Event (20251121)`
+Title: `[GameDevLog][v2.2.0]Custom Font, Title Screen, Player Life, Event (20251121)`
 
 Content: 
 ```bash
 Game Learning & DevLog - 2D Adventure RPG
 #第九藝術
 
+純手工的 遊戲開發 & 練習紀錄
+Version: v2.7.0 20251201
+
 ## DevLog
 
-1. ...
-2. ...
-3. ...
-
+- ...
+- ...
+- ...
 
 ## Reference
 
-- All Playerlist: https://www.youtube.com/watch?v=i6CVVRV-nkI&list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO
-- Learning from: RyiSnow https://www.youtube.com/watch?v=om59cwR7psI&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq
+- All Playerlist: https://www.youtube.com/playlist?list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO
+- Learning from RyiSnow https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq
 ```

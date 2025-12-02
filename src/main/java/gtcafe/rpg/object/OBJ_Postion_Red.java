@@ -14,6 +14,7 @@ public class OBJ_Postion_Red extends Entity {
         value = 5;
         down1 = setup("/gtcafe/rpg/assets/objects/potion_red.png", gp.tileSize, gp.tileSize);
         description = "[" + name + "]\nHeals your life by " + value + "."; 
+        price = 100;
     }
 
     public void use(Entity entity) {

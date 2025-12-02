@@ -30,4 +30,16 @@ public class Graphics2DUtils {
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
     }
+
+
+    public int getXforCenterText(Graphics2D g2, GamePanel gp, String text) {
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = gp.screenWidth / 2 - length / 2 ;
+        return x;
+    }
+    public int getXforAlignToRightText(Graphics2D g2, String text, int tailX) {
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = tailX - length;
+        return x;
+    }
 }

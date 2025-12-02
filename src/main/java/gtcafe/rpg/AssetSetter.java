@@ -1,8 +1,8 @@
 package gtcafe.rpg;
 
+import gtcafe.rpg.entity.NPC_Merchant;
 import gtcafe.rpg.entity.NPC_OldMan;
 import gtcafe.rpg.monster.MON_GreenSlime;
-import gtcafe.rpg.object.OBJ_Axe;
 import gtcafe.rpg.object.OBJ_Coin_Bronze;
 import gtcafe.rpg.object.OBJ_Heart;
 import gtcafe.rpg.object.OBJ_ManaCrystal;
@@ -92,9 +92,9 @@ public class AssetSetter {
         // i++;
         i = 0;
         mapIndex = Map.INTERIOR_01.index;
-        gp.npc[mapIndex][i] = new NPC_OldMan(gp);
-        gp.npc[mapIndex][i].worldX = gp.tileSize * 10;
-        gp.npc[mapIndex][i].worldY = gp.tileSize * 11;
+        gp.npc[mapIndex][i] = new NPC_Merchant(gp);
+        gp.npc[mapIndex][i].worldX = gp.tileSize * 12;
+        gp.npc[mapIndex][i].worldY = gp.tileSize * 7;
 
         // i++;
         // gp.npc[mapIndex][i] = new NPC_OldMan(gp);

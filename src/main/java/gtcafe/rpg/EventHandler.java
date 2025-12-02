@@ -1,5 +1,6 @@
 package gtcafe.rpg;
 
+import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.tile.Map;
 
 public class EventHandler {
@@ -10,6 +11,8 @@ public class EventHandler {
     // prevent the event happen repeatly.
     int previousEventX, previousEventY;
     boolean canTouchEvent = true;
+    Map tempMap;
+    int tempCol, tempRow;
 
     public EventHandler(GamePanel gp) {
         this.gp = gp;
@@ -100,17 +103,27 @@ public class EventHandler {
             // 
             else if (hit(Map.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Map.INTERIOR_01, 12, 13); }
             else if (hit(Map.INTERIOR_01, 12,13,Direction.ANY)) { teleport(Map.WORLD_MAP, 10, 39); }
+
+            else if (hit(Map.INTERIOR_01, 12,9,Direction.UP)) { speak(gp.npc[1][0]); } // TODO
+        }
+    }
+
+    private void speak(Entity entity) {
+        if (gp.keyHandler.enterPressed == true) {
+            gp.gameState = GameState.DIALOGUE_STATE;
+            gp.player.attackCanceled = true;
+            entity.speak();
         }
     }
 
     // update player's position
     private void teleport(Map map, int col, int row) {
-        gp.currentMap = map;
-        gp.player.worldX = gp.tileSize * col;
-        gp.player.worldY = gp.tileSize * row;
-        // 紀錄 player 座標
-        previousEventX = gp.player.worldX;
-        previousEventY = gp.player.worldY;
+        gp.gameState = GameState.TRANSITION_STATE;
+
+        // 暫存座標, 在 UI 做 Transistion 處理後使用
+        tempMap = map;
+        tempCol = col;
+        tempRow = row;
 
         canTouchEvent = false;
 

@@ -9,5 +9,6 @@ public class OBJ_Boots extends Entity {
         super(gp);
         name = "Boots";
         down1 = setup("/gtcafe/rpg/assets/objects/boots.png", gp.tileSize, gp.tileSize);
+        price = 150;
     }
 }
