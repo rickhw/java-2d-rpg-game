@@ -7,11 +7,12 @@ import gtcafe.rpg.GamePanel;
 
 public class NPC_OldMan extends Entity {
     
-    public NPC_OldMan(GamePanel gp) {
+    public NPC_OldMan(GamePanel gp, String name) {
         super(gp);
 
-        direction = Direction.DOWN;
-        speed = 1;
+        this.direction = Direction.DOWN;
+        this.speed = 1;
+        this.name = name;
 
         getImages();
         setDialogue();

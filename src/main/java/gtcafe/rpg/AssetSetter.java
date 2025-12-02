@@ -78,12 +78,12 @@ public class AssetSetter {
         int i = 0;
         int mapIndex = Map.WORLD_MAP.index;
 
-        gp.npc[mapIndex][i] = new NPC_OldMan(gp);
+        gp.npc[mapIndex][i] = new NPC_OldMan(gp, "Steve");
         gp.npc[mapIndex][i].worldX = gp.tileSize * 18;
         gp.npc[mapIndex][i].worldY = gp.tileSize * 20;
 
         i++;
-        gp.npc[mapIndex][i] = new NPC_OldMan(gp);
+        gp.npc[mapIndex][i] = new NPC_OldMan(gp, "Erica");
         gp.npc[mapIndex][i].worldX = gp.tileSize * 28;
         gp.npc[mapIndex][i].worldY = gp.tileSize * 20;
 
@@ -174,12 +174,16 @@ public class AssetSetter {
         gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 33, 12);
 
         // for testing
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 20);
+        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 20);
         gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 21);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 22);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 20, 20);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 20, 21);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 20, 22);
+        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 22);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 14, 40);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 40);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 41);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 12, 41);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 11, 41);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 41);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 40);
 
     }
 }

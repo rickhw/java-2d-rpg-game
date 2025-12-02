@@ -3,7 +3,6 @@ package gtcafe.rpg.entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
@@ -82,12 +81,12 @@ public class Player extends Entity {
 
     public void setDefaultPosition() {
         // player 在整個世界地圖的座標起始位置
-        // worldX = gp.tileSize * 23;
-        // worldY = gp.tileSize * 21;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
 
         // for testing the interior map
-        worldX = gp.tileSize * 10;
-        worldY = gp.tileSize * 41;
+        // worldX = gp.tileSize * 10;
+        // worldY = gp.tileSize * 41;
 
         direction = Direction.DOWN; 
     }

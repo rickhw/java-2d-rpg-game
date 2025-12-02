@@ -350,11 +350,13 @@ public class GamePanel extends JPanel implements Runnable {
             int x = 11;
             int y = 400;
             int lineHeight = 20;
+            g2.drawString("Map: " + currentMap.name, x, y); y += lineHeight;
             g2.drawString("WorldX: " + player.worldX, x, y); y += lineHeight;
             g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
             g2.drawString("Col: " + (player.worldX + player.solidArea.x)/tileSize, x, y); y += lineHeight;
             g2.drawString("Row: " + (player.worldY + player.solidArea.y)/tileSize, x, y); y += lineHeight;
-            g2.drawString("Draw Count: " + drawCount, x, y);
+            g2.drawString("State: " + gameState.name, x, y);
+            // g2.drawString("Draw Count: " + drawCount, x, y);
             // System.out.println("[GamePanel#paintComponent] Draw Time: "+passed);
         }
     }

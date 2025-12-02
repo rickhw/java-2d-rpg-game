@@ -1,6 +1,11 @@
 
 ## Release Notes
 
+### v2.9.x
+
+- Pathfinding: NPC follows player, aggro monsters
+
+
 ### v2.8.x
 
 - Transition between maps.
