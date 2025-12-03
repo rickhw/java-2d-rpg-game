@@ -5,7 +5,7 @@ public class Node {
     public int col;
     public int row;
     int gCost;
-    int hCost;
+    int hCost;  // 從目前位置到終點的成本
     int fCost;
     boolean solid;
     boolean open;

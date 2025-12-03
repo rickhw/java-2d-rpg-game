@@ -175,6 +175,7 @@ public class TileManager {
             }
         }
 
+        // 畫出 PathFinding 的路徑
         if (drawPath == true) {
             g2.setColor(new Color(255, 0,0, 70));
             for(int i=0; i<gp.pathFinder.pathList.size(); i++) {

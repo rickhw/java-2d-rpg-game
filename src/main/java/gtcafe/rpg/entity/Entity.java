@@ -151,18 +151,11 @@ public class Entity {
         // IF COLLISION IS FALSE, ENTITY CAN MOVE
         if (collisionOn == false) {
             switch (direction) {
-                case UP:
-                    worldY -= speed;
-                    break;
-                case DOWN:
-                    worldY += speed;
-                    break;
-                case LEFT:
-                    worldX -= speed;
-                    break;
-                case RIGHT:
-                    worldX += speed;
-                    break;
+                case UP -> worldY -= speed;
+                case DOWN -> worldY += speed;
+                case LEFT -> worldX -= speed;
+                case RIGHT -> worldX += speed;
+                default -> throw new IllegalArgumentException("Unexpected value: " + direction);
             }
         }
 
@@ -354,60 +347,67 @@ public class Entity {
         int startCol = (worldX + solidArea.x) / gp.tileSize;
         int startRow = (worldY + solidArea.y) / gp.tileSize;
 
+        if (startCol == goalCol && startRow == goalRow) {
+            onPath = false;
+            return;
+        }
+
         gp.pathFinder.setNodes(startCol, startRow, goalCol, goalRow, this);
 
         if (gp.pathFinder.search() == true) {
+            
             // Next worldX & worldY
-            int nextX = gp.pathFinder.pathList.get(0).col * gp.tileSize;
-            int nextY = gp.pathFinder.pathList.get(0).row * gp.tileSize;
+            if (gp.pathFinder.pathList.size() > 0) {
+                int nextX = gp.pathFinder.pathList.get(0).col * gp.tileSize;
+                int nextY = gp.pathFinder.pathList.get(0).row * gp.tileSize;
 
-            // Entity's solidArea position
-            int enLeftX = worldX + solidArea.x;
-            int enRightX = worldX + solidArea.x + solidArea.width;
-            int enTopY = worldY + solidArea.y;
-            int enBottomY = worldY + solidArea.y + solidArea.height;
+                // Entity's solidArea position
+                int enLeftX = worldX + solidArea.x;
+                int enRightX = worldX + solidArea.x + solidArea.width;
+                int enTopY = worldY + solidArea.y;
+                int enBottomY = worldY + solidArea.y + solidArea.height;
 
-            // Based on the current NPC's position,
-            // find out the relative direction of the next node
-            if (enTopY > nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
-                direction = Direction.UP;
-            } else if (enTopY < nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
-                direction = Direction.DOWN;
-            } else if (enTopY >= nextY && enBottomY < nextY + gp.tileSize) {
-                // left or right
-                if (enLeftX > nextX) { direction = Direction.LEFT; }
-                if (enLeftX < nextX) { direction = Direction.RIGHT; }
-            } else if (enTopY > nextY && enLeftX > nextX) {
-                // up or left
-                direction = Direction.UP;
-                checkCollision();
-                if (collisionOn == true) { direction = Direction.LEFT;
+                // Based on the current NPC's position,
+                // find out the relative direction of the next node
+                if (enTopY > nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
+                    direction = Direction.UP;
+                } else if (enTopY < nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
+                    direction = Direction.DOWN;
+                } else if (enTopY >= nextY && enBottomY < nextY + gp.tileSize) {
+                    // left or right
+                    if (enLeftX > nextX) { direction = Direction.LEFT; }
+                    if (enLeftX < nextX) { direction = Direction.RIGHT; }
+                } else if (enTopY > nextY && enLeftX > nextX) {
+                    // up or left
+                    direction = Direction.UP;
+                    checkCollision();
+                    if (collisionOn == true) { direction = Direction.LEFT; }
+                } else if (enTopY > nextY && enLeftX < nextX) {
+                    // up or right
+                    direction = Direction.UP;
+                    checkCollision();
+                    if (collisionOn == true) { direction = Direction.RIGHT; }
+                } else if (enTopY < nextY && enLeftX > nextX) {
+                    // down or left
+                    direction = Direction.DOWN;
+                    checkCollision();
+                    if (collisionOn == true) { direction = Direction.LEFT; }
+                } else if (enTopY < nextY && enLeftX < nextX) {
+                    // down or right
+                    direction = Direction.DOWN;
+                    checkCollision();
+                    if (collisionOn == true) { direction = Direction.RIGHT; }
                 }
-            } else if (enTopY > nextY && enLeftX < nextX) {
-                // up or right
-                direction = Direction.UP;
-                checkCollision();
-                if (collision == true) { direction = Direction.RIGHT; }
-            } else if (enTopY < nextY && enLeftX > nextX) {
-                // down or left
-                direction = Direction.DOWN;
-                checkCollision();
-                if (collision == true) { direction = Direction.LEFT; }
-            } else if (enTopY < nextY && enLeftX < nextX) {
-                // down or right
-                direction = Direction.DOWN;
-                checkCollision();
-                if (collision == true) { direction = Direction.RIGHT; }
+
+                System.out.printf("[Entity#searchPath] direction: [%s]\n", direction);
+
+                // If reaches the goal, stop the search
+                // int nextCol = gp.pathFinder.pathList.get(0).col;
+                // int nextRow = gp.pathFinder.pathList.get(0).row;
+                // if (nextCol == goalCol && nextRow == goalRow) {
+                    // onPath = false; // Let it reach the goal
+                // }
             }
-
-            System.out.printf("[Entity#searchPath] direction: [%s]\n", direction);
-
-            // If reaches the goal, stop the search
-            // int nextCol = gp.pathFinder.pathList.get(0).col;
-            // int nextRow = gp.pathFinder.pathList.get(0).row;
-            // if (nextCol == goalCol && nextRow == goalRow) {
-            //     onPath = false;
-            // }
         }
     }
 }

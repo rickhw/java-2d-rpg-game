@@ -1,5 +1,6 @@
 package gtcafe.rpg.entity;
 
+import java.awt.Rectangle;
 import java.util.Random;
 
 import gtcafe.rpg.Direction;
@@ -13,6 +14,14 @@ public class NPC_OldMan extends Entity {
         this.direction = Direction.DOWN;
         this.speed = 2;
         this.name = name;
+
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+        solidArea.width = 30;
+        solidArea.height = 30;
 
         getImages();
         setDialogue();
@@ -36,11 +45,11 @@ public class NPC_OldMan extends Entity {
         if (onPath == true) {
 
             // 1. fix position
-            int goalCol = 12;
-            int goalRow = 9;
+            // int goalCol = 12;
+            // int goalRow = 9;
             // 2. follow the player
-            // int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
-            // int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
+            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
+            int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
 
             searchPath(goalCol, goalRow);
         } else {

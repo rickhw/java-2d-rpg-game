@@ -79,14 +79,6 @@ public class PathFinder {
                 node[col][row].solid = true;
             }
 
-            // CHECK INTERACTIVE TILES
-            for (int i=0; i<gp.iTile[1].length; i++) {   // TODO
-                if(gp.iTile[gp.currentMap.index][i] != null && gp.iTile[gp.currentMap.index][i].destructible == true) {
-                    int itCol = gp.iTile[gp.currentMap.index][i].worldX / gp.tileSize;
-                    int itRow = gp.iTile[gp.currentMap.index][i].worldY / gp.tileSize;
-                    node[itCol][itRow].solid = true;
-                }
-            }
             // SET COST
             getCost(node[col][row]);
 
@@ -95,6 +87,40 @@ public class PathFinder {
                 col = 0;
                 row++;
             }
+        }
+
+        // CHECK INTERACTIVE TILES
+        for (int i=0; i<gp.iTile[1].length; i++) {
+            if(gp.iTile[gp.currentMap.index][i] != null && gp.iTile[gp.currentMap.index][i].destructible == true) {
+                int itCol = gp.iTile[gp.currentMap.index][i].worldX / gp.tileSize;
+                int itRow = gp.iTile[gp.currentMap.index][i].worldY / gp.tileSize;
+                node[itCol][itRow].solid = true;
+            }
+        }
+
+        // CHECK NPC
+        for (int i=0; i<gp.npc[1].length; i++) {
+            if(gp.npc[gp.currentMap.index][i] != null && gp.npc[gp.currentMap.index][i] != entity) {
+                int itCol = gp.npc[gp.currentMap.index][i].worldX / gp.tileSize;
+                int itRow = gp.npc[gp.currentMap.index][i].worldY / gp.tileSize;
+                node[itCol][itRow].solid = true;
+            }
+        }
+
+        // CHECK MONSTER
+        for (int i=0; i<gp.monster[1].length; i++) {
+            if(gp.monster[gp.currentMap.index][i] != null && gp.monster[gp.currentMap.index][i] != entity) {
+                int itCol = gp.monster[gp.currentMap.index][i].worldX / gp.tileSize;
+                int itRow = gp.monster[gp.currentMap.index][i].worldY / gp.tileSize;
+                node[itCol][itRow].solid = true;
+            }
+        }
+
+        // CHECK PLAYER
+        if (gp.player != entity) {
+            int itCol = gp.player.worldX / gp.tileSize;
+            int itRow = gp.player.worldY / gp.tileSize;
+            node[itCol][itRow].solid = true;
         }
     }
 
