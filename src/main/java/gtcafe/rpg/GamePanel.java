@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.Date;
 
 import javax.swing.JPanel;
-import javax.tools.StandardJavaFileManager.PathFactory;
 
 import gtcafe.rpg.ai.PathFinder;
 import gtcafe.rpg.entity.Entity;
@@ -48,7 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
     int screenWidth2 = screenWidth;
     int screenHeight2 = screenHeight;
     BufferedImage tempScreen;
-    Graphics2D g2;
+    public Graphics2D g2;
     public boolean fullScreenOn = false;
 
     // FPS

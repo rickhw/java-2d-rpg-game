@@ -19,7 +19,7 @@ public class TileManager {
     public int mapTileNum[][][];    // first dimension to store the map name
     boolean showInfo = false;
     int drawCounter = 0;
-    boolean drawPath = true;
+    // boolean drawPath = true;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -176,7 +176,7 @@ public class TileManager {
         }
 
         // 畫出 PathFinding 的路徑
-        if (drawPath == true) {
+        if (gp.keyHandler.showDebugText == true) {
             g2.setColor(new Color(255, 0,0, 70));
             for(int i=0; i<gp.pathFinder.pathList.size(); i++) {
                 int worldX = gp.pathFinder.pathList.get(i).col * gp.tileSize;

@@ -225,6 +225,12 @@ public class Entity {
                 }
             }
 
+            // 顯示底色
+            if (onPath == true) {
+                gp.g2.setColor(new Color(255, 0,75));
+                gp.g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
+            }
+
             // Visual effect to transparent the entity for invincible state
             if (invincible == true) {
                 hpBarOn = true;
@@ -399,7 +405,7 @@ public class Entity {
                     if (collisionOn == true) { direction = Direction.RIGHT; }
                 }
 
-                System.out.printf("[Entity#searchPath] direction: [%s]\n", direction);
+                System.out.printf("[Entity#searchPath] entity: [%s], direction: [%s]\n", name, direction);
 
                 // If reaches the goal, stop the search
                 // int nextCol = gp.pathFinder.pathList.get(0).col;

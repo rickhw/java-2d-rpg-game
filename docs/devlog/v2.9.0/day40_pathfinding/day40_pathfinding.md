@@ -6,8 +6,13 @@ https://www.youtube.com/watch?v=Hd0D68guFKg&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4
 The algorithm: A-star search algorithm (https://www.youtube.com/watch?v=2JNEme00ZFA)
 
 1. Guide the NPC to a specific location
+    - 劇情需要，NPC 先在某個地方等 Player
 2. NPC follows the player
-3. Monsters get aggro and start chasing the player
+    - 劇情需要，NPC 跟著 Player 完成任務
+3. Monsters get aggro and start chasing the player, the conditions are:
+    - when monster get attack
+    - when player close to it.
+    
 
 ---
 ## Fix by Gemini

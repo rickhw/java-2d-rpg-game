@@ -14,7 +14,7 @@ public class OBJ_Rock extends Projectiles {
 
         name = "Rock";
         speed = 8;
-        maxLife = 80;   // 80 frame 後會消失
+        maxLife = 40;   // 80 frame 後會消失
         life = maxLife;
         attack = 2;
         useCost = 1;    // 花費 1 個魔力
