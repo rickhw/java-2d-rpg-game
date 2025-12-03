@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 
+/** 
+ * - https://en.wikipedia.org/wiki/A*_search_algorithm
+ * - [Step by Step Explanation of A* Pathfinding Algorithm in Java](https://www.youtube.com/watch?v=2JNEme00ZFA)
+ */
 public class PathFinder {
     GamePanel gp;
     Node[][] node;
