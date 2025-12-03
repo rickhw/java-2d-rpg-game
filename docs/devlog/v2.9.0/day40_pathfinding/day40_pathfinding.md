@@ -3,8 +3,6 @@ https://www.youtube.com/watch?v=Hd0D68guFKg&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4
 
 # Pathfinding
 
-The algorithm: A-star search algorithm (https://www.youtube.com/watch?v=2JNEme00ZFA)
-
 1. Guide the NPC to a specific location
     - 劇情需要，NPC 先在某個地方等 Player
 2. NPC follows the player
@@ -12,7 +10,11 @@ The algorithm: A-star search algorithm (https://www.youtube.com/watch?v=2JNEme00
 3. Monsters get aggro and start chasing the player, the conditions are:
     - when monster get attack
     - when player close to it.
-    
+
+## A* algorithm
+
+- https://en.wikipedia.org/wiki/A*_search_algorithm
+- [Step by Step Explanation of A* Pathfinding Algorithm in Java](https://www.youtube.com/watch?v=2JNEme00ZFA)
 
 ---
 ## Fix by Gemini
