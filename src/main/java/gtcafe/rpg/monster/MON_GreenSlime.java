@@ -58,21 +58,12 @@ public class MON_GreenSlime extends Entity {
             Random r = new Random();
             int i = r.nextInt(100) + 1; // pick up a number from 1 to 100
 
-            if (i <= 25) {
-                direction = Direction.UP;
-            }
-            if (i > 25 && i <= 50) {
-                direction = Direction.DOWN;
-            }
-            if (i > 50 && i <= 75) {
-                direction = Direction.LEFT;
-            }
-            if (i > 75 && i <= 100) {
-                direction = Direction.RIGHT;
-            }
+            if (i <= 25) { direction = Direction.UP; }
+            if (i > 25 && i <= 50) { direction = Direction.DOWN; }
+            if (i > 50 && i <= 75) { direction = Direction.LEFT; }
+            if (i > 75 && i <= 100) { direction = Direction.RIGHT; }
             actionLockCounter = 0;   
             
-            // System.out.println("[MON_GreenSlime#setAction] direction: " + direction);   
         }
 
         // logic to shoot the projectiles
@@ -96,14 +87,8 @@ public class MON_GreenSlime extends Entity {
         int i = new Random().nextInt(100) + 1;
 
         // SET THE MONSTER DROP
-        if (i < 50) {
-            dropItem(new OBJ_Coin_Bronze(gp));
-        }
-        if (i >= 50 && i < 75) {
-            dropItem(new OBJ_Heart(gp));
-        }
-        if (i >= 75 && i < 100) {
-            dropItem(new OBJ_ManaCrystal(gp));
-        }
+        if (i < 50) { dropItem(new OBJ_Coin_Bronze(gp)); }
+        if (i >= 50 && i < 75) { dropItem(new OBJ_Heart(gp)); }
+        if (i >= 75 && i < 100) { dropItem(new OBJ_ManaCrystal(gp)); }
     }
 }

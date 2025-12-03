@@ -15,7 +15,9 @@ import java.util.Comparator;
 import java.util.Date;
 
 import javax.swing.JPanel;
+import javax.tools.StandardJavaFileManager.PathFactory;
 
+import gtcafe.rpg.ai.PathFinder;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.entity.Projectiles;
@@ -63,6 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
     public EventHandler eventHandler = new EventHandler(this);
     Config config = new Config(this);
+    public PathFinder pathFinder = new PathFinder(this);
     Thread gameThread;
 
     // ENTITY and OBJECT

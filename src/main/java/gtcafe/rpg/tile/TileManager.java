@@ -1,5 +1,6 @@
 package gtcafe.rpg.tile;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class TileManager {
     public int mapTileNum[][][];    // first dimension to store the map name
     boolean showInfo = false;
     int drawCounter = 0;
+    boolean drawPath = true;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -170,6 +172,18 @@ public class TileManager {
             if (worldCol == gp.maxWorldCol) {
                 worldCol = 0;
                 worldRow++;
+            }
+        }
+
+        if (drawPath == true) {
+            g2.setColor(new Color(255, 0,0, 70));
+            for(int i=0; i<gp.pathFinder.pathList.size(); i++) {
+                int worldX = gp.pathFinder.pathList.get(i).col * gp.tileSize;
+                int worldY = gp.pathFinder.pathList.get(i).row * gp.tileSize;
+                int screenX = worldX - gp.player.worldX + gp.player.screenX;
+                int screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+                g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
             }
         }
     }

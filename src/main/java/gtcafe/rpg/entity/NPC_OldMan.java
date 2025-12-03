@@ -11,7 +11,7 @@ public class NPC_OldMan extends Entity {
         super(gp);
 
         this.direction = Direction.DOWN;
-        this.speed = 1;
+        this.speed = 2;
         this.name = name;
 
         getImages();
@@ -32,28 +32,30 @@ public class NPC_OldMan extends Entity {
 
     // set the action behavior for different actors
     public void setAction() {
+        
+        if (onPath == true) {
 
-        actionLockCounter++;
+            // 1. fix position
+            int goalCol = 12;
+            int goalRow = 9;
+            // 2. follow the player
+            // int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
+            // int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
 
-        if (actionLockCounter == 120) { // 120 fps change the direction
-            Random r = new Random();
-            int i = r.nextInt(100) + 1; // pick up a number from 1 to 100
+            searchPath(goalCol, goalRow);
+        } else {
 
-            if (i <= 25) {
-                direction = Direction.UP;
-            }
-            if (i > 25 && i <= 50) {
-                direction = Direction.DOWN;
-            }
-            if (i > 50 && i <= 75) {
-                direction = Direction.LEFT;
-            }
-            if (i > 75 && i <= 100) {
-                direction = Direction.RIGHT;
-            }
-            actionLockCounter = 0;
+            actionLockCounter++;
+            if (actionLockCounter == 120) { // 120 fps change the direction
+                Random r = new Random();
+                int i = r.nextInt(100) + 1; // pick up a number from 1 to 100
 
-            // System.out.println("[NPC_OldMan#setAction] direction: " + direction);   
+                if (i <= 25) { direction = Direction.UP; }
+                if (i > 25 && i <= 50) { direction = Direction.DOWN; }
+                if (i > 50 && i <= 75) { direction = Direction.LEFT; }
+                if (i > 75 && i <= 100) { direction = Direction.RIGHT; }
+                actionLockCounter = 0;
+            }
         }
     }
 
@@ -71,5 +73,8 @@ public class NPC_OldMan extends Entity {
         // DO this character specific stuff
 
         super.speak();
+
+        // for track the player by pathfinding
+        onPath = true;
     }
 }
