@@ -11,7 +11,7 @@ public class KeyHandler implements KeyListener {
     GamePanel gp;
 
     // DEBUG
-    boolean showDebugText = false;
+    public boolean showDebugText = false;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;

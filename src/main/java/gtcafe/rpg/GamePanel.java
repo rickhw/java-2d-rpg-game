@@ -16,6 +16,7 @@ import java.util.Date;
 
 import javax.swing.JPanel;
 
+import gtcafe.rpg.ai.PathFinder;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.entity.Projectiles;
@@ -46,7 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
     int screenWidth2 = screenWidth;
     int screenHeight2 = screenHeight;
     BufferedImage tempScreen;
-    Graphics2D g2;
+    public Graphics2D g2;
     public boolean fullScreenOn = false;
 
     // FPS
@@ -63,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
     public EventHandler eventHandler = new EventHandler(this);
     Config config = new Config(this);
+    public PathFinder pathFinder = new PathFinder(this);
     Thread gameThread;
 
     // ENTITY and OBJECT

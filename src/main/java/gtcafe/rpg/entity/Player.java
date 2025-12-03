@@ -407,10 +407,11 @@ public class Player extends Entity {
 
             // Adjust player's workdX/Y for the attackArea
             switch (direction) {
-                case UP: worldY -= attackArea.height; break;
-                case DOWN: worldY += attackArea.height; break;
-                case LEFT: worldX -= attackArea.width; break;
-                case RIGHT: worldX += attackArea.width; break;
+                case UP -> worldY -= attackArea.height; 
+                case DOWN -> worldY += attackArea.height; 
+                case LEFT -> worldX -= attackArea.width; 
+                case RIGHT -> worldX += attackArea.width;
+                default -> throw new IllegalArgumentException("Unexpected value: " + direction);
             }
 
             // attackArea becomes solidArea
