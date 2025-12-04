@@ -3,6 +3,10 @@ https://www.youtube.com/watch?v=nyg-8ef90Jk&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4
 
 # Object Detection / Loot (搶劫)
 
+- 回擊 Projectiles, 例如 Player 回擊 Monster 丟出來的石頭
+- 實作物件之間的互動
+    - 使用鑰匙開門
+    - 開啟寶箱：物件裡有物件 (Loot)
 
 ---
 
