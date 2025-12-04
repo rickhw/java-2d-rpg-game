@@ -41,7 +41,7 @@ public class Entity {
     public boolean dying = false;
     boolean hpBarOn = false;
     public boolean onPath = false;
-    public boolean knockBack = false;
+    public boolean knockBack = false;       // day42
 
     // COUNTER
     public int spriteCounter = 0;
@@ -50,7 +50,7 @@ public class Entity {
     public int shotAvailableCounter = 0;    // to avoid double shoot
     int dyingCounter = 0;
     int hpBarCounter = 0;
-    int knockBackCounter = 0;
+    int knockBackCounter = 0;               // day42
 
     // CHARACTER ATTRIBUTES: share player and monster
     public String name;
@@ -82,7 +82,9 @@ public class Entity {
     public String description = "";
     public int useCost; // spend mana
     public int price;
-    public int knockBackPower = 0;  // for different weapon only.
+    public int knockBackPower = 0;  // for different weapon only.   // day42
+    public boolean stackable = false;       // day43
+    public int amount = 1;                  // day43
 
     // INVENTORY
     public ArrayList<Entity> inventory = new ArrayList<>();
@@ -107,29 +109,12 @@ public class Entity {
         return image;
     }
 
-    public int getLeftX() {
-        return worldX + solidArea.x;
-    }
-
-    public int getRightX() {
-        return worldX + solidArea.x + solidArea.width;
-    }
-
-    public int getTopY() {
-        return worldY + solidArea.y;
-    }
-
-    public int getBottomY() {
-        return worldY + solidArea.y + solidArea.height;
-    }
-
-    public int getCol() {
-        return (worldX + solidArea.x) / gp.tileSize;
-    }
-
-    public int getRow() {
-        return (worldY + solidArea.y) / gp.tileSize;
-    }
+    public int getLeftX() { return worldX + solidArea.x; }
+    public int getRightX() { return worldX + solidArea.x + solidArea.width; }
+    public int getTopY() { return worldY + solidArea.y; }
+    public int getBottomY() { return worldY + solidArea.y + solidArea.height; }
+    public int getCol() { return (worldX + solidArea.x) / gp.tileSize; }
+    public int getRow() { return (worldY + solidArea.y) / gp.tileSize; }
 
     // overwirte by subclass
     public void setAction() {}
@@ -149,17 +134,21 @@ public class Entity {
         int nextWorldX = user.getLeftX();
         int nextWorldY = user.getTopY();
 
+        System.out.printf("[Entity#getDetected] user.direction: [%s]\n", user.direction);
+        System.out.printf("[Entity#getDetected] before: nextWorldX: [%s], nextWorldY: [%s]\n", nextWorldX, nextWorldY);
         switch (user.direction) {
-            case UP -> nextWorldX = user.getTopY() - 1;
+            case UP -> nextWorldY = user.getTopY() - gp.tileSize;         // TODO: FIXME
             case DOWN -> nextWorldY = user.getBottomY() + 1;
             case LEFT -> nextWorldX = user.getLeftX() - 1;
             case RIGHT -> nextWorldX = user.getRightX() + 1;
         }
+
+        System.out.printf("[Entity#getDetected] after: nextWorldX: [%s], nextWorldY: [%s]\n", nextWorldX, nextWorldY);
         int col = nextWorldX / gp.tileSize;
         int row = nextWorldY / gp.tileSize;
 
-        // Detect the target, ex: Key
-        for (int i=0; i<target[1].length; i++) {
+        // Detect the target, ex: Door
+        for (int i=0; i<target[1].length; i++) {    // TODO
             if (target[gp.currentMap.index][i] != null) {
                 if(target[gp.currentMap.index][i].getCol() == col &&
                     target[gp.currentMap.index][i].getRow() == row &&

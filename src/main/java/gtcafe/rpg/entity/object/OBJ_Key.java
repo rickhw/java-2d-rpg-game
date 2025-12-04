@@ -16,12 +16,14 @@ public class OBJ_Key extends Entity {
         down1 = setup("/gtcafe/rpg/assets/objects/key.png", gp.tileSize, gp.tileSize);
         description = "[" + name + "]\nIt opens a door.";
         price = 350;
+        stackable = true;
     }
 
     public boolean use(Entity entity) {
         gp.gameState = GameState.DIALOGUE_STATE;
 
         int objIndex = getDetected(entity, gp.obj, "Door");
+        System.out.printf("[OBJ_Key#use] objIndex [%s] by getDetected\n", objIndex);
         if (objIndex != 999) {
             gp.ui.currentDialogue = "You use the " + name + " and open the door";
             gp.playSoundEffect(Sound.FX_UNLOCK);
