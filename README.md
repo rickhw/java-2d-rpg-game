@@ -3,12 +3,17 @@
 
 ### v2.10.x
 
-- Player can cut the projectiles (rock from Slime)
-- Knockback Effect (擊退): 當玩家攻擊怪物的時候，會依照武器的擊退值 (KnockBackPower) 計算怪物瞬間退後的效果，增加遊戲的打擊感。
-- 回擊 Projectiles, 例如 Player 回擊 Monster 丟出來的石頭
+- 實作格擋與擊退效果
+    - 回擊 Projectiles, 例如 Player 回擊 Monster 丟出來的石頭
+    - Knockback Effect (擊退): 當玩家攻擊怪物的時候，會依照武器的擊退值 (KnockBackPower) 計算怪物瞬間退後的效果，增加遊戲的打擊感。
 - 實作物件之間的互動
     - 使用鑰匙開門
     - 開啟寶箱：物件裡有物件 (Loot)
+- Stackable: Player 口袋的物件，可以用計數方式存放，避免口袋很快就滿了。
+    - 撿起物件、開啟寶箱的時候，計數增加
+    - 使用物件 (使用恢復劑 / 使用鑰匙)，計數減少
+    - 在商店買入同樣物品，計數增加
+    - 在商店賣出同樣物品，計數減少
 
 
 ### v2.9.x
