@@ -6,7 +6,7 @@ https://www.youtube.com/watch?v=8KitXuxcuqI&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4
 - Additional Combat Mechanics (戰鬥機制)
     - Player can cut the projectiles
     - Add Player.damageProjectile()
-- KnockBack: 攻擊怪物的時候，怪物受到攻擊後，會退後幾步
+- KnockBack: 攻擊怪物的時候，怪物受到攻擊後，會退後幾步，增加打擊感
 - Setting a KnockBack Power on Weapons
     - 不同武器有不同的 knockBackPower
 
