@@ -17,7 +17,7 @@ public class OBJ_Postion_Red extends Entity {
         price = 100;
     }
 
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
         gp.gameState = GameState.DIALOGUE_STATE;
         gp.ui.currentDialogue = "You drink the " + name + "!\n"
             + "Your life has ben recoeved by " + value + ".";
@@ -28,5 +28,7 @@ public class OBJ_Postion_Red extends Entity {
         }
 
         gp.playSoundEffect(Sound.FX_POWER_UP);
+
+        return true;    // means delete it.
     }
 }

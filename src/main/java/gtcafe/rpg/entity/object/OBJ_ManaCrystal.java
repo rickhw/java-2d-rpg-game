@@ -22,10 +22,12 @@ public class OBJ_ManaCrystal extends Entity {
         image2 = setup("/gtcafe/rpg/assets/objects/manacrystal_blank.png", gp.tileSize, gp.tileSize);
     }
 
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
         gp.playSoundEffect(Sound.FX_POWER_UP);
         gp.ui.addMessage("Mana +" + value);
         entity.mana += value;
+        
+        return true;    // means delete it.
     }
 
 }

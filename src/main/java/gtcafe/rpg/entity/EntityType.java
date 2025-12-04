@@ -8,7 +8,8 @@ public enum EntityType {
     AXE(4),
     SHIELD(5),
     CONSUMABLE(6),
-    PICKUPONLY(7)   // Coin
+    PICKUPONLY(7),      // Coin, Heart, Mana ... etc
+    OBSTACLE(8),        // 障礙
     ;
 
     int value;

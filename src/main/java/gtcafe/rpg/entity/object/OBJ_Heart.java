@@ -21,9 +21,11 @@ public class OBJ_Heart extends Entity {
         image3 = setup("/gtcafe/rpg/assets/objects/heart_blank.png", gp.tileSize, gp.tileSize);
     }
 
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
         gp.playSoundEffect(Sound.FX_POWER_UP);
         gp.ui.addMessage("Life +" + value);
         entity.life += value;
+
+        return true;    // means delete it.
     }
 }

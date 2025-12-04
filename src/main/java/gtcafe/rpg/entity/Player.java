@@ -9,6 +9,7 @@ import gtcafe.rpg.KeyHandler;
 import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.object.OBJ_Axe;
 import gtcafe.rpg.entity.object.OBJ_Key;
+import gtcafe.rpg.entity.object.OBJ_Postion_Red;
 import gtcafe.rpg.entity.object.OBJ_Shield_Wood;
 import gtcafe.rpg.entity.projectile.OBJ_Fireball;
 import gtcafe.rpg.state.Direction;
@@ -103,6 +104,22 @@ public class Player extends Entity {
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
+        inventory.add(new OBJ_Postion_Red(gp));
     }
 
     // 計算防禦力: 考慮盾牌以及敏捷
@@ -369,6 +386,12 @@ public class Player extends Entity {
                 gp.obj[mapIndex][index].use(this);
                 gp.obj[mapIndex][index] = null;
             } 
+            else if (gp.obj[mapIndex][index].type == EntityType.OBSTACLE) {
+                if (keyHandler.enterPressed == true) {
+                    attackCanceled = true;
+                    gp.obj[gp.currentMap.index][index].interact();
+                }
+            }
             // INVENTORY ITEMS
             else {
                 String text;
@@ -588,8 +611,9 @@ public class Player extends Entity {
                 defense = getDefense();
             }
             if (selectedItem.type == EntityType.CONSUMABLE) {
-                selectedItem.use(this);
-                inventory.remove(itemIndex);
+                if (selectedItem.use(this) == true) {
+                    inventory.remove(itemIndex);
+                }
             }
         }
     }
