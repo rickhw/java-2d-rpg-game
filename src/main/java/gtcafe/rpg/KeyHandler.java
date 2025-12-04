@@ -3,6 +3,7 @@ package gtcafe.rpg;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.tile.Map;
 
 public class KeyHandler implements KeyListener {

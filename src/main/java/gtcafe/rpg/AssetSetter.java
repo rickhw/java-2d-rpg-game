@@ -1,14 +1,14 @@
 package gtcafe.rpg;
 
-import gtcafe.rpg.entity.NPC_Merchant;
-import gtcafe.rpg.entity.NPC_OldMan;
-import gtcafe.rpg.monster.MON_GreenSlime;
-import gtcafe.rpg.object.OBJ_Coin_Bronze;
-import gtcafe.rpg.object.OBJ_Heart;
-import gtcafe.rpg.object.OBJ_ManaCrystal;
-import gtcafe.rpg.object.OBJ_Postion_Red;
-import gtcafe.rpg.object.OBJ_Shield_Blue;
-import gtcafe.rpg.object.OBJ_Sword_Normal;
+import gtcafe.rpg.entity.monster.MON_GreenSlime;
+import gtcafe.rpg.entity.npc.NPC_Merchant;
+import gtcafe.rpg.entity.npc.NPC_OldMan;
+import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
+import gtcafe.rpg.entity.object.OBJ_Heart;
+import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
+import gtcafe.rpg.entity.object.OBJ_Postion_Red;
+import gtcafe.rpg.entity.object.OBJ_Shield_Blue;
+import gtcafe.rpg.entity.object.OBJ_Sword_Normal;
 import gtcafe.rpg.tile.Map;
 import gtcafe.rpg.tile.interactive.IT_DryTree;
 

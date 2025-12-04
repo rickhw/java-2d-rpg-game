@@ -4,15 +4,15 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.GameState;
 import gtcafe.rpg.KeyHandler;
 import gtcafe.rpg.Sound;
-import gtcafe.rpg.object.OBJ_Axe;
-import gtcafe.rpg.object.OBJ_Fireball;
-import gtcafe.rpg.object.OBJ_Key;
-import gtcafe.rpg.object.OBJ_Shield_Wood;
+import gtcafe.rpg.entity.object.OBJ_Axe;
+import gtcafe.rpg.entity.object.OBJ_Key;
+import gtcafe.rpg.entity.object.OBJ_Shield_Wood;
+import gtcafe.rpg.entity.projectile.OBJ_Fireball;
+import gtcafe.rpg.state.Direction;
+import gtcafe.rpg.state.GameState;
 
 public class Player extends Entity {
     KeyHandler keyHandler;

@@ -20,6 +20,7 @@ import gtcafe.rpg.ai.PathFinder;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.entity.Projectile;
+import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.tile.Map;
 import gtcafe.rpg.tile.TileManager;
 import gtcafe.rpg.tile.interactive.InteractiveTile;

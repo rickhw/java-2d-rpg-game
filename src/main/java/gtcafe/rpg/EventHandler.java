@@ -1,6 +1,8 @@
 package gtcafe.rpg;
 
 import gtcafe.rpg.entity.Entity;
+import gtcafe.rpg.state.Direction;
+import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.tile.Map;
 
 public class EventHandler {

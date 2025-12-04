@@ -11,9 +11,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import gtcafe.rpg.entity.Entity;
-import gtcafe.rpg.object.OBJ_Coin_Bronze;
-import gtcafe.rpg.object.OBJ_Heart;
-import gtcafe.rpg.object.OBJ_ManaCrystal;
+import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
+import gtcafe.rpg.entity.object.OBJ_Heart;
+import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
+import gtcafe.rpg.state.GameState;
 
 public class UI {
     GamePanel gp;

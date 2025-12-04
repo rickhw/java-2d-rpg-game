@@ -1,15 +1,15 @@
-package gtcafe.rpg.monster;
+package gtcafe.rpg.entity.monster;
 
 import java.util.Random;
 
-import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
-import gtcafe.rpg.object.OBJ_Coin_Bronze;
-import gtcafe.rpg.object.OBJ_Heart;
-import gtcafe.rpg.object.OBJ_ManaCrystal;
-import gtcafe.rpg.object.OBJ_Rock;
+import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
+import gtcafe.rpg.entity.object.OBJ_Heart;
+import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
+import gtcafe.rpg.entity.projectile.OBJ_Rock;
+import gtcafe.rpg.state.Direction;
 
 public class MON_GreenSlime extends Entity {
     GamePanel gp;

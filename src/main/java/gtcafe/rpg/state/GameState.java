@@ -1,4 +1,4 @@
-package gtcafe.rpg;
+package gtcafe.rpg.state;
 
 public enum GameState {
     TITLE_STATE(0, "Title Screen"),
@@ -14,7 +14,7 @@ public enum GameState {
     ;
 
     int state;
-    String name;
+    public String name;
 
     private GameState(int state, String name) {
         this.state = state;

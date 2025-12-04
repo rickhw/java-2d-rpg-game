@@ -1,10 +1,10 @@
-package gtcafe.rpg.object;
+package gtcafe.rpg.entity.object;
 
 import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.GameState;
 import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
+import gtcafe.rpg.state.GameState;
 
 public class OBJ_Postion_Red extends Entity {
     public OBJ_Postion_Red(GamePanel gp) {

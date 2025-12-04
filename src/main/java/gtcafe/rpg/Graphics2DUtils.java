@@ -31,7 +31,6 @@ public class Graphics2DUtils {
         g2.drawRoundRect(x+5, y+5, width-10, height-10, 25, 25);
     }
 
-
     public int getXforCenterText(Graphics2D g2, GamePanel gp, String text) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth / 2 - length / 2 ;

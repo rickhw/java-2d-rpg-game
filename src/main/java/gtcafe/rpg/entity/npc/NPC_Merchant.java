@@ -1,16 +1,17 @@
-package gtcafe.rpg.entity;
+package gtcafe.rpg.entity.npc;
 
 import java.awt.Rectangle;
 
-import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.GameState;
-import gtcafe.rpg.object.OBJ_Axe;
-import gtcafe.rpg.object.OBJ_Key;
-import gtcafe.rpg.object.OBJ_Postion_Red;
-import gtcafe.rpg.object.OBJ_Shield_Blue;
-import gtcafe.rpg.object.OBJ_Shield_Wood;
-import gtcafe.rpg.object.OBJ_Sword_Normal;
+import gtcafe.rpg.entity.Entity;
+import gtcafe.rpg.entity.object.OBJ_Axe;
+import gtcafe.rpg.entity.object.OBJ_Key;
+import gtcafe.rpg.entity.object.OBJ_Postion_Red;
+import gtcafe.rpg.entity.object.OBJ_Shield_Blue;
+import gtcafe.rpg.entity.object.OBJ_Shield_Wood;
+import gtcafe.rpg.entity.object.OBJ_Sword_Normal;
+import gtcafe.rpg.state.Direction;
+import gtcafe.rpg.state.GameState;
 
 public class NPC_Merchant extends Entity {
     

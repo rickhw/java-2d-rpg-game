@@ -1,7 +1,7 @@
 package gtcafe.rpg.entity;
 
-import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.state.Direction;
 
 // 拋射物: 弓箭, 火球, 魔法 ... etc.
 public class Projectile extends Entity {

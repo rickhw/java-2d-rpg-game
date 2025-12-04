@@ -1,10 +1,11 @@
-package gtcafe.rpg.entity;
+package gtcafe.rpg.entity.npc;
 
 import java.awt.Rectangle;
 import java.util.Random;
 
-import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.entity.Entity;
+import gtcafe.rpg.state.Direction;
 
 public class NPC_OldMan extends Entity {
     

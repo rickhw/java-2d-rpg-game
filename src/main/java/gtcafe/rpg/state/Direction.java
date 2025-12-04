@@ -1,4 +1,4 @@
-package gtcafe.rpg;
+package gtcafe.rpg.state;
 
 public enum Direction {
     UP("up"),

@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.Graphics2DUtils;
 import gtcafe.rpg.Sound;
+import gtcafe.rpg.state.Direction;
 
 // a blueprint
 public class Entity {
@@ -25,7 +25,7 @@ public class Entity {
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);    // Hit deteciton, be overwrite by subclass
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
-    String dialogues[] = new String[20];
+    protected String dialogues[] = new String[20];
     Graphics2DUtils g2Utils = new Graphics2DUtils();
     int animationSpeed = 24;
 

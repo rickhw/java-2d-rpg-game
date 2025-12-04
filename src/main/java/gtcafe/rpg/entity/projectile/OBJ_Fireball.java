@@ -1,4 +1,4 @@
-package gtcafe.rpg.object;
+package gtcafe.rpg.entity.projectile;
 
 import java.awt.Color;
 

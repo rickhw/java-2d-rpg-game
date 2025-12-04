@@ -1,4 +1,4 @@
-package gtcafe.rpg.object;
+package gtcafe.rpg.entity.object;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
