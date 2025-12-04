@@ -94,13 +94,13 @@ public class EventHandler {
 
         if (canTouchEvent) {
             // damagePit
-            if (hit(Map.WORLD_MAP, 27,16,Direction.RIGHT)) { damagePit(GameState.DIALOGUE_STATE); }
-            else if (hit(Map.WORLD_MAP, 23,19,Direction.ANY)) { damagePit(GameState.DIALOGUE_STATE); }
+            // if (hit(Map.WORLD_MAP, 27,16,Direction.RIGHT)) { damagePit(GameState.DIALOGUE_STATE); }
+            // else if (hit(Map.WORLD_MAP, 23,19,Direction.ANY)) { damagePit(GameState.DIALOGUE_STATE); }
 
             // water side
-            else if (hit(Map.WORLD_MAP, 23,12,Direction.UP)) { healingPool(GameState.DIALOGUE_STATE); }
+            if (hit(Map.WORLD_MAP, 23,12,Direction.UP)) { healingPool(GameState.DIALOGUE_STATE); }
 
-            // 
+            // TRANSISTION MAP
             else if (hit(Map.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Map.INTERIOR_01, 12, 13); }
             else if (hit(Map.INTERIOR_01, 12,13,Direction.ANY)) { teleport(Map.WORLD_MAP, 10, 39); }
 

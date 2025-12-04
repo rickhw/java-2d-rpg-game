@@ -12,7 +12,7 @@ public class NPC_OldMan extends Entity {
         super(gp);
 
         this.direction = Direction.DOWN;
-        this.speed = 2;
+        this.speed = 1;
         this.name = name;
 
         solidArea = new Rectangle();

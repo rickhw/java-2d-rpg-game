@@ -20,13 +20,14 @@ public class MON_GreenSlime extends Entity {
         
         type = EntityType.MONSTER;
         name = "GreenSlime";
-        speed = 1;
-        maxLife = 4;
+        defaultSpeed = 1;
+        speed = defaultSpeed;
+        maxLife = 10;
         life = maxLife;
         attack = 2;
         defense = 0;
         exp = 2; // how much can get the exp
-        projectiles = new OBJ_Rock(gp);
+        projectile = new OBJ_Rock(gp);
 
         solidArea.x = 3;
         solidArea.y = 18;
@@ -71,7 +72,6 @@ public class MON_GreenSlime extends Entity {
         if (onPath == true && tileDistance > 5) {
             onPath = false;
             gp.ui.addMessage("The slime has given up attacking you!");
-            // System.out.printf("Slime is skip to follow player!!\n");
         }
     }
 
@@ -88,9 +88,17 @@ public class MON_GreenSlime extends Entity {
 
             // shooting the player when aggro (侵略)
             int i = new Random().nextInt(200) + 1;
-            if (i > 197 && projectiles.alive == false) {
-                projectiles.set(worldX, worldY, direction, true, this);
-                gp.projectilesList.add(projectiles);
+            if (i > 197 && projectile.alive == false) {
+                projectile.set(worldX, worldY, direction, true, this);
+
+                // enable projectile or not.
+                // CHECK VACANCY
+                for(int ii=0; ii<gp.projectile[1].length; ii++) {
+                   if(gp.projectile[gp.currentMap.index][ii] == null) {
+                        gp.projectile[gp.currentMap.index][ii] = projectile;
+                        break;
+                   }
+                }
                 shotAvailableCounter = 0;
             }
         } else {

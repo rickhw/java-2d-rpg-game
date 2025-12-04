@@ -1,7 +1,7 @@
 package gtcafe.rpg.tile;
 
 public enum Map {
-    WORLD_MAP(0, "World Map"),
+    WORLD_MAP(0, "World"),
     INTERIOR_01(1, "Interior01"),   // // 室內
     ;
 

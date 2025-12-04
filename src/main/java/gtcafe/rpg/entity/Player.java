@@ -54,7 +54,8 @@ public class Player extends Entity {
 
         setDefaultPosition();;
 
-        speed = 5;  // 每個 Frame 移動 5 個 pixel, 每秒移動 5 * 60 = 300 pixel / 48 = 6 tiles
+        defaultSpeed = 5;
+        speed = defaultSpeed;  // 每個 Frame 移動 5 個 pixel, 每秒移動 5 * 60 = 300 pixel / 48 = 6 tiles
 
         // PLAYER STATUS
         level = 1;
@@ -71,7 +72,7 @@ public class Player extends Entity {
         // currentWeapon = new OBJ_Sword_Normal(gp);
         currentWeapon = new OBJ_Axe(gp);
         currentShield = new OBJ_Shield_Wood(gp);
-        projectiles = new OBJ_Fireball(gp);
+        projectile = new OBJ_Fireball(gp);
         // projectiles = new OBJ_Rock(gp);
 
         attack = getAttack();       // 計算攻擊力, 由 strength and weapon 決定
@@ -211,9 +212,8 @@ public class Player extends Entity {
                 attacking = true;
                 spriteCounter = 0;
             }
-            attackCanceled = false;
-            gp.keyHandler.enterPressed = false;
 
+            attackCanceled = false;
             // RESET enterPressed
             gp.keyHandler.enterPressed = false;
 
@@ -246,18 +246,29 @@ public class Player extends Entity {
         // 2. 拋射物目前沒有發射
         // 3. 拋射物目前還沒有畫出來 (30 FPS)
         // 4. Player 目前的魔力值足夠發射 (根據 Mana 值以及 Projectiles 需要消耗的值判斷)
-        if (gp.keyHandler.shotKeyPressed == true && projectiles.alive == false && 
-                shotAvailableCounter == 30 && projectiles.haveResource(this) == true) {
+        // System.out.printf("[Player#update()] shotKeyPressed: [%s], projectile.alive: [%s], shotAvailableCounter: [%s], haveResource: [%s]\n", 
+        //     gp.keyHandler.shotKeyPressed, projectile.alive, shotAvailableCounter, projectile.haveResource(this)
+        // );
+        if (gp.keyHandler.shotKeyPressed == true && projectile.alive == false && 
+                shotAvailableCounter == 30 && projectile.haveResource(this) == true) {
+            System.out.println("[Player#update()] Shot the projectiles!!");
             // SET DEFAULT COORDINATES, DIRECTION AND USER
-            projectiles.set(worldX, worldY, direction, true, this);
+            projectile.set(worldX, worldY, direction, true, this);
 
             // SUBTRACT THE COST (MANA, AMMO 彈藥, etc.)
-            projectiles.subtractResource(this);
+            projectile.subtractResource(this);
             
-            // ADD IT TO THE LIST
-            gp.projectilesList.add(projectiles);
+            // CHECK VACANCY
+            for(int i=0; i< gp.projectile[1].length; i++) {
+                if(gp.projectile[gp.currentMap.index][i] == null) {
+                    gp.projectile[gp.currentMap.index][i] = projectile;
+                    break;
+                }
+            } 
 
             shotAvailableCounter = 0;   // reset counter once player shoot.
+
+            gp.ui.addMessage("Shot the " + projectile.name + "!!");
 
             gp.playSoundEffect(Sound.FX__BURNING);
         }
@@ -354,6 +365,7 @@ public class Player extends Entity {
         if (index != 999) {
             // PICKUP ONLY ITEMS, ex: Coin
             if (gp.obj[mapIndex][index].type == EntityType.PICKUPONLY) {
+                System.out.printf("[Player#pickUpObject] The player picked up an item on the map: [%s]\n", gp.currentMap.name);
                 gp.obj[mapIndex][index].use(this);
                 gp.obj[mapIndex][index] = null;
             } 
@@ -378,7 +390,7 @@ public class Player extends Entity {
         int mapIndex = gp.currentMap.index;
         if (gp.keyHandler.enterPressed == true) {
             if (index != 999) { // means player touch NPC
-                System.out.println("[Player#interactNPC] You are hitting an NPC!!");
+                System.out.println("[Player#interactNPC] You are interacting with an NPC.");
                 attackCanceled = true;
                 gp.gameState = GameState.DIALOGUE_STATE;
                 gp.npc[mapIndex][index].speak();
@@ -396,6 +408,8 @@ public class Player extends Entity {
             spriteNum = 1;
         }
         // show image 2 (spriteNum2): 6-25 frame
+        // 5-25 is the window of opportunity to hit the target; 
+        // the shorter the window, the more difficult it is.
         if (spriteCounter > 5 && spriteCounter <= 25) {
             spriteNum = 2;
 
@@ -420,11 +434,14 @@ public class Player extends Entity {
 
             // check monster collision with the updated worldX/Y and solidArea
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex, attack);
+            damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
 
             // check player attack the interactive tiles
             int iTileIndex = gp.collisionChecker.checkEntity(this, gp.iTile);
             damageInteractiveTiles(iTileIndex);
+
+            int projectileIndex = gp.collisionChecker.checkEntity(this, gp.projectile);
+            damageProjectile(projectileIndex);
 
             // restore position
             worldX = currentWorldX;
@@ -437,6 +454,23 @@ public class Player extends Entity {
             spriteNum = 1;
             spriteCounter = 0;
             attacking = false;
+        }
+    }
+
+
+    // call when hit monster
+    // can set the condition for any type.
+    public void knockBack(Entity entity, int knockBackPower) {
+        entity.direction = direction;
+        entity.speed += knockBackPower; 
+        entity.knockBack = true;
+    }
+
+    private void damageProjectile(int i) {
+        if (i != 999) {
+            Entity projectile = gp.projectile[gp.currentMap.index][i];
+            projectile.alive = false;
+            generateParticle(projectile, projectile);
         }
     }
 
@@ -462,18 +496,21 @@ public class Player extends Entity {
     }
 
     // 計算 Player 攻擊怪物的值
-    public void damageMonster(int index, int attack) {
+    public void damageMonster(int index, int attack, int knockBackPower) {
         int mapIndex = gp.currentMap.index;
         if (index != 999) {
-            System.out.println("Player is hiting the monster!!");
-
             Entity monster = gp.monster[mapIndex][index];
             // give some damge
             if (monster.invincible == false) {
+                System.out.println("[Player#damageMonster] The player is attacking the monster!!");
                 gp.playSoundEffect(Sound.FX_HIT_MONSTER);
 
+                if (knockBackPower > 0) {
+                    knockBack(monster, knockBackPower); // 怪物反彈的效果
+                }
+
                 int damage = attack - monster.defense;
-                if (damage < 0) { damage = 1; }
+                if (damage <= 0) { damage = 1; }    // 至少會有 1 的傷害
 
                 monster.life -= damage;
                 gp.ui.addMessage(damage + " damage!");
@@ -492,7 +529,7 @@ public class Player extends Entity {
                 }
             }
         } else {
-            System.out.println("Player hiting miss!!");
+            System.out.println("[Player#damageMonster] The player missed the target!!");
         }
     }
 
@@ -500,13 +537,13 @@ public class Player extends Entity {
     public void contactMonster(int index) {
         int mapIndex = gp.currentMap.index;
         if (index != 999) {
-            System.out.println("[Player#contactMonster] Monster are attacking Player!!");
             if (invincible == false && gp.monster[mapIndex][index].dying == false) {
+                System.out.println("[Player#contactMonster] The monster is attacking the player!!");
                 gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
                 
                 // Monster 攻擊力 - Player 的防禦力
                 int damage = gp.monster[mapIndex][index].attack - defense;
-                if (damage < 0) { damage = 1; }
+                if (damage <= 0) { damage = 1; }     // 至少會損失 1
 
                 life -= damage;
                 invincible = true;
