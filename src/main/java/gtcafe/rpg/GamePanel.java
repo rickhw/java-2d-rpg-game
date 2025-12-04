@@ -70,7 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // ENTITY and OBJECT
     public Player player = new Player(this, keyHandler);
-    public Entity obj[][] = new Entity[maxMap][10];     // [mapIndex][index]
+    public Entity obj[][] = new Entity[maxMap][20];     // [mapIndex][index]
     public Entity npc[][] = new Entity[maxMap][10];     // [mapIndex][index]
     public Entity monster[][] = new Entity[maxMap][20]; // [mapIndex][index]
     public InteractiveTile iTile[][] = new InteractiveTile[maxMap][50]; // [mapIndex][index]
@@ -217,7 +217,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             if (timer >= 1000000000) {
                 SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-                System.out.printf("%s [GameLoop] FPS: [%s], State: [%s], Current: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), FPS, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
+                System.out.printf("%s [GameLoop] FPS: [%s], State: [%s], Map: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), FPS, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
                 // drawCount = 0;
                 timer = 0;
             }

@@ -107,12 +107,73 @@ public class Entity {
         return image;
     }
 
+    public int getLeftX() {
+        return worldX + solidArea.x;
+    }
+
+    public int getRightX() {
+        return worldX + solidArea.x + solidArea.width;
+    }
+
+    public int getTopY() {
+        return worldY + solidArea.y;
+    }
+
+    public int getBottomY() {
+        return worldY + solidArea.y + solidArea.height;
+    }
+
+    public int getCol() {
+        return (worldX + solidArea.x) / gp.tileSize;
+    }
+
+    public int getRow() {
+        return (worldY + solidArea.y) / gp.tileSize;
+    }
+
     // overwirte by subclass
     public void setAction() {}
     // overwirte by subclass
     public void damageReaction() {}
     // overwrite by subclass
-    public void use(Entity entity) {}
+    public boolean use(Entity entity) { return false; }
+    
+    // overwrite by subclass
+    // for OBSTACLE
+    public void interact() {}
+
+    public int getDetected(Entity user, Entity target[][], String targetName) {
+        int index = 999;
+
+        // Check the surrounding object
+        int nextWorldX = user.getLeftX();
+        int nextWorldY = user.getTopY();
+
+        switch (user.direction) {
+            case UP -> nextWorldX = user.getTopY() - 1;
+            case DOWN -> nextWorldY = user.getBottomY() + 1;
+            case LEFT -> nextWorldX = user.getLeftX() - 1;
+            case RIGHT -> nextWorldX = user.getRightX() + 1;
+        }
+        int col = nextWorldX / gp.tileSize;
+        int row = nextWorldY / gp.tileSize;
+
+        // Detect the target, ex: Key
+        for (int i=0; i<target[1].length; i++) {
+            if (target[gp.currentMap.index][i] != null) {
+                if(target[gp.currentMap.index][i].getCol() == col &&
+                    target[gp.currentMap.index][i].getRow() == row &&
+                    target[gp.currentMap.index][i].name.equals(targetName) )
+                {
+                    index = i;
+                    break;
+                }
+            }
+        }
+
+        return index;
+
+    }
 
     public void speak() {
         if (dialogues[dialogueIndex] == null) {

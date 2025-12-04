@@ -3,8 +3,11 @@ package gtcafe.rpg;
 import gtcafe.rpg.entity.monster.MON_GreenSlime;
 import gtcafe.rpg.entity.npc.NPC_Merchant;
 import gtcafe.rpg.entity.npc.NPC_OldMan;
+import gtcafe.rpg.entity.object.OBJ_Chest;
 import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
+import gtcafe.rpg.entity.object.OBJ_Door;
 import gtcafe.rpg.entity.object.OBJ_Heart;
+import gtcafe.rpg.entity.object.OBJ_Key;
 import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
 import gtcafe.rpg.entity.object.OBJ_Postion_Red;
 import gtcafe.rpg.entity.object.OBJ_Shield_Blue;
@@ -63,6 +66,23 @@ public class AssetSetter {
         gp.obj[mapIndex][i] = new OBJ_ManaCrystal(gp);
         gp.obj[mapIndex][i].worldX = gp.tileSize * 22;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 31;
+
+
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Door(gp);
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 14;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 28;
+
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Door(gp);
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 12;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 12;
+
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Chest(gp, new OBJ_Key(gp));
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 24;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 27;
+
 
         // for Testing
         // gp.obj[0] = new OBJ_Door(gp);

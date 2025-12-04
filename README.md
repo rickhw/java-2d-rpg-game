@@ -5,7 +5,7 @@
 
 - Player can cut the projectiles (rock from Slime)
 - Knockback Effect (擊退): 當玩家攻擊怪物的時候，會依照武器的擊退值 (KnockBackPower) 計算怪物瞬間退後的效果，增加遊戲的打擊感。
-
+- Object Detection/Loot
 
 ### v2.9.x
 

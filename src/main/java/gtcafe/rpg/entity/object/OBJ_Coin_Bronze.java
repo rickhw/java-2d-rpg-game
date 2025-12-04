@@ -15,9 +15,11 @@ public class OBJ_Coin_Bronze extends Entity {
         down1 = setup("/gtcafe/rpg/assets/objects/coin_bronze.png", gp.tileSize, gp.tileSize);
     }
 
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
         gp.playSoundEffect(Sound.FX_COIN);
         gp.ui.addMessage("Coin +" + value);
         entity.coin += value;
+
+        return true;    // means delete it.
     }
 }
