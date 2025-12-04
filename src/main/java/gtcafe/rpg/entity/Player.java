@@ -104,22 +104,22 @@ public class Player extends Entity {
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
+        // inventory.add(new OBJ_Postion_Red(gp));
     }
 
     // 計算防禦力: 考慮盾牌以及敏捷
@@ -395,8 +395,7 @@ public class Player extends Entity {
             // INVENTORY ITEMS
             else {
                 String text;
-                if (inventory.size() != maxInventorySize) {
-                    inventory.add(gp.obj[mapIndex][index]);
+                if (canObtainItem(gp.obj[mapIndex][index]) == true) {
                     gp.playSoundEffect(Sound.FX_COIN);
                     text = "Got a " + gp.obj[mapIndex][index].name + "!";
                 } else {
@@ -595,6 +594,9 @@ public class Player extends Entity {
         }
     }
 
+    // ------------------------------------------------------------------------
+    // INENTORY
+    // ------------------------------------------------------------------------
     // 選擇 Inventory 裡的東西
     public void selectItem() {
         int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);
@@ -612,10 +614,59 @@ public class Player extends Entity {
             }
             if (selectedItem.type == EntityType.CONSUMABLE) {
                 if (selectedItem.use(this) == true) {
-                    inventory.remove(itemIndex);
+                    if(selectedItem.amount > 1) {
+                        selectedItem.amount--;
+                    } else {
+                        inventory.remove(itemIndex);
+                    }
                 }
             }
         }
+    }
+
+    // day43
+    // This method also can be used when you want to check if player has a certain quest item tec.
+    public int searchItemInInventory(String itemName) {
+
+        int itemIndex = 999;
+        for (int i=0; i<inventory.size(); i++) {
+            if (inventory.get(i).name.equals(itemName)) {
+                itemIndex = i;
+                break;
+            }
+        }
+
+        return itemIndex;
+    }
+
+    // day43
+    // check if we can obtain item
+    public boolean canObtainItem(Entity item) {
+        boolean canObtain = false;
+
+        // CHECK IF STACKABLE
+        if(item.stackable == true) {
+            int index = searchItemInInventory(item.name);
+            if (index != 999) {
+                inventory.get(index).amount++;
+                canObtain = true;
+            }
+            else { // this is a new item, need to check vacancy
+                if(inventory.size() != maxInventorySize) {
+                    inventory.add(item);
+                    canObtain = true;
+                }
+            }
+        } 
+        // NOT STACKABLE
+        else {
+            if(inventory.size() != maxInventorySize) {
+                inventory.add(item);
+                canObtain = true;
+            }
+        }
+
+        return canObtain;
     }
 
 }
