@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import gtcafe.rpg.ai.PathFinder;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
-import gtcafe.rpg.entity.Projectiles;
+import gtcafe.rpg.entity.Projectile;
 import gtcafe.rpg.tile.Map;
 import gtcafe.rpg.tile.TileManager;
 import gtcafe.rpg.tile.interactive.InteractiveTile;
@@ -69,11 +69,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     // ENTITY and OBJECT
     public Player player = new Player(this, keyHandler);
-    public Entity obj[][] = new Entity[maxMap][10];
-    public Entity npc[][] = new Entity[maxMap][10];
-    public Entity monster[][] = new Entity[maxMap][20];
-    public InteractiveTile iTile[][] = new InteractiveTile[maxMap][50];
-    public ArrayList<Projectiles> projectilesList = new ArrayList<>();
+    public Entity obj[][] = new Entity[maxMap][10];     // [mapIndex][index]
+    public Entity npc[][] = new Entity[maxMap][10];     // [mapIndex][index]
+    public Entity monster[][] = new Entity[maxMap][20]; // [mapIndex][index]
+    public InteractiveTile iTile[][] = new InteractiveTile[maxMap][50]; // [mapIndex][index]
+    public Entity projectile[][] = new Entity[maxMap][20];  // for CollisionChecker.checkEntity() signature
+    // public ArrayList<Projectiles> projectilesList = new ArrayList<>();
     public ArrayList<Entity> particleList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
 
@@ -206,7 +207,7 @@ public class GamePanel extends JPanel implements Runnable {
                 // repaint();  // call paintComponent by parent class
 
                 // for full screen
-                drawToTempScreen(); // draw everything to the buffered image
+                drawToBufferedScreen(); // draw everything to the buffered image
                 drawToScreen();     // draw the buffered image to screen
 
                 delta--;
@@ -215,7 +216,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             if (timer >= 1000000000) {
                 SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-                System.out.printf("%s [GameLoop] FPS: [%s], State: [%s], Current: [%s]\n", sdFormat.format(new Date()), FPS, gameState, currentMap.name);
+                System.out.printf("%s [GameLoop] FPS: [%s], State: [%s], Current: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), FPS, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
                 // drawCount = 0;
                 timer = 0;
             }
@@ -249,13 +250,14 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             // 4. PROJECTILES
-            for(int i=0; i<projectilesList.size(); i++) {
-                if(projectilesList.get(i) != null) {
-                    if (projectilesList.get(i).alive == true) {
-                        projectilesList.get(i).update();
+            for(int i=0; i<projectile[1].length; i++) {
+                Entity pjt = projectile[currentMap.index][i];
+                if(pjt != null) {
+                    if (pjt.alive == true) {
+                        pjt.update();
                     }
-                    if (projectilesList.get(i).alive == false) {
-                        projectilesList.remove(i);
+                    if (pjt.alive == false) {
+                        projectile[currentMap.index][i] = null;
                     }
                 }
             }
@@ -285,7 +287,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     // for full screen mode, switch draw from paintComponent() to drawToTempScreen()
-    public void drawToTempScreen() {
+    public void drawToBufferedScreen() {
         g2.clearRect(0, 0, screenWidth2, screenHeight2);
 
         // 0. DEBUG
@@ -316,9 +318,10 @@ public class GamePanel extends JPanel implements Runnable {
                 if(monster[currentMap.index][i] != null) { entityList.add(monster[currentMap.index][i]); }
             }
 
-            for(int i=0; i<projectilesList.size(); i++) {
-                if(projectilesList.get(i) != null) { entityList.add(projectilesList.get(i)); }
+            for(int i=0; i<projectile[1].length; i++) {    // @TODO: change dimension 1
+                if(projectile[currentMap.index][i] != null) { entityList.add(projectile[currentMap.index][i]); }
             }
+            
             for(int i=0; i<particleList.size(); i++) {
                 if(particleList.get(i) != null) { entityList.add(particleList.get(i)); }
             }
@@ -368,85 +371,6 @@ public class GamePanel extends JPanel implements Runnable {
         g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
         g.dispose();
     }
-
-    // paint every loop
-    // public void paintComponent(Graphics g) {
-    //     super.paintComponent(g);
-    //     Graphics2D g2 = (Graphics2D) g;
-
-    //     // 0. DEBUG
-    //     long drawStart = 0;
-    //     if (keyHandler.showDebugText)
-    //         drawStart = System.nanoTime();
-
-    //     // 1. TITLE SCREEN
-    //     if (gameState == GameState.TITLE_STATE) {
-    //         ui.draw(g2);
-    //     } else {
-    //         // TILE
-    //         tileManager.draw(g2);
-    //         // INTERACTIVE TILES
-    //         for(int i=0; i<iTile.length; i++) {
-    //             if(iTile[i] != null) { iTile[i].draw(g2); }
-    //         }
-
-    //         // ADD ENTITY TO THE LIST
-    //         entityList.add(player);
-    //         for(int i=0; i<npc.length; i++) {
-    //             if(npc[i] != null) { entityList.add(npc[i]); }
-    //         }
-    //         for(int i=0; i<obj.length; i++) {
-    //             if(obj[i] != null) { entityList.add(obj[i]); }
-    //         }
-    //         for(int i=0; i<monster.length; i++) {
-    //             if(monster[i] != null) { entityList.add(monster[i]); }
-    //         }
-    //         for(int i=0; i<projectilesList.size(); i++) {
-    //             if(projectilesList.get(i) != null) { entityList.add(projectilesList.get(i)); }
-    //         }
-    //         for(int i=0; i<particleList.size(); i++) {
-    //             if(particleList.get(i) != null) { entityList.add(particleList.get(i)); }
-    //         }
-
-    //         // SORT
-    //         Collections.sort(entityList, new Comparator<Entity>() {
-    //             @Override
-    //             public int compare(Entity e1, Entity e2) {
-    //                 int result = Integer.compare(e1.worldY, e2.worldY);
-    //                 return result;
-    //             }
-    //         });
-
-    //         // DRAW ENTITIES
-    //         for(int i=0; i<entityList.size(); i++) { entityList.get(i).draw(g2); }
-    //         // CLEAN ENTITY LIST
-    //         entityList.clear();
-
-    //         // UI
-    //         ui.draw(g2);
-    //     }
-
-    //     // DEBUG
-    //     if (keyHandler.showDebugText) {
-    //         long drawEnd = System.nanoTime();
-    //         long passed = drawEnd - drawStart;
-
-    //         g2.setFont(new Font("Arial", Font.PLAIN, 20));
-    //         g2.setColor(Color.red);
-
-    //         int x = 11;
-    //         int y = 400;
-    //         int lineHeight = 20;
-    //         g2.drawString("WorldX: " + player.worldX, x, y); y += lineHeight;
-    //         g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
-    //         g2.drawString("Col: " + (player.worldX + player.solidArea.x)/tileSize, x, y); y += lineHeight;
-    //         g2.drawString("Row: " + (player.worldY + player.solidArea.y)/tileSize, x, y); y += lineHeight;
-    //         g2.drawString("Draw Time: " + passed, x, y);
-    //         // System.out.println("[GamePanel#paintComponent] Draw Time: "+passed);
-    //     }
-
-    //     g2.dispose();
-    // }
 
     public void playBackgroundMusic(int i) {
         music.setFile(i);

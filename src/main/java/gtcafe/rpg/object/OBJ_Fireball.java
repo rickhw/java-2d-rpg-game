@@ -4,9 +4,9 @@ import java.awt.Color;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
-import gtcafe.rpg.entity.Projectiles;
+import gtcafe.rpg.entity.Projectile;
 
-public class OBJ_Fireball extends Projectiles {
+public class OBJ_Fireball extends Projectile {
     GamePanel gp;
     public OBJ_Fireball(GamePanel gp) {
         super(gp);
@@ -19,6 +19,7 @@ public class OBJ_Fireball extends Projectiles {
         attack = 3;
         useCost = 1;    // 花費 1 個魔力
         alive = false;
+        knockBackPower = 0;
 
         getImage();
 

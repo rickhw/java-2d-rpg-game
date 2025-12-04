@@ -41,6 +41,7 @@ public class Entity {
     public boolean dying = false;
     boolean hpBarOn = false;
     public boolean onPath = false;
+    public boolean knockBack = false;
 
     // COUNTER
     public int spriteCounter = 0;
@@ -49,9 +50,11 @@ public class Entity {
     public int shotAvailableCounter = 0;    // to avoid double shoot
     int dyingCounter = 0;
     int hpBarCounter = 0;
+    int knockBackCounter = 0;
 
     // CHARACTER ATTRIBUTES: share player and monster
     public String name;
+    public int defaultSpeed;
     public int speed;
     public int maxLife; // 最大生命值
     public int life;    // 目前生命值
@@ -70,7 +73,7 @@ public class Entity {
     public int coin;
     public Entity currentWeapon;
     public Entity currentShield;
-    public Projectiles projectiles; // 拋射物
+    public Projectile projectile; // 拋射物
 
     // ITEM ATTRIBUTES
     public int value;
@@ -79,6 +82,7 @@ public class Entity {
     public String description = "";
     public int useCost; // spend mana
     public int price;
+    public int knockBackPower = 0;  // for different weapon only.
 
     // INVENTORY
     public ArrayList<Entity> inventory = new ArrayList<>();
@@ -145,17 +149,45 @@ public class Entity {
 
     public void update() {
 
-        setAction();
-        checkCollision();
+        // 擊退效果
+        if(knockBack == true) {
+            
+            checkCollision();
 
-        // IF COLLISION IS FALSE, ENTITY CAN MOVE
-        if (collisionOn == false) {
-            switch (direction) {
-                case UP -> worldY -= speed;
-                case DOWN -> worldY += speed;
-                case LEFT -> worldX -= speed;
-                case RIGHT -> worldX += speed;
-                default -> throw new IllegalArgumentException("Unexpected value: " + direction);
+            if (collisionOn == true) {
+                knockBackCounter = 0;
+                knockBack = false;
+                speed = defaultSpeed;
+            } else if (collisionOn == false) {
+                // move entity
+                switch (direction) {
+                    case UP -> worldY -= speed;
+                    case DOWN -> worldY += speed;
+                    case LEFT -> worldX -= speed;
+                    case RIGHT -> worldX += speed;
+                    default -> throw new IllegalArgumentException("Unexpected value: " + direction);
+                }
+
+                knockBackCounter++;
+                if (knockBackCounter == 10) {   // knockBack distance
+                    knockBackCounter = 0;
+                    knockBack = false;
+                    speed = defaultSpeed;
+                }
+            }
+        } else {
+            setAction();
+            checkCollision();
+
+            // IF COLLISION IS FALSE, ENTITY CAN MOVE
+            if (collisionOn == false) {
+                switch (direction) {
+                    case UP -> worldY -= speed;
+                    case DOWN -> worldY += speed;
+                    case LEFT -> worldX -= speed;
+                    case RIGHT -> worldX += speed;
+                    default -> throw new IllegalArgumentException("Unexpected value: " + direction);
+                }
             }
         }
 
@@ -405,7 +437,7 @@ public class Entity {
                     if (collisionOn == true) { direction = Direction.RIGHT; }
                 }
 
-                System.out.printf("[Entity#searchPath] entity: [%s], direction: [%s]\n", name, direction);
+                // System.out.printf("[Entity#searchPath] entity: [%s], direction: [%s]\n", name, direction);
 
                 // If reaches the goal, stop the search
                 // int nextCol = gp.pathFinder.pathList.get(0).col;

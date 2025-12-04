@@ -4,17 +4,17 @@ import java.awt.Color;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
-import gtcafe.rpg.entity.Projectiles;
+import gtcafe.rpg.entity.Projectile;
 
-public class OBJ_Rock extends Projectiles {
+public class OBJ_Rock extends Projectile {
     GamePanel gp;
     public OBJ_Rock(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
         name = "Rock";
-        speed = 8;
-        maxLife = 40;   // 80 frame 後會消失
+        speed = 3;
+        maxLife = 80;   // N frame 後會消失
         life = maxLife;
         attack = 2;
         useCost = 1;    // 花費 1 個魔力

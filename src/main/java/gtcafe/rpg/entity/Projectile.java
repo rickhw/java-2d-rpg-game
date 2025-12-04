@@ -4,9 +4,9 @@ import gtcafe.rpg.Direction;
 import gtcafe.rpg.GamePanel;
 
 // 拋射物: 弓箭, 火球, 魔法 ... etc.
-public class Projectiles extends Entity {
+public class Projectile extends Entity {
     Entity user;
-    public Projectiles(GamePanel gp) {
+    public Projectile(GamePanel gp) {
         super(gp);
     } 
 
@@ -29,8 +29,8 @@ public class Projectiles extends Entity {
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
             // player attack monster
             if (monsterIndex != 999) {
-                gp.player.damageMonster(monsterIndex, attack);
-                generateParticle(user.projectiles, gp.monster[mapIndex][monsterIndex]);
+                gp.player.damageMonster(monsterIndex, attack, knockBackPower);
+                generateParticle(user.projectile, gp.monster[mapIndex][monsterIndex]);
                 alive = false;
             }
         }
@@ -39,7 +39,7 @@ public class Projectiles extends Entity {
             // monster attack player
             if (gp.player.invincible == false && contacPlayer == true) {
                 damagePlayer(attack);
-                generateParticle(user.projectiles, gp.player);
+                generateParticle(user.projectile, gp.player);
                 alive = false;
             }
         }
