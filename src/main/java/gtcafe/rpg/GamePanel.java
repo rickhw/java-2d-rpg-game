@@ -20,6 +20,7 @@ import gtcafe.rpg.ai.PathFinder;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.entity.Projectile;
+import gtcafe.rpg.environment.EnvironmentManager;
 import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.tile.Map;
 import gtcafe.rpg.tile.TileManager;
@@ -66,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     public EventHandler eventHandler = new EventHandler(this);
     Config config = new Config(this);
     public PathFinder pathFinder = new PathFinder(this);
+    EnvironmentManager eManager = new EnvironmentManager(this);
     Thread gameThread;
 
     // ENTITY and OBJECT
@@ -110,6 +112,8 @@ public class GamePanel extends JPanel implements Runnable {
         assetSetter.setNPC();
         assetSetter.setMonster();
         assetSetter.setInteractiveTiles();
+
+        eManager.setup();
 
         playBackgroundMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
         stopBackgroundMusic();
@@ -341,6 +345,9 @@ public class GamePanel extends JPanel implements Runnable {
             // CLEAN ENTITY LIST
             entityList.clear();
 
+            // ENVIRONMENT
+            eManager.draw(g2);
+            
             // UI
             ui.draw(g2);
         }

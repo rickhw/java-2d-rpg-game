@@ -1,6 +1,11 @@
 
 ## Release Notes
 
+
+### v2.11.x
+
+- Lighting Effect
+
 ### v2.10.x
 
 - 實作格擋與擊退效果
