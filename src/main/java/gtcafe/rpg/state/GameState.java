@@ -10,6 +10,7 @@ public enum GameState {
     GAME_OVER_STATE(6, "Game Over State"),
     TRANSITION_STATE(7, "Transition State"),
     TRADE_STATE(8, "Trade State"),
+    SLEEP_STATE(9, "Sleep State"),
     
     ;
 

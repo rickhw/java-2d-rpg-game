@@ -5,11 +5,14 @@ import java.awt.Rectangle;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.object.OBJ_Axe;
+import gtcafe.rpg.entity.object.OBJ_Boots;
 import gtcafe.rpg.entity.object.OBJ_Key;
+import gtcafe.rpg.entity.object.OBJ_Lantern;
 import gtcafe.rpg.entity.object.OBJ_Postion_Red;
 import gtcafe.rpg.entity.object.OBJ_Shield_Blue;
 import gtcafe.rpg.entity.object.OBJ_Shield_Wood;
 import gtcafe.rpg.entity.object.OBJ_Sword_Normal;
+import gtcafe.rpg.entity.object.OBJ_Tent;
 import gtcafe.rpg.state.Direction;
 import gtcafe.rpg.state.GameState;
 
@@ -61,6 +64,9 @@ public class NPC_Merchant extends Entity {
         inventory.add(new OBJ_Sword_Normal(gp));
         inventory.add(new OBJ_Shield_Blue(gp));
         inventory.add(new OBJ_Shield_Wood(gp));
+        inventory.add(new OBJ_Tent(gp));
+        inventory.add(new OBJ_Lantern(gp));
+        inventory.add(new OBJ_Boots(gp));
     }
 
     public void speak() {

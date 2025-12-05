@@ -1,15 +1,23 @@
 package gtcafe.rpg.environment;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
 import java.awt.image.BufferedImage;
 
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.state.DayState;
 
 public class Lighting {
     GamePanel gp;
     BufferedImage darknessFilter;
+    public int dayCounter;
+    public float filterAlpha = 0f;
+
+    // Day State
+    public DayState dayState = DayState.DAY;
+
 
     public Lighting(GamePanel gp) {
         this.gp = gp;
@@ -23,7 +31,7 @@ public class Lighting {
      
         // 
         if(gp.player.currentLight == null) {
-            g2.setColor(new Color(0,0,0,0.75f));
+            g2.setColor(new Color(0,0,0.1f,0.99f));
         }
         // player has a lantern
         else {
@@ -35,11 +43,11 @@ public class Lighting {
             Color color[] = new Color[5];
             float fraction[] = new float[5]; // fraction 分數, distance between the circle
 
-            color[0] = new Color(0,0,0,0f);
-            color[1] = new Color(0,0,0,0.25f);
-            color[2] = new Color(0,0,0,0.5f);
-            color[3] = new Color(0,0,0,0.75f);
-            color[4] = new Color(0,0,0,0.90f);
+            color[0] = new Color(0,0,0.1f,0f);
+            color[1] = new Color(0,0,0.1f,0.25f);
+            color[2] = new Color(0,0,0.1f,0.5f);
+            color[3] = new Color(0,0,0.1f,0.75f);
+            color[4] = new Color(0,0,0.1f,0.90f);
 
             fraction[0] = 0f;
             fraction[1] = 0.25f;
@@ -64,11 +72,50 @@ public class Lighting {
             setLightSource();
             gp.player.lightUpdated = false;
         }
-    }
+
+        // Check the state of the day
+        if (dayState == DayState.DAY) {
+            dayCounter++;
+            if (dayCounter > 600) { // 600 fps, 10 second
+                dayState = DayState.DUSK;
+                dayCounter = 0;
+            }
+        }
+        if (dayState == DayState.DUSK) {
+            filterAlpha += 0.001f;
+
+            if (filterAlpha > 1f) {
+                filterAlpha = 1f;   // max value of alpha
+                dayState = DayState.NIGHT;
+            }
+        }
+        if (dayState == DayState.NIGHT) {
+            dayCounter++;
+            if (dayCounter > 600) {
+                dayState = DayState.DAWN;
+                dayCounter = 0;
+            }
+        }
+
+        if (dayState == DayState.DAWN) {
+            filterAlpha -= 0.001f;
+            if(filterAlpha < 0f) {
+                filterAlpha = 0;
+                dayState = DayState.DAY;
+            }
+        }
+    } 
 
     public void draw(Graphics2D g2) {
-
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
         g2.drawImage(darknessFilter, 0, 0, null);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+        // DEBUG
+        String situation = dayState.name;
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(50f));
+        g2.drawString(situation, 800, 500);
     }
 
 
