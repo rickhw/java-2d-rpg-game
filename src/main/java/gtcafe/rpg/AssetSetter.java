@@ -8,6 +8,7 @@ import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
 import gtcafe.rpg.entity.object.OBJ_Door;
 import gtcafe.rpg.entity.object.OBJ_Heart;
 import gtcafe.rpg.entity.object.OBJ_Key;
+import gtcafe.rpg.entity.object.OBJ_Lantern;
 import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
 import gtcafe.rpg.entity.object.OBJ_Postion_Red;
 import gtcafe.rpg.entity.object.OBJ_Shield_Blue;
@@ -36,6 +37,12 @@ public class AssetSetter {
         gp.obj[mapIndex][i] = new OBJ_Coin_Bronze(gp);
         gp.obj[mapIndex][i].worldX = gp.tileSize * 21;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 19;
+
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Lantern(gp);
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 18;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 20;
+
 
         i++;
         gp.obj[mapIndex][i] = new OBJ_Coin_Bronze(gp);

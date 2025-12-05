@@ -10,6 +10,7 @@ public enum EntityType {
     CONSUMABLE(6),
     PICKUPONLY(7),      // Coin, Heart, Mana ... etc
     OBSTACLE(8),        // 障礙
+    LIGHT(9),        // 手持燈具
     ;
 
     int value;

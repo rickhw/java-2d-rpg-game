@@ -453,8 +453,10 @@ public class UI {
         for(int i=0; i< entity.inventory.size(); i++) {
 
             // EQUIP CURSOR; 用底色強調目前已經安裝的武器/防具
-            if (entity.inventory.get(i) == entity.currentWeapon ||
-                    entity.inventory.get(i) == entity.currentShield) {
+            if (entity.inventory.get(i) == entity.currentWeapon
+                    || entity.inventory.get(i) == entity.currentShield
+                    || entity.inventory.get(i) == entity.currentLight
+            ) {
                 g2.setColor(new Color(240,190,90));
                 g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
             }

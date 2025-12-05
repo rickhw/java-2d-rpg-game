@@ -73,7 +73,8 @@ public class Entity {
     public int coin;
     public Entity currentWeapon;
     public Entity currentShield;
-    public Projectile projectile; // 拋射物
+    public Entity currentLight;     // 目前手持的燈具
+    public Projectile projectile;   // 拋射物
 
     // ITEM ATTRIBUTES
     public int value;
@@ -85,6 +86,7 @@ public class Entity {
     public int knockBackPower = 0;  // for different weapon only.   // day42
     public boolean stackable = false;       // day43
     public int amount = 1;                  // day43
+    public int lightRadius;     // day45: light scope
 
     // INVENTORY
     public ArrayList<Entity> inventory = new ArrayList<>();
