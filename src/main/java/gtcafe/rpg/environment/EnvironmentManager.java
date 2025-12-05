@@ -13,8 +13,11 @@ public class EnvironmentManager {
     }
 
     public void setup() {
-        // circleSize < screenHight
-        lighting = new Lighting(gp, 550);
+        lighting = new Lighting(gp);
+    }
+
+    public void update() {
+        lighting.update();
     }
 
     public void draw(Graphics2D g2) {

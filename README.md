@@ -5,6 +5,8 @@
 ### v2.11.x
 
 - Lighting Effect
+- Lighting Items
+
 
 ### v2.10.x
 
