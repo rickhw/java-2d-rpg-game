@@ -106,6 +106,11 @@ public class AssetSetter {
         gp.obj[mapIndex][i].worldX = gp.tileSize * 24;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 27;
 
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Chest(gp, new OBJ_Heart(gp));
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 12;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 8;
+
 
         i++;
         gp.obj[mapIndex][i] = new OBJ_Postion_Red(gp);

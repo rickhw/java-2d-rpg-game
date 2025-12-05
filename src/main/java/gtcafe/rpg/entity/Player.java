@@ -222,7 +222,7 @@ public class Player extends Entity {
             // CHECK INTERACTIVE TILES
             int iTileIndex = gp.collisionChecker.checkEntity(this, gp.iTile);
 
-            // CHECKT EVENT
+            // CHECK EVENT
             gp.eventHandler.checkEvent();
 
             // IF COLLISION IS FALSE, PLAYER CAN MOVE
