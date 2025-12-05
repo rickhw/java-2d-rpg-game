@@ -13,6 +13,7 @@ import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
 import gtcafe.rpg.entity.object.OBJ_Postion_Red;
 import gtcafe.rpg.entity.object.OBJ_Shield_Blue;
 import gtcafe.rpg.entity.object.OBJ_Sword_Normal;
+import gtcafe.rpg.entity.object.OBJ_Tent;
 import gtcafe.rpg.tile.Map;
 import gtcafe.rpg.tile.interactive.IT_DryTree;
 
@@ -41,6 +42,11 @@ public class AssetSetter {
         i++;
         gp.obj[mapIndex][i] = new OBJ_Lantern(gp);
         gp.obj[mapIndex][i].worldX = gp.tileSize * 18;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 20;
+
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Tent(gp);
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 19;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 20;
 
 

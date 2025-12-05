@@ -6,7 +6,7 @@ import gtcafe.rpg.GamePanel;
 
 public class EnvironmentManager {
     GamePanel gp;
-    Lighting lighting;
+    public Lighting lighting;
 
     public EnvironmentManager(GamePanel gp)  {
         this.gp = gp;

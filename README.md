@@ -4,8 +4,11 @@
 
 ### v2.11.x
 
-- Lighting Effect
-- Lighting Items
+- 新增物件 Lantern (燈籠)，裝備後玩家會在固定範圍有照明效果 (Lighting Effect )
+- 新增日夜切換循環效果，分成 Day, Dusk (黃昏), Night, Dawn (黎明) 四個狀態循環
+- 新增物件：Tent (帳篷)，使用的時候，遊戲狀態切換成 SLEEP
+    - 玩家 life & mana 恢復。
+    - 跑過場效果：漸進式變成 Night，然後恢復成 Day
 
 
 ### v2.10.x
