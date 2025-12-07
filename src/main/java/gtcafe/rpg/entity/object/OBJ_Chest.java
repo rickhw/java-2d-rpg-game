@@ -34,7 +34,7 @@ public class OBJ_Chest extends Entity {
     }
 
     public void interact() {
-        gp.gameState = GameState.DIALOGUE_STATE;
+        gp.gameState = GameState.DIALOGUE;
 
         if (opened == false) {
             gp.playSoundEffect(Sound.FX_UNLOCK);

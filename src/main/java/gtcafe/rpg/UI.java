@@ -24,7 +24,7 @@ public class UI {
     // Custom Font:
     // - pixel font: https://00ff.booth.pm/items/2958237
     // - https://fontsgeek.com/fonts/purisa-bold
-    Font maruMonica, purisaB;
+    public Font maruMonica, purisaB;
     BufferedImage heart_full, heart_half, heart_blank;
     BufferedImage crystal_full, crystal_blank;
     BufferedImage coin;
@@ -96,53 +96,53 @@ public class UI {
         g2.setColor(Color.white);
         
         // TITLE STATE
-        if (gp.gameState == GameState.TITLE_STATE) {
+        if (gp.gameState == GameState.TITLE) {
             drawTitleScreen();
         }
 
         // PLAY STATE
-        if(gp.gameState == GameState.PLAY_STATE) {
+        if(gp.gameState == GameState.PLAYING) {
             drawPlayerLife();
             drawMessage();
         }
 
         // PAUSE STATE
-        if (gp.gameState == GameState.PAUSE_STATE) {
+        if (gp.gameState == GameState.PAUSE) {
             drawPlayerLife();
             drawPauseScreen();
         }
 
         // DIALOGUE STATE
-        if (gp.gameState == GameState.DIALOGUE_STATE) {
+        if (gp.gameState == GameState.DIALOGUE) {
             drawDialogusScreen();
         }
 
         // CHARACTER STATE
-        if (gp.gameState == GameState.CHARACTER_STATE) {
+        if (gp.gameState == GameState.CHARACTER) {
             drawCharacterScreen();
             drawInventory(gp.player, true);
         }
         
         // OPTIONS STATE
-        if (gp.gameState == GameState.OPTIONS_STATE) {
+        if (gp.gameState == GameState.OPTIONS) {
             drawOptionsScreen();
         }
         // GAME OVER STATE
-        if (gp.gameState == GameState.GAME_OVER_STATE) {
+        if (gp.gameState == GameState.GAME_OVER) {
             drawGameOverScreen();
         }
 
         // TRANSITION STATE
-        if (gp.gameState == GameState.TRANSITION_STATE) {
+        if (gp.gameState == GameState.TRANSITION) {
             drawTransition();
         }
 
         // TRADE STATE
-        if (gp.gameState == GameState.TRADE_STATE) {
+        if (gp.gameState == GameState.TRADE) {
             drawTradeScreen();
         }
         // SLEEP STATE
-        if (gp.gameState == GameState.SLEEP_STATE) {
+        if (gp.gameState == GameState.SLEEP) {
             drawSleepScreen();
         }
          
@@ -163,7 +163,7 @@ public class UI {
                 counter = 0;
                 gp.eManager.lighting.dayState = DayState.DAY;
                 gp.eManager.lighting.dayCounter = 0;
-                gp.gameState = GameState.PLAY_STATE;
+                gp.gameState = GameState.PLAYING;
                 gp.player.getPlayerImages();
             }
         }
@@ -177,7 +177,7 @@ public class UI {
         if (counter == 50) {
             counter = 0;
             System.out.printf("[Transition] from [%s] to [%s]\n", gp.currentMap.name, gp.eventHandler.tempMap.name);
-            gp.gameState = GameState.PLAY_STATE;
+            gp.gameState = GameState.PLAYING;
             gp.currentMap = gp.eventHandler.tempMap;
             gp.player.worldX = gp.tileSize * gp.eventHandler.tempCol;
             gp.player.worldY = gp.tileSize * gp.eventHandler.tempRow;
@@ -269,7 +269,7 @@ public class UI {
             if (gp.keyHandler.enterPressed == true) {
                 subState = 0;
                 gp.stopBackgroundMusic();
-                gp.gameState = GameState.TITLE_STATE;
+                gp.gameState = GameState.TITLE;
             }
         }
 
@@ -347,7 +347,7 @@ public class UI {
         if (commandNum == 5) { 
             g2.drawString(">", textX-25, textY); 
             if (gp.keyHandler.enterPressed == true) {
-                gp.gameState = GameState.PLAY_STATE;
+                gp.gameState = GameState.PLAYING;
                 commandNum = 0;
             }
         }
@@ -907,7 +907,7 @@ public class UI {
             g2.drawString(">", x-24, y);
             if (gp.keyHandler.enterPressed == true) {
                 commandNum = 0;
-                gp.gameState = GameState.DIALOGUE_STATE;
+                gp.gameState = GameState.DIALOGUE;
                 currentDialogue = "Come again, hehe!!";
             }
         }
@@ -956,7 +956,7 @@ public class UI {
                 // PLAYER 錢不夠
                 if (npc.inventory.get(itemIndex).price > gp.player.coin) {
                     subState = 0;
-                    gp.gameState = GameState.DIALOGUE_STATE;
+                    gp.gameState = GameState.DIALOGUE;
                     currentDialogue = "You need more coin to buy that!";
                     drawDialogusScreen();
                 }
@@ -967,7 +967,7 @@ public class UI {
                     // PLAYER 口袋滿了
                     else {
                         subState = 0;
-                        gp.gameState = GameState.DIALOGUE_STATE;
+                        gp.gameState = GameState.DIALOGUE;
                         currentDialogue = "You cannot carry any more!";
                     }
                 }
@@ -1020,7 +1020,7 @@ public class UI {
                     
                     commandNum = 0;
                     subState = 0;
-                    gp.gameState = GameState.DIALOGUE_STATE;
+                    gp.gameState = GameState.DIALOGUE;
                     currentDialogue = "You cannot sell in equipped item!!";
 
                 } else {

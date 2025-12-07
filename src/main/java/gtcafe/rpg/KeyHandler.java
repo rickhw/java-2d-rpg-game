@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import gtcafe.rpg.state.GameState;
-import gtcafe.rpg.tile.Map;
+import gtcafe.rpg.tile.Scense;
 
 public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, musicPressed;
@@ -25,40 +25,45 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-        if (gp.gameState == GameState.TITLE_STATE) {
+        if (gp.gameState == GameState.TITLE) {
             titleState(code);
         }
 
         // PLAY STATE
-        else if (gp.gameState == GameState.PLAY_STATE) {
+        else if (gp.gameState == GameState.PLAYING) {
             playState(code);
         }
         // PAUSE STATE
-        else if (gp.gameState == GameState.PAUSE_STATE) {
+        else if (gp.gameState == GameState.PAUSE) {
            pauseState(code);
         }
         // DIALOGUE STATE
-        else if (gp.gameState == GameState.DIALOGUE_STATE) {
+        else if (gp.gameState == GameState.DIALOGUE) {
             dialogueState(code);
         }
         // CHARACTER STATE
-        else if (gp.gameState == GameState.CHARACTER_STATE) {
+        else if (gp.gameState == GameState.CHARACTER) {
             characterState(code);
         }
 
         // OPTIONS STATE
-        else if (gp.gameState == GameState.OPTIONS_STATE) {
+        else if (gp.gameState == GameState.OPTIONS) {
             optionsState(code);
         }
 
         // Trade STATE
-        else if (gp.gameState == GameState.TRADE_STATE) {
+        else if (gp.gameState == GameState.TRADE) {
             tradeState(code);
         }
 
         // GAME OVER STATE
-        else if (gp.gameState == GameState.GAME_OVER_STATE) {
+        else if (gp.gameState == GameState.GAME_OVER) {
             gameOverState(code);
+        }
+
+        // MAP STATE
+        else if (gp.gameState == GameState.DISPLAY_MAP) {
+            mapState(code);
         }
 
         // For Debugging
@@ -66,15 +71,21 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_R) {
             switch(gp.currentMap) {
                 case WORLD_MAP:
-                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Map.WORLD_MAP);
+                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Scense.WORLD_MAP);
                     break;
                 case INTERIOR_01:
-                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Map.INTERIOR_01); 
+                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Scense.INTERIOR_01); 
                     break;
             }
         }
     }
 
+
+    private void mapState(int code) {
+        if (code == KeyEvent.VK_M) {
+            gp.gameState = GameState.PLAYING;
+        }
+    }
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -116,15 +127,15 @@ public class KeyHandler implements KeyListener {
         // Handle the options
         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
             if (gp.ui.commandNum == 0) {
-                gp.gameState = GameState.PLAY_STATE;
+                gp.gameState = GameState.PLAYING;
                 gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }
             if (gp.ui.commandNum == 1) {
                 System.out.println("Load save");
-                gp.gameState = GameState.PLAY_STATE;
+                gp.gameState = GameState.PLAYING;
             }
             if (gp.ui.commandNum == 2) {
-                gp.gameState = GameState.PLAY_STATE;
+                gp.gameState = GameState.PLAYING;
                 System.exit(0);
             }
         }
@@ -149,7 +160,7 @@ public class KeyHandler implements KeyListener {
         }
 
         if (code == KeyEvent.VK_C) {
-            gp.gameState = GameState.CHARACTER_STATE;
+            gp.gameState = GameState.CHARACTER;
         }
 
         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
@@ -157,14 +168,24 @@ public class KeyHandler implements KeyListener {
         }
 
         if (code == KeyEvent.VK_P) {
-            gp.gameState = GameState.PAUSE_STATE;
+            gp.gameState = GameState.PAUSE;
             gp.stopBackgroundMusic();
         }
 
         if (code == KeyEvent.VK_ESCAPE) {
-            gp.gameState = GameState.OPTIONS_STATE;
+            gp.gameState = GameState.OPTIONS;
         }
 
+        if (code == KeyEvent.VK_M) {
+            gp.gameState = GameState.DISPLAY_MAP;
+        }
+        if (code == KeyEvent.VK_V) {
+            if(gp.map.miniMapOn == false) {
+                gp.map.miniMapOn = true;
+            } else {
+                gp.map.miniMapOn = false;
+            }
+        }
 
         // DEBUG
         if (code == KeyEvent.VK_T) {
@@ -191,19 +212,19 @@ public class KeyHandler implements KeyListener {
 
     private void pauseState(int code) {
         if (code == KeyEvent.VK_P) {
-            gp.gameState = GameState.PLAY_STATE;
+            gp.gameState = GameState.PLAYING;
         }
     }
 
     private void dialogueState(int code) {
         if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-            gp.gameState = GameState.PLAY_STATE;
+            gp.gameState = GameState.PLAYING;
         }
     }
 
     private void characterState(int code) {
         if (code == KeyEvent.VK_C) {
-            gp.gameState = GameState.PLAY_STATE;
+            gp.gameState = GameState.PLAYING;
         }
         if (code == KeyEvent.VK_ENTER) {
             gp.player.selectItem();
@@ -269,7 +290,7 @@ public class KeyHandler implements KeyListener {
 
     private void optionsState(int code) {
         if (code == KeyEvent.VK_ESCAPE) {
-            gp.gameState = GameState.PLAY_STATE;
+            gp.gameState = GameState.PLAYING;
         }
 
         if (code == KeyEvent.VK_ENTER) {
@@ -348,14 +369,14 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             // Retry
             if (gp.ui.commandNum == 0) {
-                gp.gameState = GameState.PLAY_STATE;
+                gp.gameState = GameState.PLAYING;
                 gp.retry();
                 gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }
             // Restore
             else if (gp.ui.commandNum == 1) {
                 gp.ui.commandNum = 0;  //
-                gp.gameState = GameState.TITLE_STATE;
+                gp.gameState = GameState.TITLE;
                 gp.restart();
             }
         }

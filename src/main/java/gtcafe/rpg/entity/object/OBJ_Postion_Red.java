@@ -19,7 +19,7 @@ public class OBJ_Postion_Red extends Entity {
     }
 
     public boolean use(Entity entity) {
-        gp.gameState = GameState.DIALOGUE_STATE;
+        gp.gameState = GameState.DIALOGUE;
         gp.ui.currentDialogue = "You drink the " + name + "!\n"
             + "Your life has ben recoeved by " + value + ".";
         entity.life += value;
