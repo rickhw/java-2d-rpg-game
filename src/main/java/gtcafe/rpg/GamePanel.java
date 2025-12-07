@@ -23,6 +23,7 @@ import gtcafe.rpg.entity.Projectile;
 import gtcafe.rpg.environment.EnvironmentManager;
 import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.tile.Map;
+import gtcafe.rpg.tile.Scense;
 import gtcafe.rpg.tile.TileManager;
 import gtcafe.rpg.tile.interactive.InteractiveTile;
 
@@ -42,8 +43,8 @@ public class GamePanel extends JPanel implements Runnable {
     // WORLD MAP SETTINGS
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
-    public final int maxMap = 10;
-    public Map currentMap = Map.WORLD_MAP;      // indicate current map number
+    public final int maxMap = 10; // map list
+    public Scense currentMap = Scense.WORLD_MAP;      // indicate current map number
 
     // FOR FULL SCREEN
     int screenWidth2 = screenWidth;
@@ -68,6 +69,7 @@ public class GamePanel extends JPanel implements Runnable {
     Config config = new Config(this);
     public PathFinder pathFinder = new PathFinder(this);
     EnvironmentManager eManager = new EnvironmentManager(this);
+    Map map = new Map(this);
     Thread gameThread;
 
     // ENTITY and OBJECT
@@ -118,7 +120,7 @@ public class GamePanel extends JPanel implements Runnable {
         playBackgroundMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
         stopBackgroundMusic();
 
-        gameState = GameState.TITLE_STATE;
+        gameState = GameState.TITLE;
 
         // 避免重算所有的元件, 改用這個螢幕大小的 Graphics2D 畫
         // for Windows: BufferedImage.TYPE_INT_ARGB
@@ -221,7 +223,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             if (timer >= 1000000000) {
                 SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-                System.out.printf("%s [GameLoop] FPS: [%s], State: [%s], Map: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), FPS, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
+                System.out.printf("%s [GameLoop] FPS: [%s], State: [%s], Scense: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), FPS, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
                 // drawCount = 0;
                 timer = 0;
             }
@@ -230,7 +232,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // call by GameLoop
     public void update() {
-        if (gameState == GameState.PLAY_STATE) {
+        if (gameState == GameState.PLAYING) {
             // 1. PLAYER
             player.update();
 
@@ -288,7 +290,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             eManager.update();
         } 
-        else if (gameState == GameState.PAUSE_STATE) {
+        else if (gameState == GameState.PAUSE) {
             // nothing, we don't update the player info
         }
     }
@@ -303,8 +305,10 @@ public class GamePanel extends JPanel implements Runnable {
             drawStart = System.nanoTime();
 
         // 1. TITLE SCREEN
-        if (gameState == GameState.TITLE_STATE) {
+        if (gameState == GameState.TITLE) {
             ui.draw(g2);
+        } else if (gameState == GameState.DISPLAY_MAP) {
+            map.drawFullMapScreen(g2);
         } else {
             // TILE
             tileManager.draw(g2);
@@ -349,6 +353,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             // ENVIRONMENT
             eManager.draw(g2);
+
+            // MINIMAP
+            map.drawMiniMap(g2);
             
             // UI
             ui.draw(g2);

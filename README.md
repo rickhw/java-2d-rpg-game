@@ -1,17 +1,19 @@
 
 ## Release Notes
 
+### v2.12.x (20251212_5)
 
-### v2.11.x
+- Map Screen and Minimap
 
-- 新增物件 Lantern (燈籠)，裝備後玩家會在固定範圍有照明效果 (Lighting Effect )
+### v2.11.x (20251205_5)
+
 - 新增日夜切換循環效果，分成 Day, Dusk (黃昏), Night, Dawn (黎明) 四個狀態循環
+- 新增物件 Lantern (燈籠)，裝備後玩家會在固定範圍有照明效果 (Lighting Effect )
 - 新增物件：Tent (帳篷)，使用的時候，遊戲狀態切換成 SLEEP
     - 玩家 life & mana 恢復。
     - 跑過場效果：漸進式變成 Night，然後恢復成 Day
 
-
-### v2.10.x
+### v2.10.x (20251204_4)
 
 - 實作格擋與擊退效果
     - 回擊 Projectiles, 例如 Player 回擊 Monster 丟出來的石頭
@@ -25,19 +27,18 @@
     - 在商店買入同樣物品，計數增加
     - 在商店賣出同樣物品，計數減少
 
-
-### v2.9.x
+### v2.9.x (20251203_3)
 
 - Pathfinding: NPC follows player, aggro monsters
 
 
-### v2.8.x
+### v2.8.x (20251202_2)
 
 - Transition between maps.
     - Transition effect
 - Trade System: Buy and Sell
 
-### v2.7.x
+### v2.7.x (20251201_1)
 
 - Full Screen Mode
 - Options Menu and Saving Config

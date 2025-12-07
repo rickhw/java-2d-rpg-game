@@ -20,7 +20,7 @@ public class OBJ_Key extends Entity {
     }
 
     public boolean use(Entity entity) {
-        gp.gameState = GameState.DIALOGUE_STATE;
+        gp.gameState = GameState.DIALOGUE;
 
         int objIndex = getDetected(entity, gp.obj, "Door");
         System.out.printf("[OBJ_Key#use] objIndex [%s] by getDetected\n", objIndex);

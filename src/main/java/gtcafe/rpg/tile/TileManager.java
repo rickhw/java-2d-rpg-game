@@ -28,8 +28,8 @@ public class TileManager {
         
 
         getTileImage();
-        loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Map.WORLD_MAP);
-        loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Map.INTERIOR_01);
+        loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Scense.WORLD_MAP);
+        loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Scense.INTERIOR_01);
     }
 
     public void getTileImage() {
@@ -100,7 +100,7 @@ public class TileManager {
         }
     }
 
-    public void loadMap(String mapPath, Map map) {
+    public void loadMap(String mapPath, Scense map) {
         try {
             InputStream is = getClass().getResourceAsStream(mapPath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));

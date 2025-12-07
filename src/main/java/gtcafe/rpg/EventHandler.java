@@ -3,7 +3,7 @@ package gtcafe.rpg;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.state.Direction;
 import gtcafe.rpg.state.GameState;
-import gtcafe.rpg.tile.Map;
+import gtcafe.rpg.tile.Scense;
 
 public class EventHandler {
     
@@ -13,7 +13,7 @@ public class EventHandler {
     // prevent the event happen repeatly.
     int previousEventX, previousEventY;
     boolean canTouchEvent = true;
-    Map tempMap;
+    Scense tempMap;
     int tempCol, tempRow;
 
     public EventHandler(GamePanel gp) {
@@ -50,7 +50,7 @@ public class EventHandler {
     }
 
     // check the event collision
-    public boolean hit(Map map, int col, int row, Direction requiredDirection) {
+    public boolean hit(Scense map, int col, int row, Direction requiredDirection) {
         boolean hit = false;
         int mapIndex = map.index;
 
@@ -100,27 +100,27 @@ public class EventHandler {
             // else if (hit(Map.WORLD_MAP, 23,19,Direction.ANY)) { damagePit(GameState.DIALOGUE_STATE); }
 
             // water side
-            if (hit(Map.WORLD_MAP, 23,12,Direction.UP)) { healingPool(GameState.DIALOGUE_STATE); }
+            if (hit(Scense.WORLD_MAP, 23,12,Direction.UP)) { healingPool(GameState.DIALOGUE); }
 
             // TRANSISTION MAP
-            else if (hit(Map.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Map.INTERIOR_01, 12, 13); }
-            else if (hit(Map.INTERIOR_01, 12,13,Direction.ANY)) { teleport(Map.WORLD_MAP, 10, 39); }
+            else if (hit(Scense.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Scense.INTERIOR_01, 12, 13); }
+            else if (hit(Scense.INTERIOR_01, 12,13,Direction.ANY)) { teleport(Scense.WORLD_MAP, 10, 39); }
 
-            else if (hit(Map.INTERIOR_01, 12,9,Direction.UP)) { speak(gp.npc[1][0]); } // TODO
+            else if (hit(Scense.INTERIOR_01, 12,9,Direction.UP)) { speak(gp.npc[1][0]); } // TODO
         }
     }
 
     private void speak(Entity entity) {
         if (gp.keyHandler.enterPressed == true) {
-            gp.gameState = GameState.DIALOGUE_STATE;
+            gp.gameState = GameState.DIALOGUE;
             gp.player.attackCanceled = true;
             entity.speak();
         }
     }
 
     // update player's position
-    private void teleport(Map map, int col, int row) {
-        gp.gameState = GameState.TRANSITION_STATE;
+    private void teleport(Scense map, int col, int row) {
+        gp.gameState = GameState.TRANSITION;
 
         // 暫存座標, 在 UI 做 Transistion 處理後使用
         tempMap = map;

@@ -323,7 +323,7 @@ public class Player extends Entity {
        
         // Check if game over
         if (life <= 0) {
-            gp.gameState = GameState.GAME_OVER_STATE;
+            gp.gameState = GameState.GAME_OVER;
             gp.ui.commandNum = -1;
             gp.stopBackgroundMusic();
             gp.playSoundEffect(Sound.FX__GAME_OVER);
@@ -426,7 +426,7 @@ public class Player extends Entity {
             if (index != 999) { // means player touch NPC
                 System.out.println("[Player#interactNPC] You are interacting with an NPC.");
                 attackCanceled = true;
-                gp.gameState = GameState.DIALOGUE_STATE;
+                gp.gameState = GameState.DIALOGUE;
                 gp.npc[mapIndex][index].speak();
             } 
         }
@@ -600,7 +600,7 @@ public class Player extends Entity {
 
             gp.playSoundEffect(Sound.FX__LEVELUP);
 
-            gp.gameState = GameState.DIALOGUE_STATE;
+            gp.gameState = GameState.DIALOGUE;
             gp.ui.currentDialogue = "You are level #" + level + " now!\n"
                 + "You feel stronger!";
         }
