@@ -4,7 +4,7 @@ https://www.youtube.com/watch?v=T8hHV15L22s&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4
 # Map Screen and Minimap
 
 - Full Map Screen
-- Mini Map Screen
+- Mini Map
 
 ---
 
