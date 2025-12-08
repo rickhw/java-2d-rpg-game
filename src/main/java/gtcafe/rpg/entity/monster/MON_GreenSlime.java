@@ -50,79 +50,29 @@ public class MON_GreenSlime extends Entity {
         right2 = setup("/gtcafe/rpg/assets/monster/greenslime_down_2.png", gp.tileSize, gp.tileSize);
     }
 
-    public void update() {
-        super.update();
-
-        int xDistance = Math.abs(worldX - gp.player.worldX);
-        int yDistance = Math.abs(worldY - gp.player.worldY);
-        int tileDistance =  (xDistance + yDistance) / gp.tileSize;
-
-        // System.out.printf("tileDistance: [%s]\n", tileDistance);
-
-        // Player 距離 N 格以內, Monster 就主動跟蹤
-        if (onPath == false && tileDistance < 3) {  // TODO, as random by role characterics
-            int i = new Random().nextInt(100) + 1; // 增加隨機性
-            if (i > 70) {
-                onPath = true;
-                gp.ui.addMessage("You've been targeted by a slime!");
-            }
-        }
-
-        // 超過 N 格就不要跟蹤了
-        if (onPath == true && tileDistance > 5) {
-            onPath = false;
-            gp.ui.addMessage("The slime has given up attacking you!");
-        }
-    }
-
     // Setting Slime's behavior
     // call 60 times per second
     public void setAction() {
+
         if (onPath == true) {
 
-            // 2. follow the player
-            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
-            int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
+            // Check if it stops chasing. 超過 N 格就不要跟蹤了
+            checkStopChasingOrNot(gp.player, 5, 100, "The Slime has stopped chasing!");
 
-            searchPath(goalCol, goalRow);
+            // Search the direction to gp (==> follow the player)
+            searchPath(getGoalCol(gp.player), getGoalRow(gp.player));
 
-            // shooting the player when aggro (侵略)
-            int i = new Random().nextInt(200) + 1;
-            if (i > 197 && projectile.alive == false) {
-                projectile.set(worldX, worldY, direction, true, this);
-
-                // enable projectile or not.
-                // CHECK VACANCY
-                for(int ii=0; ii<gp.projectile[1].length; ii++) {
-                   if(gp.projectile[gp.currentMap.index][ii] == null) {
-                        gp.projectile[gp.currentMap.index][ii] = projectile;
-                        break;
-                   }
-                }
-                shotAvailableCounter = 0;
-            }
+            // Check if it shoots a projectile (shooting the player when aggro (侵略))
+            // checkShootOrNot(200, 30);
+            
         } else {
-            actionLockCounter++;
-            if (actionLockCounter == 120) { // 120 fps change the direction
-                Random r = new Random();
-                int i = r.nextInt(100) + 1; // pick up a number from 1 to 100
 
-                if (i <= 25) { direction = Direction.UP; }
-                if (i > 25 && i <= 50) { direction = Direction.DOWN; }
-                if (i > 50 && i <= 75) { direction = Direction.LEFT; }
-                if (i > 75 && i <= 100) { direction = Direction.RIGHT; }
-                actionLockCounter = 0;
-            }
+            // Check if it starts chasing (Player 距離 N 格以內, Monster 就主動跟蹤)
+            checkStartChasingOrNot(gp.player, 3, 100, "You've been targeted by Slime!");
+
+            // Get a random direction
+            getRandomDirection();
         }
-
-        // // logic to shoot the projectiles
-        // int i = new Random().nextInt(100) + 1;
-        // if (i > 99 && projectiles.alive == false) {
-        //     projectiles.set(worldX, worldY, direction, true, this);
-        //     gp.projectilesList.add(projectiles);
-
-        //     shotAvailableCounter = 0;
-        // }
     }
 
     // monster receive damage/attack

@@ -1,4 +1,4 @@
-package gtcafe.rpg.entity.object;
+package gtcafe.rpg.entity.weapon;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
@@ -18,5 +18,10 @@ public class OBJ_Sword_Normal extends Entity {
         
         attackArea.width = 30;
         attackArea.height = 30;
+
+        // 揮舞的速度，值代表 FPT，值越高，速度越慢
+        motion1_duration = 5;
+        motion2_duration = 25;
+
     }
 }
