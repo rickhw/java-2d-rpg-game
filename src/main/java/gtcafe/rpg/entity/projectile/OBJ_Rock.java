@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
-import gtcafe.rpg.entity.Projectile;
 
 public class OBJ_Rock extends Projectile {
     GamePanel gp;

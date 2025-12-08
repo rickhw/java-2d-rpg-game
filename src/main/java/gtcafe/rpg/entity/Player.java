@@ -7,11 +7,11 @@ import java.awt.image.BufferedImage;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.KeyHandler;
 import gtcafe.rpg.Sound;
-import gtcafe.rpg.entity.object.OBJ_Axe;
 import gtcafe.rpg.entity.object.OBJ_Key;
 import gtcafe.rpg.entity.object.OBJ_Postion_Red;
-import gtcafe.rpg.entity.object.OBJ_Shield_Wood;
 import gtcafe.rpg.entity.projectile.OBJ_Fireball;
+import gtcafe.rpg.entity.shield.OBJ_Shield_Wood;
+import gtcafe.rpg.entity.weapon.OBJ_Axe;
 import gtcafe.rpg.state.Direction;
 import gtcafe.rpg.state.GameState;
 
@@ -130,6 +130,8 @@ public class Player extends Entity {
 
     public int getAttack() {
         attackArea = currentWeapon.attackArea;
+        motion1_duration = currentWeapon.motion1_duration;
+        motion2_duration = currentWeapon.motion2_duration;
         return attack = strength * currentWeapon.attackValue;
     }
 
@@ -332,12 +334,6 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
-
-        // if (showInfo && gp.debugMode) {
-        //     System.out.printf("[Player#draw] screenX: [%s], screenY: [%s], worldX: [%s], worldY: [%s]\n", screenX, screenY, worldX, worldY);
-        // }
-
-        // for specify cases
         int tempScreenX = screenX;
         int tempScreenY = screenY;
 
@@ -432,75 +428,7 @@ public class Player extends Entity {
         }
     }
 
-    // 正在攻擊的計算
-    private void attacking() {
-        // MAKE ATTACKING ANIMATION
-        spriteCounter++;
-
-        // show image 1 (spriteNum1): 0-5 frame
-        if (spriteCounter <= 5) {
-            spriteNum = 1;
-        }
-        // show image 2 (spriteNum2): 6-25 frame
-        // 5-25 is the window of opportunity to hit the target; 
-        // the shorter the window, the more difficult it is.
-        if (spriteCounter > 5 && spriteCounter <= 25) {
-            spriteNum = 2;
-
-            // save the current worldX, worldY and solidArea. for checking the attacking
-            int currentWorldX = worldX;
-            int currentWorldY = worldY;
-            int solidAreaWidth = solidArea.width;
-            int solidAreaHeight = solidArea.height;
-
-            // Adjust player's workdX/Y for the attackArea
-            switch (direction) {
-                case UP -> worldY -= attackArea.height; 
-                case DOWN -> worldY += attackArea.height; 
-                case LEFT -> worldX -= attackArea.width; 
-                case RIGHT -> worldX += attackArea.width;
-                default -> throw new IllegalArgumentException("Unexpected value: " + direction);
-            }
-
-            // attackArea becomes solidArea
-            solidArea.width = attackArea.width;
-            solidArea.height = attackArea.height;
-
-            // check monster collision with the updated worldX/Y and solidArea
-            int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
-
-            // check player attack the interactive tiles
-            int iTileIndex = gp.collisionChecker.checkEntity(this, gp.iTile);
-            damageInteractiveTiles(iTileIndex);
-
-            int projectileIndex = gp.collisionChecker.checkEntity(this, gp.projectile);
-            damageProjectile(projectileIndex);
-
-            // restore position
-            worldX = currentWorldX;
-            worldY = currentWorldY;
-            solidArea.width = solidAreaWidth;
-            solidArea.height = solidAreaHeight;
-        }
-
-        if (spriteCounter > 25) {
-            spriteNum = 1;
-            spriteCounter = 0;
-            attacking = false;
-        }
-    }
-
-
-    // call when hit monster
-    // can set the condition for any type.
-    public void knockBack(Entity entity, int knockBackPower) {
-        entity.direction = direction;
-        entity.speed += knockBackPower; 
-        entity.knockBack = true;
-    }
-
-    private void damageProjectile(int i) {
+    public void damageProjectile(int i) {
         if (i != 999) {
             Entity projectile = gp.projectile[gp.currentMap.index][i];
             projectile.alive = false;
@@ -509,7 +437,7 @@ public class Player extends Entity {
     }
 
     // 計算 Player 毀壞 Interactive Tiles 的邏輯
-    private void damageInteractiveTiles(int i) {
+    public void damageInteractiveTiles(int i) {
         int mapIndex = gp.currentMap.index;
         if (i != 999                                        // 1. Tile Index 是否在合理位置
                 && gp.iTile[mapIndex][i].destructible == true         // 2. 判斷 Tiles 是否已經宣告成可摧毀的物件
@@ -530,7 +458,7 @@ public class Player extends Entity {
     }
 
     // 計算 Player 攻擊怪物的值
-    public void damageMonster(int index, int attack, int knockBackPower) {
+    public void damageMonster(int index, Entity attacker, int attack, int knockBackPower) {
         int mapIndex = gp.currentMap.index;
         if (index != 999) {
             Entity monster = gp.monster[mapIndex][index];
@@ -540,7 +468,7 @@ public class Player extends Entity {
                 gp.playSoundEffect(Sound.FX_HIT_MONSTER);
 
                 if (knockBackPower > 0) {
-                    knockBack(monster, knockBackPower); // 怪物反彈的效果
+                    setKnockBack(monster, attacker, knockBackPower); // 怪物反彈的效果
                 }
 
                 int damage = attack - monster.defense;
@@ -624,6 +552,9 @@ public class Player extends Entity {
                 currentShield= selectedItem;
                 defense = getDefense();
             }
+            // if (selectedItem.type == EntityType.SHOE) {
+            //     speed += 5;
+            // }
             if (selectedItem.type == EntityType.LIGHT) {
                 if(currentLight == selectedItem) {
                     currentLight = null;    // un-equip this item

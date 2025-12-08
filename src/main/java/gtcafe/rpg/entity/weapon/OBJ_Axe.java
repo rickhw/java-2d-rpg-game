@@ -1,4 +1,4 @@
-package gtcafe.rpg.entity.object;
+package gtcafe.rpg.entity.weapon;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
@@ -19,5 +19,9 @@ public class OBJ_Axe extends Entity {
         // 當 Player 拿起武器時, 在 Player.getAttack() 會改成 武器的攻擊範圍.
         attackArea.width = 30;
         attackArea.height = 30;
+
+        motion1_duration = 20;
+        motion2_duration = 40;
+
     }
 }

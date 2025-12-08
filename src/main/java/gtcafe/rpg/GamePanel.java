@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import gtcafe.rpg.ai.PathFinder;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
-import gtcafe.rpg.entity.Projectile;
+import gtcafe.rpg.entity.projectile.Projectile;
 import gtcafe.rpg.environment.EnvironmentManager;
 import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.tile.Map;

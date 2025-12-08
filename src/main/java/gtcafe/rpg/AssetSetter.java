@@ -1,6 +1,8 @@
 package gtcafe.rpg;
 
+import gtcafe.rpg.entity.equipable.OBJ_Lantern;
 import gtcafe.rpg.entity.monster.MON_GreenSlime;
+import gtcafe.rpg.entity.monster.MON_Orc;
 import gtcafe.rpg.entity.npc.NPC_Merchant;
 import gtcafe.rpg.entity.npc.NPC_OldMan;
 import gtcafe.rpg.entity.object.OBJ_Chest;
@@ -8,12 +10,11 @@ import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
 import gtcafe.rpg.entity.object.OBJ_Door;
 import gtcafe.rpg.entity.object.OBJ_Heart;
 import gtcafe.rpg.entity.object.OBJ_Key;
-import gtcafe.rpg.entity.object.OBJ_Lantern;
 import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
 import gtcafe.rpg.entity.object.OBJ_Postion_Red;
-import gtcafe.rpg.entity.object.OBJ_Shield_Blue;
-import gtcafe.rpg.entity.object.OBJ_Sword_Normal;
 import gtcafe.rpg.entity.object.OBJ_Tent;
+import gtcafe.rpg.entity.shield.OBJ_Shield_Blue;
+import gtcafe.rpg.entity.weapon.OBJ_Sword_Normal;
 import gtcafe.rpg.tile.Scense;
 import gtcafe.rpg.tile.interactive.IT_DryTree;
 
@@ -236,6 +237,11 @@ public class AssetSetter {
         gp.monster[mapIndex][i].worldX = gp.tileSize * 35;
         gp.monster[mapIndex][i].worldY = gp.tileSize * 39;
 
+
+        i++;
+        gp.monster[mapIndex][i] = new MON_Orc(gp);
+        gp.monster[mapIndex][i].worldX = gp.tileSize * 12;
+        gp.monster[mapIndex][i].worldY = gp.tileSize * 33;
     }
 
     public void setInteractiveTiles() {

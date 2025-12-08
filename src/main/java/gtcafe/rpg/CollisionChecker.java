@@ -1,6 +1,7 @@
 package gtcafe.rpg;
 
 import gtcafe.rpg.entity.Entity;
+import gtcafe.rpg.state.Direction;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -33,8 +34,14 @@ public class CollisionChecker {
         int tileNum1, tileNum2; // To store the IDs of the two tiles being checked for collision
         int mapIndex = gp.currentMap.index;
 
+        // Use a temporal direction when it's being knockbacked
+        Direction direction = entity.direction;
+        if (entity.knockBack == true) {
+            direction = entity.knockBackDirection;
+        }
+
         // Predict the entity's future position and check for collision with tiles
-        switch (entity.direction) {
+        switch (direction) {
             case UP:
                 // Calculate the row the entity would be in if it moved 'speed' pixels up
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
@@ -138,7 +145,12 @@ public class CollisionChecker {
                 target[mapIndex][i].solidArea.x = target[mapIndex][i].worldX + target[mapIndex][i].solidArea.x;
                 target[mapIndex][i].solidArea.y = target[mapIndex][i].worldY + target[mapIndex][i].solidArea.y;
 
-                switch (entity.direction) {
+                // Use a temporal direction when it's being knockbacked
+                Direction direction = entity.direction;
+                if (entity.knockBack == true) {
+                    direction = entity.knockBackDirection;
+                }
+                switch (direction) {
                     case UP -> entity.solidArea.y -= entity.speed;
                     case DOWN -> entity.solidArea.y += entity.speed;
                     case LEFT -> entity.solidArea.x -= entity.speed;

@@ -1,6 +1,7 @@
-package gtcafe.rpg.entity;
+package gtcafe.rpg.entity.projectile;
 
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.state.Direction;
 
 // 拋射物: 弓箭, 火球, 魔法 ... etc.
@@ -29,12 +30,12 @@ public class Projectile extends Entity {
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
             // player attack monster
             if (monsterIndex != 999) {
-                gp.player.damageMonster(monsterIndex, attack, knockBackPower);
+                gp.player.damageMonster(monsterIndex, this, attack, knockBackPower);
                 generateParticle(user.projectile, gp.monster[mapIndex][monsterIndex]);
                 alive = false;
             }
-        }
-        if (user != gp.player) {
+        } 
+        else {
             boolean contacPlayer = gp.collisionChecker.checkPlayer(this);
             // monster attack player
             if (gp.player.invincible == false && contacPlayer == true) {
