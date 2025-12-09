@@ -9,6 +9,7 @@ import gtcafe.rpg.tile.Scense;
 public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, musicPressed;
     public boolean shotKeyPressed; // means shot projectiles
+    public boolean spacePressed;
     GamePanel gp;
 
     // DEBUG
@@ -73,8 +74,8 @@ public class KeyHandler implements KeyListener {
                 case WORLD_MAP:
                     gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Scense.WORLD_MAP);
                     break;
-                case INTERIOR_01:
-                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Scense.INTERIOR_01); 
+                case STORE:
+                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Scense.STORE); 
                     break;
             }
         }
@@ -107,6 +108,13 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_F || code == KeyEvent.VK_J) {
             shotKeyPressed = false;
         }
+        if (code == KeyEvent.VK_ENTER) {
+            enterPressed = false;
+        }
+
+        if (code == KeyEvent.VK_SPACE) {
+            spacePressed = false;
+        }
     }
 
     private void titleState(int code) {
@@ -125,7 +133,7 @@ public class KeyHandler implements KeyListener {
         }
 
         // Handle the options
-        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+        if (code == KeyEvent.VK_ENTER) {
             if (gp.ui.commandNum == 0) {
                 gp.gameState = GameState.PLAYING;
                 gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
@@ -163,8 +171,12 @@ public class KeyHandler implements KeyListener {
             gp.gameState = GameState.CHARACTER;
         }
 
-        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+        if (code == KeyEvent.VK_ENTER) {
             enterPressed = true;
+        }
+
+        if (code == KeyEvent.VK_SPACE) {
+            spacePressed = true;
         }
 
         if (code == KeyEvent.VK_P) {
@@ -217,7 +229,7 @@ public class KeyHandler implements KeyListener {
     }
 
     private void dialogueState(int code) {
-        if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
+        if (code == KeyEvent.VK_ENTER) {
             gp.gameState = GameState.PLAYING;
         }
     }

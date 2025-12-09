@@ -40,7 +40,7 @@ public class Projectile extends Entity {
             // monster attack player
             if (gp.player.invincible == false && contacPlayer == true) {
                 damagePlayer(attack);
-                generateParticle(user.projectile, gp.player);
+                generateParticle(user.projectile, user.projectile);
                 alive = false;
             }
         }

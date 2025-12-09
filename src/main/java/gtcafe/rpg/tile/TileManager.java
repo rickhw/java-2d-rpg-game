@@ -29,7 +29,7 @@ public class TileManager {
 
         getTileImage();
         loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Scense.WORLD_MAP);
-        loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Scense.INTERIOR_01);
+        loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Scense.STORE);
     }
 
     public void getTileImage() {
