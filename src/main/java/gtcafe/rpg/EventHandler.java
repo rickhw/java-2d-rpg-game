@@ -103,10 +103,10 @@ public class EventHandler {
             if (hit(Scense.WORLD_MAP, 23,12,Direction.UP)) { healingPool(GameState.DIALOGUE); }
 
             // TRANSISTION MAP
-            else if (hit(Scense.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Scense.INTERIOR_01, 12, 13); }
-            else if (hit(Scense.INTERIOR_01, 12,13,Direction.ANY)) { teleport(Scense.WORLD_MAP, 10, 39); }
+            else if (hit(Scense.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Scense.STORE, 12, 13); }
+            else if (hit(Scense.STORE, 12,13,Direction.ANY)) { teleport(Scense.WORLD_MAP, 10, 39); }
 
-            else if (hit(Scense.INTERIOR_01, 12,9,Direction.UP)) { speak(gp.npc[1][0]); } // TODO
+            else if (hit(Scense.STORE, 12,9,Direction.UP)) { speak(gp.npc[1][0]); } // TODO
         }
     }
 

@@ -22,6 +22,7 @@ public class Entity {
     public GamePanel gp;
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+    public BufferedImage guardUp, guardDown, guardLeft, guardRight;
     public BufferedImage image, image2, image3;
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);   // 碰撞偵測
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);    // Hit deteciton, be overwrite by subclass
@@ -46,6 +47,9 @@ public class Entity {
     public boolean onPath = false;
     public boolean knockBack = false;       // day42
     public Direction knockBackDirection;    // to avoid direction changed by player when player move quickly.
+    public boolean guarding = false;
+    public boolean transparent = false;
+    public boolean offBalance = false;      // for parry
 
     // COUNTER
     public int spriteCounter = 0;
@@ -55,6 +59,8 @@ public class Entity {
     int dyingCounter = 0;
     int hpBarCounter = 0;
     int knockBackCounter = 0;               // day42
+    public int guardCounter = 0;            // for parry
+    public int offBalanceCounter = 0;       // for parry
 
     // CHARACTER ATTRIBUTES: share player and monster
     public String name;
@@ -239,9 +245,11 @@ public class Entity {
                     speed = defaultSpeed;
                 }
             }
-        } else if (attacking == true) {
+        } 
+        else if (attacking == true) {
             attacking();
-        } else {
+        } 
+        else {
             setAction();
             checkCollision();
 
@@ -282,6 +290,14 @@ public class Entity {
             shotAvailableCounter++;
         }
 
+        // Parry
+        if (offBalance == true) {
+            offBalanceCounter++;
+            if(offBalanceCounter > 60) {    // 60 FPS (1 second)
+                offBalance = false;
+                offBalanceCounter = 0;
+            }
+        }
     }
 
     public void draw(Graphics2D g2) {
@@ -476,6 +492,17 @@ public class Entity {
 
     }
 
+    public Direction getOppositeDirection(Direction direction) {
+        Direction oppositeDirection = Direction.ANY;
+        switch (direction) {
+            case UP -> oppositeDirection = Direction.DOWN;
+            case DOWN -> oppositeDirection = Direction.UP;
+            case LEFT -> oppositeDirection = Direction.RIGHT;
+            case RIGHT -> oppositeDirection = Direction.LEFT;
+        }
+        return oppositeDirection;
+    }
+
     // 正在攻擊的計算
     public void attacking() {
         // MAKE ATTACKING ANIMATION
@@ -545,15 +572,45 @@ public class Entity {
         }
     }
 
-
     public void damagePlayer(int attack) {
         if (gp.player.invincible == false) {
+            
             // we can give damage
-            gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
-
             //  攻擊力 - Player 的防禦力
             int damage = attack - gp.player.defense;
-            if (damage < 0) { damage = 0; }
+
+            // Get an opposite direction of this attacker
+            Direction canGuardDirection = getOppositeDirection(direction);
+            
+            // player can guard the attack (防禦成功，損失減少 1/3)
+            if (gp.player.guarding == true && gp.player.direction == canGuardDirection) {
+
+                // Parry
+                if (gp.player.guardCounter < 10) {  // 10 Frame Window
+                    damage = 0;
+                    gp.playSoundEffect(Sound.FX__PARRY);
+                    setKnockBack(this, gp.player, knockBackPower);
+                    gp.ui.addMessage("Parry!");
+                    offBalance = true;
+                    spriteCounter =- 60;    // make the monster frozen effect at moment
+                }
+                // Normal
+                else {
+                    damage /= 3;    // reduce the damage
+                    gp.playSoundEffect(Sound.FX__BLOCKED);
+                    gp.ui.addMessage("Guarding!");
+                }
+
+            } 
+            else {
+                if (damage < 1) { damage = 1; }
+                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
+            }
+
+            if (damage != 0) {
+                gp.player.transparent = true;
+                setKnockBack(gp.player, this, knockBackPower);
+            }
 
             gp.player.life -= damage;
             gp.player.invincible = true;

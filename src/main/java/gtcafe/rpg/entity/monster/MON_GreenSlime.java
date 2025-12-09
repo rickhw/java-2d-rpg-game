@@ -63,7 +63,7 @@ public class MON_GreenSlime extends Entity {
             searchPath(getGoalCol(gp.player), getGoalRow(gp.player));
 
             // Check if it shoots a projectile (shooting the player when aggro (侵略))
-            // checkShootOrNot(200, 30);
+            checkShootOrNot(200, 30);
             
         } else {
 

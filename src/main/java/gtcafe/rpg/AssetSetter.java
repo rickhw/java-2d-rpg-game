@@ -150,16 +150,15 @@ public class AssetSetter {
         gp.npc[mapIndex][i].worldX = gp.tileSize * 18;
         gp.npc[mapIndex][i].worldY = gp.tileSize * 20;
 
-        i++;
-        gp.npc[mapIndex][i] = new NPC_OldMan(gp, "Erica");
-        gp.npc[mapIndex][i].worldX = gp.tileSize * 28;
-        gp.npc[mapIndex][i].worldY = gp.tileSize * 20;
-
-
-        // For Testing
         // i++;
+        // gp.npc[mapIndex][i] = new NPC_OldMan(gp, "Erica");
+        // gp.npc[mapIndex][i].worldX = gp.tileSize * 28;
+        // gp.npc[mapIndex][i].worldY = gp.tileSize * 20;
+
+
+        // NPC in Scense.STORE
         i = 0;
-        mapIndex = Scense.INTERIOR_01.index;
+        mapIndex = Scense.STORE.index;
         gp.npc[mapIndex][i] = new NPC_Merchant(gp);
         gp.npc[mapIndex][i].worldX = gp.tileSize * 12;
         gp.npc[mapIndex][i].worldY = gp.tileSize * 7;

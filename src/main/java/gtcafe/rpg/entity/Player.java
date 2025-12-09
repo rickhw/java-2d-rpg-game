@@ -19,7 +19,8 @@ public class Player extends Entity {
     KeyHandler keyHandler;
 
     // Animation
-    public final static int ANIMATION_SPEED = 10;
+    public final static int STANDING_ANIMATION_SPEED = 30;  // 越大越慢
+    public final static int WALKING_ANIMATION_SPEED = 12;
 
     // camera position
     public final int screenX;
@@ -47,8 +48,9 @@ public class Player extends Entity {
         attackArea.height = 36;
 
         setDefaultValues();
-        getPlayerImages();
-        getPlayerAttackImage();
+        getImages();
+        getAttackImage();
+        getGuardImage();
         setItems();
     }
 
@@ -81,7 +83,6 @@ public class Player extends Entity {
         defense = getDefense();     // 計算防禦力, 由 dexterity and shield 決定
     }
 
-
     public void setDefaultPosition() {
         // player 在整個世界地圖的座標起始位置
         worldX = gp.tileSize * 23;
@@ -98,6 +99,7 @@ public class Player extends Entity {
         life = maxLife;
         mana = maxMana;
         invincible = false;
+        transparent = false;
     }
 
     public void setItems() {
@@ -135,7 +137,7 @@ public class Player extends Entity {
         return attack = strength * currentWeapon.attackValue;
     }
 
-    public void getPlayerImages() {
+    public void getImages() {
         String packagePath = "/gtcafe/rpg/assets/player/";
         up1 = setup(packagePath + "boy_up_1.png", gp.tileSize, gp.tileSize);
         up2 = setup(packagePath + "boy_up_2.png", gp.tileSize, gp.tileSize);
@@ -147,7 +149,7 @@ public class Player extends Entity {
         right2 = setup(packagePath + "boy_right_2.png", gp.tileSize, gp.tileSize);
     }
 
-    public void getPlayerAttackImage() {
+    public void getAttackImage() {
         String packagePath = "/gtcafe/rpg/assets/player_attack/";
 
         if (currentWeapon.type == EntityType.SWORD) {
@@ -173,6 +175,14 @@ public class Player extends Entity {
         
     }
 
+    public void getGuardImage() {
+        String packagePath = "/gtcafe/rpg/assets/player_guard/";
+        guardUp = setup(packagePath + "boy_guard_up.png", gp.tileSize, gp.tileSize);
+        guardDown = setup(packagePath + "boy_guard_down.png", gp.tileSize, gp.tileSize);
+        guardLeft = setup(packagePath + "boy_guard_left.png", gp.tileSize, gp.tileSize);
+        guardRight = setup(packagePath + "boy_guard_right.png", gp.tileSize, gp.tileSize);
+    }
+
     public void getSleepingImage(BufferedImage image) {
         up1 = image;
         up2 = image;
@@ -186,24 +196,55 @@ public class Player extends Entity {
 
     public void update() {
 
+        if(knockBack == true) {
+            
+            // CHECK TILE COLLISION
+            collisionOn = false;
+            // CHECK COLLSISION to update collisionOn flag flag flag
+            gp.collisionChecker.checkTile(this);
+            gp.collisionChecker.checkObject(this, true);
+            gp.collisionChecker.checkEntity(this, gp.npc);
+            gp.collisionChecker.checkEntity(this, gp.monster);
+            gp.collisionChecker.checkEntity(this, gp.iTile);            
+
+            if (collisionOn == true) {
+                knockBackCounter = 0;
+                knockBack = false;
+                speed = defaultSpeed;
+            } else if (collisionOn == false) {
+                switch (knockBackDirection) {
+                    case UP -> worldY -= speed;
+                    case DOWN -> worldY += speed;
+                    case LEFT -> worldX -= speed;
+                    case RIGHT -> worldX += speed;
+                    default -> throw new IllegalArgumentException("Unexpected value: " + direction);
+                }
+
+                knockBackCounter++;
+                if (knockBackCounter == 10) {   // knockBack distance
+                    knockBackCounter = 0;
+                    knockBack = false;
+                    speed = defaultSpeed;
+                }
+            }
+        } 
+
         // attack animation
-        if (attacking == true) {
+        else if (attacking == true) {
             attacking();
         }
-
+        else if (keyHandler.spacePressed == true) {
+            guarding = true;
+            guardCounter++;
+        }
         else if (keyHandler.upPressed || keyHandler.downPressed || 
                 keyHandler.leftPressed || keyHandler.rightPressed ||
                 keyHandler.enterPressed) {
 
-            if(keyHandler.upPressed) {
-                direction = Direction.UP;
-            } else if(keyHandler.downPressed) {
-                direction = Direction.DOWN;
-            } else if(keyHandler.leftPressed) {
-                direction = Direction.LEFT;
-            } else if(keyHandler.rightPressed) {
-                direction = Direction.RIGHT;
-            }
+            if(keyHandler.upPressed) { direction = Direction.UP; } 
+            else if(keyHandler.downPressed) { direction = Direction.DOWN; } 
+            else if(keyHandler.leftPressed) { direction = Direction.LEFT; } 
+            else if(keyHandler.rightPressed) { direction = Direction.RIGHT; }
 
             // CHECK TILE COLLISION
             collisionOn = false;
@@ -247,29 +288,28 @@ public class Player extends Entity {
             attackCanceled = false;
             // RESET enterPressed
             gp.keyHandler.enterPressed = false;
+            guarding = false;
+            guardCounter = 0;
 
-            // ANIMATION for working
+            // ANIMATION for walking
             spriteCounter++;
-            if(spriteCounter > ANIMATION_SPEED) {
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else if (spriteNum == 2) {
-                    spriteNum = 1;
-                }
+            if(spriteCounter > WALKING_ANIMATION_SPEED) {
+                if (spriteNum == 1) { spriteNum = 2; } 
+                else if (spriteNum == 2) { spriteNum = 1; }
                 spriteCounter = 0;
             }
         } 
         else {
             // ANIMATION for Standing
             spriteCounter++;
-            if(spriteCounter > ANIMATION_SPEED) {
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else if (spriteNum == 2) {
-                    spriteNum = 1;
-                }
+            if(spriteCounter > STANDING_ANIMATION_SPEED) {
+                if (spriteNum == 1) { spriteNum = 2; } 
+                else if (spriteNum == 2) { spriteNum = 1; }
                 spriteCounter = 0;
             }
+
+            guarding = false;
+            guardCounter = 0;
         }
 
         // check if can shoot the projectiles
@@ -309,6 +349,7 @@ public class Player extends Entity {
             invincibleCounter++;
             if(invincibleCounter > 60) { // Frame Counter
                 invincible = false;
+                transparent = false;
                 invincibleCounter = 0;
             }
         }
@@ -323,7 +364,7 @@ public class Player extends Entity {
         if (life > maxLife) { life = maxLife; }
         if (mana > maxMana) { mana = maxMana; }
        
-        // Check if game over
+        // Check if game over, 註解後可以變無敵
         if (life <= 0) {
             gp.gameState = GameState.GAME_OVER;
             gp.ui.commandNum = -1;
@@ -346,10 +387,12 @@ public class Player extends Entity {
                     tempScreenY = screenY - gp.tileSize;
                     image = (spriteNum == 1) ? attackUp1 : attackUp2;
                 }
+                if (guarding == true) { image = guardUp; }
                 break;
             case DOWN:
                 if (attacking == false) image = (spriteNum == 1) ? down1 : down2;
                 if (attacking == true) image = (spriteNum == 1) ? attackDown1 : attackDown2;
+                if (guarding == true) { image = guardDown; }
                 break;
             case LEFT:
                 if (attacking == false) image = (spriteNum == 1) ? left1 : left2;
@@ -358,15 +401,17 @@ public class Player extends Entity {
                     tempScreenX = screenX - gp.tileSize;
                     image = (spriteNum == 1) ? attackLeft1 : attackLeft2;
                 }
+                if (guarding == true) { image = guardLeft; }
                 break;
             case RIGHT:
                 if (attacking == false) image = (spriteNum == 1) ? right1 : right2;
                 if (attacking == true) image = (spriteNum == 1) ? attackRight1 : attackRight2;
+                if (guarding == true) { image = guardRight; }
                 break;
         }
 
         // Visual effect to invincible state
-        if (invincible == true) {
+        if (transparent == true) {
             g2Utils.changeAlpha(g2, 0.3f);
         }
 
@@ -471,6 +516,11 @@ public class Player extends Entity {
                     setKnockBack(monster, attacker, knockBackPower); // 怪物反彈的效果
                 }
 
+                // Parry
+                if (gp.monster[gp.currentMap.index][index].offBalance == true) {
+                    attack *= 5;
+                }
+
                 int damage = attack - monster.defense;
                 if (damage <= 0) { damage = 1; }    // 至少會有 1 的傷害
 
@@ -505,10 +555,11 @@ public class Player extends Entity {
                 
                 // Monster 攻擊力 - Player 的防禦力
                 int damage = gp.monster[mapIndex][index].attack - defense;
-                if (damage <= 0) { damage = 1; }     // 至少會損失 1
+                if (damage < 1) { damage = 1; }     // 至少會損失 1
 
                 life -= damage;
                 invincible = true;
+                transparent = true;
             }
         }
     }
@@ -546,7 +597,7 @@ public class Player extends Entity {
             if (selectedItem.type == EntityType.SWORD || selectedItem.type == EntityType.AXE) {
                 currentWeapon = selectedItem;
                 attack = getAttack();
-                getPlayerAttackImage();
+                getAttackImage();
             }
             if (selectedItem.type == EntityType.SHIELD) {
                 currentShield= selectedItem;
