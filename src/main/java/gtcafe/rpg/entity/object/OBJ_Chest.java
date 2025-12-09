@@ -8,13 +8,13 @@ import gtcafe.rpg.state.GameState;
 
 public class OBJ_Chest extends Entity {
     GamePanel gp;
-    Entity loot;
-    boolean opened = false;
+    // Entity loot;
+    // boolean opened = false;
 
-    public OBJ_Chest(GamePanel gp, Entity loot) {
+    public OBJ_Chest(GamePanel gp) {
         super(gp);
         this.gp = gp;
-        this.loot = loot;
+        // this.loot = loot;
 
         type = EntityType.OBSTACLE;
         name = "Chest";
@@ -30,6 +30,10 @@ public class OBJ_Chest extends Entity {
         solidArea.height = 32;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+    }
+
+    public void setLoot(Entity loot) {
+        this.loot = loot;
     }
 
     public void interact() {

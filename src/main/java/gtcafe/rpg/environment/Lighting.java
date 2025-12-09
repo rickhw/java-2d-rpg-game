@@ -66,7 +66,12 @@ public class Lighting {
       
         g2.dispose();
     }
-
+    
+    public void resetDay() {
+        dayState = DayState.DAY;
+        filterAlpha = 0f;
+    }
+    
     public void update() {
         if (gp.player.lightUpdated == true) { // avoid call 60 time per second
             setLightSource();
