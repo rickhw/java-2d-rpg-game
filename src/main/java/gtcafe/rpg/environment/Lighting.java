@@ -1,4 +1,5 @@
 package gtcafe.rpg.environment;
+import gtcafe.rpg.core.GameContext;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -6,11 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
 import java.awt.image.BufferedImage;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.state.DayState;
 
 public class Lighting {
-    GamePanel gp;
+    GameContext context;
     BufferedImage darknessFilter;
     public int dayCounter;
     public float filterAlpha = 0f;
@@ -19,25 +19,25 @@ public class Lighting {
     public DayState dayState = DayState.DAY;
 
 
-    public Lighting(GamePanel gp) {
-        this.gp = gp;
+    public Lighting(GameContext context) {
+        this.context = context;
         setLightSource();
     }
 
     public void setLightSource() {
         // Create a buffered image
-        darknessFilter = new BufferedImage(gp.screenWidth, gp.screenHeight, BufferedImage.TYPE_INT_ARGB_PRE); // for windows, use TYPE_INT_ARGB
+        darknessFilter = new BufferedImage(context.getScreenWidth(), context.getScreenHeight(), BufferedImage.TYPE_INT_ARGB_PRE); // for windows, use TYPE_INT_ARGB
         Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
      
         // 
-        if(gp.player.currentLight == null) {
+        if(context.getPlayer().currentLight == null) {
             g2.setColor(new Color(0,0,0.1f,0.99f));
         }
         // player has a lantern
         else {
             // Get the center x and y of the light circle
-            int centerX = gp.player.screenX + (gp.tileSize) / 2;
-            int centerY = gp.player.screenY + (gp.tileSize) / 2;
+            int centerX = context.getPlayer().screenX + (context.getTileSize()) / 2;
+            int centerY = context.getPlayer().screenY + (context.getTileSize()) / 2;
         
             // Create a gradation (層次) effect within the light circle
             Color color[] = new Color[5];
@@ -56,13 +56,13 @@ public class Lighting {
             fraction[4] = 1f;
 
             // Create a gradation paint settings for the light circle
-            RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, gp.player.currentLight.lightRadius, fraction, color);
+            RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, context.getPlayer().currentLight.lightRadius, fraction, color);
 
             // Set the gradient data on g2
             g2.setPaint(gPaint);
         }
 
-        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.fillRect(0, 0, context.getScreenWidth(), context.getScreenHeight());
       
         g2.dispose();
     }
@@ -73,9 +73,9 @@ public class Lighting {
     }
     
     public void update() {
-        if (gp.player.lightUpdated == true) { // avoid call 60 time per second
+        if (context.getPlayer().lightUpdated == true) { // avoid call 60 time per second
             setLightSource();
-            gp.player.lightUpdated = false;
+            context.getPlayer().lightUpdated = false;
         }
 
         // Check the state of the day

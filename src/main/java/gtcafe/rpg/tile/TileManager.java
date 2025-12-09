@@ -1,4 +1,6 @@
 package gtcafe.rpg.tile;
+import gtcafe.rpg.core.GameContext;
+import gtcafe.rpg.util.Graphics2DUtils;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,22 +11,20 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
-import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.Graphics2DUtils;
 
 public class TileManager {
 
-    GamePanel gp;
+    GameContext context;
     public Tile[] tiles;
     public int mapTileNum[][][];    // first dimension to store the map name
     boolean showInfo = false;
     int drawCounter = 0;
     // boolean drawPath = true;
 
-    public TileManager(GamePanel gp) {
-        this.gp = gp;
+    public TileManager(GameContext context) {
+        this.context = context;
         tiles = new Tile[50];
-        mapTileNum = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
+        mapTileNum = new int[context.getMaxMap()][context.getMaxWorldCol()][context.getMaxWorldRow()];
         
 
         getTileImage();
@@ -93,7 +93,7 @@ public class TileManager {
         try {
             tiles[index] = new Tile();
             tiles[index].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tilesV2/" + imageName + ".png"));
-            tiles[index].image = uTools.scaleImage(tiles[index].image, gp.tileSize, gp.tileSize);
+            tiles[index].image = uTools.scaleImage(tiles[index].image, context.getTileSize(), context.getTileSize());
             tiles[index].collision = collision;
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,15 +108,15 @@ public class TileManager {
             int col = 0;
             int row = 0;
 
-            while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
+            while (col < context.getMaxWorldCol() && row < context.getMaxWorldRow()) {
                 String line = br.readLine();
-                while (col < gp.maxWorldCol) {
+                while (col < context.getMaxWorldCol()) {
                     String numbers[] = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
                     mapTileNum[map.index][col][row] = num;
                     col++;
                 }
-                if(col == gp.maxWorldCol) {
+                if(col == context.getMaxWorldCol()) {
                     col = 0;
                     row++;
                 }
@@ -144,22 +144,22 @@ public class TileManager {
             showInfo = true;
         }
 
-        while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
-            int tileNum = mapTileNum[gp.currentMap.index][worldCol][worldRow];
+        while (worldCol < context.getMaxWorldCol() && worldRow < context.getMaxWorldRow()) {
+            int tileNum = mapTileNum[context.getCurrentMap().index][worldCol][worldRow];
 
             // 計算 世界地圖 的座標
-            int worldX = worldCol * gp.tileSize;
-            int worldY = worldRow * gp.tileSize;
+            int worldX = worldCol * context.getTileSize();
+            int worldY = worldRow * context.getTileSize();
             // 計算 攝影機角度 的 螢幕座標
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
+            int screenX = worldX - context.getPlayer().worldX + context.getPlayer().screenX;
+            int screenY = worldY - context.getPlayer().worldY + context.getPlayer().screenY;
 
             // 增加條件, 只畫 screen 的部分, 而不是整個大地圖
             // 畫的時候，往外延伸一格，避免畫面不順的感覺
-            if ((worldX + gp.tileSize) > (gp.player.worldX - gp.player.screenX) &&
-                (worldX - gp.tileSize) < (gp.player.worldX + gp.player.screenX) &&
-                (worldY + gp.tileSize) > (gp.player.worldY - gp.player.screenY) &&
-                (worldY - gp.tileSize) < (gp.player.worldY + gp.player.screenY)) {
+            if ((worldX + context.getTileSize()) > (context.getPlayer().worldX - context.getPlayer().screenX) &&
+                (worldX - context.getTileSize()) < (context.getPlayer().worldX + context.getPlayer().screenX) &&
+                (worldY + context.getTileSize()) > (context.getPlayer().worldY - context.getPlayer().screenY) &&
+                (worldY - context.getTileSize()) < (context.getPlayer().worldY + context.getPlayer().screenY)) {
 
                 // if (showInfo && gp.debugMode) {
                 //     System.out.printf("tileNum: [%s], worldCol:[%s], worldRow: [%s], screenX: [%s], screenY: [%s]\n", tileNum, worldCol, worldRow, screenX, screenY);
@@ -169,22 +169,22 @@ public class TileManager {
             }
             worldCol++;
 
-            if (worldCol == gp.maxWorldCol) {
+            if (worldCol == context.getMaxWorldCol()) {
                 worldCol = 0;
                 worldRow++;
             }
         }
 
         // 畫出 PathFinding 的路徑
-        if (gp.keyHandler.showDebugText == true) {
+        if (context.getKeyHandler().showDebugText == true) {
             g2.setColor(new Color(255, 0,0, 70));
-            for(int i=0; i<gp.pathFinder.pathList.size(); i++) {
-                int worldX = gp.pathFinder.pathList.get(i).col * gp.tileSize;
-                int worldY = gp.pathFinder.pathList.get(i).row * gp.tileSize;
-                int screenX = worldX - gp.player.worldX + gp.player.screenX;
-                int screenY = worldY - gp.player.worldY + gp.player.screenY;
+            for(int i=0; i<context.getPathFinder().pathList.size(); i++) {
+                int worldX = context.getPathFinder().pathList.get(i).col * context.getTileSize();
+                int worldY = context.getPathFinder().pathList.get(i).row * context.getTileSize();
+                int screenX = worldX - context.getPlayer().worldX + context.getPlayer().screenX;
+                int screenY = worldY - context.getPlayer().worldY + context.getPlayer().screenY;
 
-                g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
+                g2.fillRect(screenX, screenY, context.getTileSize(), context.getTileSize());
             }
         }
     }

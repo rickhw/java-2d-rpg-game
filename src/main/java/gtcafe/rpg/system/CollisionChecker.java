@@ -1,13 +1,14 @@
-package gtcafe.rpg;
+package gtcafe.rpg.system;
+import gtcafe.rpg.core.GameContext;
 
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.state.Direction;
 
 public class CollisionChecker {
-    GamePanel gp;
+    GameContext context;
 
-    public CollisionChecker(GamePanel gp) {
-        this.gp = gp;
+    public CollisionChecker(GameContext context) {
+        this.context = context;
     }
 
     /**
@@ -26,13 +27,13 @@ public class CollisionChecker {
         int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 
         // Determine the current tile grid columns and rows that the entity's solid area occupies
-        int entityLeftCol = entityLeftWorldX / gp.tileSize;
-        int entityRightCol = entityRightWorldX / gp.tileSize;
-        int entityTopRow = entityTopWorldY / gp.tileSize;
-        int entityBottomRow = entityBottomWorldY / gp.tileSize;
+        int entityLeftCol = entityLeftWorldX / context.getTileSize();
+        int entityRightCol = entityRightWorldX / context.getTileSize();
+        int entityTopRow = entityTopWorldY / context.getTileSize();
+        int entityBottomRow = entityBottomWorldY / context.getTileSize();
 
         int tileNum1, tileNum2; // To store the IDs of the two tiles being checked for collision
-        int mapIndex = gp.currentMap.index;
+        int mapIndex = context.getCurrentMap().index;
 
         // Use a temporal direction when it's being knockbacked
         Direction direction = entity.direction;
@@ -44,39 +45,39 @@ public class CollisionChecker {
         switch (direction) {
             case UP:
                 // Calculate the row the entity would be in if it moved 'speed' pixels up
-                entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
+                entityTopRow = (entityTopWorldY - entity.speed) / context.getTileSize();
                 // Get the two tiles that the entity's top edge would potentially collide with
-                tileNum1 = gp.tileManager.mapTileNum[mapIndex][entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileManager.mapTileNum[mapIndex][entityRightCol][entityTopRow];
+                tileNum1 = context.getTileManager().mapTileNum[mapIndex][entityLeftCol][entityTopRow];
+                tileNum2 = context.getTileManager().mapTileNum[mapIndex][entityRightCol][entityTopRow];
                 // Check if either of these tiles has collision enabled
-                if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
+                if(context.getTileManager().tiles[tileNum1].collision || context.getTileManager().tiles[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
 
             case DOWN:
-                entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
-                tileNum1 = gp.tileManager.mapTileNum[mapIndex][entityLeftCol][entityBottomRow];
-                tileNum2 = gp.tileManager.mapTileNum[mapIndex][entityRightCol][entityBottomRow];
-                if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
+                entityBottomRow = (entityBottomWorldY + entity.speed) / context.getTileSize();
+                tileNum1 = context.getTileManager().mapTileNum[mapIndex][entityLeftCol][entityBottomRow];
+                tileNum2 = context.getTileManager().mapTileNum[mapIndex][entityRightCol][entityBottomRow];
+                if(context.getTileManager().tiles[tileNum1].collision || context.getTileManager().tiles[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
 
             case LEFT:
-                entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
-                tileNum1 = gp.tileManager.mapTileNum[mapIndex][entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileManager.mapTileNum[mapIndex][entityLeftCol][entityBottomRow];
-                if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
+                entityLeftCol = (entityLeftWorldX - entity.speed) / context.getTileSize();
+                tileNum1 = context.getTileManager().mapTileNum[mapIndex][entityLeftCol][entityTopRow];
+                tileNum2 = context.getTileManager().mapTileNum[mapIndex][entityLeftCol][entityBottomRow];
+                if(context.getTileManager().tiles[tileNum1].collision || context.getTileManager().tiles[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
 
             case RIGHT:
-                entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
-                tileNum1 = gp.tileManager.mapTileNum[mapIndex][entityRightCol][entityTopRow];
-                tileNum2 = gp.tileManager.mapTileNum[mapIndex][entityRightCol][entityBottomRow];
-                if(gp.tileManager.tiles[tileNum1].collision || gp.tileManager.tiles[tileNum2].collision) {
+                entityRightCol = (entityRightWorldX + entity.speed) / context.getTileSize();
+                tileNum1 = context.getTileManager().mapTileNum[mapIndex][entityRightCol][entityTopRow];
+                tileNum2 = context.getTileManager().mapTileNum[mapIndex][entityRightCol][entityBottomRow];
+                if(context.getTileManager().tiles[tileNum1].collision || context.getTileManager().tiles[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
@@ -91,19 +92,19 @@ public class CollisionChecker {
     public int checkObject(Entity entity, boolean player) {
 
         int index = 999;    // ??
-        int mapIndex = gp.currentMap.index;
+        int mapIndex = context.getCurrentMap().index;
 
         // scan objs
-        for(int i=0; i<gp.obj[1].length; i++) {
-            if(gp.obj[mapIndex][i] != null) {
+        for(int i=0; i<context.getObj()[1].length; i++) {
+            if(context.getObj()[mapIndex][i] != null) {
 
                 // Get entity's solid area position
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
                 // Get the object's solid area position
-                gp.obj[mapIndex][i].solidArea.x = gp.obj[mapIndex][i].worldX + gp.obj[mapIndex][i].solidArea.x;
-                gp.obj[mapIndex][i].solidArea.y = gp.obj[mapIndex][i].worldY + gp.obj[mapIndex][i].solidArea.y;
+                context.getObj()[mapIndex][i].solidArea.x = context.getObj()[mapIndex][i].worldX + context.getObj()[mapIndex][i].solidArea.x;
+                context.getObj()[mapIndex][i].solidArea.y = context.getObj()[mapIndex][i].worldY + context.getObj()[mapIndex][i].solidArea.y;
 
                 switch (entity.direction) {
                     case UP -> entity.solidArea.y -= entity.speed;
@@ -112,15 +113,15 @@ public class CollisionChecker {
                     case RIGHT -> entity.solidArea.x += entity.speed;
                 }
                 // intersect() help check only limit object num.
-                if (entity.solidArea.intersects(gp.obj[mapIndex][i].solidArea)) {
-                    if (gp.obj[mapIndex][i].collision) { entity.collisionOn = true; }
+                if (entity.solidArea.intersects(context.getObj()[mapIndex][i].solidArea)) {
+                    if (context.getObj()[mapIndex][i].collision) { entity.collisionOn = true; }
                     if (player) { index = i; }
                 }
                 // reset
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
-                gp.obj[mapIndex][i].solidArea.x = gp.obj[mapIndex][i].solidAreaDefaultX;
-                gp.obj[mapIndex][i].solidArea.y = gp.obj[mapIndex][i].solidAreaDefaultY;
+                context.getObj()[mapIndex][i].solidArea.x = context.getObj()[mapIndex][i].solidAreaDefaultX;
+                context.getObj()[mapIndex][i].solidArea.y = context.getObj()[mapIndex][i].solidAreaDefaultY;
             }
         }
 
@@ -131,7 +132,7 @@ public class CollisionChecker {
     public int checkEntity(Entity entity, Entity[][] target) {
 
         int index = 999;    // ??
-        int mapIndex = gp.currentMap.index;
+        int mapIndex = context.getCurrentMap().index;
 
         // scan objs
         for(int i=0; i<target[1].length; i++) {
@@ -188,8 +189,8 @@ public class CollisionChecker {
         entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
         // Get the object's solid area position
-        gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-        gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
+        context.getPlayer().solidArea.x = context.getPlayer().worldX + context.getPlayer().solidArea.x;
+        context.getPlayer().solidArea.y = context.getPlayer().worldY + context.getPlayer().solidArea.y;
 
         switch (entity.direction) {
             case UP -> entity.solidArea.y -= entity.speed;
@@ -199,7 +200,7 @@ public class CollisionChecker {
         }
 
         // intersect() help check only limit object num.
-        if (entity.solidArea.intersects(gp.player.solidArea)) {
+        if (entity.solidArea.intersects(context.getPlayer().solidArea)) {
             // System.out.println("[CollisionChecker#checkPlayer] up collision");
             entity.collisionOn = true;
             contactPlayer = true; // for monster attack player
@@ -208,8 +209,8 @@ public class CollisionChecker {
         // reset
         entity.solidArea.x = entity.solidAreaDefaultX;
         entity.solidArea.y = entity.solidAreaDefaultY;
-        gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-        gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+        context.getPlayer().solidArea.x = context.getPlayer().solidAreaDefaultX;
+        context.getPlayer().solidArea.y = context.getPlayer().solidAreaDefaultY;
 
         return contactPlayer;
     }

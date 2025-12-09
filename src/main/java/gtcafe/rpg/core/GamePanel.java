@@ -1,4 +1,10 @@
-package gtcafe.rpg;
+package gtcafe.rpg.core;
+import gtcafe.rpg.system.AssetSetter;
+import gtcafe.rpg.system.CollisionChecker;
+import gtcafe.rpg.system.EventHandler;
+import gtcafe.rpg.system.KeyHandler;
+import gtcafe.rpg.system.Sound;
+import gtcafe.rpg.ui.UI;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,12 +27,16 @@ import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.environment.EnvironmentManager;
 import gtcafe.rpg.state.GameState;
+import gtcafe.rpg.state.State;
+import gtcafe.rpg.state.TitleState;
+import gtcafe.rpg.state.PlayState;
+import java.util.HashMap;
 import gtcafe.rpg.tile.Map;
 import gtcafe.rpg.tile.Scense;
 import gtcafe.rpg.tile.TileManager;
 import gtcafe.rpg.tile.interactive.InteractiveTile;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel implements Runnable, GameContext {
     // Tile Settings
     final int originalTileSize = 16; // 16x16 pixel
     final int scale = 3;
@@ -59,17 +69,17 @@ public class GamePanel extends JPanel implements Runnable {
     // SYSTEM
     public TileManager tileManager = new TileManager(this);
     public KeyHandler keyHandler = new KeyHandler(this);
-    Sound music = new Sound();
-    Sound soundEffect = new Sound();
+    public Sound music = new Sound();
+    public Sound soundEffect = new Sound();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this); // day7-4 add
     public UI ui = new UI(this);
     public EventHandler eventHandler = new EventHandler(this);
-    Config config = new Config(this);
+    public Config config = new Config(this);
     public PathFinder pathFinder = new PathFinder(this);
-    EnvironmentManager eManager = new EnvironmentManager(this);
-    Map map = new Map(this);
-    SaveLoad saveLoad = new SaveLoad(this);
+    public EnvironmentManager eManager = new EnvironmentManager(this);
+    public Map map = new Map(this);
+    public SaveLoad saveLoad = new SaveLoad(this);
     Thread gameThread;
 
     // ENTITY and OBJECT
@@ -81,10 +91,17 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity projectile[][] = new Entity[maxMap][20];  // for CollisionChecker.checkEntity() signature
     // public ArrayList<Projectiles> projectilesList = new ArrayList<>();
     public ArrayList<Entity> particleList = new ArrayList<>();
-    ArrayList<Entity> entityList = new ArrayList<>();
+    public ArrayList<Entity> entityList = new ArrayList<>();
 
     // GAME STATE: for different purpose for game,
     public GameState gameState;
+    public State currentState;
+    public HashMap<GameState, State> stateMap = new HashMap<>();
+
+    public void switchState(GameState newState) {
+        this.gameState = newState;
+        this.currentState = stateMap.get(newState);
+    }
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -110,6 +127,20 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() {
         
+        State titleState = new TitleState(this);
+        State playState = new PlayState(this);
+        
+        stateMap.put(GameState.TITLE, titleState);
+        stateMap.put(GameState.PLAYING, playState);
+        stateMap.put(GameState.PAUSE, playState);
+        stateMap.put(GameState.DIALOGUE, playState);
+        stateMap.put(GameState.CHARACTER, playState);
+        stateMap.put(GameState.OPTIONS, playState);
+        stateMap.put(GameState.GAME_OVER, playState);
+        stateMap.put(GameState.TRANSITION, playState);
+        stateMap.put(GameState.TRADE, playState);
+        stateMap.put(GameState.SLEEP, playState);
+        
         assetSetter.setObject();
         assetSetter.setNPC();
         assetSetter.setMonster();
@@ -117,10 +148,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         eManager.setup();
 
-        playBackgroundMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
+        playMusic(Sound.MUSIC__MAIN_THEME); // index with 0 => main music
         stopBackgroundMusic();
 
-        gameState = GameState.TITLE;
+        switchState(GameState.TITLE);
 
         // 避免重算所有的元件, 改用這個螢幕大小的 Graphics2D 畫
         // for Windows: BufferedImage.TYPE_INT_ARGB
@@ -133,6 +164,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    @Override
     public void resetGame(boolean restart) {
         player.setDefaultPosition();
         player.restoreStatus();        
@@ -228,66 +260,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     // call by GameLoop
     public void update() {
-        if (gameState == GameState.PLAYING) {
-            // 1. PLAYER
-            player.update();
-
-            // 2. NPC
-            for(int i=0; i<npc[1].length; i++) {
-                if(npc[currentMap.index][i] != null) {
-                    npc[currentMap.index][i].update();
-                }
-            }
-
-            // 3. MONSTER
-            for(int i=0; i<monster[1].length; i++) {
-                if(monster[currentMap.index][i] != null) {
-                    if (monster[currentMap.index][i].alive == true && monster[currentMap.index][i].dying == false) {
-                        monster[currentMap.index][i].update();
-                    }
-                    if (monster[currentMap.index][i].alive == false) {
-                        monster[currentMap.index][i].checkDrop(); // when monster die, check the dropped items.
-                        monster[currentMap.index][i] = null;
-                    }
-                }
-            }
-
-            // 4. PROJECTILES
-            for(int i=0; i<projectile[1].length; i++) {
-                Entity pjt = projectile[currentMap.index][i];
-                if(pjt != null) {
-                    if (pjt.alive == true) {
-                        pjt.update();
-                    }
-                    if (pjt.alive == false) {
-                        projectile[currentMap.index][i] = null;
-                    }
-                }
-            }
-
-            // 5. SCAN PARTICLES
-            for(int i=0; i<particleList.size(); i++) {
-                if(particleList.get(i) != null) {
-                    if (particleList.get(i).alive == true) {
-                        particleList.get(i).update();
-                    }
-                    if (particleList.get(i).alive == false) {
-                        particleList.remove(i);
-                    }
-                }
-            }
-
-            // 6. INTERACTIVE_TILES
-            for (int i=0; i<iTile[1].length; i++) {
-                if (iTile[currentMap.index][i] != null) {
-                    iTile[currentMap.index][i].update();
-                }
-            }
-
-            eManager.update();
-        } 
-        else if (gameState == GameState.PAUSE) {
-            // nothing, we don't update the player info
+        if (stateMap.containsKey(gameState)) {
+            currentState = stateMap.get(gameState);
+            currentState.update();
         }
     }
 
@@ -300,61 +275,11 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyHandler.showDebugText)
             drawStart = System.nanoTime();
 
-        // 1. TITLE SCREEN
-        if (gameState == GameState.TITLE) {
-            ui.draw(g2);
-        } else if (gameState == GameState.DISPLAY_MAP) {
+        // 1. STATE DRAW
+        if (gameState == GameState.DISPLAY_MAP) {
             map.drawFullMapScreen(g2);
-        } else {
-            // TILE
-            tileManager.draw(g2);
-            // INTERACTIVE TILES
-            for(int i=0; i<iTile[1].length; i++) {
-                if(iTile[currentMap.index][i] != null) { iTile[currentMap.index][i].draw(g2); }
-            }
-
-            // ADD ENTITY TO THE LIST
-            entityList.add(player);
-            for(int i=0; i<npc[1].length; i++) {
-                if(npc[currentMap.index][i] != null) { entityList.add(npc[currentMap.index][i]); }
-            }
-            for(int i=0; i<obj[1].length; i++) {
-                if(obj[currentMap.index][i] != null) { entityList.add(obj[currentMap.index][i]); }
-            }
-            for(int i=0; i<monster[1].length; i++) {
-                if(monster[currentMap.index][i] != null) { entityList.add(monster[currentMap.index][i]); }
-            }
-
-            for(int i=0; i<projectile[1].length; i++) {    // @TODO: change dimension 1
-                if(projectile[currentMap.index][i] != null) { entityList.add(projectile[currentMap.index][i]); }
-            }
-            
-            for(int i=0; i<particleList.size(); i++) {
-                if(particleList.get(i) != null) { entityList.add(particleList.get(i)); }
-            }
-
-            // SORT
-            Collections.sort(entityList, new Comparator<Entity>() {
-                @Override
-                public int compare(Entity e1, Entity e2) {
-                    int result = Integer.compare(e1.worldY, e2.worldY);
-                    return result;
-                }
-            });
-
-            // DRAW ENTITIES
-            for(int i=0; i<entityList.size(); i++) { entityList.get(i).draw(g2); }
-            // CLEAN ENTITY LIST
-            entityList.clear();
-
-            // ENVIRONMENT
-            eManager.draw(g2);
-
-            // MINIMAP
-            map.drawMiniMap(g2);
-            
-            // UI
-            ui.draw(g2);
+        } else if (stateMap.containsKey(gameState)) {
+            stateMap.get(gameState).draw(g2);
         }
 
         // DEBUG
@@ -385,7 +310,8 @@ public class GamePanel extends JPanel implements Runnable {
         g.dispose();
     }
 
-    public void playBackgroundMusic(int i) {
+    @Override
+    public void playMusic(int i) {
         music.setFile(i);
         music.play();
         music.loop();
@@ -394,9 +320,56 @@ public class GamePanel extends JPanel implements Runnable {
     public void stopBackgroundMusic() {
         music.stop();
     }
+    
+    @Override public boolean isFullScreenOn() { return fullScreenOn; }
+    @Override public void setFullScreenOn(boolean on) { this.fullScreenOn = on; }
 
+    @Override
     public void playSoundEffect(int i) {
         soundEffect.setFile(i);
         soundEffect.play();
     }
+
+    // GameContext Implementation
+    @Override public int getTileSize() { return tileSize; }
+    @Override public int getScreenWidth() { return screenWidth; }
+    @Override public int getScreenHeight() { return screenHeight; }
+    @Override public int getMaxMap() { return maxMap; }
+    @Override public int getMaxWorldCol() { return maxWorldCol; }
+    @Override public int getMaxWorldRow() { return maxWorldRow; }
+    
+    @Override public Scense getCurrentMap() { return currentMap; }
+    @Override public void setCurrentMap(Scense map) { this.currentMap = map; }
+
+    @Override public GameState getGameState() { return gameState; }
+    @Override 
+    public void setGameState(GameState state) { 
+        this.gameState = state;
+        if (stateMap.containsKey(state)) {
+            currentState = stateMap.get(state);
+        }
+    }
+
+    @Override public TileManager getTileManager() { return tileManager; }
+    @Override public KeyHandler getKeyHandler() { return keyHandler; }
+    @Override public Sound getMusic() { return music; }
+    @Override public Sound getSoundEffect() { return soundEffect; }
+    @Override public CollisionChecker getCollisionChecker() { return collisionChecker; }
+    @Override public AssetSetter getAssetSetter() { return assetSetter; }
+    @Override public UI getGameUI() { return ui; }
+    @Override public EventHandler getEventHandler() { return eventHandler; }
+    @Override public Config getConfig() { return config; }
+    @Override public PathFinder getPathFinder() { return pathFinder; }
+    @Override public EnvironmentManager getEnvironmentManager() { return eManager; }
+    @Override public Map getMap() { return map; }
+    @Override public SaveLoad getSaveLoad() { return saveLoad; }
+    
+    @Override public Player getPlayer() { return player; }
+    @Override public Entity[][] getObj() { return obj; }
+    @Override public Entity[][] getNpc() { return npc; }
+    @Override public Entity[][] getMonster() { return monster; }
+    @Override public InteractiveTile[][] getInteractiveTile() { return iTile; }
+    @Override public Entity[][] getProjectile() { return projectile; }
+    @Override public ArrayList<Entity> getParticleList() { return particleList; }
+    @Override public ArrayList<Entity> getEntityList() { return entityList; }
 }

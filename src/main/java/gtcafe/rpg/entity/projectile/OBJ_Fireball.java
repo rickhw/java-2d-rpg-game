@@ -1,15 +1,15 @@
 package gtcafe.rpg.entity.projectile;
+import gtcafe.rpg.core.GameContext;
 
 import java.awt.Color;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 
 public class OBJ_Fireball extends Projectile {
-    GamePanel gp;
-    public OBJ_Fireball(GamePanel gp) {
-        super(gp);
-        this.gp = gp;
+    GameContext context;
+    public OBJ_Fireball(GameContext context) {
+        super(context);
+        this.context = context;
 
         name = "Fireball";
         speed = 8;
@@ -26,14 +26,14 @@ public class OBJ_Fireball extends Projectile {
 
     public void getImage() {
         String packagePath = "/gtcafe/rpg/assets/projectiles/";
-        up1 = setup(packagePath + "fireball_up_1.png", gp.tileSize, gp.tileSize);
-        up2 = setup(packagePath + "fireball_up_2.png", gp.tileSize, gp.tileSize);
-        down1 = setup(packagePath + "fireball_down_1.png", gp.tileSize, gp.tileSize);
-        down2 = setup(packagePath + "fireball_down_2.png", gp.tileSize, gp.tileSize);
-        left1 = setup(packagePath + "fireball_left_1.png", gp.tileSize, gp.tileSize);
-        left2 = setup(packagePath + "fireball_left_2.png", gp.tileSize, gp.tileSize);
-        right1 = setup(packagePath + "fireball_right_1.png", gp.tileSize, gp.tileSize);
-        right2 = setup(packagePath + "fireball_right_2.png", gp.tileSize, gp.tileSize);
+        up1 = setup(packagePath + "fireball_up_1.png", context.getTileSize(), context.getTileSize());
+        up2 = setup(packagePath + "fireball_up_2.png", context.getTileSize(), context.getTileSize());
+        down1 = setup(packagePath + "fireball_down_1.png", context.getTileSize(), context.getTileSize());
+        down2 = setup(packagePath + "fireball_down_2.png", context.getTileSize(), context.getTileSize());
+        left1 = setup(packagePath + "fireball_left_1.png", context.getTileSize(), context.getTileSize());
+        left2 = setup(packagePath + "fireball_left_2.png", context.getTileSize(), context.getTileSize());
+        right1 = setup(packagePath + "fireball_right_1.png", context.getTileSize(), context.getTileSize());
+        right2 = setup(packagePath + "fireball_right_2.png", context.getTileSize(), context.getTileSize());
     }
 
     // 判斷是否有足夠的魔力值可以使用

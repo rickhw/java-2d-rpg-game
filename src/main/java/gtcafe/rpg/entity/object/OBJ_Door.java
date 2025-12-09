@@ -1,18 +1,18 @@
 package gtcafe.rpg.entity.object;
+import gtcafe.rpg.core.GameContext;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
 import gtcafe.rpg.state.GameState;
 
 public class OBJ_Door extends Entity {
-    GamePanel gp;
-    public OBJ_Door(GamePanel gp) {
-        super(gp);
-        this.gp = gp;
+    GameContext context;
+    public OBJ_Door(GameContext context) {
+        super(context);
+        this.context = context;
         name = "Door";
         this.type = EntityType.OBSTACLE;
-        down1 = setup("/gtcafe/rpg/assets/objects/door.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/gtcafe/rpg/assets/objects/door.png", context.getTileSize(), context.getTileSize());
         collision = true;
 
         solidArea.x = 0;
@@ -24,8 +24,8 @@ public class OBJ_Door extends Entity {
     }
 
     public void interact() {
-        gp.gameState = GameState.DIALOGUE;
-        gp.ui.currentDialogue = "You need a key to open this.";
+        context.setGameState(GameState.DIALOGUE);
+        context.getGameUI().currentDialogue = "You need a key to open this.";
 
     }
 }

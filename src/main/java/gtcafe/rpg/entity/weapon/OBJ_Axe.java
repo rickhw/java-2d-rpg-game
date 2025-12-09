@@ -1,15 +1,15 @@
 package gtcafe.rpg.entity.weapon;
+import gtcafe.rpg.core.GameContext;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
 
 public class OBJ_Axe extends Entity {
-    public OBJ_Axe(GamePanel gp) {
-        super(gp);
+    public OBJ_Axe(GameContext context) {
+        super(context);
         type = EntityType.AXE;
         name = "Woodcutter's Axe";
-        down1 = setup("/gtcafe/rpg/assets/objects/axe.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/gtcafe/rpg/assets/objects/axe.png", context.getTileSize(), context.getTileSize());
         attackValue = 4;
         description = "[Woodcutters' Axe]\nA bit rusty but still \ncan cut some trees.\nAttack: " + attackValue;
         price = 75;

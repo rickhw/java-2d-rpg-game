@@ -1,26 +1,26 @@
 package gtcafe.rpg.entity.object;
+import gtcafe.rpg.core.GameContext;
+import gtcafe.rpg.system.Sound;
 
-import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
 import gtcafe.rpg.state.GameState;
 
 public class OBJ_Chest extends Entity {
-    GamePanel gp;
+    GameContext context;
     // Entity loot;
     // boolean opened = false;
 
-    public OBJ_Chest(GamePanel gp) {
-        super(gp);
-        this.gp = gp;
+    public OBJ_Chest(GameContext context) {
+        super(context);
+        this.context = context;
         // this.loot = loot;
 
         type = EntityType.OBSTACLE;
         name = "Chest";
 
-        image = setup("/gtcafe/rpg/assets/objects/chest.png", gp.tileSize, gp.tileSize);
-        image2 = setup("/gtcafe/rpg/assets/objects/chest_opened.png", gp.tileSize, gp.tileSize);
+        image = setup("/gtcafe/rpg/assets/objects/chest.png", context.getTileSize(), context.getTileSize());
+        image2 = setup("/gtcafe/rpg/assets/objects/chest_opened.png", context.getTileSize(), context.getTileSize());
         down1 = image;
         collision = true;
 
@@ -37,15 +37,15 @@ public class OBJ_Chest extends Entity {
     }
 
     public void interact() {
-        gp.gameState = GameState.DIALOGUE;
+        context.setGameState(GameState.DIALOGUE);
 
         if (opened == false) {
-            gp.playSoundEffect(Sound.FX_UNLOCK);
+            context.playSoundEffect(Sound.FX_UNLOCK);
 
             StringBuilder sb = new StringBuilder();
             sb.append("You open the chest and find a " + loot.name + "!");
 
-            if (gp.player.canObtainItem(loot) == false) {
+            if (context.getPlayer().canObtainItem(loot) == false) {
                 sb.append("\n... But you cannot carray any more!");
             } else {
                 sb.append("\nYou obtain the " + loot.name + "!");
@@ -53,11 +53,11 @@ public class OBJ_Chest extends Entity {
                 opened = true;
             }
 
-            gp.ui.currentDialogue = sb.toString();
+            context.getGameUI().currentDialogue = sb.toString();
         }
         // the chest is opened;
         else {
-            gp.ui.currentDialogue = "It's empty.";
+            context.getGameUI().currentDialogue = "It's empty.";
         }
     }
 }

@@ -1,8 +1,8 @@
 package gtcafe.rpg.ai;
+import gtcafe.rpg.core.GameContext;
 
 import java.util.ArrayList;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 
 /** 
@@ -10,7 +10,7 @@ import gtcafe.rpg.entity.Entity;
  * - [Step by Step Explanation of A* Pathfinding Algorithm in Java](https://www.youtube.com/watch?v=2JNEme00ZFA)
  */
 public class PathFinder {
-    GamePanel gp;
+    GameContext context;
     Node[][] node;
     ArrayList<Node> openList = new ArrayList<>();
 
@@ -19,21 +19,21 @@ public class PathFinder {
     boolean goalReached = false;
     int step = 0;
 
-    public PathFinder(GamePanel gp) {
-        this.gp = gp;
+    public PathFinder(GameContext context) {
+        this.context = context;
         instantiateNodes();
     }
 
     public void instantiateNodes() {
-        node = new Node[gp.maxWorldCol][gp.maxWorldRow];
+        node = new Node[context.getMaxWorldCol()][context.getMaxWorldRow()];
         int col = 0;
         int row = 0;
 
-        while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while(col < context.getMaxWorldCol() && row < context.getMaxWorldRow()) {
             node[col][row] = new Node(col, row);
 
             col++;
-            if (col == gp.maxWorldCol) {
+            if (col == context.getMaxWorldCol()) {
                 col = 0;
                 row++;
             }
@@ -44,14 +44,14 @@ public class PathFinder {
         int col = 0;
         int row = 0;
 
-        while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while(col < context.getMaxWorldCol() && row < context.getMaxWorldRow()) {
             // Reset open, checked and solid state
             node[col][row].open = false;
             node[col][row].checked = false;
             node[col][row].solid = false;
 
             col++;
-            if (col == gp.maxWorldCol) {
+            if (col == context.getMaxWorldCol()) {
                 col = 0;
                 row++;
             }
@@ -76,10 +76,10 @@ public class PathFinder {
         int col = 0;
         int row = 0;
 
-        while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while(col < context.getMaxWorldCol() && row < context.getMaxWorldRow()) {
             // SET SOLIDE NODE
-            int tileNum = gp.tileManager.mapTileNum[gp.currentMap.index][col][row];
-            if (gp.tileManager.tiles[tileNum].collision == true) {
+            int tileNum = context.getTileManager().mapTileNum[context.getCurrentMap().index][col][row];
+            if (context.getTileManager().tiles[tileNum].collision == true) {
                 node[col][row].solid = true;
             }
 
@@ -87,43 +87,43 @@ public class PathFinder {
             getCost(node[col][row]);
 
             col++;
-            if(col == gp.maxWorldCol) {
+            if(col == context.getMaxWorldCol()) {
                 col = 0;
                 row++;
             }
         }
 
         // CHECK INTERACTIVE TILES
-        for (int i=0; i<gp.iTile[1].length; i++) {
-            if(gp.iTile[gp.currentMap.index][i] != null && gp.iTile[gp.currentMap.index][i].destructible == true) {
-                int itCol = gp.iTile[gp.currentMap.index][i].worldX / gp.tileSize;
-                int itRow = gp.iTile[gp.currentMap.index][i].worldY / gp.tileSize;
+        for (int i=0; i<context.getInteractiveTile()[1].length; i++) {
+            if(context.getInteractiveTile()[context.getCurrentMap().index][i] != null && context.getInteractiveTile()[context.getCurrentMap().index][i].destructible == true) {
+                int itCol = context.getInteractiveTile()[context.getCurrentMap().index][i].worldX / context.getTileSize();
+                int itRow = context.getInteractiveTile()[context.getCurrentMap().index][i].worldY / context.getTileSize();
                 node[itCol][itRow].solid = true;
             }
         }
 
         // CHECK NPC
-        for (int i=0; i<gp.npc[1].length; i++) {
-            if(gp.npc[gp.currentMap.index][i] != null && gp.npc[gp.currentMap.index][i] != entity) {
-                int itCol = gp.npc[gp.currentMap.index][i].worldX / gp.tileSize;
-                int itRow = gp.npc[gp.currentMap.index][i].worldY / gp.tileSize;
+        for (int i=0; i<context.getNpc()[1].length; i++) {
+            if(context.getNpc()[context.getCurrentMap().index][i] != null && context.getNpc()[context.getCurrentMap().index][i] != entity) {
+                int itCol = context.getNpc()[context.getCurrentMap().index][i].worldX / context.getTileSize();
+                int itRow = context.getNpc()[context.getCurrentMap().index][i].worldY / context.getTileSize();
                 node[itCol][itRow].solid = true;
             }
         }
 
         // CHECK MONSTER
-        for (int i=0; i<gp.monster[1].length; i++) {
-            if(gp.monster[gp.currentMap.index][i] != null && gp.monster[gp.currentMap.index][i] != entity) {
-                int itCol = gp.monster[gp.currentMap.index][i].worldX / gp.tileSize;
-                int itRow = gp.monster[gp.currentMap.index][i].worldY / gp.tileSize;
+        for (int i=0; i<context.getMonster()[1].length; i++) {
+            if(context.getMonster()[context.getCurrentMap().index][i] != null && context.getMonster()[context.getCurrentMap().index][i] != entity) {
+                int itCol = context.getMonster()[context.getCurrentMap().index][i].worldX / context.getTileSize();
+                int itRow = context.getMonster()[context.getCurrentMap().index][i].worldY / context.getTileSize();
                 node[itCol][itRow].solid = true;
             }
         }
 
         // CHECK PLAYER
-        if (gp.player != entity) {
-            int itCol = gp.player.worldX / gp.tileSize;
-            int itRow = gp.player.worldY / gp.tileSize;
+        if (context.getPlayer() != entity) {
+            int itCol = context.getPlayer().worldX / context.getTileSize();
+            int itRow = context.getPlayer().worldY / context.getTileSize();
             node[itCol][itRow].solid = true;
         }
     }
@@ -163,11 +163,11 @@ public class PathFinder {
                 openNode(node[col-1][row]);
             }
             // Open the down node
-            if (row + 1 < gp.maxWorldRow) {
+            if (row + 1 < context.getMaxWorldRow()) {
                 openNode(node[col][row+1]);
             }
             // Open the right node
-            if (col + 1 < gp.maxWorldCol) {
+            if (col + 1 < context.getMaxWorldCol()) {
                 openNode(node[col+1][row]);
             }
 

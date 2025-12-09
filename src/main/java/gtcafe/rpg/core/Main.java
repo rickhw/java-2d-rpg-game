@@ -1,4 +1,4 @@
-package gtcafe.rpg;
+package gtcafe.rpg.core;
 
 import javax.swing.JFrame;
 

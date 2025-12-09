@@ -1,8 +1,8 @@
 package gtcafe.rpg.entity.npc;
+import gtcafe.rpg.core.GameContext;
 
 import java.awt.Rectangle;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.equipable.OBJ_Boots;
 import gtcafe.rpg.entity.equipable.OBJ_Lantern;
@@ -18,8 +18,8 @@ import gtcafe.rpg.state.GameState;
 
 public class NPC_Merchant extends Entity {
     
-    public NPC_Merchant(GamePanel gp) {
-        super(gp);
+    public NPC_Merchant(GameContext context) {
+        super(context);
 
         direction = Direction.DOWN;
         speed = 1;
@@ -39,14 +39,14 @@ public class NPC_Merchant extends Entity {
 
     public void getImages() {
         String packagePath = "/gtcafe/rpg/assets/npc/";
-        up1 = setup(packagePath + "merchant_down_1.png", gp.tileSize, gp.tileSize);
-        up2 = setup(packagePath + "merchant_down_2.png", gp.tileSize, gp.tileSize);
-        down1 = setup(packagePath + "merchant_down_1.png", gp.tileSize, gp.tileSize);
-        down2 = setup(packagePath + "merchant_down_2.png", gp.tileSize, gp.tileSize);
-        left1 = setup(packagePath + "merchant_down_1.png", gp.tileSize, gp.tileSize);
-        left2 = setup(packagePath + "merchant_down_2.png", gp.tileSize, gp.tileSize);
-        right1 = setup(packagePath + "merchant_down_1.png", gp.tileSize, gp.tileSize);
-        right2 = setup(packagePath + "merchant_down_2.png", gp.tileSize, gp.tileSize);
+        up1 = setup(packagePath + "merchant_down_1.png", context.getTileSize(), context.getTileSize());
+        up2 = setup(packagePath + "merchant_down_2.png", context.getTileSize(), context.getTileSize());
+        down1 = setup(packagePath + "merchant_down_1.png", context.getTileSize(), context.getTileSize());
+        down2 = setup(packagePath + "merchant_down_2.png", context.getTileSize(), context.getTileSize());
+        left1 = setup(packagePath + "merchant_down_1.png", context.getTileSize(), context.getTileSize());
+        left2 = setup(packagePath + "merchant_down_2.png", context.getTileSize(), context.getTileSize());
+        right1 = setup(packagePath + "merchant_down_1.png", context.getTileSize(), context.getTileSize());
+        right2 = setup(packagePath + "merchant_down_2.png", context.getTileSize(), context.getTileSize());
     }
 
     // set the action behavior for different actors
@@ -58,21 +58,21 @@ public class NPC_Merchant extends Entity {
     }
 
     public void setItem() {
-        inventory.add(new OBJ_Postion_Red(gp));
-        inventory.add(new OBJ_Key(gp));
-        inventory.add(new OBJ_Axe(gp));
-        inventory.add(new OBJ_Sword_Normal(gp));
-        inventory.add(new OBJ_Shield_Blue(gp));
-        inventory.add(new OBJ_Shield_Wood(gp));
-        inventory.add(new OBJ_Tent(gp));
-        inventory.add(new OBJ_Lantern(gp));
-        inventory.add(new OBJ_Boots(gp));
+        inventory.add(new OBJ_Postion_Red(context));
+        inventory.add(new OBJ_Key(context));
+        inventory.add(new OBJ_Axe(context));
+        inventory.add(new OBJ_Sword_Normal(context));
+        inventory.add(new OBJ_Shield_Blue(context));
+        inventory.add(new OBJ_Shield_Wood(context));
+        inventory.add(new OBJ_Tent(context));
+        inventory.add(new OBJ_Lantern(context));
+        inventory.add(new OBJ_Boots(context));
     }
 
     public void speak() {
         super.speak();
 
-        gp.gameState = GameState.TRADE;
-        gp.ui.npc = this;
+        context.setGameState(GameState.TRADE);
+        context.getGameUI().npc = this;
     }
 }

@@ -1,18 +1,18 @@
 package gtcafe.rpg.tile.interactive;
+import gtcafe.rpg.core.GameContext;
 
-import gtcafe.rpg.GamePanel;
 
 public class IT_Trunk extends InteractiveTile {
-    GamePanel gp;
+    GameContext context;
 
-    public IT_Trunk(GamePanel gp, int col, int row) {
-        super(gp);
-        this.gp = gp;
+    public IT_Trunk(GameContext context, int col, int row) {
+        super(context);
+        this.context = context;
 
-        this.worldX = gp.tileSize * col;
-        this.worldY = gp.tileSize * row;
+        this.worldX = context.getTileSize() * col;
+        this.worldY = context.getTileSize() * row;
 
-        down1 = setup("/gtcafe/rpg/assets/tiles_interactive/trunk.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/gtcafe/rpg/assets/tiles_interactive/trunk.png", context.getTileSize(), context.getTileSize());
         // destructible = true;    
 
         // disable solidArea

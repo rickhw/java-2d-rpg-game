@@ -1,4 +1,6 @@
-package gtcafe.rpg;
+package gtcafe.rpg.system;
+import gtcafe.rpg.core.GameContext;
+import gtcafe.rpg.ui.UI;
 
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.state.Direction;
@@ -7,25 +9,25 @@ import gtcafe.rpg.tile.Scense;
 
 public class EventHandler {
     
-    GamePanel gp;
+    GameContext context;
     EventRect eventRect[][][];
 
     // prevent the event happen repeatly.
-    int previousEventX, previousEventY;
+    public int previousEventX, previousEventY;
     boolean canTouchEvent = true;
-    Scense tempMap;
-    int tempCol, tempRow;
+    public Scense tempMap;
+    public int tempCol, tempRow;
 
-    public EventHandler(GamePanel gp) {
-        this.gp = gp;
+    public EventHandler(GameContext context) {
+        this.context = context;
 
-        eventRect = new EventRect[gp.maxMap][gp.maxWorldRow][gp.maxWorldRow];
+        eventRect = new EventRect[context.getMaxMap()][context.getMaxWorldRow()][context.getMaxWorldRow()];
 
         // 為整個 世界地圖 建立 EventRect 二維矩陣
         int col = 0;
         int row = 0;
         int map = 0;
-        while( map < gp.maxMap && col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while( map < context.getMaxMap() && col < context.getMaxWorldCol() && row < context.getMaxWorldRow()) {
             // 用來判斷是否觸發事件的範圍
             eventRect[map][col][row] = new EventRect();
             eventRect[map][col][row].x = 23;
@@ -36,12 +38,12 @@ public class EventHandler {
             eventRect[map][col][row].eventRectDefaultY = eventRect[map][col][row].y;
 
             col++;
-            if( col == gp.maxWorldCol) {
+            if( col == context.getMaxWorldCol()) {
                 col = 0;
                 row++;
 
                 // reset event for each map
-                if (row == gp.maxWorldRow) {
+                if (row == context.getMaxWorldRow()) {
                     row = 0; 
                     map++;
                 }
@@ -54,27 +56,27 @@ public class EventHandler {
         boolean hit = false;
         int mapIndex = map.index;
 
-        if (mapIndex == gp.currentMap.index) {
-            gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-            gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
+        if (mapIndex == context.getCurrentMap().index) {
+            context.getPlayer().solidArea.x = context.getPlayer().worldX + context.getPlayer().solidArea.x;
+            context.getPlayer().solidArea.y = context.getPlayer().worldY + context.getPlayer().solidArea.y;
 
-            eventRect[mapIndex][col][row].x = col * gp.tileSize + eventRect[mapIndex][col][row].x;
-            eventRect[mapIndex][col][row].y = row * gp.tileSize + eventRect[mapIndex][col][row].y;
+            eventRect[mapIndex][col][row].x = col * context.getTileSize() + eventRect[mapIndex][col][row].x;
+            eventRect[mapIndex][col][row].y = row * context.getTileSize() + eventRect[mapIndex][col][row].y;
 
             // checking if player's solidArea is colliding with eventRect's solidArea
-            if (gp.player.solidArea.intersects(eventRect[mapIndex][col][row]) && 
+            if (context.getPlayer().solidArea.intersects(eventRect[mapIndex][col][row]) && 
                 eventRect[mapIndex][col][row].eventDone == false)  // happen one time only
             {
-                if (gp.player.direction == requiredDirection || requiredDirection == Direction.ANY) {
+                if (context.getPlayer().direction == requiredDirection || requiredDirection == Direction.ANY) {
                     hit = true;
 
-                    previousEventX = gp.player.worldX;
-                    previousEventY = gp.player.worldY;
+                    previousEventX = context.getPlayer().worldX;
+                    previousEventY = context.getPlayer().worldY;
                 }
             }
 
-            gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-            gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+            context.getPlayer().solidArea.x = context.getPlayer().solidAreaDefaultX;
+            context.getPlayer().solidArea.y = context.getPlayer().solidAreaDefaultY;
             eventRect[mapIndex][col][row].x = eventRect[mapIndex][col][row].eventRectDefaultX;
             eventRect[mapIndex][col][row].y = eventRect[mapIndex][col][row].eventRectDefaultY;
         }
@@ -87,10 +89,10 @@ public class EventHandler {
     public void checkEvent() {
 
         // Check if the player character is more than 1 tile away from the last event
-        int xDistance = Math.abs(gp.player.worldX - previousEventX);
-        int yDistance = Math.abs(gp.player.worldY - previousEventY);
+        int xDistance = Math.abs(context.getPlayer().worldX - previousEventX);
+        int yDistance = Math.abs(context.getPlayer().worldY - previousEventY);
         int distance = Math.max(xDistance, yDistance);
-        if (distance > gp.tileSize) {
+        if (distance > context.getTileSize()) {
             canTouchEvent = true;
         }
 
@@ -106,21 +108,21 @@ public class EventHandler {
             else if (hit(Scense.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Scense.STORE, 12, 13); }
             else if (hit(Scense.STORE, 12,13,Direction.ANY)) { teleport(Scense.WORLD_MAP, 10, 39); }
 
-            else if (hit(Scense.STORE, 12,9,Direction.UP)) { speak(gp.npc[1][0]); } // TODO
+            else if (hit(Scense.STORE, 12,9,Direction.UP)) { speak(context.getNpc()[1][0]); } // TODO
         }
     }
 
     private void speak(Entity entity) {
-        if (gp.keyHandler.enterPressed == true) {
-            gp.gameState = GameState.DIALOGUE;
-            gp.player.attackCanceled = true;
+        if (context.getKeyHandler().enterPressed == true) {
+            context.setGameState(GameState.DIALOGUE);
+            context.getPlayer().attackCanceled = true;
             entity.speak();
         }
     }
 
     // update player's position
     private void teleport(Scense map, int col, int row) {
-        gp.gameState = GameState.TRANSITION;
+        context.setGameState(GameState.TRANSITION);
 
         // 暫存座標, 在 UI 做 Transistion 處理後使用
         tempMap = map;
@@ -129,29 +131,29 @@ public class EventHandler {
 
         canTouchEvent = false;
 
-        gp.playSoundEffect(Sound.FX__STAIRS);
+        context.playSoundEffect(Sound.FX__STAIRS);
     }
 
     private void damagePit(GameState gameState) {
-        gp.gameState = gameState;
-        gp.ui.currentDialogue = "You fall into a pit!";
-        gp.player.life -= 1;
+        context.setGameState(gameState);
+        context.getGameUI().currentDialogue = "You fall into a pit!";
+        context.getPlayer().life -= 1;
 
         canTouchEvent = false;
         System.out.println("[EventHandler#damagePit] Player are hit! Lost helf heart!");
-        System.out.printf("[EventHandler#damagePit] Player.Life: [%s]\n", gp.player.life);
+        System.out.printf("[EventHandler#damagePit] Player.Life: [%s]\n", context.getPlayer().life);
 
     }
 
     public void healingPool(GameState gameState) {
-        if (gp.keyHandler.enterPressed == true) {
-            gp.gameState = gameState;
-            gp.player.attackCanceled = true;
-            gp.ui.currentDialogue = "You drink the water. \nYour life and mana have been recovered.\n(The progress has been saved)";
-            gp.player.life = gp.player.maxLife;
-            gp.player.mana = gp.player.maxMana;
-            gp.playSoundEffect(Sound.FX_COIN);
-            gp.saveLoad.save();
+        if (context.getKeyHandler().enterPressed == true) {
+            context.setGameState(gameState);
+            context.getPlayer().attackCanceled = true;
+            context.getGameUI().currentDialogue = "You drink the water. \nYour life and mana have been recovered.\n(The progress has been saved)";
+            context.getPlayer().life = context.getPlayer().maxLife;
+            context.getPlayer().mana = context.getPlayer().maxMana;
+            context.playSoundEffect(Sound.FX_COIN);
+            context.getSaveLoad().save();
         }
     }
 }

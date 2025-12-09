@@ -1,15 +1,15 @@
 package gtcafe.rpg.entity.projectile;
+import gtcafe.rpg.core.GameContext;
 
 import java.awt.Color;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 
 public class OBJ_Rock extends Projectile {
-    GamePanel gp;
-    public OBJ_Rock(GamePanel gp) {
-        super(gp);
-        this.gp = gp;
+    GameContext context;
+    public OBJ_Rock(GameContext context) {
+        super(context);
+        this.context = context;
 
         name = "Rock";
         speed = 3;
@@ -25,14 +25,14 @@ public class OBJ_Rock extends Projectile {
 
     public void getImage() {
         String packagePath = "/gtcafe/rpg/assets/projectiles/";
-        up1 = setup(packagePath + "rock_down_1.png", gp.tileSize, gp.tileSize);
-        up2 = setup(packagePath + "rock_down_1.png", gp.tileSize, gp.tileSize);
-        down1 = setup(packagePath + "rock_down_1.png", gp.tileSize, gp.tileSize);
-        down2 = setup(packagePath + "rock_down_1.png", gp.tileSize, gp.tileSize);
-        left1 = setup(packagePath + "rock_down_1.png", gp.tileSize, gp.tileSize);
-        left2 = setup(packagePath + "rock_down_1.png", gp.tileSize, gp.tileSize);
-        right1 = setup(packagePath + "rock_down_1.png", gp.tileSize, gp.tileSize);
-        right2 = setup(packagePath + "rock_down_1.png", gp.tileSize, gp.tileSize);
+        up1 = setup(packagePath + "rock_down_1.png", context.getTileSize(), context.getTileSize());
+        up2 = setup(packagePath + "rock_down_1.png", context.getTileSize(), context.getTileSize());
+        down1 = setup(packagePath + "rock_down_1.png", context.getTileSize(), context.getTileSize());
+        down2 = setup(packagePath + "rock_down_1.png", context.getTileSize(), context.getTileSize());
+        left1 = setup(packagePath + "rock_down_1.png", context.getTileSize(), context.getTileSize());
+        left2 = setup(packagePath + "rock_down_1.png", context.getTileSize(), context.getTileSize());
+        right1 = setup(packagePath + "rock_down_1.png", context.getTileSize(), context.getTileSize());
+        right2 = setup(packagePath + "rock_down_1.png", context.getTileSize(), context.getTileSize());
     }
 
     // 判斷是否有足夠的彈藥數可以使用

@@ -1,14 +1,14 @@
 package gtcafe.rpg.entity.projectile;
+import gtcafe.rpg.core.GameContext;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.state.Direction;
 
 // 拋射物: 弓箭, 火球, 魔法 ... etc.
 public class Projectile extends Entity {
     Entity user;
-    public Projectile(GamePanel gp) {
-        super(gp);
+    public Projectile(GameContext context) {
+        super(context);
     } 
 
     // reset the life to the max value every time your shoot it.
@@ -22,23 +22,23 @@ public class Projectile extends Entity {
     }
 
     public void update() {
-        int mapIndex = gp.currentMap.index;
+        int mapIndex = context.getCurrentMap().index;
 
         // check collision
-        if (user == gp.player) {
+        if (user == context.getPlayer()) {
             // if the projectile hits a monster, it dies (disappers).
-            int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+            int monsterIndex = context.getCollisionChecker().checkEntity(this, context.getMonster());
             // player attack monster
             if (monsterIndex != 999) {
-                gp.player.damageMonster(monsterIndex, this, attack, knockBackPower);
-                generateParticle(user.projectile, gp.monster[mapIndex][monsterIndex]);
+                context.getPlayer().damageMonster(monsterIndex, this, attack, knockBackPower);
+                generateParticle(user.projectile, context.getMonster()[mapIndex][monsterIndex]);
                 alive = false;
             }
         } 
         else {
-            boolean contacPlayer = gp.collisionChecker.checkPlayer(this);
+            boolean contacPlayer = context.getCollisionChecker().checkPlayer(this);
             // monster attack player
-            if (gp.player.invincible == false && contacPlayer == true) {
+            if (context.getPlayer().invincible == false && contacPlayer == true) {
                 damagePlayer(attack);
                 generateParticle(user.projectile, user.projectile);
                 alive = false;

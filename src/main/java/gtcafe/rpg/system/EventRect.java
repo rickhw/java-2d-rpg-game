@@ -1,4 +1,4 @@
-package gtcafe.rpg;
+package gtcafe.rpg.system;
 
 import java.awt.Rectangle;
 

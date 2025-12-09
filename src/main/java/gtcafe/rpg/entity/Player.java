@@ -1,12 +1,12 @@
 package gtcafe.rpg.entity;
+import gtcafe.rpg.core.GameContext;
+import gtcafe.rpg.system.KeyHandler;
+import gtcafe.rpg.system.Sound;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.KeyHandler;
-import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.object.OBJ_Key;
 import gtcafe.rpg.entity.projectile.OBJ_Fireball;
 import gtcafe.rpg.entity.shield.OBJ_Shield_Wood;
@@ -28,14 +28,14 @@ public class Player extends Entity {
     public boolean attackCanceled = false;
     public boolean lightUpdated = false;
 
-    public Player(GamePanel gp, KeyHandler keyHandler) {
-        super(gp);
+    public Player(GameContext context, KeyHandler keyHandler) {
+        super(context);
 
         this.keyHandler = keyHandler;
 
         // Player 在 Screen 的起始座標, 起始後不會改動. camera position
-        screenX = gp.screenWidth / 2 - (gp.tileSize/2);
-        screenY = gp.screenHeight / 2 - (gp.tileSize/2);
+        screenX = context.getScreenWidth() / 2 - (context.getTileSize()/2);
+        screenY = context.getScreenHeight() / 2 - (context.getTileSize()/2);
 
         // SOLID AREA
         solidArea = new Rectangle(8, 16, 32, 32);
@@ -68,12 +68,12 @@ public class Player extends Entity {
         exp = 0;
         nextLevelExp = 5;
         coin = 1000;
-        // currentWeapon = new OBJ_Sword_Normal(gp);
-        currentWeapon = new OBJ_Axe(gp);
-        currentShield = new OBJ_Shield_Wood(gp);
+        // currentWeapon = new OBJ_Sword_Normal(context);
+        currentWeapon = new OBJ_Axe(context);
+        currentShield = new OBJ_Shield_Wood(context);
         currentLight = null;
-        projectile = new OBJ_Fireball(gp);
-        // projectiles = new OBJ_Rock(gp);
+        projectile = new OBJ_Fireball(context);
+        // projectiles = new OBJ_Rock(context);
 
         attack = getAttack();       // 計算攻擊力, 由 strength and weapon 決定
         defense = getDefense();     // 計算防禦力, 由 dexterity and shield 決定
@@ -86,12 +86,12 @@ public class Player extends Entity {
 
     public void setDefaultPosition() {
         // player 在整個世界地圖的座標起始位置
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        worldX = context.getTileSize() * 23;
+        worldY = context.getTileSize() * 21;
 
         // for testing the interior map
-        // worldX = gp.tileSize * 10;
-        // worldY = gp.tileSize * 41;
+        // worldX = context.getTileSize() * 10;
+        // worldY = context.getTileSize() * 41;
 
         direction = Direction.DOWN; 
     }
@@ -112,7 +112,7 @@ public class Player extends Entity {
         inventory.clear();  // for restart/retry the game
         inventory.add(currentWeapon);
         inventory.add(currentShield);
-        inventory.add(new OBJ_Key(gp));
+        inventory.add(new OBJ_Key(context));
     }
 
     // current: currentWeapon or currentShield
@@ -141,48 +141,48 @@ public class Player extends Entity {
 
     public void getImages() {
         String packagePath = "/gtcafe/rpg/assets/player/";
-        up1 = setup(packagePath + "boy_up_1.png", gp.tileSize, gp.tileSize);
-        up2 = setup(packagePath + "boy_up_2.png", gp.tileSize, gp.tileSize);
-        down1 = setup(packagePath + "boy_down_1.png", gp.tileSize, gp.tileSize);
-        down2 = setup(packagePath + "boy_down_2.png", gp.tileSize, gp.tileSize);
-        left1 = setup(packagePath + "boy_left_1.png", gp.tileSize, gp.tileSize);
-        left2 = setup(packagePath + "boy_left_2.png", gp.tileSize, gp.tileSize);
-        right1 = setup(packagePath + "boy_right_1.png", gp.tileSize, gp.tileSize);
-        right2 = setup(packagePath + "boy_right_2.png", gp.tileSize, gp.tileSize);
+        up1 = setup(packagePath + "boy_up_1.png", context.getTileSize(), context.getTileSize());
+        up2 = setup(packagePath + "boy_up_2.png", context.getTileSize(), context.getTileSize());
+        down1 = setup(packagePath + "boy_down_1.png", context.getTileSize(), context.getTileSize());
+        down2 = setup(packagePath + "boy_down_2.png", context.getTileSize(), context.getTileSize());
+        left1 = setup(packagePath + "boy_left_1.png", context.getTileSize(), context.getTileSize());
+        left2 = setup(packagePath + "boy_left_2.png", context.getTileSize(), context.getTileSize());
+        right1 = setup(packagePath + "boy_right_1.png", context.getTileSize(), context.getTileSize());
+        right2 = setup(packagePath + "boy_right_2.png", context.getTileSize(), context.getTileSize());
     }
 
     public void getAttackImage() {
         String packagePath = "/gtcafe/rpg/assets/player_attack/";
 
         if (currentWeapon.type == EntityType.SWORD) {
-            attackUp1 = setup(packagePath + "boy_attack_up_1.png", gp.tileSize, gp.tileSize*2);
-            attackUp2 = setup(packagePath + "boy_attack_up_2.png", gp.tileSize, gp.tileSize*2);
-            attackDown1 = setup(packagePath + "boy_attack_down_1.png", gp.tileSize, gp.tileSize*2);
-            attackDown2 = setup(packagePath + "boy_attack_down_2.png", gp.tileSize, gp.tileSize*2);
-            attackLeft1 = setup(packagePath + "boy_attack_left_1.png", gp.tileSize*2, gp.tileSize);
-            attackLeft2 = setup(packagePath + "boy_attack_left_2.png", gp.tileSize*2, gp.tileSize);
-            attackRight1 = setup(packagePath + "boy_attack_right_1.png", gp.tileSize*2, gp.tileSize);
-            attackRight2 = setup(packagePath + "boy_attack_right_2.png", gp.tileSize*2, gp.tileSize);
+            attackUp1 = setup(packagePath + "boy_attack_up_1.png", context.getTileSize(), context.getTileSize()*2);
+            attackUp2 = setup(packagePath + "boy_attack_up_2.png", context.getTileSize(), context.getTileSize()*2);
+            attackDown1 = setup(packagePath + "boy_attack_down_1.png", context.getTileSize(), context.getTileSize()*2);
+            attackDown2 = setup(packagePath + "boy_attack_down_2.png", context.getTileSize(), context.getTileSize()*2);
+            attackLeft1 = setup(packagePath + "boy_attack_left_1.png", context.getTileSize()*2, context.getTileSize());
+            attackLeft2 = setup(packagePath + "boy_attack_left_2.png", context.getTileSize()*2, context.getTileSize());
+            attackRight1 = setup(packagePath + "boy_attack_right_1.png", context.getTileSize()*2, context.getTileSize());
+            attackRight2 = setup(packagePath + "boy_attack_right_2.png", context.getTileSize()*2, context.getTileSize());
         }
         if (currentWeapon.type == EntityType.AXE) {
-            attackUp1 = setup(packagePath + "boy_axe_up_1.png", gp.tileSize, gp.tileSize*2);
-            attackUp2 = setup(packagePath + "boy_axe_up_2.png", gp.tileSize, gp.tileSize*2);
-            attackDown1 = setup(packagePath + "boy_axe_down_1.png", gp.tileSize, gp.tileSize*2);
-            attackDown2 = setup(packagePath + "boy_axe_down_2.png", gp.tileSize, gp.tileSize*2);
-            attackLeft1 = setup(packagePath + "boy_axe_left_1.png", gp.tileSize*2, gp.tileSize);
-            attackLeft2 = setup(packagePath + "boy_axe_left_2.png", gp.tileSize*2, gp.tileSize);
-            attackRight1 = setup(packagePath + "boy_axe_right_1.png", gp.tileSize*2, gp.tileSize);
-            attackRight2 = setup(packagePath + "boy_axe_right_2.png", gp.tileSize*2, gp.tileSize);
+            attackUp1 = setup(packagePath + "boy_axe_up_1.png", context.getTileSize(), context.getTileSize()*2);
+            attackUp2 = setup(packagePath + "boy_axe_up_2.png", context.getTileSize(), context.getTileSize()*2);
+            attackDown1 = setup(packagePath + "boy_axe_down_1.png", context.getTileSize(), context.getTileSize()*2);
+            attackDown2 = setup(packagePath + "boy_axe_down_2.png", context.getTileSize(), context.getTileSize()*2);
+            attackLeft1 = setup(packagePath + "boy_axe_left_1.png", context.getTileSize()*2, context.getTileSize());
+            attackLeft2 = setup(packagePath + "boy_axe_left_2.png", context.getTileSize()*2, context.getTileSize());
+            attackRight1 = setup(packagePath + "boy_axe_right_1.png", context.getTileSize()*2, context.getTileSize());
+            attackRight2 = setup(packagePath + "boy_axe_right_2.png", context.getTileSize()*2, context.getTileSize());
         }
         
     }
 
     public void getGuardImage() {
         String packagePath = "/gtcafe/rpg/assets/player_guard/";
-        guardUp = setup(packagePath + "boy_guard_up.png", gp.tileSize, gp.tileSize);
-        guardDown = setup(packagePath + "boy_guard_down.png", gp.tileSize, gp.tileSize);
-        guardLeft = setup(packagePath + "boy_guard_left.png", gp.tileSize, gp.tileSize);
-        guardRight = setup(packagePath + "boy_guard_right.png", gp.tileSize, gp.tileSize);
+        guardUp = setup(packagePath + "boy_guard_up.png", context.getTileSize(), context.getTileSize());
+        guardDown = setup(packagePath + "boy_guard_down.png", context.getTileSize(), context.getTileSize());
+        guardLeft = setup(packagePath + "boy_guard_left.png", context.getTileSize(), context.getTileSize());
+        guardRight = setup(packagePath + "boy_guard_right.png", context.getTileSize(), context.getTileSize());
     }
 
     public void getSleepingImage(BufferedImage image) {
@@ -203,11 +203,11 @@ public class Player extends Entity {
             // CHECK TILE COLLISION
             collisionOn = false;
             // CHECK COLLSISION to update collisionOn flag flag flag
-            gp.collisionChecker.checkTile(this);
-            gp.collisionChecker.checkObject(this, true);
-            gp.collisionChecker.checkEntity(this, gp.npc);
-            gp.collisionChecker.checkEntity(this, gp.monster);
-            gp.collisionChecker.checkEntity(this, gp.iTile);            
+            context.getCollisionChecker().checkTile(this);
+            context.getCollisionChecker().checkObject(this, true);
+            context.getCollisionChecker().checkEntity(this, context.getNpc());
+            context.getCollisionChecker().checkEntity(this, context.getMonster());
+            context.getCollisionChecker().checkEntity(this, context.getInteractiveTile());            
 
             if (collisionOn == true) {
                 knockBackCounter = 0;
@@ -250,25 +250,25 @@ public class Player extends Entity {
 
             // CHECK TILE COLLISION
             collisionOn = false;
-            gp.collisionChecker.checkTile(this);
+            context.getCollisionChecker().checkTile(this);
 
             // CHECK OBJECT COLLSISION
-            int objIndex = gp.collisionChecker.checkObject(this, true);
+            int objIndex = context.getCollisionChecker().checkObject(this, true);
             pickUpObject(objIndex);
 
             // CHECK NPC COLLISION
-            int npcIndex = gp.collisionChecker.checkEntity(this, gp.npc);
+            int npcIndex = context.getCollisionChecker().checkEntity(this, context.getNpc());
             interactNPC(npcIndex);
 
             // CHECK MONSTER COLLISION
-            int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
+            int monsterIndex = context.getCollisionChecker().checkEntity(this, context.getMonster());
             contactMonster(monsterIndex);   // player receives damage
 
             // CHECK INTERACTIVE TILES
-            int iTileIndex = gp.collisionChecker.checkEntity(this, gp.iTile);
+            int iTileIndex = context.getCollisionChecker().checkEntity(this, context.getInteractiveTile());
 
             // CHECK EVENT
-            gp.eventHandler.checkEvent();
+            context.getEventHandler().checkEvent();
 
             // IF COLLISION IS FALSE, PLAYER CAN MOVE
             if (collisionOn == false && keyHandler.enterPressed == false) {
@@ -282,14 +282,14 @@ public class Player extends Entity {
             }
 
             if (keyHandler.enterPressed == true && attackCanceled == false) {
-                gp.playSoundEffect(Sound.FX_SWING_WEAPON);
+                context.playSoundEffect(Sound.FX_SWING_WEAPON);
                 attacking = true;
                 spriteCounter = 0;
             }
 
             attackCanceled = false;
             // RESET enterPressed
-            gp.keyHandler.enterPressed = false;
+            context.getKeyHandler().enterPressed = false;
             guarding = false;
             guardCounter = 0;
 
@@ -320,9 +320,9 @@ public class Player extends Entity {
         // 3. 拋射物目前還沒有畫出來 (30 FPS)
         // 4. Player 目前的魔力值足夠發射 (根據 Mana 值以及 Projectiles 需要消耗的值判斷)
         // System.out.printf("[Player#update()] shotKeyPressed: [%s], projectile.alive: [%s], shotAvailableCounter: [%s], haveResource: [%s]\n", 
-        //     gp.keyHandler.shotKeyPressed, projectile.alive, shotAvailableCounter, projectile.haveResource(this)
+        //     context.getKeyHandler().shotKeyPressed, projectile.alive, shotAvailableCounter, projectile.haveResource(this)
         // );
-        if (gp.keyHandler.shotKeyPressed == true && projectile.alive == false && 
+        if (context.getKeyHandler().shotKeyPressed == true && projectile.alive == false && 
                 shotAvailableCounter == 30 && projectile.haveResource(this) == true) {
             System.out.println("[Player#update()] Shot the projectiles!!");
             // SET DEFAULT COORDINATES, DIRECTION AND USER
@@ -332,18 +332,18 @@ public class Player extends Entity {
             projectile.subtractResource(this);
             
             // CHECK VACANCY
-            for(int i=0; i< gp.projectile[1].length; i++) {
-                if(gp.projectile[gp.currentMap.index][i] == null) {
-                    gp.projectile[gp.currentMap.index][i] = projectile;
+            for(int i=0; i< context.getProjectile()[1].length; i++) {
+                if(context.getProjectile()[context.getCurrentMap().index][i] == null) {
+                    context.getProjectile()[context.getCurrentMap().index][i] = projectile;
                     break;
                 }
             } 
 
             shotAvailableCounter = 0;   // reset counter once player shoot.
 
-            gp.ui.addMessage("Shot the " + projectile.name + "!!");
+            context.getGameUI().addMessage("Shot the " + projectile.name + "!!");
 
-            gp.playSoundEffect(Sound.FX__BURNING);
+            context.playSoundEffect(Sound.FX__BURNING);
         }
 
         // This needs to be outside of key if statement!
@@ -368,10 +368,10 @@ public class Player extends Entity {
        
         // Check if game over, 註解後可以變無敵
         if (life <= 0) {
-            gp.gameState = GameState.GAME_OVER;
-            gp.ui.commandNum = -1;
-            gp.stopBackgroundMusic();
-            gp.playSoundEffect(Sound.FX__GAME_OVER);
+            context.setGameState(GameState.GAME_OVER);
+            context.getGameUI().commandNum = -1;
+            context.getMusic().stop();
+            context.playSoundEffect(Sound.FX__GAME_OVER);
         }
     }
 
@@ -386,7 +386,7 @@ public class Player extends Entity {
                 if (attacking == false) image = (spriteNum == 1) ? up1 : up2;
                 if (attacking == true) {
                     // exception case for up image.
-                    tempScreenY = screenY - gp.tileSize;
+                    tempScreenY = screenY - context.getTileSize();
                     image = (spriteNum == 1) ? attackUp1 : attackUp2;
                 }
                 if (guarding == true) { image = guardUp; }
@@ -400,7 +400,7 @@ public class Player extends Entity {
                 if (attacking == false) image = (spriteNum == 1) ? left1 : left2;
                 if (attacking == true) {
                     // exception case for up image.
-                    tempScreenX = screenX - gp.tileSize;
+                    tempScreenX = screenX - context.getTileSize();
                     image = (spriteNum == 1) ? attackLeft1 : attackLeft2;
                 }
                 if (guarding == true) { image = guardLeft; }
@@ -425,52 +425,52 @@ public class Player extends Entity {
 
     // Player 跟地圖上的物件的互動
     public void pickUpObject(int index) {
-        int mapIndex = gp.currentMap.index;
+        int mapIndex = context.getCurrentMap().index;
         // 999 MEANS NOT TOUCH ANY OBJECT
         if (index != 999) {
             // PICKUP ONLY ITEMS, ex: Coin
-            if (gp.obj[mapIndex][index].type == EntityType.PICKUPONLY) {
-                System.out.printf("[Player#pickUpObject] The player picked up an item on the map: [%s]\n", gp.currentMap.name);
-                gp.obj[mapIndex][index].use(this);
-                gp.obj[mapIndex][index] = null;
+            if (context.getObj()[mapIndex][index].type == EntityType.PICKUPONLY) {
+                System.out.printf("[Player#pickUpObject] The player picked up an item on the map: [%s]\n", context.getCurrentMap().name);
+                context.getObj()[mapIndex][index].use(this);
+                context.getObj()[mapIndex][index] = null;
             } 
-            else if (gp.obj[mapIndex][index].type == EntityType.OBSTACLE) {
+            else if (context.getObj()[mapIndex][index].type == EntityType.OBSTACLE) {
                 if (keyHandler.enterPressed == true) {
                     attackCanceled = true;
-                    gp.obj[gp.currentMap.index][index].interact();
+                    context.getObj()[context.getCurrentMap().index][index].interact();
                 }
             }
             // INVENTORY ITEMS
             else {
                 String text;
-                if (canObtainItem(gp.obj[mapIndex][index]) == true) {
-                    gp.playSoundEffect(Sound.FX_COIN);
-                    text = "Got a " + gp.obj[mapIndex][index].name + "!";
+                if (canObtainItem(context.getObj()[mapIndex][index]) == true) {
+                    context.playSoundEffect(Sound.FX_COIN);
+                    text = "Got a " + context.getObj()[mapIndex][index].name + "!";
                 } else {
                     text = "You cannot carry any more!";
                 }
-                gp.ui.addMessage(text);
-                gp.obj[mapIndex][index] = null;
+                context.getGameUI().addMessage(text);
+                context.getObj()[mapIndex][index] = null;
             }
         }
     }
 
     // Player 跟 NPC 互動
     public void interactNPC(int index) {
-        int mapIndex = gp.currentMap.index;
-        if (gp.keyHandler.enterPressed == true) {
+        int mapIndex = context.getCurrentMap().index;
+        if (context.getKeyHandler().enterPressed == true) {
             if (index != 999) { // means player touch NPC
                 System.out.println("[Player#interactNPC] You are interacting with an NPC.");
                 attackCanceled = true;
-                gp.gameState = GameState.DIALOGUE;
-                gp.npc[mapIndex][index].speak();
+                context.setGameState(GameState.DIALOGUE);
+                context.getNpc()[mapIndex][index].speak();
             } 
         }
     }
 
     public void damageProjectile(int i) {
         if (i != 999) {
-            Entity projectile = gp.projectile[gp.currentMap.index][i];
+            Entity projectile = context.getProjectile()[context.getCurrentMap().index][i];
             projectile.alive = false;
             generateParticle(projectile, projectile);
         }
@@ -478,41 +478,41 @@ public class Player extends Entity {
 
     // 計算 Player 毀壞 Interactive Tiles 的邏輯
     public void damageInteractiveTiles(int i) {
-        int mapIndex = gp.currentMap.index;
+        int mapIndex = context.getCurrentMap().index;
         if (i != 999                                        // 1. Tile Index 是否在合理位置
-                && gp.iTile[mapIndex][i].destructible == true         // 2. 判斷 Tiles 是否已經宣告成可摧毀的物件
-                && gp.iTile[mapIndex][i].isCorrectItem(this) == true  // 3. 判斷目前 Entity (Player) 的武器，是否可以摧毀 Tiles
-                && gp.iTile[mapIndex][i].invincible == false          // 4. 是否在暫時無敵狀態
+                && context.getInteractiveTile()[mapIndex][i].destructible == true         // 2. 判斷 Tiles 是否已經宣告成可摧毀的物件
+                && context.getInteractiveTile()[mapIndex][i].isCorrectItem(this) == true  // 3. 判斷目前 Entity (Player) 的武器，是否可以摧毀 Tiles
+                && context.getInteractiveTile()[mapIndex][i].invincible == false          // 4. 是否在暫時無敵狀態
             ) { 
-            gp.iTile[mapIndex][i].playSoundEffect();
-            gp.iTile[mapIndex][i].life --;
-            gp.iTile[mapIndex][i].invincible = true;
+            context.getInteractiveTile()[mapIndex][i].playSoundEffect();
+            context.getInteractiveTile()[mapIndex][i].life --;
+            context.getInteractiveTile()[mapIndex][i].invincible = true;
 
             // PARTICAL 粒子效果
-            generateParticle(gp.iTile[mapIndex][i], gp.iTile[mapIndex][i]);
+            generateParticle(context.getInteractiveTile()[mapIndex][i], context.getInteractiveTile()[mapIndex][i]);
 
-            if (gp.iTile[mapIndex][i].life == 0) {
-                gp.iTile[mapIndex][i] = gp.iTile[mapIndex][i].getDestroyedForm();
+            if (context.getInteractiveTile()[mapIndex][i].life == 0) {
+                context.getInteractiveTile()[mapIndex][i] = context.getInteractiveTile()[mapIndex][i].getDestroyedForm();
             }
         }
     }
 
     // 計算 Player 攻擊怪物的值
     public void damageMonster(int index, Entity attacker, int attack, int knockBackPower) {
-        int mapIndex = gp.currentMap.index;
+        int mapIndex = context.getCurrentMap().index;
         if (index != 999) {
-            Entity monster = gp.monster[mapIndex][index];
+            Entity monster = context.getMonster()[mapIndex][index];
             // give some damge
             if (monster.invincible == false) {
                 System.out.println("[Player#damageMonster] The player is attacking the monster!!");
-                gp.playSoundEffect(Sound.FX_HIT_MONSTER);
+                context.playSoundEffect(Sound.FX_HIT_MONSTER);
 
                 if (knockBackPower > 0) {
                     setKnockBack(monster, attacker, knockBackPower); // 怪物反彈的效果
                 }
 
                 // Parry
-                if (gp.monster[gp.currentMap.index][index].offBalance == true) {
+                if (context.getMonster()[context.getCurrentMap().index][index].offBalance == true) {
                     attack *= 5;
                 }
 
@@ -520,7 +520,7 @@ public class Player extends Entity {
                 if (damage <= 0) { damage = 1; }    // 至少會有 1 的傷害
 
                 monster.life -= damage;
-                gp.ui.addMessage(damage + " damage!");
+                context.getGameUI().addMessage(damage + " damage!");
                 monster.invincible = true;
                 monster.damageReaction();
 
@@ -529,8 +529,8 @@ public class Player extends Entity {
                     monster.dying = true;
                     exp += monster.exp;
 
-                    gp.ui.addMessage("Killed the " + monster.name + "!");
-                    gp.ui.addMessage("Exp +" + monster.exp + "!");
+                    context.getGameUI().addMessage("Killed the " + monster.name + "!");
+                    context.getGameUI().addMessage("Exp +" + monster.exp + "!");
 
                     checkLevelUp();
                 }
@@ -542,14 +542,14 @@ public class Player extends Entity {
 
     // 計算 Player 被 Monster 攻擊後生命值的損失
     public void contactMonster(int index) {
-        int mapIndex = gp.currentMap.index;
+        int mapIndex = context.getCurrentMap().index;
         if (index != 999) {
-            if (invincible == false && gp.monster[mapIndex][index].dying == false) {
+            if (invincible == false && context.getMonster()[mapIndex][index].dying == false) {
                 System.out.println("[Player#contactMonster] The monster is attacking the player!!");
-                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
+                context.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
                 
                 // Monster 攻擊力 - Player 的防禦力
-                int damage = gp.monster[mapIndex][index].attack - defense;
+                int damage = context.getMonster()[mapIndex][index].attack - defense;
                 if (damage < 1) { damage = 1; }     // 至少會損失 1
 
                 life -= damage;
@@ -572,10 +572,10 @@ public class Player extends Entity {
             attack = getAttack();
             defense = getDefense();
 
-            gp.playSoundEffect(Sound.FX__LEVELUP);
+            context.playSoundEffect(Sound.FX__LEVELUP);
 
-            gp.gameState = GameState.DIALOGUE;
-            gp.ui.currentDialogue = "You are level #" + level + " now!\n"
+            context.setGameState(GameState.DIALOGUE);
+            context.getGameUI().currentDialogue = "You are level #" + level + " now!\n"
                 + "You feel stronger!";
         }
     }
@@ -585,7 +585,7 @@ public class Player extends Entity {
     // ------------------------------------------------------------------------
     // 選擇 Inventory 裡的東西
     public void selectItem() {
-        int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);
+        int itemIndex = context.getGameUI().getItemIndexOnSlot(context.getGameUI().playerSlotCol, context.getGameUI().playerSlotRow);
 
         if (itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);

@@ -20,13 +20,13 @@ dependencies {
 }
 
 application {
-    mainClassName = 'gtcafe.rpg.Main'
+    mainClassName = 'gtcafe.rpg.core.Main'
 }
 
 jar {
     manifest {
         attributes(
-            'Main-Class': 'gtcafe.rpg.Main'
+            'Main-Class': 'gtcafe.rpg.core.Main'
         )
     }
     from {

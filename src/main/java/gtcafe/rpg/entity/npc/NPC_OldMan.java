@@ -1,16 +1,16 @@
 package gtcafe.rpg.entity.npc;
+import gtcafe.rpg.core.GameContext;
 
 import java.awt.Rectangle;
 import java.util.Random;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.state.Direction;
 
 public class NPC_OldMan extends Entity {
     
-    public NPC_OldMan(GamePanel gp, String name) {
-        super(gp);
+    public NPC_OldMan(GameContext context, String name) {
+        super(context);
 
         this.direction = Direction.DOWN;
         this.speed = 1;
@@ -30,14 +30,14 @@ public class NPC_OldMan extends Entity {
 
     public void getImages() {
         String packagePath = "/gtcafe/rpg/assets/npc/";
-        up1 = setup(packagePath + "oldman_up_1.png", gp.tileSize, gp.tileSize);
-        up2 = setup(packagePath + "oldman_up_2.png", gp.tileSize, gp.tileSize);
-        down1 = setup(packagePath + "oldman_down_1.png", gp.tileSize, gp.tileSize);
-        down2 = setup(packagePath + "oldman_down_2.png", gp.tileSize, gp.tileSize);
-        left1 = setup(packagePath + "oldman_left_1.png", gp.tileSize, gp.tileSize);
-        left2 = setup(packagePath + "oldman_left_2.png", gp.tileSize, gp.tileSize);
-        right1 = setup(packagePath + "oldman_right_1.png", gp.tileSize, gp.tileSize);
-        right2 = setup(packagePath + "oldman_right_2.png", gp.tileSize, gp.tileSize);
+        up1 = setup(packagePath + "oldman_up_1.png", context.getTileSize(), context.getTileSize());
+        up2 = setup(packagePath + "oldman_up_2.png", context.getTileSize(), context.getTileSize());
+        down1 = setup(packagePath + "oldman_down_1.png", context.getTileSize(), context.getTileSize());
+        down2 = setup(packagePath + "oldman_down_2.png", context.getTileSize(), context.getTileSize());
+        left1 = setup(packagePath + "oldman_left_1.png", context.getTileSize(), context.getTileSize());
+        left2 = setup(packagePath + "oldman_left_2.png", context.getTileSize(), context.getTileSize());
+        right1 = setup(packagePath + "oldman_right_1.png", context.getTileSize(), context.getTileSize());
+        right2 = setup(packagePath + "oldman_right_2.png", context.getTileSize(), context.getTileSize());
     }
 
     // set the action behavior for different actors
@@ -49,8 +49,8 @@ public class NPC_OldMan extends Entity {
             // int goalCol = 12;
             // int goalRow = 9;
             // 2. follow the player
-            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
-            int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
+            int goalCol = (context.getPlayer().worldX + context.getPlayer().solidArea.x) / context.getTileSize();
+            int goalRow = (context.getPlayer().worldY + context.getPlayer().solidArea.y) / context.getTileSize();
 
             searchPath(goalCol, goalRow);
         } else {

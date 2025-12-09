@@ -1,4 +1,7 @@
 package gtcafe.rpg.entity;
+import gtcafe.rpg.core.GameContext;
+import gtcafe.rpg.system.Sound;
+import gtcafe.rpg.util.Graphics2DUtils;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,16 +13,13 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.Graphics2DUtils;
-import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.projectile.Projectile;
 import gtcafe.rpg.state.Direction;
 
 // a blueprint
 public class Entity {
     // 2D Animation
-    public GamePanel gp;
+    public GameContext context;
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
     public BufferedImage guardUp, guardDown, guardLeft, guardRight;
@@ -110,8 +110,8 @@ public class Entity {
     // TYPES
     public EntityType type; 
 
-    public Entity(GamePanel gp) {
-        this.gp = gp;
+    public Entity(GameContext context) {
+        this.context = context;
     }
 
     public BufferedImage setup(String imagePath, int width, int height) {
@@ -130,13 +130,13 @@ public class Entity {
     public int getRightX() { return worldX + solidArea.x + solidArea.width; }
     public int getTopY() { return worldY + solidArea.y; }
     public int getBottomY() { return worldY + solidArea.y + solidArea.height; }
-    public int getCol() { return (worldX + solidArea.x) / gp.tileSize; }
-    public int getRow() { return (worldY + solidArea.y) / gp.tileSize; }
+    public int getCol() { return (worldX + solidArea.x) / context.getTileSize(); }
+    public int getRow() { return (worldY + solidArea.y) / context.getTileSize(); }
     public int getXdistance(Entity target) { return Math.abs(worldX - target.worldX); }
     public int getYdistance(Entity target) { return Math.abs(worldY - target.worldY); }
-    public int getTileDistance(Entity target) { return (getXdistance(target) + getYdistance(target))/gp.tileSize; }
-    public int getGoalCol(Entity target) { return (target.worldX + target.solidArea.x) / gp.tileSize; }
-    public int getGoalRow(Entity target) { return (target.worldY + target.solidArea.y) / gp.tileSize; }
+    public int getTileDistance(Entity target) { return (getXdistance(target) + getYdistance(target))/context.getTileSize(); }
+    public int getGoalCol(Entity target) { return (target.worldX + target.solidArea.x) / context.getTileSize(); }
+    public int getGoalRow(Entity target) { return (target.worldY + target.solidArea.y) / context.getTileSize(); }
 
 
     // overwirte by subclass
@@ -160,22 +160,22 @@ public class Entity {
         System.out.printf("[Entity#getDetected] user.direction: [%s]\n", user.direction);
         System.out.printf("[Entity#getDetected] before: nextWorldX: [%s], nextWorldY: [%s]\n", nextWorldX, nextWorldY);
         switch (user.direction) {
-            case UP -> nextWorldY = user.getTopY() - gp.player.speed;
-            case DOWN -> nextWorldY = user.getBottomY() + gp.player.speed;
-            case LEFT -> nextWorldX = user.getLeftX() - gp.player.speed;
-            case RIGHT -> nextWorldX = user.getRightX() + gp.player.speed;
+            case UP -> nextWorldY = user.getTopY() - context.getPlayer().speed;
+            case DOWN -> nextWorldY = user.getBottomY() + context.getPlayer().speed;
+            case LEFT -> nextWorldX = user.getLeftX() - context.getPlayer().speed;
+            case RIGHT -> nextWorldX = user.getRightX() + context.getPlayer().speed;
         }
 
         System.out.printf("[Entity#getDetected] after: nextWorldX: [%s], nextWorldY: [%s]\n", nextWorldX, nextWorldY);
-        int col = nextWorldX / gp.tileSize;
-        int row = nextWorldY / gp.tileSize;
+        int col = nextWorldX / context.getTileSize();
+        int row = nextWorldY / context.getTileSize();
 
         // Detect the target, ex: Door
         for (int i=0; i<target[1].length; i++) {    // TODO
-            if (target[gp.currentMap.index][i] != null) {
-                if(target[gp.currentMap.index][i].getCol() == col &&
-                    target[gp.currentMap.index][i].getRow() == row &&
-                    target[gp.currentMap.index][i].name.equals(targetName) )
+            if (target[context.getCurrentMap().index][i] != null) {
+                if(target[context.getCurrentMap().index][i].getCol() == col &&
+                    target[context.getCurrentMap().index][i].getRow() == row &&
+                    target[context.getCurrentMap().index][i].name.equals(targetName) )
                 {
                     index = i;
                     break;
@@ -192,27 +192,27 @@ public class Entity {
             dialogueIndex = 0; // go back to index zero to avoid the NPE.
         }
 
-        gp.ui.currentDialogue = dialogues[dialogueIndex];
+        context.getGameUI().currentDialogue = dialogues[dialogueIndex];
         dialogueIndex++;
 
         // make the NPC talks to player by face.
-        switch (gp.player.direction) {
+        switch (context.getPlayer().direction) {
             case UP -> direction = Direction.DOWN;
             case DOWN -> direction = Direction.UP;
             case LEFT -> direction = Direction.RIGHT;
             case RIGHT -> direction = Direction.LEFT;
-            default -> throw new IllegalArgumentException("Unexpected value: " + gp.player.direction);
+            default -> throw new IllegalArgumentException("Unexpected value: " + context.getPlayer().direction);
         }
     }
 
     public void checkCollision() {
         collisionOn = false;
-        gp.collisionChecker.checkTile(this);
-        gp.collisionChecker.checkObject(this, false);
-        gp.collisionChecker.checkEntity(this, gp.npc);
-        gp.collisionChecker.checkEntity(this, gp.monster);
-        gp.collisionChecker.checkEntity(this, gp.iTile);
-        boolean contactPlayer = gp.collisionChecker.checkPlayer(this);
+        context.getCollisionChecker().checkTile(this);
+        context.getCollisionChecker().checkObject(this, false);
+        context.getCollisionChecker().checkEntity(this, context.getNpc());
+        context.getCollisionChecker().checkEntity(this, context.getMonster());
+        context.getCollisionChecker().checkEntity(this, context.getInteractiveTile());
+        boolean contactPlayer = context.getCollisionChecker().checkPlayer(this);
 
         // handle: monster attack player
         if (this.type == EntityType.MONSTER && contactPlayer == true) {
@@ -304,13 +304,13 @@ public class Entity {
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
-        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+        int screenX = worldX - context.getPlayer().worldX + context.getPlayer().screenX;
+        int screenY = worldY - context.getPlayer().worldY + context.getPlayer().screenY;
 
-        if (worldX * gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+        if (worldX * context.getTileSize() > context.getPlayer().worldX - context.getPlayer().screenX &&
+                worldX - context.getTileSize() < context.getPlayer().worldX + context.getPlayer().screenX &&
+                worldY + context.getTileSize() > context.getPlayer().worldY - context.getPlayer().screenY &&
+                worldY - context.getTileSize() < context.getPlayer().worldY + context.getPlayer().screenY) {
 
             int tempScreenX = screenX;
             int tempScreenY = screenY;
@@ -321,7 +321,7 @@ public class Entity {
                     if (attacking == false) image = (spriteNum == 1) ? up1 : up2;
                     if (attacking == true) {
                         // exception case for up image.
-                        tempScreenY = screenY - gp.tileSize;
+                        tempScreenY = screenY - context.getTileSize();
                         image = (spriteNum == 1) ? attackUp1 : attackUp2;
                     }
                     break;
@@ -333,7 +333,7 @@ public class Entity {
                     if (attacking == false) image = (spriteNum == 1) ? left1 : left2;
                     if (attacking == true) {
                         // exception case for up image.
-                        tempScreenX = screenX - gp.tileSize;
+                        tempScreenX = screenX - context.getTileSize();
                         image = (spriteNum == 1) ? attackLeft1 : attackLeft2;
                     }
                     break;
@@ -353,11 +353,11 @@ public class Entity {
             // Monster HP Bar
             if (type == EntityType.MONSTER && hpBarOn == true) {    // type 2 is monster
 
-                double oneScale = (double) gp.tileSize / maxLife;
+                double oneScale = (double) context.getTileSize() / maxLife;
                 double hpBarValue = oneScale * life;    // find the col length of bar
 
                 g2.setColor(new Color(35,35,30)); 
-                g2.fillRect(screenX - 1 , screenY - 16, gp.tileSize+2, 10+2);
+                g2.fillRect(screenX - 1 , screenY - 16, context.getTileSize()+2, 10+2);
 
                 g2.setColor(new Color(255,0,30)); 
                 g2.fillRect(screenX, screenY - 15, (int)hpBarValue, 10);
@@ -373,8 +373,8 @@ public class Entity {
 
             // 顯示路徑
             if (onPath == true) {
-                gp.g2.setColor(new Color(255, 0,75));
-                gp.g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
+                g2.setColor(new Color(255, 0,75));
+                g2.fillRect(screenX, screenY, context.getTileSize(), context.getTileSize());
             }
 
             // Visual effect to transparent the entity for invincible state
@@ -403,9 +403,9 @@ public class Entity {
 
             // enable projectile or not.
             // CHECK VACANCY
-            for(int ii=0; ii<gp.projectile[1].length; ii++) {
-                if(gp.projectile[gp.currentMap.index][ii] == null) {
-                    gp.projectile[gp.currentMap.index][ii] = projectile;
+            for(int ii=0; ii<context.getProjectile()[1].length; ii++) {
+                if(context.getProjectile()[context.getCurrentMap().index][ii] == null) {
+                    context.getProjectile()[context.getCurrentMap().index][ii] = projectile;
                     break;
                 }
             }
@@ -419,7 +419,7 @@ public class Entity {
             if (i == 0) {
                 onPath = true;
                 if ( uiMessage != null && !uiMessage.equals("")) {
-                    gp.ui.addMessage(uiMessage);
+                    context.getGameUI().addMessage(uiMessage);
                 }
             }
         }
@@ -432,7 +432,7 @@ public class Entity {
             if (i == 0) {
                 onPath = false;
                 if ( uiMessage != null && !uiMessage.equals("")) {
-                    gp.ui.addMessage(uiMessage);
+                    context.getGameUI().addMessage(uiMessage);
                 }
             }
         }
@@ -456,25 +456,25 @@ public class Entity {
     public void checkAttackOrNot(int rate, int straight, int horizontal) {
 
         boolean targetInRange = false;
-        int xDis = getXdistance(gp.player);
-        int yDis = getYdistance(gp.player);
+        int xDis = getXdistance(context.getPlayer());
+        int yDis = getYdistance(context.getPlayer());
 
         switch (direction) {
             case UP:
-                if (gp.player.worldY < worldY && yDis < straight && xDis < horizontal) {
+                if (context.getPlayer().worldY < worldY && yDis < straight && xDis < horizontal) {
                     targetInRange = true;
                 }
                 break;
             case DOWN:
-                if (gp.player.worldY > worldY && yDis < straight && xDis < horizontal) {
+                if (context.getPlayer().worldY > worldY && yDis < straight && xDis < horizontal) {
                     targetInRange = true;
                 }
             case LEFT:
-                if (gp.player.worldX < worldX && xDis < straight && yDis < horizontal) {
+                if (context.getPlayer().worldX < worldX && xDis < straight && yDis < horizontal) {
                     targetInRange = true;
                 }
             case RIGHT:
-                if (gp.player.worldX > worldX && xDis < straight && yDis < horizontal) {
+                if (context.getPlayer().worldX > worldX && xDis < straight && yDis < horizontal) {
                     targetInRange = true;
                 }
             default:
@@ -542,22 +542,22 @@ public class Entity {
 
             if (type == EntityType.MONSTER) {
                 // hitting player
-                if (gp.collisionChecker.checkPlayer(this) == true) {
+                if (context.getCollisionChecker().checkPlayer(this) == true) {
                     damagePlayer(attack);
                 } 
             }
             // Player
             else {
                 // check monster collision with the updated worldX/Y and solidArea
-                int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
-                gp.player.damageMonster(monsterIndex, this, attack, currentWeapon.knockBackPower);
+                int monsterIndex = context.getCollisionChecker().checkEntity(this, context.getMonster());
+                context.getPlayer().damageMonster(monsterIndex, this, attack, currentWeapon.knockBackPower);
 
                 // check player attack the interactive tiles
-                int iTileIndex = gp.collisionChecker.checkEntity(this, gp.iTile);
-                gp.player.damageInteractiveTiles(iTileIndex);
+                int iTileIndex = context.getCollisionChecker().checkEntity(this, context.getInteractiveTile());
+                context.getPlayer().damageInteractiveTiles(iTileIndex);
 
-                int projectileIndex = gp.collisionChecker.checkEntity(this, gp.projectile);
-                gp.player.damageProjectile(projectileIndex);
+                int projectileIndex = context.getCollisionChecker().checkEntity(this, context.getProjectile());
+                context.getPlayer().damageProjectile(projectileIndex);
             }
 
             // restore position
@@ -575,47 +575,47 @@ public class Entity {
     }
 
     public void damagePlayer(int attack) {
-        if (gp.player.invincible == false) {
+        if (context.getPlayer().invincible == false) {
             
             // we can give damage
             //  攻擊力 - Player 的防禦力
-            int damage = attack - gp.player.defense;
+            int damage = attack - context.getPlayer().defense;
 
             // Get an opposite direction of this attacker
             Direction canGuardDirection = getOppositeDirection(direction);
             
             // player can guard the attack (防禦成功，損失減少 1/3)
-            if (gp.player.guarding == true && gp.player.direction == canGuardDirection) {
+            if (context.getPlayer().guarding == true && context.getPlayer().direction == canGuardDirection) {
 
                 // Parry
-                if (gp.player.guardCounter < 10) {  // 10 Frame Window
+                if (context.getPlayer().guardCounter < 10) {  // 10 Frame Window
                     damage = 0;
-                    gp.playSoundEffect(Sound.FX__PARRY);
-                    setKnockBack(this, gp.player, knockBackPower);
-                    gp.ui.addMessage("Parry!");
+                    context.playSoundEffect(Sound.FX__PARRY);
+                    setKnockBack(this, context.getPlayer(), knockBackPower);
+                    context.getGameUI().addMessage("Parry!");
                     offBalance = true;
                     spriteCounter =- 60;    // make the monster frozen effect at moment
                 }
                 // Normal
                 else {
                     damage /= 3;    // reduce the damage
-                    gp.playSoundEffect(Sound.FX__BLOCKED);
-                    gp.ui.addMessage("Guarding!");
+                    context.playSoundEffect(Sound.FX__BLOCKED);
+                    context.getGameUI().addMessage("Guarding!");
                 }
 
             } 
             else {
                 if (damage < 1) { damage = 1; }
-                gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
+                context.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
             }
 
             if (damage != 0) {
-                gp.player.transparent = true;
-                setKnockBack(gp.player, this, knockBackPower);
+                context.getPlayer().transparent = true;
+                setKnockBack(context.getPlayer(), this, knockBackPower);
             }
 
-            gp.player.life -= damage;
-            gp.player.invincible = true;
+            context.getPlayer().life -= damage;
+            context.getPlayer().invincible = true;
         }
     }
 
@@ -660,13 +660,13 @@ public class Entity {
 
     // Handle the dropItem action
     public void dropItem(Entity droppedItem) {
-        int mapIndex = gp.currentMap.index;
-        for (int i=0; i< gp.obj[1].length; i++ ) {
-            if (gp.obj[mapIndex][i] == null) {
-                gp.obj[mapIndex][i] = droppedItem;
+        int mapIndex = context.getCurrentMap().index;
+        for (int i=0; i< context.getObj()[1].length; i++ ) {
+            if (context.getObj()[mapIndex][i] == null) {
+                context.getObj()[mapIndex][i] = droppedItem;
                 // the dead monster's worldX/Y
-                gp.obj[mapIndex][i].worldX = worldX; 
-                gp.obj[mapIndex][i].worldY = worldY;
+                context.getObj()[mapIndex][i].worldX = worldX; 
+                context.getObj()[mapIndex][i].worldY = worldY;
                 break; // break the check.
             }
         }
@@ -707,34 +707,34 @@ public class Entity {
         int maxLife = generator.getParitcleMaxLife();
         
         // 產生四個粒子
-        Particle p1 = new Particle(gp, target, color, size, speed, maxLife, -2, -1);
-        Particle p2 = new Particle(gp, target, color, size, speed, maxLife, 2, -1);
-        Particle p3 = new Particle(gp, target, color, size, speed, maxLife, -2, 1);
-        Particle p4 = new Particle(gp, target, color, size, speed, maxLife, 2, 1);
+        Particle p1 = new Particle(context, target, color, size, speed, maxLife, -2, -1);
+        Particle p2 = new Particle(context, target, color, size, speed, maxLife, 2, -1);
+        Particle p3 = new Particle(context, target, color, size, speed, maxLife, -2, 1);
+        Particle p4 = new Particle(context, target, color, size, speed, maxLife, 2, 1);
         
-        gp.particleList.add(p1);
-        gp.particleList.add(p2);
-        gp.particleList.add(p3);
-        gp.particleList.add(p4);
+        context.getParticleList().add(p1);
+        context.getParticleList().add(p2);
+        context.getParticleList().add(p3);
+        context.getParticleList().add(p4);
     }
 
     public void searchPath(int goalCol, int goalRow) {
-        int startCol = (worldX + solidArea.x) / gp.tileSize;
-        int startRow = (worldY + solidArea.y) / gp.tileSize;
+        int startCol = (worldX + solidArea.x) / context.getTileSize();
+        int startRow = (worldY + solidArea.y) / context.getTileSize();
 
         if (startCol == goalCol && startRow == goalRow) {
             onPath = false;
             return;
         }
 
-        gp.pathFinder.setNodes(startCol, startRow, goalCol, goalRow, this);
+        context.getPathFinder().setNodes(startCol, startRow, goalCol, goalRow, this);
 
-        if (gp.pathFinder.search() == true) {
+        if (context.getPathFinder().search() == true) {
             
             // Next worldX & worldY
-            if (gp.pathFinder.pathList.size() > 0) {
-                int nextX = gp.pathFinder.pathList.get(0).col * gp.tileSize;
-                int nextY = gp.pathFinder.pathList.get(0).row * gp.tileSize;
+            if (context.getPathFinder().pathList.size() > 0) {
+                int nextX = context.getPathFinder().pathList.get(0).col * context.getTileSize();
+                int nextY = context.getPathFinder().pathList.get(0).row * context.getTileSize();
 
                 // Entity's solidArea position
                 int enLeftX = worldX + solidArea.x;
@@ -744,11 +744,11 @@ public class Entity {
 
                 // Based on the current NPC's position,
                 // find out the relative direction of the next node
-                if (enTopY > nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
+                if (enTopY > nextY && enLeftX >= nextX && enRightX < nextX + context.getTileSize()) {
                     direction = Direction.UP;
-                } else if (enTopY < nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
+                } else if (enTopY < nextY && enLeftX >= nextX && enRightX < nextX + context.getTileSize()) {
                     direction = Direction.DOWN;
-                } else if (enTopY >= nextY && enBottomY < nextY + gp.tileSize) {
+                } else if (enTopY >= nextY && enBottomY < nextY + context.getTileSize()) {
                     // left or right
                     if (enLeftX > nextX) { direction = Direction.LEFT; }
                     if (enLeftX < nextX) { direction = Direction.RIGHT; }
@@ -777,8 +777,8 @@ public class Entity {
                 // System.out.printf("[Entity#searchPath] entity: [%s], direction: [%s]\n", name, direction);
 
                 // If reaches the goal, stop the search
-                // int nextCol = gp.pathFinder.pathList.get(0).col;
-                // int nextRow = gp.pathFinder.pathList.get(0).row;
+                // int nextCol = context.getPathFinder().pathList.get(0).col;
+                // int nextRow = context.getPathFinder().pathList.get(0).row;
                 // if (nextCol == goalCol && nextRow == goalRow) {
                     // onPath = false; // Let it reach the goal
                 // }

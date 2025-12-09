@@ -1,4 +1,5 @@
-package gtcafe.rpg;
+package gtcafe.rpg.core;
+import gtcafe.rpg.system.Sound;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -1,25 +1,25 @@
 package gtcafe.rpg.tile.interactive;
+import gtcafe.rpg.core.GameContext;
+import gtcafe.rpg.system.Sound;
 
 import java.awt.Color;
 
-import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
 
 public class IT_DryTree extends InteractiveTile {
-    GamePanel gp;
+    GameContext context;
 
-    public IT_DryTree(GamePanel gp, int col, int row) {
-        super(gp);
-        this.gp = gp;
+    public IT_DryTree(GameContext context, int col, int row) {
+        super(context);
+        this.context = context;
 
-        this.worldX = gp.tileSize * col;
-        this.worldY = gp.tileSize * row;
+        this.worldX = context.getTileSize() * col;
+        this.worldY = context.getTileSize() * row;
 
         life = 2;
 
-        down1 = setup("/gtcafe/rpg/assets/tiles_interactive/drytree.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/gtcafe/rpg/assets/tiles_interactive/drytree.png", context.getTileSize(), context.getTileSize());
         destructible = true;    
     }
 
@@ -46,11 +46,11 @@ public class IT_DryTree extends InteractiveTile {
 
     // overwrite by subclass
     public void playSoundEffect() {
-        gp.playSoundEffect(Sound.FX__CUT_TREE);
+        context.playSoundEffect(Sound.FX__CUT_TREE);
     }
 
     public InteractiveTile getDestroyedForm() {
-        InteractiveTile i = new IT_Trunk(gp, worldX / gp.tileSize, worldY / gp.tileSize);
+        InteractiveTile i = new IT_Trunk(context, worldX / context.getTileSize(), worldY / context.getTileSize());
         return i;
     }
 

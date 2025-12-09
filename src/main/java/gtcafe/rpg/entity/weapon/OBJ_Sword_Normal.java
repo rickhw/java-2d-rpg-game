@@ -1,16 +1,16 @@
 package gtcafe.rpg.entity.weapon;
+import gtcafe.rpg.core.GameContext;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
 
 // increase player's speed
 public class OBJ_Sword_Normal extends Entity {
-    public OBJ_Sword_Normal(GamePanel gp) {
-        super(gp);
+    public OBJ_Sword_Normal(GameContext context) {
+        super(context);
         type = EntityType.SWORD;
         name = "Normal Sword";
-        down1 = setup("/gtcafe/rpg/assets/objects/sword_normal.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/gtcafe/rpg/assets/objects/sword_normal.png", context.getTileSize(), context.getTileSize());
         attackValue = 2;    
         description = "[" + name + "]\nAn old sword.\nAttack: " + attackValue;
         price = 150;

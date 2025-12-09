@@ -1,19 +1,19 @@
 package gtcafe.rpg.tile.interactive;
+import gtcafe.rpg.core.GameContext;
 
 import java.awt.Graphics2D;
 
-import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 
 public class InteractiveTile extends Entity {
-    GamePanel gp;
+    GameContext context;
 
     // // 可以摧毀的物件
     public boolean destructible = false;
 
-    public InteractiveTile(GamePanel gp) {
-        super(gp);
-        this.gp = gp;
+    public InteractiveTile(GameContext context) {
+        super(context);
+        this.context = context;
     }
 
     // overwrite by subclass
@@ -21,13 +21,13 @@ public class InteractiveTile extends Entity {
 
     // overwrite parent to ignore the invicible effect.
     public void draw(Graphics2D g2) { 
-        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+        int screenX = worldX - context.getPlayer().worldX + context.getPlayer().screenX;
+        int screenY = worldY - context.getPlayer().worldY + context.getPlayer().screenY;
 
-        if (worldX * gp.tileSize > gp.player.worldX - gp.player.screenX
-            && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX 
-            && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY 
-            && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+        if (worldX * context.getTileSize() > context.getPlayer().worldX - context.getPlayer().screenX
+            && worldX - context.getTileSize() < context.getPlayer().worldX + context.getPlayer().screenX 
+            && worldY + context.getTileSize() > context.getPlayer().worldY - context.getPlayer().screenY 
+            && worldY - context.getTileSize() < context.getPlayer().worldY + context.getPlayer().screenY) {
 
             g2.drawImage(down1, screenX, screenY, null);
         }
