@@ -8,7 +8,6 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.KeyHandler;
 import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.object.OBJ_Key;
-import gtcafe.rpg.entity.object.OBJ_Postion_Red;
 import gtcafe.rpg.entity.projectile.OBJ_Fireball;
 import gtcafe.rpg.entity.shield.OBJ_Shield_Wood;
 import gtcafe.rpg.entity.weapon.OBJ_Axe;
@@ -114,22 +113,6 @@ public class Player extends Entity {
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
-        // inventory.add(new OBJ_Postion_Red(gp));
     }
 
     // current: currentWeapon or currentShield
@@ -438,13 +421,6 @@ public class Player extends Entity {
 
         // reset alpha
         g2Utils.changeAlpha(g2, 1f);
-
-        // DEBUG
-        // if (gp.debugMode) {
-        //     g2.setFont(new Font("Arial", Font.PLAIN, 26));
-        //     g2.setColor(Color.white);
-        //     g2.drawString("Invincible: " + invincibleCounter, 5, 400);
-        // }
     }
 
     // Player 跟地圖上的物件的互動

@@ -17,12 +17,7 @@ public class Config {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("config.txt"))) {
 
             // Full Screen
-            if (gp.fullScreenOn == true) {
-                bw.write("On");
-            }
-            if (gp.fullScreenOn == false) {
-                bw.write("Off");
-            }
+            bw.write(gp.fullScreenOn ? "On": "Off");
             bw.newLine();
 
             // Music Volume
@@ -33,7 +28,6 @@ public class Config {
             bw.write(String.valueOf(gp.soundEffect.volumeScale));
             bw.newLine();
 
-            // 
             bw.close();
 
         } catch (IOException e) {
@@ -61,6 +55,8 @@ public class Config {
             // Sound Effect;
             s = br.readLine();
             gp.soundEffect.volumeScale = Integer.parseInt(s);
+
+            br.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

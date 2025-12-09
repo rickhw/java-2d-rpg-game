@@ -2,7 +2,6 @@ package gtcafe.rpg;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
@@ -20,7 +19,6 @@ import gtcafe.rpg.ai.PathFinder;
 import gtcafe.rpg.data.SaveLoad;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
-import gtcafe.rpg.entity.projectile.Projectile;
 import gtcafe.rpg.environment.EnvironmentManager;
 import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.tile.Map;
