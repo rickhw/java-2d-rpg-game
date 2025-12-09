@@ -1,5 +1,6 @@
-package gtcafe.rpg;
+package gtcafe.rpg.system;
 
+import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.state.Direction;
 import gtcafe.rpg.state.GameState;
@@ -11,10 +12,10 @@ public class EventHandler {
     EventRect eventRect[][][];
 
     // prevent the event happen repeatly.
-    int previousEventX, previousEventY;
+    public int previousEventX, previousEventY;
     boolean canTouchEvent = true;
-    Scense tempMap;
-    int tempCol, tempRow;
+    public Scense tempMap;
+    public int tempCol, tempRow;
 
     public EventHandler(GamePanel gp) {
         this.gp = gp;

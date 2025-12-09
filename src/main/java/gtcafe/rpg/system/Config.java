@@ -1,4 +1,4 @@
-package gtcafe.rpg;
+package gtcafe.rpg.system;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import gtcafe.rpg.GamePanel;
 
 public class Config {
     GamePanel gp;

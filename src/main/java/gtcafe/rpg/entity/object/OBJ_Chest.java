@@ -1,10 +1,10 @@
 package gtcafe.rpg.entity.object;
 
 import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
 import gtcafe.rpg.state.GameState;
+import gtcafe.rpg.system.Sound;
 
 public class OBJ_Chest extends Entity {
     GamePanel gp;

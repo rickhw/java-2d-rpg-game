@@ -1,5 +1,6 @@
-package gtcafe.rpg;
+package gtcafe.rpg.system;
 
+import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.state.Direction;
 

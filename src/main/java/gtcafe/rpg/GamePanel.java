@@ -21,6 +21,11 @@ import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.environment.EnvironmentManager;
 import gtcafe.rpg.state.GameState;
+import gtcafe.rpg.system.CollisionChecker;
+import gtcafe.rpg.system.Config;
+import gtcafe.rpg.system.EventHandler;
+import gtcafe.rpg.system.KeyHandler;
+import gtcafe.rpg.system.Sound;
 import gtcafe.rpg.tile.Map;
 import gtcafe.rpg.tile.Scense;
 import gtcafe.rpg.tile.TileManager;
@@ -59,8 +64,8 @@ public class GamePanel extends JPanel implements Runnable {
     // SYSTEM
     public TileManager tileManager = new TileManager(this);
     public KeyHandler keyHandler = new KeyHandler(this);
-    Sound music = new Sound();
-    Sound soundEffect = new Sound();
+    public Sound music = new Sound();
+    public Sound soundEffect = new Sound();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this); // day7-4 add
     public UI ui = new UI(this);
@@ -68,8 +73,8 @@ public class GamePanel extends JPanel implements Runnable {
     Config config = new Config(this);
     public PathFinder pathFinder = new PathFinder(this);
     EnvironmentManager eManager = new EnvironmentManager(this);
-    Map map = new Map(this);
-    SaveLoad saveLoad = new SaveLoad(this);
+    public Map map = new Map(this);
+    public SaveLoad saveLoad = new SaveLoad(this);
     Thread gameThread;
 
     // ENTITY and OBJECT

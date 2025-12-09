@@ -1,8 +1,9 @@
-package gtcafe.rpg;
+package gtcafe.rpg.system;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.tile.Scense;
 
@@ -10,7 +11,7 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, musicPressed;
     public boolean shotKeyPressed; // means shot projectiles
     public boolean spacePressed;
-    GamePanel gp;
+    public GamePanel gp;
 
     // DEBUG
     public boolean showDebugText = false;

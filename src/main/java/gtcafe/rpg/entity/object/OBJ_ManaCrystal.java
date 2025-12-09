@@ -1,9 +1,9 @@
 package gtcafe.rpg.entity.object;
 
 import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
+import gtcafe.rpg.system.Sound;
 
 public class OBJ_ManaCrystal extends Entity {
     GamePanel gp;

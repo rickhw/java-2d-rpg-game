@@ -3,9 +3,9 @@ package gtcafe.rpg.tile.interactive;
 import java.awt.Color;
 
 import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
+import gtcafe.rpg.system.Sound;
 
 public class IT_DryTree extends InteractiveTile {
     GamePanel gp;

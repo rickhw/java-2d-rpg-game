@@ -12,9 +12,9 @@ import javax.imageio.ImageIO;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.Graphics2DUtils;
-import gtcafe.rpg.Sound;
 import gtcafe.rpg.entity.projectile.Projectile;
 import gtcafe.rpg.state.Direction;
+import gtcafe.rpg.system.Sound;
 
 // a blueprint
 public class Entity {

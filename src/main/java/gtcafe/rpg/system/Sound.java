@@ -1,4 +1,4 @@
-package gtcafe.rpg;
+package gtcafe.rpg.system;
 
 import java.net.URL;
 
@@ -11,8 +11,8 @@ public class Sound {
     Clip clip;
     URL soundURL[] = new URL[30];   // store the sound url
     FloatControl fc;
-    int volumeScale = 3;
-    float volume;
+    public int volumeScale = 3;
+    public float volume;
 
     public final static int MUSIC__MAIN_THEME = 0;
     public final static int MUSIC__FANFARE = 1;

@@ -42,7 +42,7 @@ public class UI {
     // 0: the first screen
     // 1: the second screen ..
     public int titleScreenState = 0;
-    int subState = 0;
+    public int subState = 0;
 
     public int playerSlotCol = 0;
     public int playerSlotRow = 0;
