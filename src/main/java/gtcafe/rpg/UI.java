@@ -270,6 +270,7 @@ public class UI {
                 subState = 0;
                 gp.stopBackgroundMusic();
                 gp.gameState = GameState.TITLE;
+                gp.resetGame(true);
             }
         }
 

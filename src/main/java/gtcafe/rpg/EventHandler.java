@@ -147,13 +147,11 @@ public class EventHandler {
         if (gp.keyHandler.enterPressed == true) {
             gp.gameState = gameState;
             gp.player.attackCanceled = true;
-            gp.ui.currentDialogue = "You drink the water. \nYour life and mana have been recovered.";
+            gp.ui.currentDialogue = "You drink the water. \nYour life and mana have been recovered.\n(The progress has been saved)";
             gp.player.life = gp.player.maxLife;
             gp.player.mana = gp.player.maxMana;
             gp.playSoundEffect(Sound.FX_COIN);
-            // System.out.println("[EventHandler#healingPool] Player's life has been recovered!");
-
-            // gp.assetSetter.setMonster(); // restore the monsters.
+            gp.saveLoad.save();
         }
     }
 }

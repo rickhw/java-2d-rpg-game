@@ -106,12 +106,14 @@ public class AssetSetter {
 
         // 寶箱
         i++;
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp, new OBJ_Key(gp));
+        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
+        gp.obj[mapIndex][i].setLoot(new OBJ_Key(gp));
         gp.obj[mapIndex][i].worldX = gp.tileSize * 30;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 28;
 
         i++;
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp, new OBJ_Heart(gp));
+        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
+        gp.obj[mapIndex][i].setLoot(new OBJ_Heart(gp));
         gp.obj[mapIndex][i].worldX = gp.tileSize * 12;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 8;
 

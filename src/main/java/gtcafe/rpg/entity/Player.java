@@ -48,10 +48,6 @@ public class Player extends Entity {
         attackArea.height = 36;
 
         setDefaultValues();
-        getImages();
-        getAttackImage();
-        getGuardImage();
-        setItems();
     }
 
     public void setDefaultValues() {
@@ -66,7 +62,7 @@ public class Player extends Entity {
         maxLife = 6;
         maxMana = 4;
         ammo = 10;          // for Demo the Rock
-        restoreLifeAndMana();
+        restoreStatus();
 
         strength = 1;       // the more strength he has, the more damage he gives.
         dexterity = 1;      // the more dexterity the has, the less damage he receives.
@@ -76,11 +72,17 @@ public class Player extends Entity {
         // currentWeapon = new OBJ_Sword_Normal(gp);
         currentWeapon = new OBJ_Axe(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        currentLight = null;
         projectile = new OBJ_Fireball(gp);
         // projectiles = new OBJ_Rock(gp);
 
         attack = getAttack();       // 計算攻擊力, 由 strength and weapon 決定
         defense = getDefense();     // 計算防禦力, 由 dexterity and shield 決定
+
+        getImages();
+        getAttackImage();
+        getGuardImage();
+        setItems();
     }
 
     public void setDefaultPosition() {
@@ -95,11 +97,16 @@ public class Player extends Entity {
         direction = Direction.DOWN; 
     }
 
-    public void restoreLifeAndMana() {
+    public void restoreStatus() {
         life = maxLife;
         mana = maxMana;
         invincible = false;
         transparent = false;
+
+        attacking = false;
+        guarding = false;
+        knockBack = false;
+        lightUpdated = true;
     }
 
     public void setItems() {
@@ -123,6 +130,18 @@ public class Player extends Entity {
         // inventory.add(new OBJ_Postion_Red(gp));
         // inventory.add(new OBJ_Postion_Red(gp));
         // inventory.add(new OBJ_Postion_Red(gp));
+    }
+
+    // current: currentWeapon or currentShield
+    public int getCurrentSlot(Entity current) {
+        int slot = 0;
+        for(int i=0; i<inventory.size(); i++) {
+            if(inventory.get(i) == current) {
+                slot = i;
+                break;
+            }
+        }
+        return slot;
     }
 
     // 計算防禦力: 考慮盾牌以及敏捷

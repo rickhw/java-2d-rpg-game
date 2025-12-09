@@ -121,12 +121,14 @@ public class KeyHandler implements KeyListener {
         // Control the Cursor
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
             gp.ui.commandNum--;
+            gp.playSoundEffect(Sound.FX__CURSOR);
             if (gp.ui.commandNum < 0) {
                 gp.ui.commandNum = 2;
             }
         }
         if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
             gp.ui.commandNum++;
+            gp.playSoundEffect(Sound.FX__CURSOR);
             if (gp.ui.commandNum > 2) {
                 gp.ui.commandNum = 0;
             }
@@ -139,8 +141,9 @@ public class KeyHandler implements KeyListener {
                 gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }
             if (gp.ui.commandNum == 1) {
-                System.out.println("Load save");
+                gp.saveLoad.load();
                 gp.gameState = GameState.PLAYING;
+                gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }
             if (gp.ui.commandNum == 2) {
                 gp.gameState = GameState.PLAYING;
@@ -382,14 +385,14 @@ public class KeyHandler implements KeyListener {
             // Retry
             if (gp.ui.commandNum == 0) {
                 gp.gameState = GameState.PLAYING;
-                gp.retry();
+                gp.resetGame(false);
                 gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }
             // Restore
             else if (gp.ui.commandNum == 1) {
                 gp.ui.commandNum = 0;  //
                 gp.gameState = GameState.TITLE;
-                gp.restart();
+                gp.resetGame(true);
             }
         }
     }

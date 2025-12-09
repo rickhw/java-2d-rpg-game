@@ -7,14 +7,15 @@
     - 按下 M 切換到世界地圖，同時標記 Player 座標
     - 按下 V 持續顯示縮圖，同時標記 Player 座標
 - 新增 Monster - Orc (獸人)
-    - 具備 Player 主動攻擊的行為
+    - 具備揮動武器攻擊的特性
     - 攻擊動作依照屬性，揮動武器速度有差異
 - Player 依照武器特性，揮動武器的速度有差異
     - 劍：比較快；斧頭：比較慢
 - 新增防護 (Guard): 怪物攻擊玩家時，透過防護，玩家傷害降低 1/3
 - 新增格擋 (Parry): 怪物攻擊玩家時，可透過格擋，把攻擊反彈回去，玩家本身不會有任何受傷
     - 格擋成功，怪物會退後幾格 (KnockBack)
-
+- Save and Load
+    - Player Status, Inventory Status, Object Status
 
 ### v2.11.x (20251205_5)
 

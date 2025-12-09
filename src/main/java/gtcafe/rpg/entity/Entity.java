@@ -50,6 +50,8 @@ public class Entity {
     public boolean guarding = false;
     public boolean transparent = false;
     public boolean offBalance = false;      // for parry
+    public Entity loot;                 // for chest
+    public boolean opened = false;      // for chest
 
     // COUNTER
     public int spriteCounter = 0;
@@ -158,10 +160,10 @@ public class Entity {
         System.out.printf("[Entity#getDetected] user.direction: [%s]\n", user.direction);
         System.out.printf("[Entity#getDetected] before: nextWorldX: [%s], nextWorldY: [%s]\n", nextWorldX, nextWorldY);
         switch (user.direction) {
-            case UP -> nextWorldY = user.getTopY() - gp.tileSize;         // TODO: FIXME
-            case DOWN -> nextWorldY = user.getBottomY() + 1;
-            case LEFT -> nextWorldX = user.getLeftX() - 1;
-            case RIGHT -> nextWorldX = user.getRightX() + 1;
+            case UP -> nextWorldY = user.getTopY() - gp.player.speed;
+            case DOWN -> nextWorldY = user.getBottomY() + gp.player.speed;
+            case LEFT -> nextWorldX = user.getLeftX() - gp.player.speed;
+            case RIGHT -> nextWorldX = user.getRightX() + gp.player.speed;
         }
 
         System.out.printf("[Entity#getDetected] after: nextWorldX: [%s], nextWorldY: [%s]\n", nextWorldX, nextWorldY);
@@ -616,6 +618,11 @@ public class Entity {
             gp.player.invincible = true;
         }
     }
+
+    // for chest
+    public void setLoot(Entity loot) {
+    }
+
 
     // call when hit monster
     // can set the condition for any type.

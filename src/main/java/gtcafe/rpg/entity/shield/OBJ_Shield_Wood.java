@@ -9,7 +9,7 @@ public class OBJ_Shield_Wood extends Entity {
     public OBJ_Shield_Wood(GamePanel gp) {
         super(gp);
         type = EntityType.SHIELD;
-        name = "Shield Wood";
+        name = "Wood Shield";
         down1 = setup("/gtcafe/rpg/assets/objects/shield_wood.png", gp.tileSize, gp.tileSize);
         defenseValue = 1;
         description = "[" + name + "]\nMade by wood.\nDefense: " + defenseValue;

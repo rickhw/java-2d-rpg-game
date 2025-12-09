@@ -17,6 +17,7 @@ import java.util.Date;
 import javax.swing.JPanel;
 
 import gtcafe.rpg.ai.PathFinder;
+import gtcafe.rpg.data.SaveLoad;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.entity.projectile.Projectile;
@@ -70,6 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
     public PathFinder pathFinder = new PathFinder(this);
     EnvironmentManager eManager = new EnvironmentManager(this);
     Map map = new Map(this);
+    SaveLoad saveLoad = new SaveLoad(this);
     Thread gameThread;
 
     // ENTITY and OBJECT
@@ -133,24 +135,20 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void retry() {
+    public void resetGame(boolean restart) {
         player.setDefaultPosition();
-        player.restoreLifeAndMana();        
+        player.restoreStatus();        
         assetSetter.setNPC();
         assetSetter.setMonster();
+
+        if(restart) {
+            player.setDefaultValues();
+            assetSetter.setObject();
+            assetSetter.setInteractiveTiles();
+            eManager.lighting.resetDay();
+        }
     }
 
-    public void restart() {
-        player.setDefaultValues();
-        player.setDefaultPosition();
-        player.restoreLifeAndMana();
-        player.setItems();
-
-        assetSetter.setObject();
-        assetSetter.setNPC();
-        assetSetter.setMonster();
-        assetSetter.setInteractiveTiles();
-    }
 
     public void startGameThread() {
         gameThread = new Thread(this);
