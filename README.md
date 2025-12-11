@@ -1,14 +1,15 @@
 
 ## Release Notes
 
-### v2.13.x (20251212_5)
+### v2.13.x (20251212_5): https://www.youtube.com/watch?v=w_LL6W3BYFc
 
 - Advacned Dialogues: Multiple Lines, Letter by Letter Effect
 - Add New Monster: Red Slime
 - Add Dungeon (地下城): B1, B2
 - Day and Night Mechanism: Outside, Indoor, Dungeon
 
-### v2.12.x (20251209_2)
+
+### v2.12.x (20251209_2): https://www.youtube.com/watch?v=lmCcBFZLBqQ
 
 - Map Screen and Minimap
     - 按下 M 切換到世界地圖，同時標記 Player 座標
@@ -24,7 +25,7 @@
 - Save and Load
     - Player Status, Inventory Status, Object Status
 
-### v2.11.x (20251205_5)
+### v2.11.x (20251205_5): https://www.youtube.com/watch?v=g3Il4LmMGh0
 
 - 新增日夜切換循環效果，分成 Day, Dusk (黃昏), Night, Dawn (黎明) 四個狀態循環
 - 新增物件 Lantern (燈籠)，裝備後玩家會在固定範圍有照明效果 (Lighting Effect )
@@ -32,7 +33,7 @@
     - 玩家 life & mana 恢復。
     - 跑過場效果：漸進式變成 Night，然後恢復成 Day
 
-### v2.10.x (20251204_4)
+### v2.10.x (20251204_4): https://www.youtube.com/watch?v=le5aBmtu5eE
 
 - 實作格擋與擊退效果
     - 回擊 Projectiles, 例如 Player 回擊 Monster 丟出來的石頭
