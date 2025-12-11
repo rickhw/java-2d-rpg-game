@@ -14,6 +14,7 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.Graphics2DUtils;
 import gtcafe.rpg.entity.projectile.Projectile;
 import gtcafe.rpg.state.Direction;
+import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.system.Sound;
 
 // a blueprint
@@ -28,7 +29,7 @@ public class Entity {
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);    // Hit deteciton, be overwrite by subclass
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
-    protected String dialogues[] = new String[20];
+    public String dialogues[][] = new String[20][20];
     Graphics2DUtils g2Utils = new Graphics2DUtils();
     int animationSpeed = 24;
     public Entity attacker;
@@ -37,7 +38,8 @@ public class Entity {
     public int worldX, worldY;
     public Direction direction = Direction.DOWN;
     public int spriteNum = 1;
-    int dialogueIndex = 0;
+    public int dialogueSet = 0;
+    public int dialogueIndex = 0;
     public boolean collisionOn = false;
     public boolean invincible = false;  // 暫時無敵
     public boolean attacking = false;
@@ -126,6 +128,18 @@ public class Entity {
         return image;
     }
 
+    public void resetCounter() {
+        spriteCounter = 0;
+        actionLockCounter = 0;   // To set the counter for action, to avoid quick update by FPS number.
+        invincibleCounter = 0;
+        shotAvailableCounter = 0;    // to avoid double shoot
+        dyingCounter = 0;
+        hpBarCounter = 0;
+        knockBackCounter = 0;               // day42
+        guardCounter = 0;            // for parry
+        offBalanceCounter = 0;       // for parry 
+    }
+
     public int getLeftX() { return worldX + solidArea.x; }
     public int getRightX() { return worldX + solidArea.x + solidArea.width; }
     public int getTopY() { return worldY + solidArea.y; }
@@ -187,14 +201,15 @@ public class Entity {
 
     }
 
-    public void speak() {
-        if (dialogues[dialogueIndex] == null) {
-            dialogueIndex = 0; // go back to index zero to avoid the NPE.
-        }
+    public void speak() {}
 
-        gp.ui.currentDialogue = dialogues[dialogueIndex];
-        dialogueIndex++;
+    public void startDialogue(Entity entity, int setNum) {
+        gp.gameState = GameState.DIALOGUE;
+        gp.ui.npc = entity;
+        dialogueSet = setNum;
+    }
 
+    public void facePlayer() {
         // make the NPC talks to player by face.
         switch (gp.player.direction) {
             case UP -> direction = Direction.DOWN;

@@ -141,6 +141,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void resetGame(boolean restart) {
         player.setDefaultPosition();
         player.restoreStatus();        
+        player.resetCounter();
         assetSetter.setNPC();
         assetSetter.setMonster();
 
@@ -233,7 +234,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // call by GameLoop
     public void update() {
-        if (gameState == GameState.PLAYING) {
+        if (gameState == GameState.PLAY) {
             // 1. PLAYER
             player.update();
 

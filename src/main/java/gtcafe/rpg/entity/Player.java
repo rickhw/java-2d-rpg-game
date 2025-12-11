@@ -81,6 +81,7 @@ public class Player extends Entity {
         getImages();
         getAttackImage();
         getGuardImage();
+        setDialogue();
         setItems();
     }
 
@@ -101,6 +102,7 @@ public class Player extends Entity {
         mana = maxMana;
         invincible = false;
         transparent = false;
+        speed = defaultSpeed;
 
         attacking = false;
         guarding = false;
@@ -462,7 +464,6 @@ public class Player extends Entity {
             if (index != 999) { // means player touch NPC
                 System.out.println("[Player#interactNPC] You are interacting with an NPC.");
                 attackCanceled = true;
-                gp.gameState = GameState.DIALOGUE;
                 gp.npc[mapIndex][index].speak();
             } 
         }
@@ -575,9 +576,12 @@ public class Player extends Entity {
             gp.playSoundEffect(Sound.FX__LEVELUP);
 
             gp.gameState = GameState.DIALOGUE;
-            gp.ui.currentDialogue = "You are level #" + level + " now!\n"
-                + "You feel stronger!";
+            startDialogue(this, 0);
         }
+    }
+
+    public void setDialogue() {
+        dialogues[0][0] = "You are level #" + level + " now!\nYou feel stronger!";
     }
 
     // ------------------------------------------------------------------------

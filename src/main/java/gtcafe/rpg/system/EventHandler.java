@@ -10,6 +10,7 @@ public class EventHandler {
     
     GamePanel gp;
     EventRect eventRect[][][];
+    Entity eventSource;
 
     // prevent the event happen repeatly.
     public int previousEventX, previousEventY;
@@ -19,6 +20,7 @@ public class EventHandler {
 
     public EventHandler(GamePanel gp) {
         this.gp = gp;
+        this.eventSource = new Entity(gp);
 
         eventRect = new EventRect[gp.maxMap][gp.maxWorldRow][gp.maxWorldRow];
 
@@ -48,6 +50,15 @@ public class EventHandler {
                 }
             }
         }
+
+        setDialogue();
+    }
+
+    public void setDialogue() {
+        eventSource.dialogues[0][0] = "You fall into a pit!";
+
+        eventSource.dialogues[1][0] = "You drink the water. \nYour life and mana have been recovered.\n(The progress has been saved)";
+        eventSource.dialogues[1][1] = "Damn, this is good water.";
     }
 
     // check the event collision
@@ -136,6 +147,7 @@ public class EventHandler {
     private void damagePit(GameState gameState) {
         gp.gameState = gameState;
         gp.ui.currentDialogue = "You fall into a pit!";
+        eventSource.startDialogue(eventSource, 0);
         gp.player.life -= 1;
 
         canTouchEvent = false;
@@ -148,7 +160,7 @@ public class EventHandler {
         if (gp.keyHandler.enterPressed == true) {
             gp.gameState = gameState;
             gp.player.attackCanceled = true;
-            gp.ui.currentDialogue = "You drink the water. \nYour life and mana have been recovered.\n(The progress has been saved)";
+            eventSource.startDialogue(eventSource, 1);
             gp.player.life = gp.player.maxLife;
             gp.player.mana = gp.player.maxMana;
             gp.playSoundEffect(Sound.FX_COIN);

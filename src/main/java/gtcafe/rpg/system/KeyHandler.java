@@ -32,7 +32,7 @@ public class KeyHandler implements KeyListener {
         }
 
         // PLAY STATE
-        else if (gp.gameState == GameState.PLAYING) {
+        else if (gp.gameState == GameState.PLAY) {
             playState(code);
         }
         // PAUSE STATE
@@ -85,7 +85,7 @@ public class KeyHandler implements KeyListener {
 
     private void mapState(int code) {
         if (code == KeyEvent.VK_M) {
-            gp.gameState = GameState.PLAYING;
+            gp.gameState = GameState.PLAY;
         }
     }
 
@@ -138,16 +138,16 @@ public class KeyHandler implements KeyListener {
         // Handle the options
         if (code == KeyEvent.VK_ENTER) {
             if (gp.ui.commandNum == 0) {
-                gp.gameState = GameState.PLAYING;
+                gp.gameState = GameState.PLAY;
                 gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }
             if (gp.ui.commandNum == 1) {
                 gp.saveLoad.load();
-                gp.gameState = GameState.PLAYING;
+                gp.gameState = GameState.PLAY;
                 gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }
             if (gp.ui.commandNum == 2) {
-                gp.gameState = GameState.PLAYING;
+                gp.gameState = GameState.PLAY;
                 System.exit(0);
             }
         }
@@ -228,19 +228,20 @@ public class KeyHandler implements KeyListener {
 
     private void pauseState(int code) {
         if (code == KeyEvent.VK_P) {
-            gp.gameState = GameState.PLAYING;
+            gp.gameState = GameState.PLAY;
         }
     }
 
     private void dialogueState(int code) {
         if (code == KeyEvent.VK_ENTER) {
-            gp.gameState = GameState.PLAYING;
+            // gp.gameState = GameState.PLAYING;
+            enterPressed = true;
         }
     }
 
     private void characterState(int code) {
         if (code == KeyEvent.VK_C) {
-            gp.gameState = GameState.PLAYING;
+            gp.gameState = GameState.PLAY;
         }
         if (code == KeyEvent.VK_ENTER) {
             gp.player.selectItem();
@@ -306,7 +307,7 @@ public class KeyHandler implements KeyListener {
 
     private void optionsState(int code) {
         if (code == KeyEvent.VK_ESCAPE) {
-            gp.gameState = GameState.PLAYING;
+            gp.gameState = GameState.PLAY;
         }
 
         if (code == KeyEvent.VK_ENTER) {
@@ -385,7 +386,7 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             // Retry
             if (gp.ui.commandNum == 0) {
-                gp.gameState = GameState.PLAYING;
+                gp.gameState = GameState.PLAY;
                 gp.resetGame(false);
                 gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
             }

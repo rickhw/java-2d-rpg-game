@@ -2,7 +2,7 @@ package gtcafe.rpg.state;
 
 public enum GameState {
     TITLE(0, "Title Screen"),
-    PLAYING(1, "Playing"),
+    PLAY(1, "Playing"),
     PAUSE(2, "Pause"),
     DIALOGUE(3, "Dialogue"),
     CHARACTER(4, "Character"),

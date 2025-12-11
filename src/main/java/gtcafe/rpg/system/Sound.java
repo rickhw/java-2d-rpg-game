@@ -34,6 +34,7 @@ public class Sound {
     public final static int FX__SLEEP = 14;
     public final static int FX__BLOCKED = 15;
     public final static int FX__PARRY = 16;
+    public final static int FX__SPEAK = 17;
 
     public Sound () {
         soundURL[MUSIC__MAIN_THEME] = getClass().getResource("/gtcafe/rpg/assets/bgm/BlueBoyAdventure.wav");
@@ -56,6 +57,7 @@ public class Sound {
         soundURL[FX__SLEEP] = getClass().getResource("/gtcafe/rpg/assets/sound/sleep.wav");
         soundURL[FX__BLOCKED] = getClass().getResource("/gtcafe/rpg/assets/sound/blocked.wav");
         soundURL[FX__PARRY] = getClass().getResource("/gtcafe/rpg/assets/sound/parry.wav");
+        soundURL[FX__SPEAK] = getClass().getResource("/gtcafe/rpg/assets/sound/speak.wav");
     }
 
 

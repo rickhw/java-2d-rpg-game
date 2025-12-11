@@ -17,21 +17,26 @@ public class OBJ_Key extends Entity {
         description = "[" + name + "]\nIt opens a door.";
         price = 350;
         stackable = true;
+        setDialogue();
+    }
+
+    public void setDialogue() {
+        dialogues[0][0] = "You use the " + name + " and open the door";
+
+        dialogues[1][0] = "What are you doing? Nothing happened.";
     }
 
     public boolean use(Entity entity) {
-        gp.gameState = GameState.DIALOGUE;
-
         int objIndex = getDetected(entity, gp.obj, "Door");
         System.out.printf("[OBJ_Key#use] objIndex [%s] by getDetected\n", objIndex);
         if (objIndex != 999) {
-            gp.ui.currentDialogue = "You use the " + name + " and open the door";
+            startDialogue(this, 0);
             gp.playSoundEffect(Sound.FX_UNLOCK);
             gp.obj[gp.currentMap.index][objIndex] = null;
             
             return true;    // means delete it.
         } else {
-            gp.ui.currentDialogue = "What are you doing? Nothing happened."; 
+            startDialogue(this, 1);
             return false;   
         }
     }
