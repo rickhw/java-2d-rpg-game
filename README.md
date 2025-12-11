@@ -1,7 +1,12 @@
 
 ## Release Notes
 
-### v2.12.x (20251212_5)
+### v2.13.x (20251212_5)
+
+- Advacned Dialogues
+
+
+### v2.12.x (20251209_2)
 
 - Map Screen and Minimap
     - 按下 M 切換到世界地圖，同時標記 Player 座標

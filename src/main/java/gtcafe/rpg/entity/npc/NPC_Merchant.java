@@ -54,7 +54,12 @@ public class NPC_Merchant extends Entity {
     }
 
     public void setDialogue() {
-        dialogues[0] = "Hello, Rick! You're finally awake and found me. I have some good stuff.\nDo you ant to trade?";
+        dialogues[0][0] = "Hello, Rick! You're finally awake and found me. I have some good stuff.\nDo you ant to trade?";
+        dialogues[1][0] = "Come again, hehe!!";
+        dialogues[2][0] = "You need more coin to buy that!";
+        dialogues[3][0] = "You cannot carry any more!";
+        dialogues[4][0] = "You cannot sell in equipped item!!";
+    
     }
 
     public void setItem() {
@@ -70,7 +75,8 @@ public class NPC_Merchant extends Entity {
     }
 
     public void speak() {
-        super.speak();
+        // super.speak();
+        facePlayer();
 
         gp.gameState = GameState.TRADE;
         gp.ui.npc = this;

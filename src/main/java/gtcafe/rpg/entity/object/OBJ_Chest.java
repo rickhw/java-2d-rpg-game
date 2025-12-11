@@ -28,10 +28,20 @@ public class OBJ_Chest extends Entity {
         solidArea.height = 32;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
     }
 
     public void setLoot(Entity loot) {
         this.loot = loot;
+        // need this loot in message.
+        setDialogue();
+    }
+
+    public void setDialogue() {
+        dialogues[0][0] = "You open the chest and find a " + loot.name + "!\n... But you cannot carray any more!";
+        dialogues[1][0] = "You open the chest and find a " + loot.name + "!\nYou obtain the " + loot.name + "!";
+
+        dialogues[2][0] = "It's empty.";
     }
 
     public void interact() {
@@ -40,22 +50,18 @@ public class OBJ_Chest extends Entity {
         if (opened == false) {
             gp.playSoundEffect(Sound.FX_UNLOCK);
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("You open the chest and find a " + loot.name + "!");
-
             if (gp.player.canObtainItem(loot) == false) {
-                sb.append("\n... But you cannot carray any more!");
+                startDialogue(this, 0);
             } else {
-                sb.append("\nYou obtain the " + loot.name + "!");
+                startDialogue(this, 1);
                 down1 = image2; // change chest as opened.
                 opened = true;
             }
 
-            gp.ui.currentDialogue = sb.toString();
         }
         // the chest is opened;
         else {
-            gp.ui.currentDialogue = "It's empty.";
+            startDialogue(this, 2);
         }
     }
 }

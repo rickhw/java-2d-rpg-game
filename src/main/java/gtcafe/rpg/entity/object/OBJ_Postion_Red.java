@@ -16,17 +16,19 @@ public class OBJ_Postion_Red extends Entity {
         description = "[" + name + "]\nHeals your life by " + value + "."; 
         price = 100;
         stackable = true;
+
+        setDialogue();
+    }
+
+    public void setDialogue() {
+        dialogues[0][0] = "You drink the " + name + "!\n"
+            + "Your life has ben recoeved by " + value + ".";
+
     }
 
     public boolean use(Entity entity) {
-        gp.gameState = GameState.DIALOGUE;
-        gp.ui.currentDialogue = "You drink the " + name + "!\n"
-            + "Your life has ben recoeved by " + value + ".";
+        startDialogue(this, 0);
         entity.life += value;
-
-        if (gp.player.life > gp.player.maxLife) {
-            gp.player.life = gp.player.maxLife;
-        }
 
         gp.playSoundEffect(Sound.FX_POWER_UP);
 

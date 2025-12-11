@@ -16,6 +16,7 @@ import gtcafe.rpg.entity.object.OBJ_Heart;
 import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
 import gtcafe.rpg.state.DayState;
 import gtcafe.rpg.state.GameState;
+import gtcafe.rpg.system.Sound;
 
 public class UI {
     GamePanel gp;
@@ -51,6 +52,9 @@ public class UI {
 
     int counter = 0;
     public Entity npc;
+    int charIdx;    // display dialogue char by char
+    String combinedText = "";
+    
 
     Graphics2DUtils g2Utils = new Graphics2DUtils();
 
@@ -101,7 +105,7 @@ public class UI {
         }
 
         // PLAY STATE
-        if(gp.gameState == GameState.PLAYING) {
+        if(gp.gameState == GameState.PLAY) {
             drawPlayerLife();
             drawMessage();
         }
@@ -163,7 +167,7 @@ public class UI {
                 counter = 0;
                 gp.eManager.lighting.dayState = DayState.DAY;
                 gp.eManager.lighting.dayCounter = 0;
-                gp.gameState = GameState.PLAYING;
+                gp.gameState = GameState.PLAY;
                 gp.player.getImages();
             }
         }
@@ -177,7 +181,7 @@ public class UI {
         if (counter == 50) {
             counter = 0;
             System.out.printf("[Transition] from [%s] to [%s]\n", gp.currentMap.name, gp.eventHandler.tempMap.name);
-            gp.gameState = GameState.PLAYING;
+            gp.gameState = GameState.PLAY;
             gp.currentMap = gp.eventHandler.tempMap;
             gp.player.worldX = gp.tileSize * gp.eventHandler.tempCol;
             gp.player.worldY = gp.tileSize * gp.eventHandler.tempRow;
@@ -348,7 +352,7 @@ public class UI {
         if (commandNum == 5) { 
             g2.drawString(">", textX-25, textY); 
             if (gp.keyHandler.enterPressed == true) {
-                gp.gameState = GameState.PLAYING;
+                gp.gameState = GameState.PLAY;
                 commandNum = 0;
             }
         }
@@ -841,6 +845,38 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
         x += gp.tileSize;
         y += gp.tileSize;
+
+        if(npc.dialogues[npc.dialogueSet][npc.dialogueIndex] != null) {
+            currentDialogue = npc.dialogues[npc.dialogueSet][npc.dialogueIndex];
+
+            char chars[] = npc.dialogues[npc.dialogueSet][npc.dialogueIndex].toCharArray();
+            if (charIdx < chars.length) {
+                gp.playSoundEffect(Sound.FX__SPEAK);
+                String s = String.valueOf(chars[charIdx]);
+                combinedText = combinedText + s;
+                currentDialogue = combinedText;
+                
+                charIdx++;
+            }
+
+            if (gp.keyHandler.enterPressed == true) {
+
+                charIdx = 0;
+                combinedText = "";
+                if(gp.gameState == GameState.DIALOGUE) {
+                    npc.dialogueIndex++;
+                    gp.keyHandler.enterPressed = false;
+                }
+            }
+        } 
+        // this conversion is over
+        else {
+            npc.dialogueIndex = 0;
+            if (gp.gameState == GameState.DIALOGUE) {
+                gp.gameState = GameState.PLAY;
+            }
+        }
+
         for(String line : currentDialogue.split("\n")) { 
             g2.drawString(line, x, y);
             y += 40;
@@ -873,6 +909,7 @@ public class UI {
     }
 
     private void trade_select() {
+        npc.dialogueIndex = 0;
         drawDialogusScreen();
 
         // DRAW WINDOW
@@ -908,8 +945,7 @@ public class UI {
             g2.drawString(">", x-24, y);
             if (gp.keyHandler.enterPressed == true) {
                 commandNum = 0;
-                gp.gameState = GameState.DIALOGUE;
-                currentDialogue = "Come again, hehe!!";
+                npc.startDialogue(npc, 1);
             }
         }
     }
@@ -957,9 +993,8 @@ public class UI {
                 // PLAYER 錢不夠
                 if (npc.inventory.get(itemIndex).price > gp.player.coin) {
                     subState = 0;
-                    gp.gameState = GameState.DIALOGUE;
-                    currentDialogue = "You need more coin to buy that!";
-                    drawDialogusScreen();
+                    npc.startDialogue(npc, 2);
+                    // drawDialogusScreen();
                 }
                 else {
                     if (gp.player.canObtainItem(npc.inventory.get(itemIndex)) == true) {
@@ -968,8 +1003,7 @@ public class UI {
                     // PLAYER 口袋滿了
                     else {
                         subState = 0;
-                        gp.gameState = GameState.DIALOGUE;
-                        currentDialogue = "You cannot carry any more!";
+                        npc.startDialogue(npc, 3);
                     }
                 }
             }
@@ -1021,9 +1055,7 @@ public class UI {
                     
                     commandNum = 0;
                     subState = 0;
-                    gp.gameState = GameState.DIALOGUE;
-                    currentDialogue = "You cannot sell in equipped item!!";
-
+                    npc.startDialogue(npc, 4);
                 } else {
                     if (gp.player.inventory.get(itemIndex).amount > 1) {
                         gp.player.inventory.get(itemIndex).amount--;

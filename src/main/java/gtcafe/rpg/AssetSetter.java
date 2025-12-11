@@ -117,6 +117,17 @@ public class AssetSetter {
         gp.obj[mapIndex][i].worldX = gp.tileSize * 12;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 8;
 
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
+        gp.obj[mapIndex][i].setLoot(new OBJ_Key(gp));
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 17;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 22;
+
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
+        gp.obj[mapIndex][i].setLoot(new OBJ_Heart(gp));
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 16;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 22;
 
         // Postion
         i++;
@@ -260,14 +271,14 @@ public class AssetSetter {
         // for testing
         // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 20);
         gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 21);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 22);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 14, 40);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 40);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 41);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 12, 41);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 11, 41);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 41);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 40);
+
+        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 14, 40);
+        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 40);
+        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 41);
+        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 12, 41);
+        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 11, 41);
+        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 41);
+        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 40);
 
         // chest
         gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 29);
