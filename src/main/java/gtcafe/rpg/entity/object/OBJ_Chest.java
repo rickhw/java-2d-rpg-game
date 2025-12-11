@@ -8,8 +8,6 @@ import gtcafe.rpg.system.Sound;
 
 public class OBJ_Chest extends Entity {
     GamePanel gp;
-    // Entity loot;
-    // boolean opened = false;
 
     public OBJ_Chest(GamePanel gp) {
         super(gp);

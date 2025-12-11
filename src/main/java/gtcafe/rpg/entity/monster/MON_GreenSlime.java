@@ -9,7 +9,6 @@ import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
 import gtcafe.rpg.entity.object.OBJ_Heart;
 import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
 import gtcafe.rpg.entity.projectile.OBJ_Rock;
-import gtcafe.rpg.state.Direction;
 
 public class MON_GreenSlime extends Entity {
     GamePanel gp;
