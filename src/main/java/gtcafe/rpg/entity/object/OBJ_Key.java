@@ -3,15 +3,15 @@ package gtcafe.rpg.entity.object;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
-import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.system.Sound;
 
 public class OBJ_Key extends Entity {
+    public static final String OBJ_NAME = "Key";
     GamePanel gp;
     public OBJ_Key(GamePanel gp) {
         super(gp);
         this.gp = gp;
-        name = "Key";
+        name = OBJ_NAME;
         type = EntityType.CONSUMABLE;
         down1 = setup("/gtcafe/rpg/assets/objects/key.png", gp.tileSize, gp.tileSize);
         description = "[" + name + "]\nIt opens a door.";

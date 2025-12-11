@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import gtcafe.rpg.ai.PathFinder;
 import gtcafe.rpg.data.SaveLoad;
 import gtcafe.rpg.entity.Entity;
+import gtcafe.rpg.entity.EntityGenerator;
 import gtcafe.rpg.entity.Player;
 import gtcafe.rpg.environment.EnvironmentManager;
 import gtcafe.rpg.state.GameState;
@@ -74,7 +75,8 @@ public class GamePanel extends JPanel implements Runnable {
     public PathFinder pathFinder = new PathFinder(this);
     EnvironmentManager eManager = new EnvironmentManager(this);
     public Map map = new Map(this);
-    public SaveLoad saveLoad = new SaveLoad(this);
+    public EntityGenerator eGenerator = new EntityGenerator(this);
+    public SaveLoad saveLoad = new SaveLoad(this, eGenerator);
     Thread gameThread;
 
     // ENTITY and OBJECT

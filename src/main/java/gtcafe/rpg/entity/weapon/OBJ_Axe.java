@@ -5,10 +5,12 @@ import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
 
 public class OBJ_Axe extends Entity {
+    public static final String OBJ_NAME = "Woodcutter's Axe";
+
     public OBJ_Axe(GamePanel gp) {
         super(gp);
         type = EntityType.AXE;
-        name = "Woodcutter's Axe";
+        name = OBJ_NAME;
         down1 = setup("/gtcafe/rpg/assets/objects/axe.png", gp.tileSize, gp.tileSize);
         attackValue = 4;
         description = "[Woodcutters' Axe]\nA bit rusty but still \ncan cut some trees.\nAttack: " + attackValue;

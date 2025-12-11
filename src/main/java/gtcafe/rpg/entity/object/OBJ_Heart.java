@@ -6,11 +6,12 @@ import gtcafe.rpg.entity.EntityType;
 import gtcafe.rpg.system.Sound;
 
 public class OBJ_Heart extends Entity {
+    public static final String OBJ_NAME = "Heart";
     GamePanel gp;
     public OBJ_Heart(GamePanel gp) {
         super(gp);
         this.gp = gp;
-        name = "Heart";
+        name = OBJ_NAME; 
         type = EntityType.PICKUPONLY;
         value = 2;
         // for put object to map

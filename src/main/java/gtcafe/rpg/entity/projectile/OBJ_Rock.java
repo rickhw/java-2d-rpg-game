@@ -6,12 +6,13 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 
 public class OBJ_Rock extends Projectile {
+    public static final String OBJ_NAME = "Rock";
     GamePanel gp;
     public OBJ_Rock(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
-        name = "Rock";
+        name = OBJ_NAME;
         speed = 3;
         maxLife = 80;   // N frame 後會消失
         life = maxLife;
