@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.entity.equipable.OBJ_Lantern;
 import gtcafe.rpg.entity.object.OBJ_Key;
 import gtcafe.rpg.entity.projectile.OBJ_Fireball;
 import gtcafe.rpg.entity.shield.OBJ_Shield_Wood;
@@ -91,8 +92,14 @@ public class Player extends Entity {
         worldY = gp.tileSize * 21;
 
         // for testing the interior map
+        // indoor 外面
         // worldX = gp.tileSize * 10;
         // worldY = gp.tileSize * 41;
+
+        // 地下城入口        
+        // worldX = gp.tileSize * 12;
+        // worldY = gp.tileSize * 10;
+
 
         direction = Direction.DOWN; 
     }
@@ -115,6 +122,7 @@ public class Player extends Entity {
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
+        inventory.add(new OBJ_Lantern(gp));
     }
 
     // current: currentWeapon or currentShield

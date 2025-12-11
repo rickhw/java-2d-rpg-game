@@ -4,6 +4,7 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.equipable.OBJ_Boots;
 import gtcafe.rpg.entity.equipable.OBJ_Lantern;
 import gtcafe.rpg.entity.object.OBJ_Chest;
+import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
 import gtcafe.rpg.entity.object.OBJ_Door;
 import gtcafe.rpg.entity.object.OBJ_Heart;
 import gtcafe.rpg.entity.object.OBJ_Key;
@@ -40,6 +41,7 @@ public class EntityGenerator {
             case OBJ_Axe.OBJ_NAME -> obj = new OBJ_Axe(gp);
             case OBJ_Heart.OBJ_NAME -> obj = new OBJ_Heart(gp);
             case OBJ_ManaCrystal.OBJ_NAME -> obj = new OBJ_ManaCrystal(gp);
+            case OBJ_Coin_Bronze.OBJ_NAME -> obj = new OBJ_Coin_Bronze(gp);
         }
 
         return obj;

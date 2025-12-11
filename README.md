@@ -3,8 +3,10 @@
 
 ### v2.13.x (20251212_5)
 
-- Advacned Dialogues
-
+- Advacned Dialogues: Multiple Lines, Letter by Letter Effect
+- Add New Monster: Red Slime
+- Add Dungeon (地下城): B1, B2
+- Day and Night Mechanism: Outside, Indoor, Dungeon
 
 ### v2.12.x (20251209_2)
 

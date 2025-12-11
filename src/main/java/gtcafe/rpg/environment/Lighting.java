@@ -112,15 +112,24 @@ public class Lighting {
     } 
 
     public void draw(Graphics2D g2) {
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
-        g2.drawImage(darknessFilter, 0, 0, null);
+
+        if (gp.currentArea == GamePanel.OUTSIDE) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));    
+        }
+
+        if (gp.currentArea == GamePanel.OUTSIDE || gp.currentArea == GamePanel.DUNGEON) {
+            g2.drawImage(darknessFilter, 0, 0, null);
+        }        
+
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
-        // DEBUG
-        String situation = dayState.name;
-        g2.setColor(Color.white);
-        g2.setFont(g2.getFont().deriveFont(50f));
-        g2.drawString(situation, 800, 500);
+        // Show the Day only outsite. 
+        if (gp.currentArea == GamePanel.OUTSIDE) {
+            String situation = dayState.name;
+            g2.setColor(Color.white);
+            g2.setFont(g2.getFont().deriveFont(50f));
+            g2.drawString(situation, 800, 500);
+        }
     }
 
 
