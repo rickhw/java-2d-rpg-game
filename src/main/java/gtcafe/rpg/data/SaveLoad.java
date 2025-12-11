@@ -7,50 +7,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.entity.Entity;
-import gtcafe.rpg.entity.equipable.OBJ_Boots;
-import gtcafe.rpg.entity.equipable.OBJ_Lantern;
-import gtcafe.rpg.entity.object.OBJ_Chest;
-import gtcafe.rpg.entity.object.OBJ_Door;
-import gtcafe.rpg.entity.object.OBJ_Heart;
-import gtcafe.rpg.entity.object.OBJ_Key;
-import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
-import gtcafe.rpg.entity.object.OBJ_Postion_Red;
-import gtcafe.rpg.entity.object.OBJ_Tent;
-import gtcafe.rpg.entity.shield.OBJ_Shield_Blue;
-import gtcafe.rpg.entity.shield.OBJ_Shield_Wood;
-import gtcafe.rpg.entity.weapon.OBJ_Axe;
-import gtcafe.rpg.entity.weapon.OBJ_Sword_Normal;
+import gtcafe.rpg.entity.EntityGenerator;
 
 public class SaveLoad {
+    final static String FILE_NAME = "save.data";
+    EntityGenerator entityGenerator;
     GamePanel gp;
-    String FILE_NAME = "save.data";
     
-    public SaveLoad(GamePanel gp) {
+    public SaveLoad(GamePanel gp, EntityGenerator entityGenerator) {
         this.gp = gp;
-    }
-
-    public Entity getObject(String itemName) {
-
-        Entity obj = null;
-
-        switch(itemName) {
-            case "Boots" -> obj = new OBJ_Boots(gp);
-            case "Lantern" -> obj = new OBJ_Lantern(gp);
-            case "Key" -> obj = new OBJ_Key(gp);
-            case "Red Potion" -> obj = new OBJ_Postion_Red(gp);
-            case "Tent" -> obj = new OBJ_Tent(gp);
-            case "Door" -> obj = new OBJ_Door(gp);
-            case "Chest" -> obj = new OBJ_Chest(gp);
-            case "Wood Shield" -> obj = new OBJ_Shield_Wood(gp);
-            case "Blue Shield" -> obj = new OBJ_Shield_Blue(gp);
-            case "Normal Sword" -> obj = new OBJ_Sword_Normal(gp);
-            case "Woodcutter's Axe" -> obj = new OBJ_Axe(gp);
-            case "Heart" -> obj = new OBJ_Heart(gp);
-            case "Mana Crystal" -> obj = new OBJ_ManaCrystal(gp);
-        }
-
-        return obj;
+        this.entityGenerator = entityGenerator;
     }
 
     public void save() {
@@ -140,7 +106,7 @@ public class SaveLoad {
             // PLAYER INVENTORY
             gp.player.inventory.clear();
             for(int i=0; i<ds.itemNames.size(); i++) {
-                gp.player.inventory.add(getObject(ds.itemNames.get(i)));
+                gp.player.inventory.add(entityGenerator.getObject(ds.itemNames.get(i)));
                 gp.player.inventory.get(i).amount = ds.itemAmounts.get(i);
             }
 
@@ -160,12 +126,12 @@ public class SaveLoad {
                     }
                     else {
                         System.out.println("Name: " + ds.mapObjectNames[mapNum][i]);
-                        gp.obj[mapNum][i] = getObject(ds.mapObjectNames[mapNum][i]);
+                        gp.obj[mapNum][i] = entityGenerator.getObject(ds.mapObjectNames[mapNum][i]);
                         gp.obj[mapNum][i].worldX = ds.mapObjectWorldX[mapNum][i];
                         gp.obj[mapNum][i].worldY = ds.mapObjectWorldY[mapNum][i];
 
                         if (ds.mapObjectLootNames[mapNum][i] !=null) {
-                            gp.obj[mapNum][i].loot = getObject(ds.mapObjectLootNames[mapNum][i]); 
+                            gp.obj[mapNum][i].loot = entityGenerator.getObject(ds.mapObjectLootNames[mapNum][i]); 
                         }
                         gp.obj[mapNum][i].opened = ds.mapObjectOpened[mapNum][i];
                         if(gp.obj[mapNum][i].opened == true) {

@@ -6,13 +6,14 @@ import gtcafe.rpg.entity.EntityType;
 import gtcafe.rpg.system.Sound;
 
 public class OBJ_ManaCrystal extends Entity {
+    public static final String OBJ_NAME = "Mana Crystal";
     GamePanel gp;
 
     public OBJ_ManaCrystal(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
-        name = "Mana Crystal";
+        name = OBJ_NAME;
         type = EntityType.PICKUPONLY;
         value = 1;
         // for put to map

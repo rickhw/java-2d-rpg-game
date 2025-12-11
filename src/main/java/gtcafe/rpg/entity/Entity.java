@@ -159,6 +159,7 @@ public class Entity {
     public void damageReaction() {}
     // overwrite by subclass
     public boolean use(Entity entity) { return false; }
+    public void setDialogue() { }
     
     // overwrite by subclass
     // for OBSTACLE
@@ -207,6 +208,7 @@ public class Entity {
         gp.gameState = GameState.DIALOGUE;
         gp.ui.npc = entity;
         dialogueSet = setNum;
+        setDialogue();
     }
 
     public void facePlayer() {

@@ -3,14 +3,14 @@ package gtcafe.rpg.entity.object;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
-import gtcafe.rpg.state.GameState;
 
 public class OBJ_Door extends Entity {
+    public static final String OBJ_NAME = "Door";
     GamePanel gp;
     public OBJ_Door(GamePanel gp) {
         super(gp);
         this.gp = gp;
-        name = "Door";
+        name = OBJ_NAME;
         this.type = EntityType.OBSTACLE;
         down1 = setup("/gtcafe/rpg/assets/objects/door.png", gp.tileSize, gp.tileSize);
         collision = true;

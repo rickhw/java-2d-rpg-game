@@ -6,12 +6,13 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 
 public class OBJ_Fireball extends Projectile {
+    public static final String OBJ_NAME = "Fireball";
     GamePanel gp;
     public OBJ_Fireball(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
-        name = "Fireball";
+        name = OBJ_NAME;
         speed = 8;
         maxLife = 120;   // 80 frame 後會消失
         life = maxLife;

@@ -6,10 +6,11 @@ import gtcafe.rpg.entity.EntityType;
 import gtcafe.rpg.system.Sound;
 
 public class OBJ_Coin_Bronze extends Entity {
+    public static final String OBJ_NAME = "Bronze Coin";
     
     public OBJ_Coin_Bronze(GamePanel gp) {
         super(gp);
-        name = "Bronze Coin";
+        name = OBJ_NAME;
         type = EntityType.PICKUPONLY;
         value = 1;
         down1 = setup("/gtcafe/rpg/assets/objects/coin_bronze.png", gp.tileSize, gp.tileSize);

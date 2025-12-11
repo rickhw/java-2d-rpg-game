@@ -646,16 +646,18 @@ public class Player extends Entity {
     public boolean canObtainItem(Entity item) {
         boolean canObtain = false;
 
+        Entity newItem = gp.eGenerator.getObject(item.name);
+
         // CHECK IF STACKABLE
-        if(item.stackable == true) {
-            int index = searchItemInInventory(item.name);
+        if(newItem.stackable == true) {
+            int index = searchItemInInventory(newItem.name);
             if (index != 999) {
                 inventory.get(index).amount++;
                 canObtain = true;
             }
             else { // this is a new item, need to check vacancy
                 if(inventory.size() != maxInventorySize) {
-                    inventory.add(item);
+                    inventory.add(newItem);
                     canObtain = true;
                 }
             }
@@ -663,7 +665,7 @@ public class Player extends Entity {
         // NOT STACKABLE
         else {
             if(inventory.size() != maxInventorySize) {
-                inventory.add(item);
+                inventory.add(newItem);
                 canObtain = true;
             }
         }

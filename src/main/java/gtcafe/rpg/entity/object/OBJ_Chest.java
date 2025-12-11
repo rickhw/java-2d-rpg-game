@@ -7,6 +7,7 @@ import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.system.Sound;
 
 public class OBJ_Chest extends Entity {
+    public static final String OBJ_NAME = "Chest";
     GamePanel gp;
 
     public OBJ_Chest(GamePanel gp) {
@@ -15,7 +16,7 @@ public class OBJ_Chest extends Entity {
         // this.loot = loot;
 
         type = EntityType.OBSTACLE;
-        name = "Chest";
+        name = OBJ_NAME;
 
         image = setup("/gtcafe/rpg/assets/objects/chest.png", gp.tileSize, gp.tileSize);
         image2 = setup("/gtcafe/rpg/assets/objects/chest_opened.png", gp.tileSize, gp.tileSize);
