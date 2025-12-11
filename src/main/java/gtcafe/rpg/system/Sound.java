@@ -9,36 +9,41 @@ import javax.sound.sampled.FloatControl;
 
 public class Sound {
     Clip clip;
-    URL soundURL[] = new URL[30];   // store the sound url
+    URL soundURL[] = new URL[99];   // store the sound url
     FloatControl fc;
     public int volumeScale = 3;
     public float volume;
 
-    public final static int MUSIC__MAIN_THEME = 0;
-    public final static int MUSIC__FANFARE = 1;
+    public final static int MUSIC__MAIN_THEME = 1;
+    public final static int MUSIC__FANFARE = 2;
+    public final static int MUSIC__MERCHANT = 3;
+    public final static int MUSIC__DUNGEON = 4;
 
-    public final static int FX_COIN = 2;
-    public final static int FX_POWER_UP= 3;
-    public final static int FX_UNLOCK = 4;
+    public final static int FX_COIN = 10;
+    public final static int FX_POWER_UP= 11;
+    public final static int FX_UNLOCK = 12;
 
-    public final static int FX_HIT_MONSTER = 5;
-    public final static int FX_RECEIVE_DAMAGE= 6;
-    public final static int FX_SWING_WEAPON = 7;
+    public final static int FX_HIT_MONSTER = 13;
+    public final static int FX_RECEIVE_DAMAGE= 14;
+    public final static int FX_SWING_WEAPON = 15;
     
-    public final static int FX__LEVELUP = 8;
-    public final static int FX__CURSOR = 9;
-    public final static int FX__BURNING = 10;
-    public final static int FX__CUT_TREE = 11;
-    public final static int FX__GAME_OVER = 12;
-    public final static int FX__STAIRS = 13;
-    public final static int FX__SLEEP = 14;
-    public final static int FX__BLOCKED = 15;
-    public final static int FX__PARRY = 16;
-    public final static int FX__SPEAK = 17;
+    public final static int FX__LEVELUP = 16;
+    public final static int FX__CURSOR = 17;
+    public final static int FX__BURNING = 18;
+    public final static int FX__CUT_TREE = 19;
+    public final static int FX__GAME_OVER = 20;
+    public final static int FX__STAIRS = 21;
+    public final static int FX__SLEEP = 22;
+    public final static int FX__BLOCKED = 23;
+    public final static int FX__PARRY = 24;
+    public final static int FX__SPEAK = 25;
+
 
     public Sound () {
         soundURL[MUSIC__MAIN_THEME] = getClass().getResource("/gtcafe/rpg/assets/bgm/BlueBoyAdventure.wav");
         soundURL[MUSIC__FANFARE] = getClass().getResource("/gtcafe/rpg/assets/bgm/fanfare.wav");
+        soundURL[MUSIC__MERCHANT] = getClass().getResource("/gtcafe/rpg/assets/bgm/Merchant.wav");
+        soundURL[MUSIC__DUNGEON] = getClass().getResource("/gtcafe/rpg/assets/bgm/Dungeon.wav");
 
         soundURL[FX_COIN] = getClass().getResource("/gtcafe/rpg/assets/sound/coin.wav");
         soundURL[FX_POWER_UP] = getClass().getResource("/gtcafe/rpg/assets/sound/powerup.wav");

@@ -46,8 +46,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
     // WORLD MAP SETTINGS
-    public final int maxWorldCol = 50;
-    public final int maxWorldRow = 50;
+    public int maxWorldCol ;
+    public int maxWorldRow ;
     public final int maxMap = 10; // map list
     public Scense currentMap = Scense.WORLD_MAP;      // indicate current map number
 
@@ -93,6 +93,13 @@ public class GamePanel extends JPanel implements Runnable {
     // GAME STATE: for different purpose for game,
     public GameState gameState;
 
+    // AREA
+    public int currentArea;
+    public int nextArea;
+    public static final int OUTSIDE = 50;
+    public static final int INDOOR = 51;
+    public static final int DUNGEON = 52;
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -128,6 +135,7 @@ public class GamePanel extends JPanel implements Runnable {
         stopBackgroundMusic();
 
         gameState = GameState.TITLE;
+        currentArea = OUTSIDE;
 
         // 避免重算所有的元件, 改用這個螢幕大小的 Graphics2D 畫
         // for Windows: BufferedImage.TYPE_INT_ARGB
@@ -406,5 +414,27 @@ public class GamePanel extends JPanel implements Runnable {
     public void playSoundEffect(int i) {
         soundEffect.setFile(i);
         soundEffect.play();
+    }
+
+    public void chagneArea() {
+        if (nextArea != currentArea) {
+            stopBackgroundMusic();
+
+            if(nextArea == OUTSIDE) {
+                playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
+            }
+            if(nextArea == INDOOR) {
+                playBackgroundMusic(Sound.MUSIC__MERCHANT);
+            }
+            if(nextArea == DUNGEON) {
+                playBackgroundMusic(Sound.MUSIC__DUNGEON);
+            }
+
+        }
+
+        currentArea = nextArea;
+        
+        // Monsters respawn (重生)
+        assetSetter.setMonster();
     }
 }

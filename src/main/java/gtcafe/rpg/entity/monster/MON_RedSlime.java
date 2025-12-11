@@ -10,22 +10,22 @@ import gtcafe.rpg.entity.object.OBJ_Heart;
 import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
 import gtcafe.rpg.entity.projectile.OBJ_Rock;
 
-public class MON_GreenSlime extends Entity {
+public class MON_RedSlime extends Entity {
     GamePanel gp;
     
-    public MON_GreenSlime(GamePanel gp) {
+    public MON_RedSlime(GamePanel gp) {
         super(gp);
         this.gp = gp;
         
         type = EntityType.MONSTER;
-        name = "GreenSlime";
-        defaultSpeed = 1;
+        name = "RedSlime";
+        defaultSpeed = 2;
         speed = defaultSpeed;
-        maxLife = 10;
+        maxLife = 20;
         life = maxLife;
-        attack = 2;
+        attack = 4;
         defense = 0;
-        exp = 2; // how much can get the exp
+        exp = 8; // how much can get the exp
         projectile = new OBJ_Rock(gp);
 
         solidArea.x = 3;
@@ -39,14 +39,14 @@ public class MON_GreenSlime extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("/gtcafe/rpg/assets/monster/greenslime_down_1.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/gtcafe/rpg/assets/monster/greenslime_down_2.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/gtcafe/rpg/assets/monster/greenslime_down_1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/gtcafe/rpg/assets/monster/greenslime_down_2.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/gtcafe/rpg/assets/monster/greenslime_down_1.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/gtcafe/rpg/assets/monster/greenslime_down_2.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/gtcafe/rpg/assets/monster/greenslime_down_1.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/gtcafe/rpg/assets/monster/greenslime_down_2.png", gp.tileSize, gp.tileSize);
+        up1 = setup("/gtcafe/rpg/assets/monster/redslime_down_1.png", gp.tileSize, gp.tileSize);
+        up2 = setup("/gtcafe/rpg/assets/monster/redslime_down_2.png", gp.tileSize, gp.tileSize);
+        down1 = setup("/gtcafe/rpg/assets/monster/redslime_down_1.png", gp.tileSize, gp.tileSize);
+        down2 = setup("/gtcafe/rpg/assets/monster/redslime_down_2.png", gp.tileSize, gp.tileSize);
+        left1 = setup("/gtcafe/rpg/assets/monster/redslime_down_1.png", gp.tileSize, gp.tileSize);
+        left2 = setup("/gtcafe/rpg/assets/monster/redslime_down_2.png", gp.tileSize, gp.tileSize);
+        right1 = setup("/gtcafe/rpg/assets/monster/redslime_down_1.png", gp.tileSize, gp.tileSize);
+        right2 = setup("/gtcafe/rpg/assets/monster/redslime_down_2.png", gp.tileSize, gp.tileSize);
     }
 
     // Setting Slime's behavior
@@ -62,7 +62,7 @@ public class MON_GreenSlime extends Entity {
             searchPath(getGoalCol(gp.player), getGoalRow(gp.player));
 
             // Check if it shoots a projectile (shooting the player when aggro (侵略))
-            // checkShootOrNot(200, 30);
+            checkShootOrNot(200, 30);
             
         } else {
 

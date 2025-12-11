@@ -114,11 +114,20 @@ public class EventHandler {
             // water side
             if (hit(Scense.WORLD_MAP, 23,12,Direction.UP)) { healingPool(GameState.DIALOGUE); }
 
-            // TRANSISTION MAP
-            else if (hit(Scense.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Scense.STORE, 12, 13); }
-            else if (hit(Scense.STORE, 12,13,Direction.ANY)) { teleport(Scense.WORLD_MAP, 10, 39); }
-
+            // Speak to NPC in store
             else if (hit(Scense.STORE, 12,9,Direction.UP)) { speak(gp.npc[1][0]); } // TODO
+
+            // TRANSITE TO STORE 
+            else if (hit(Scense.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Scense.STORE, 12, 13, GamePanel.INDOOR); }
+            else if (hit(Scense.STORE, 12,13,Direction.ANY)) { teleport(Scense.WORLD_MAP, 10, 39, GamePanel.OUTSIDE); }
+
+            // TO DUNGDEON B1
+            else if (hit(Scense.WORLD_MAP, 12,9,Direction.ANY)) { teleport(Scense.DONGEON01, 9, 41, GamePanel.DUNGEON);} // To the Dungeon
+            else if (hit(Scense.DONGEON01, 9,41,Direction.ANY)) { teleport(Scense.WORLD_MAP, 12, 9, GamePanel.OUTSIDE);} // To the World
+
+            // TO DUNGDEON B2
+            else if (hit(Scense.DONGEON01, 8,7,Direction.ANY)) { teleport(Scense.DONGEON02, 26, 41, GamePanel.DUNGEON);} // To the Dungeon 02 / B2
+            else if (hit(Scense.DONGEON02, 26,41,Direction.ANY)) { teleport(Scense.DONGEON01, 8, 7, GamePanel.DUNGEON);} // To the Dungeon 01 / B1
         }
     }
 
@@ -131,8 +140,9 @@ public class EventHandler {
     }
 
     // update player's position
-    private void teleport(Scense map, int col, int row) {
+    private void teleport(Scense map, int col, int row, int area) {
         gp.gameState = GameState.TRANSITION;
+        gp.nextArea = area;
 
         // 暫存座標, 在 UI 做 Transistion 處理後使用
         tempMap = map;
