@@ -47,24 +47,24 @@
     - 在商店買入同樣物品，計數增加
     - 在商店賣出同樣物品，計數減少
 
-### v2.9.x (20251203_3)
+### v2.9.x (20251203_3): https://www.youtube.com/watch?v=KWlkeeyyT28
 
 - Pathfinding: NPC follows player, aggro monsters
 
 
-### v2.8.x (20251202_2)
+### v2.8.x (20251202_2): https://www.youtube.com/watch?v=GMPD_8nK_8A
 
 - Transition between maps.
     - Transition effect
 - Trade System: Buy and Sell
 
-### v2.7.x (20251201_1)
+### v2.7.x (20251201_1): https://www.youtube.com/watch?v=R6vzTUGXtBA
 
 - Full Screen Mode
 - Options Menu and Saving Config
 - Game Over State
 
-### v2.6.x
+### v2.6.x (20251128_5): https://www.youtube.com/watch?v=i9osbYkOLnw
 
 - Monster Item Drops
     - Coin, Heart, Mana
@@ -78,12 +78,12 @@
         - Play attacks monster with projectiles (fireball)
         - monster attacks player with projectiles (rock)
 
-### v2.5.x
+### v2.5.x (20251127_4): https://www.youtube.com/watch?v=N0-kIh-zbuM
 
 - Add projectlies (拋射物), the example is fireball.
 - Monster Projectiles and Mana
 
-### v2.4.x
+### v2.4.x (20251125_2): https://www.youtube.com/watch?v=JOQ75xBeIJk
 
 - Scrolling Message
 - Leveling Up
@@ -95,7 +95,7 @@
     - Set the equip: sword or shield
     - Use the Potion to recovery life.
 
-### v2.3.0
+### v2.3.0 (20251124_1): https://www.youtube.com/watch?v=F2ePhZjxBxc
 
 - Monster: Green Slime
     - Collision Detection of Player/Monster/NPC/Tiles
@@ -105,7 +105,7 @@
 - Event: Advanced Mechanics
 - Rendering Optimization
 
-### v2.2.0
+### v2.2.0 (20251121_5): https://www.youtube.com/watch?v=JREH7K-hf68
 
 - Custom Font, set the dialog text using pixel font by https://00ff.booth.pm/items/2958237
 - Title Screen and Scense
@@ -117,7 +117,7 @@
 - Pause Screen, House Keeping
 - Add NPC_OldMan, including collision detection with Tiles and Player.
 
-### v1.0.0
+### v1.0.0 (20251115_6): https://www.youtube.com/watch?v=i6CVVRV-nkI
 
 - Prototype
 
