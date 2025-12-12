@@ -37,6 +37,8 @@ public class Sound {
     public final static int FX__BLOCKED = 23;
     public final static int FX__PARRY = 24;
     public final static int FX__SPEAK = 25;
+    public final static int FX__CHIP_WALL = 26;
+    public final static int FX__DOOR_OPEN = 27;
 
 
     public Sound () {
@@ -63,6 +65,8 @@ public class Sound {
         soundURL[FX__BLOCKED] = getClass().getResource("/gtcafe/rpg/assets/sound/blocked.wav");
         soundURL[FX__PARRY] = getClass().getResource("/gtcafe/rpg/assets/sound/parry.wav");
         soundURL[FX__SPEAK] = getClass().getResource("/gtcafe/rpg/assets/sound/speak.wav");
+        soundURL[FX__CHIP_WALL] = getClass().getResource("/gtcafe/rpg/assets/sound/chipwall.wav");
+        soundURL[FX__DOOR_OPEN] = getClass().getResource("/gtcafe/rpg/assets/sound/dooropen.wav");
     }
 
 

@@ -64,10 +64,10 @@ public class TileManager {
             e.printStackTrace();
         }
 
-        loadMap("/gtcafe/rpg/assets/maps_v2/worldmap.txt", Scense.WORLD_MAP);
-        loadMap("/gtcafe/rpg/assets/maps_v2/indoor01.txt", Scense.STORE);
-        loadMap("/gtcafe/rpg/assets/maps_v2/dungeon01.txt", Scense.DONGEON01);
-        loadMap("/gtcafe/rpg/assets/maps_v2/dungeon02.txt", Scense.DONGEON02);
+        loadMap("/gtcafe/rpg/assets/maps_v2/worldmap.txt", Scene.WORLD_MAP);
+        loadMap("/gtcafe/rpg/assets/maps_v2/indoor01.txt", Scene.STORE);
+        loadMap("/gtcafe/rpg/assets/maps_v2/dungeon01.txt", Scene.DONGEON01);
+        loadMap("/gtcafe/rpg/assets/maps_v2/dungeon02.txt", Scene.DONGEON02);
     }
 
     public void getTileImage() {
@@ -92,7 +92,7 @@ public class TileManager {
         }
     }
 
-    public void loadMap(String mapPath, Scense map) {
+    public void loadMap(String mapPath, Scene map) {
         try {
             InputStream is = getClass().getResourceAsStream(mapPath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));

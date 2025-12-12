@@ -28,7 +28,7 @@ import gtcafe.rpg.system.EventHandler;
 import gtcafe.rpg.system.KeyHandler;
 import gtcafe.rpg.system.Sound;
 import gtcafe.rpg.tile.Map;
-import gtcafe.rpg.tile.Scense;
+import gtcafe.rpg.tile.Scene;
 import gtcafe.rpg.tile.TileManager;
 import gtcafe.rpg.tile.interactive.InteractiveTile;
 
@@ -49,7 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int maxWorldCol ;
     public int maxWorldRow ;
     public final int maxMap = 10; // map list
-    public Scense currentMap = Scense.WORLD_MAP;      // indicate current map number
+    public Scene currentMap = Scene.WORLD_MAP;      // indicate current map number
 
     // FOR FULL SCREEN
     int screenWidth2 = screenWidth;
@@ -235,7 +235,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             if (timer >= 1000000000) {
                 SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-                System.out.printf("%s [GameLoop] FPS: [%s], State: [%s], Scense: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), FPS, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
+                System.out.printf("%s [GameLoop] FPS: [%s], State: [%s], Scene: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), FPS, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
                 // drawCount = 0;
                 timer = 0;
             }
@@ -429,7 +429,8 @@ public class GamePanel extends JPanel implements Runnable {
             if(nextArea == DUNGEON) {
                 playBackgroundMusic(Sound.MUSIC__DUNGEON);
             }
-
+            // reset NPCs object
+            assetSetter.setNPC();
         }
 
         currentArea = nextArea;

@@ -33,6 +33,7 @@ public class Entity {
     Graphics2DUtils g2Utils = new Graphics2DUtils();
     int animationSpeed = 24;
     public Entity attacker;
+    public Entity linkedEntity; // day53: for interactive tile
 
     // STATE
     public int worldX, worldY;
@@ -155,6 +156,7 @@ public class Entity {
 
     // overwirte by subclass
     public void setAction() {}
+    public void move(Direction direction) {}
     // overwirte by subclass
     public void damageReaction() {}
     // overwrite by subclass

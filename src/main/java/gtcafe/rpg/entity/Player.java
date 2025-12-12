@@ -97,8 +97,8 @@ public class Player extends Entity {
         // worldY = gp.tileSize * 41;
 
         // 地下城入口        
-        // worldX = gp.tileSize * 12;
-        // worldY = gp.tileSize * 10;
+        worldX = gp.tileSize * 12;
+        worldY = gp.tileSize * 10;
 
 
         direction = Direction.DOWN; 
@@ -150,7 +150,7 @@ public class Player extends Entity {
     }
 
     public void getImages() {
-        String packagePath = "/gtcafe/rpg/assets/player/";
+        String packagePath = "/gtcafe/rpg/assets/player/walking/";
         up1 = setup(packagePath + "boy_up_1.png", gp.tileSize, gp.tileSize);
         up2 = setup(packagePath + "boy_up_2.png", gp.tileSize, gp.tileSize);
         down1 = setup(packagePath + "boy_down_1.png", gp.tileSize, gp.tileSize);
@@ -162,9 +162,9 @@ public class Player extends Entity {
     }
 
     public void getAttackImage() {
-        String packagePath = "/gtcafe/rpg/assets/player_attack/";
 
         if (currentWeapon.type == EntityType.SWORD) {
+            String packagePath = "/gtcafe/rpg/assets/player/attacking/sword/";
             attackUp1 = setup(packagePath + "boy_attack_up_1.png", gp.tileSize, gp.tileSize*2);
             attackUp2 = setup(packagePath + "boy_attack_up_2.png", gp.tileSize, gp.tileSize*2);
             attackDown1 = setup(packagePath + "boy_attack_down_1.png", gp.tileSize, gp.tileSize*2);
@@ -175,6 +175,7 @@ public class Player extends Entity {
             attackRight2 = setup(packagePath + "boy_attack_right_2.png", gp.tileSize*2, gp.tileSize);
         }
         if (currentWeapon.type == EntityType.AXE) {
+            String packagePath = "/gtcafe/rpg/assets/player/attacking/axe/";
             attackUp1 = setup(packagePath + "boy_axe_up_1.png", gp.tileSize, gp.tileSize*2);
             attackUp2 = setup(packagePath + "boy_axe_up_2.png", gp.tileSize, gp.tileSize*2);
             attackDown1 = setup(packagePath + "boy_axe_down_1.png", gp.tileSize, gp.tileSize*2);
@@ -184,11 +185,21 @@ public class Player extends Entity {
             attackRight1 = setup(packagePath + "boy_axe_right_1.png", gp.tileSize*2, gp.tileSize);
             attackRight2 = setup(packagePath + "boy_axe_right_2.png", gp.tileSize*2, gp.tileSize);
         }
-        
+        if (currentWeapon.type == EntityType.PICKAXE) {
+            String packagePath = "/gtcafe/rpg/assets/player/attacking/pickaxe/";
+            attackUp1 = setup(packagePath + "boy_pick_up_1.png", gp.tileSize, gp.tileSize*2);
+            attackUp2 = setup(packagePath + "boy_pick_up_2.png", gp.tileSize, gp.tileSize*2);
+            attackDown1 = setup(packagePath + "boy_pick_down_1.png", gp.tileSize, gp.tileSize*2);
+            attackDown2 = setup(packagePath + "boy_pick_down_2.png", gp.tileSize, gp.tileSize*2);
+            attackLeft1 = setup(packagePath + "boy_pick_left_1.png", gp.tileSize*2, gp.tileSize);
+            attackLeft2 = setup(packagePath + "boy_pick_left_2.png", gp.tileSize*2, gp.tileSize);
+            attackRight1 = setup(packagePath + "boy_pick_right_1.png", gp.tileSize*2, gp.tileSize);
+            attackRight2 = setup(packagePath + "boy_pick_right_2.png", gp.tileSize*2, gp.tileSize);
+        } 
     }
 
     public void getGuardImage() {
-        String packagePath = "/gtcafe/rpg/assets/player_guard/";
+        String packagePath = "/gtcafe/rpg/assets/player/guarding/";
         guardUp = setup(packagePath + "boy_guard_up.png", gp.tileSize, gp.tileSize);
         guardDown = setup(packagePath + "boy_guard_down.png", gp.tileSize, gp.tileSize);
         guardLeft = setup(packagePath + "boy_guard_left.png", gp.tileSize, gp.tileSize);
@@ -468,12 +479,15 @@ public class Player extends Entity {
     // Player 跟 NPC 互動
     public void interactNPC(int index) {
         int mapIndex = gp.currentMap.index;
-        if (gp.keyHandler.enterPressed == true) {
-            if (index != 999) { // means player touch NPC
+        if (index != 999) { // means player touch NPC
+            if (gp.keyHandler.enterPressed == true) {
+            
                 System.out.println("[Player#interactNPC] You are interacting with an NPC.");
                 attackCanceled = true;
                 gp.npc[mapIndex][index].speak();
             } 
+
+            gp.npc[gp.currentMap.index][index].move(direction);
         }
     }
 
@@ -501,6 +515,7 @@ public class Player extends Entity {
             generateParticle(gp.iTile[mapIndex][i], gp.iTile[mapIndex][i]);
 
             if (gp.iTile[mapIndex][i].life == 0) {
+                gp.iTile[mapIndex][i].checkDrop();
                 gp.iTile[mapIndex][i] = gp.iTile[mapIndex][i].getDestroyedForm();
             }
         }
@@ -601,7 +616,9 @@ public class Player extends Entity {
 
         if (itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);
-            if (selectedItem.type == EntityType.SWORD || selectedItem.type == EntityType.AXE) {
+            if (selectedItem.type == EntityType.SWORD 
+                    || selectedItem.type == EntityType.AXE 
+                    || selectedItem.type == EntityType.PICKAXE) {
                 currentWeapon = selectedItem;
                 attack = getAttack();
                 getAttackImage();
