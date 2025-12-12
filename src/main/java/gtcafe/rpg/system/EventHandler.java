@@ -4,7 +4,7 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.state.Direction;
 import gtcafe.rpg.state.GameState;
-import gtcafe.rpg.tile.Scense;
+import gtcafe.rpg.tile.Scene;
 
 public class EventHandler {
     
@@ -15,7 +15,7 @@ public class EventHandler {
     // prevent the event happen repeatly.
     public int previousEventX, previousEventY;
     boolean canTouchEvent = true;
-    public Scense tempMap;
+    public Scene tempMap;
     public int tempCol, tempRow;
 
     public EventHandler(GamePanel gp) {
@@ -62,7 +62,7 @@ public class EventHandler {
     }
 
     // check the event collision
-    public boolean hit(Scense map, int col, int row, Direction requiredDirection) {
+    public boolean hit(Scene map, int col, int row, Direction requiredDirection) {
         boolean hit = false;
         int mapIndex = map.index;
 
@@ -112,22 +112,22 @@ public class EventHandler {
             // else if (hit(Map.WORLD_MAP, 23,19,Direction.ANY)) { damagePit(GameState.DIALOGUE_STATE); }
 
             // water side
-            if (hit(Scense.WORLD_MAP, 23,12,Direction.UP)) { healingPool(GameState.DIALOGUE); }
+            if (hit(Scene.WORLD_MAP, 23,12,Direction.UP)) { healingPool(GameState.DIALOGUE); }
 
             // Speak to NPC in store
-            else if (hit(Scense.STORE, 12,9,Direction.UP)) { speak(gp.npc[1][0]); } // TODO
+            else if (hit(Scene.STORE, 12,9,Direction.UP)) { speak(gp.npc[1][0]); } // TODO
 
             // TRANSITE TO STORE 
-            else if (hit(Scense.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Scense.STORE, 12, 13, GamePanel.INDOOR); }
-            else if (hit(Scense.STORE, 12,13,Direction.ANY)) { teleport(Scense.WORLD_MAP, 10, 39, GamePanel.OUTSIDE); }
+            else if (hit(Scene.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Scene.STORE, 12, 13, GamePanel.INDOOR); }
+            else if (hit(Scene.STORE, 12,13,Direction.ANY)) { teleport(Scene.WORLD_MAP, 10, 39, GamePanel.OUTSIDE); }
 
             // TO DUNGDEON B1
-            else if (hit(Scense.WORLD_MAP, 12,9,Direction.ANY)) { teleport(Scense.DONGEON01, 9, 41, GamePanel.DUNGEON);} // To the Dungeon
-            else if (hit(Scense.DONGEON01, 9,41,Direction.ANY)) { teleport(Scense.WORLD_MAP, 12, 9, GamePanel.OUTSIDE);} // To the World
+            else if (hit(Scene.WORLD_MAP, 12,9,Direction.ANY)) { teleport(Scene.DONGEON01, 9, 41, GamePanel.DUNGEON);} // To the Dungeon
+            else if (hit(Scene.DONGEON01, 9,41,Direction.ANY)) { teleport(Scene.WORLD_MAP, 12, 9, GamePanel.OUTSIDE);} // To the World
 
             // TO DUNGDEON B2
-            else if (hit(Scense.DONGEON01, 8,7,Direction.ANY)) { teleport(Scense.DONGEON02, 26, 41, GamePanel.DUNGEON);} // To the Dungeon 02 / B2
-            else if (hit(Scense.DONGEON02, 26,41,Direction.ANY)) { teleport(Scense.DONGEON01, 8, 7, GamePanel.DUNGEON);} // To the Dungeon 01 / B1
+            else if (hit(Scene.DONGEON01, 8,7,Direction.ANY)) { teleport(Scene.DONGEON02, 26, 41, GamePanel.DUNGEON);} // To the Dungeon 02 / B2
+            else if (hit(Scene.DONGEON02, 26,41,Direction.ANY)) { teleport(Scene.DONGEON01, 8, 7, GamePanel.DUNGEON);} // To the Dungeon 01 / B1
         }
     }
 
@@ -140,7 +140,7 @@ public class EventHandler {
     }
 
     // update player's position
-    private void teleport(Scense map, int col, int row, int area) {
+    private void teleport(Scene map, int col, int row, int area) {
         gp.gameState = GameState.TRANSITION;
         gp.nextArea = area;
 

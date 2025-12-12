@@ -45,18 +45,19 @@ public class MON_Orc extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("/gtcafe/rpg/assets/monster/orc_up_1.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/gtcafe/rpg/assets/monster/orc_up_2.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/gtcafe/rpg/assets/monster/orc_down_1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/gtcafe/rpg/assets/monster/orc_down_2.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/gtcafe/rpg/assets/monster/orc_left_1.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/gtcafe/rpg/assets/monster/orc_left_2.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/gtcafe/rpg/assets/monster/orc_right_1.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/gtcafe/rpg/assets/monster/orc_right_2.png", gp.tileSize, gp.tileSize);
+        String path = "/gtcafe/rpg/assets/monster/orc/walking/";
+        up1 = setup(path + "orc_up_1.png", gp.tileSize, gp.tileSize);
+        up2 = setup(path + "orc_up_2.png", gp.tileSize, gp.tileSize);
+        down1 = setup(path + "orc_down_1.png", gp.tileSize, gp.tileSize);
+        down2 = setup(path + "orc_down_2.png", gp.tileSize, gp.tileSize);
+        left1 = setup(path + "orc_left_1.png", gp.tileSize, gp.tileSize);
+        left2 = setup(path + "orc_left_2.png", gp.tileSize, gp.tileSize);
+        right1 = setup(path + "orc_right_1.png", gp.tileSize, gp.tileSize);
+        right2 = setup(path + "orc_right_2.png", gp.tileSize, gp.tileSize);
     }
 
     public void getAttackImage() {
-        String packagePath = "/gtcafe/rpg/assets/monster/";
+        String packagePath = "/gtcafe/rpg/assets/monster/orc/attacking/";
 
         attackUp1 = setup(packagePath + "orc_attack_up_1.png", gp.tileSize, gp.tileSize*2);
         attackUp2 = setup(packagePath + "orc_attack_up_2.png", gp.tileSize, gp.tileSize*2);

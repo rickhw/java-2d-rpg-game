@@ -39,14 +39,15 @@ public class MON_RedSlime extends Entity {
     }
 
     public void getImage() {
-        up1 = setup("/gtcafe/rpg/assets/monster/redslime_down_1.png", gp.tileSize, gp.tileSize);
-        up2 = setup("/gtcafe/rpg/assets/monster/redslime_down_2.png", gp.tileSize, gp.tileSize);
-        down1 = setup("/gtcafe/rpg/assets/monster/redslime_down_1.png", gp.tileSize, gp.tileSize);
-        down2 = setup("/gtcafe/rpg/assets/monster/redslime_down_2.png", gp.tileSize, gp.tileSize);
-        left1 = setup("/gtcafe/rpg/assets/monster/redslime_down_1.png", gp.tileSize, gp.tileSize);
-        left2 = setup("/gtcafe/rpg/assets/monster/redslime_down_2.png", gp.tileSize, gp.tileSize);
-        right1 = setup("/gtcafe/rpg/assets/monster/redslime_down_1.png", gp.tileSize, gp.tileSize);
-        right2 = setup("/gtcafe/rpg/assets/monster/redslime_down_2.png", gp.tileSize, gp.tileSize);
+        String path = "/gtcafe/rpg/assets/monster/redslime/walking/";
+        up1 = setup(path + "redslime_down_1.png", gp.tileSize, gp.tileSize);
+        up2 = setup(path + "redslime_down_2.png", gp.tileSize, gp.tileSize);
+        down1 = setup(path + "redslime_down_1.png", gp.tileSize, gp.tileSize);
+        down2 = setup(path + "redslime_down_2.png", gp.tileSize, gp.tileSize);
+        left1 = setup(path + "redslime_down_1.png", gp.tileSize, gp.tileSize);
+        left2 = setup(path + "redslime_down_2.png", gp.tileSize, gp.tileSize);
+        right1 = setup(path + "redslime_down_1.png", gp.tileSize, gp.tileSize);
+        right2 = setup(path + "redslime_down_2.png", gp.tileSize, gp.tileSize);
     }
 
     // Setting Slime's behavior
