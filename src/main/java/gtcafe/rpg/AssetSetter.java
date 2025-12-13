@@ -156,10 +156,10 @@ public class AssetSetter {
         gp.obj[mapIndex][i].worldX = gp.tileSize * 27;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 15;
 
-        // i++;
-        // gp.obj[mapIndex][i] = new OBJ_Door_Iron(gp);
-        // gp.obj[mapIndex][i].worldX = gp.tileSize * 18;
-        // gp.obj[mapIndex][i].worldY = gp.tileSize * 23;
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Door_Iron(gp);
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 18;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 23;
 
 
         // DONGEON02

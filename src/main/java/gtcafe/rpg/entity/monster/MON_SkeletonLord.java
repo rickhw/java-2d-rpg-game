@@ -21,11 +21,11 @@ public class MON_SkeletonLord extends Entity {
         name = OBJ_NAME;
         defaultSpeed = 1;
         speed = defaultSpeed;
-        maxLife = 50;
+        maxLife = 100;
         life = maxLife;
         attack = 10;
         defense = 2;
-        exp = 50; // how much can get the exp
+        exp = 100; // how much can get the exp
         knockBackPower = 5;
 
         int size = gp.tileSize * 5;
@@ -110,7 +110,7 @@ public class MON_SkeletonLord extends Entity {
         // 激怒模式
         if (inRage == false && life < maxLife / 2) {
             inRage = true;
-            speed += 2;
+            speed += 3;
             attack += 5;
             getImage();
             getAttackImage();

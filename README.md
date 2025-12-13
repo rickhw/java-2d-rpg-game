@@ -1,24 +1,24 @@
 
 ## Release Notes
 
-### v2.14.x (20251213_2):
+### v2.14.x (20251213_6): https://www.youtube.com/watch?v=m5suX8MnUfU
 
 1. 推磚塊 解謎小關卡的設計
     - 計算 BigRock 和 MetalPlate 的交互
     - 計算交互後，DoorIron 是否打開
     - BigRock 卡住了，切換場景可以重來
-2. New Entity:
+2. Boss: Skeleton Lord (骷髏領主)
+    - Rage State: (憤怒階段): 血量少一半的時候，會提升攻擊力和速度
+3. New Entity:
     - Pickaxe (十字鎬/鋤頭, Weapon)
     - DestructibleWall (可以敲打的牆壁): 粒子效果 (particles), 隨機掉落一些物件 (像是打怪那樣)
     - MetalPlate (Iteractive Tile): 用來跟 BigRock 互動的機關
     - NPC: BigRock: Player 可以推動到 MetalPlate 上，用來解謎的
     - Iron Door (金屬門): 不能透過鑰匙打開的門，需要透過特定的行為才能打開
     - Bat (蝙蝠): 移動速度快, 靈活的怪物
-3. Boss: Skeleton Lord (骷髏領主)
-    - Rage State: (憤怒階段): 血量少一半的時候，會提升攻擊力和速度
+4. 改善：重構, 新增 GodMode (無敵 + 開燈)
 
-
-### v2.13.x (20251212_5): https://www.youtube.com/watch?v=w_LL6W3BYFc
+### v2.13.x (20251211_4): https://www.youtube.com/watch?v=w_LL6W3BYFc
 
 - Advacned Dialogues: Multiple Lines, Letter by Letter Effect
 - Add New Monster: Red Slime
