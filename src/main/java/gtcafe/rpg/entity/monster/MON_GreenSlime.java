@@ -71,7 +71,7 @@ public class MON_GreenSlime extends Entity {
             checkStartChasingOrNot(gp.player, 3, 100, "You've been targeted by Slime!");
 
             // Get a random direction
-            getRandomDirection();
+            getRandomDirection(120);
         }
     }
 

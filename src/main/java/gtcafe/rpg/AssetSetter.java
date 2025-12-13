@@ -1,9 +1,11 @@
 package gtcafe.rpg;
 
 import gtcafe.rpg.entity.equipable.OBJ_Lantern;
+import gtcafe.rpg.entity.monster.MON_Bat;
 import gtcafe.rpg.entity.monster.MON_GreenSlime;
 import gtcafe.rpg.entity.monster.MON_Orc;
 import gtcafe.rpg.entity.monster.MON_RedSlime;
+import gtcafe.rpg.entity.monster.MON_SkeletonLord;
 import gtcafe.rpg.entity.npc.NPC_BigRock;
 import gtcafe.rpg.entity.npc.NPC_Merchant;
 import gtcafe.rpg.entity.npc.NPC_OldMan;
@@ -154,10 +156,10 @@ public class AssetSetter {
         gp.obj[mapIndex][i].worldX = gp.tileSize * 27;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 15;
 
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Door_Iron(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 18;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 23;
+        // i++;
+        // gp.obj[mapIndex][i] = new OBJ_Door_Iron(gp);
+        // gp.obj[mapIndex][i].worldX = gp.tileSize * 18;
+        // gp.obj[mapIndex][i].worldY = gp.tileSize * 23;
 
 
         // DONGEON02
@@ -307,6 +309,41 @@ public class AssetSetter {
         gp.monster[mapIndex][i].worldX = gp.tileSize * 12;
         gp.monster[mapIndex][i].worldY = gp.tileSize * 32;
 
+
+        i = 0;
+        mapIndex = Scene.DONGEON01.index;
+
+        gp.monster[mapIndex][i] = new MON_Bat(gp);
+        gp.monster[mapIndex][i].worldX = gp.tileSize * 34;
+        gp.monster[mapIndex][i].worldY = gp.tileSize * 39;
+
+        i++;
+        gp.monster[mapIndex][i] = new MON_Bat(gp);
+        gp.monster[mapIndex][i].worldX = gp.tileSize * 36;
+        gp.monster[mapIndex][i].worldY = gp.tileSize * 25;
+
+        i++;
+        gp.monster[mapIndex][i] = new MON_Bat(gp);
+        gp.monster[mapIndex][i].worldX = gp.tileSize * 39;
+        gp.monster[mapIndex][i].worldY = gp.tileSize * 26;
+
+        i++;
+        gp.monster[mapIndex][i] = new MON_Bat(gp);
+        gp.monster[mapIndex][i].worldX = gp.tileSize * 28;
+        gp.monster[mapIndex][i].worldY = gp.tileSize * 11;
+
+        i++;
+        gp.monster[mapIndex][i] = new MON_Bat(gp);
+        gp.monster[mapIndex][i].worldX = gp.tileSize * 10;
+        gp.monster[mapIndex][i].worldY = gp.tileSize * 19;
+
+
+        i = 0;
+        mapIndex = Scene.DONGEON02.index;
+
+        gp.monster[mapIndex][i] = new MON_SkeletonLord(gp);
+        gp.monster[mapIndex][i].worldX = gp.tileSize * 23;
+        gp.monster[mapIndex][i].worldY = gp.tileSize * 16;
     }
 
     public void setInteractiveTiles() {

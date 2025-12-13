@@ -23,7 +23,7 @@ https://www.youtube.com/watch?v=isawYK_HJ5k&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4
 4. 推磚塊 解謎小關卡的設計：Detecing the rock on the plate
     - 計算 BigRock 和 MetalPlate 的交互
     - 計算交互後，DoorIron 是否打開
-8. Reset rock location
+5. Reset rock location
     - BigRock 卡住了，切換場景可以重來
 
 

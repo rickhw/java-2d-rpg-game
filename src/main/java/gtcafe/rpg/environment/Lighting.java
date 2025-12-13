@@ -31,7 +31,7 @@ public class Lighting {
      
         // 
         if(gp.player.currentLight == null) {
-            g2.setColor(new Color(0,0,0.1f,0.99f));
+            g2.setColor(new Color(0,0,0.1f,0.90f));
         }
         // player has a lantern
         else {
