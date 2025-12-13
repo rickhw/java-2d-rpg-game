@@ -9,7 +9,7 @@ import gtcafe.rpg.entity.equipable.OBJ_Lantern;
 import gtcafe.rpg.entity.object.OBJ_Key;
 import gtcafe.rpg.entity.projectile.OBJ_Fireball;
 import gtcafe.rpg.entity.shield.OBJ_Shield_Wood;
-import gtcafe.rpg.entity.weapon.OBJ_Axe;
+import gtcafe.rpg.entity.weapon.OBJ_Sword_Normal;
 import gtcafe.rpg.state.Direction;
 import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.system.KeyHandler;
@@ -69,10 +69,10 @@ public class Player extends Entity {
         exp = 0;
         nextLevelExp = 5;
         coin = 1000;
-        // currentWeapon = new OBJ_Sword_Normal(gp);
-        currentWeapon = new OBJ_Axe(gp);
+        currentWeapon = new OBJ_Sword_Normal(gp);
+        // currentWeapon = new OBJ_Pickaxe(gp);
         currentShield = new OBJ_Shield_Wood(gp);
-        currentLight = null;
+        currentLight = new OBJ_Lantern(gp);
         projectile = new OBJ_Fireball(gp);
         // projectiles = new OBJ_Rock(gp);
 
@@ -386,9 +386,14 @@ public class Player extends Entity {
         // such player pick the heart.
         if (life > maxLife) { life = maxLife; }
         if (mana > maxMana) { mana = maxMana; }
+
+        if (gp.keyHandler.godModeOn == true) {
+            life = maxLife;
+            mana = maxMana;
+        };
        
         // Check if game over, 註解後可以變無敵
-        if (life <= 0) {
+        if (life <= 0 && gp.keyHandler.godModeOn == false) {
             gp.gameState = GameState.GAME_OVER;
             gp.ui.commandNum = -1;
             gp.stopBackgroundMusic();

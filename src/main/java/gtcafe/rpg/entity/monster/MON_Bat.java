@@ -8,30 +8,28 @@ import gtcafe.rpg.entity.EntityType;
 import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
 import gtcafe.rpg.entity.object.OBJ_Heart;
 import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
-import gtcafe.rpg.entity.projectile.OBJ_Rock;
 
-public class MON_RedSlime extends Entity {
+public class MON_Bat extends Entity {
     GamePanel gp;
     
-    public MON_RedSlime(GamePanel gp) {
+    public MON_Bat(GamePanel gp) {
         super(gp);
         this.gp = gp;
         
         type = EntityType.MONSTER;
-        name = "RedSlime";
-        defaultSpeed = 2;
+        name = "Bat";
+        defaultSpeed = 4;
         speed = defaultSpeed;
-        maxLife = 20;
+        maxLife = 10;
         life = maxLife;
-        attack = 4;
+        attack = 1;
         defense = 0;
-        exp = 8; // how much can get the exp
-        projectile = new OBJ_Rock(gp);
-
+        exp = 10; // how much can get the exp
+        
         solidArea.x = 3;
-        solidArea.y = 18;
+        solidArea.y = 15;
         solidArea.width = 42;
-        solidArea.height = 30;
+        solidArea.height = 21;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
@@ -39,15 +37,15 @@ public class MON_RedSlime extends Entity {
     }
 
     public void getImage() {
-        String path = "/gtcafe/rpg/assets/monster/redslime/walking/";
-        up1 = setup(path + "redslime_down_1.png", gp.tileSize, gp.tileSize);
-        up2 = setup(path + "redslime_down_2.png", gp.tileSize, gp.tileSize);
-        down1 = setup(path + "redslime_down_1.png", gp.tileSize, gp.tileSize);
-        down2 = setup(path + "redslime_down_2.png", gp.tileSize, gp.tileSize);
-        left1 = setup(path + "redslime_down_1.png", gp.tileSize, gp.tileSize);
-        left2 = setup(path + "redslime_down_2.png", gp.tileSize, gp.tileSize);
-        right1 = setup(path + "redslime_down_1.png", gp.tileSize, gp.tileSize);
-        right2 = setup(path + "redslime_down_2.png", gp.tileSize, gp.tileSize);
+        String path = "/gtcafe/rpg/assets/monster/bat/walking/";
+        up1 = setup(path + "bat_down_1.png", gp.tileSize, gp.tileSize);
+        up2 = setup(path + "bat_down_2.png", gp.tileSize, gp.tileSize);
+        down1 = setup(path + "bat_down_1.png", gp.tileSize, gp.tileSize);
+        down2 = setup(path + "bat_down_2.png", gp.tileSize, gp.tileSize);
+        left1 = setup(path + "bat_down_1.png", gp.tileSize, gp.tileSize);
+        left2 = setup(path + "bat_down_2.png", gp.tileSize, gp.tileSize);
+        right1 = setup(path + "bat_down_1.png", gp.tileSize, gp.tileSize);
+        right2 = setup(path + "bat_down_2.png", gp.tileSize, gp.tileSize);
     }
 
     // Setting Slime's behavior
@@ -56,22 +54,22 @@ public class MON_RedSlime extends Entity {
 
         if (onPath == true) {
 
-            // Check if it stops chasing. 超過 N 格就不要跟蹤了
-            checkStopChasingOrNot(gp.player, 5, 100, "The Slime has stopped chasing!");
+            // // Check if it stops chasing. 超過 N 格就不要跟蹤了
+            checkStopChasingOrNot(gp.player, 10, 100, "The Bat has stopped chasing!");
 
-            // Search the direction to gp (==> follow the player)
+            // // Search the direction to gp (==> follow the player)
             searchPath(getGoalCol(gp.player), getGoalRow(gp.player));
 
             // Check if it shoots a projectile (shooting the player when aggro (侵略))
-            checkShootOrNot(200, 30);
+            // checkShootOrNot(200, 30);
             
         } else {
 
             // Check if it starts chasing (Player 距離 N 格以內, Monster 就主動跟蹤)
-            checkStartChasingOrNot(gp.player, 3, 100, "You've been targeted by Slime!");
+            // checkStartChasingOrNot(gp.player, 3, 100, "You've been targeted by Slime!");
 
-            // Get a random direction
-            getRandomDirection(60);
+            // Get a random direction, 蝙蝠飛得比較快, 所以改成每 10 幀換方向, 會比較靈活，符合他的特性
+            getRandomDirection(10);
         }
     }
 

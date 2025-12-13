@@ -123,7 +123,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() {
-        
+        currentArea = OUTSIDE;  // return the default area
+
         assetSetter.setObject();
         assetSetter.setNPC();
         assetSetter.setMonster();
@@ -390,6 +391,7 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("Col: " + (player.worldX + player.solidArea.x)/tileSize, x, y); y += lineHeight;
             g2.drawString("Row: " + (player.worldY + player.solidArea.y)/tileSize, x, y); y += lineHeight;
             g2.drawString("State: " + gameState.name, x, y);
+            g2.drawString("God Mode: " + keyHandler.godModeOn, x, y);
             // g2.drawString("Draw Count: " + drawCount, x, y);
             // System.out.println("[GamePanel#paintComponent] Draw Time: "+passed);
         }

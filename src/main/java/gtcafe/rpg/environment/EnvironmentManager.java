@@ -21,6 +21,8 @@ public class EnvironmentManager {
     }
 
     public void draw(Graphics2D g2) {
+        if (gp.keyHandler.godModeOn == true) return;
+        
         lighting.draw(g2);
     }
 }

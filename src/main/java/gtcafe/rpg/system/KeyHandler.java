@@ -11,6 +11,7 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, musicPressed;
     public boolean shotKeyPressed; // means shot projectiles
     public boolean spacePressed;
+    public boolean godModeOn = false;
     public GamePanel gp;
 
     // DEBUG
@@ -220,8 +221,13 @@ public class KeyHandler implements KeyListener {
         }
 
         if (code == KeyEvent.VK_X) {
-            gp.player.life = gp.player.maxLife;
-            gp.player.mana = gp.player.maxMana;
+            // gp.player.life = gp.player.maxLife;
+            // gp.player.mana = gp.player.maxMana;
+            if (godModeOn == false) {
+                godModeOn = true;
+            } else {
+                godModeOn = false;
+            }
         }
 
     }
