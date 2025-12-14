@@ -17,10 +17,10 @@ public class OBJ_Sword_Normal extends Entity {
         price = 150;
         knockBackPower = 2;
         
-        attackArea.width = 30;
-        attackArea.height = 30;
+        attackArea.width = gp.tileSize - (solidAreaBaseUnit * 2); // 30;
+        attackArea.height = gp.tileSize - (solidAreaBaseUnit * 2); // 30;
 
-        // 揮舞的速度，值代表 FPT，值越高，速度越慢
+        // 揮舞的速度，值代表 FPS，值越高，速度越慢
         motion1_duration = 5;
         motion2_duration = 25;
 

@@ -35,7 +35,7 @@ import gtcafe.rpg.tile.interactive.InteractiveTile;
 public class GamePanel extends JPanel implements Runnable {
     // Tile Settings
     final int originalTileSize = 16; // 16x16 pixel
-    final int scale = 3;
+    final int scale = 4;
 
     // SCREEN SETTINGS
     public final int tileSize = originalTileSize * scale; // 48x48 pixel
@@ -325,6 +325,7 @@ public class GamePanel extends JPanel implements Runnable {
         } else {
             // TILE
             tileManager.draw(g2);
+
             // INTERACTIVE TILES
             for(int i=0; i<iTile[1].length; i++) {
                 if(iTile[currentMap.index][i] != null) { iTile[currentMap.index][i].draw(g2); }
@@ -390,8 +391,8 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
             g2.drawString("Col: " + (player.worldX + player.solidArea.x)/tileSize, x, y); y += lineHeight;
             g2.drawString("Row: " + (player.worldY + player.solidArea.y)/tileSize, x, y); y += lineHeight;
-            g2.drawString("State: " + gameState.name, x, y);
-            g2.drawString("God Mode: " + keyHandler.godModeOn, x, y);
+            g2.drawString("State: " + gameState.name, x, y); y += lineHeight;
+            g2.drawString("God Mode: " + keyHandler.godModeOn, x, y); y += lineHeight;
             // g2.drawString("Draw Count: " + drawCount, x, y);
             // System.out.println("[GamePanel#paintComponent] Draw Time: "+passed);
         }

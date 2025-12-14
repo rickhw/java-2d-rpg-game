@@ -16,9 +16,9 @@ public class OBJ_Door extends Entity {
         collision = true;
 
         solidArea.x = 0;
-        solidArea.y = 16;
-        solidArea.width = 48;
-        solidArea.height = 32;
+        solidArea.y = 0; // (gp.tileSize * 1) / 4; // 16;
+        solidArea.width = gp.tileSize; // 48;
+        solidArea.height = gp.tileSize; // 32;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
