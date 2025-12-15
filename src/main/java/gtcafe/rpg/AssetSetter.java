@@ -171,6 +171,12 @@ public class AssetSetter {
         gp.obj[mapIndex][i].setLoot(new OBJ_Heart(gp));
         gp.obj[mapIndex][i].worldX = gp.tileSize * 25;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 8;
+
+        // 上面的鐵門，關起寶藏
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Door_Iron(gp);
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 25;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 15;
         // for Testing
         // gp.obj[0] = new OBJ_Door(gp);
         // gp.obj[0].worldX = gp.tileSize * 25;

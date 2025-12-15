@@ -1,6 +1,7 @@
 package gtcafe.rpg.system;
 
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.data.Progress;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.state.Direction;
 import gtcafe.rpg.state.GameState;
@@ -9,7 +10,7 @@ import gtcafe.rpg.tile.Scene;
 public class EventHandler {
     
     GamePanel gp;
-    EventRect eventRect[][][];
+    public EventRect eventRect[][][];  // mapIndex:row:col
     Entity eventSource;
 
     // prevent the event happen repeatly.
@@ -61,41 +62,6 @@ public class EventHandler {
         eventSource.dialogues[1][1] = "Damn, this is good water.";
     }
 
-    // check the event collision
-    public boolean hit(Scene map, int col, int row, Direction requiredDirection) {
-        boolean hit = false;
-        int mapIndex = map.index;
-
-        if (mapIndex == gp.currentMap.index) {
-            gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-            gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
-
-            eventRect[mapIndex][col][row].x = col * gp.tileSize + eventRect[mapIndex][col][row].x;
-            eventRect[mapIndex][col][row].y = row * gp.tileSize + eventRect[mapIndex][col][row].y;
-
-            // checking if player's solidArea is colliding with eventRect's solidArea
-            if (gp.player.solidArea.intersects(eventRect[mapIndex][col][row]) && 
-                eventRect[mapIndex][col][row].eventDone == false)  // happen one time only
-            {
-                if (gp.player.direction == requiredDirection || requiredDirection == Direction.ANY) {
-                    hit = true;
-
-                    previousEventX = gp.player.worldX;
-                    previousEventY = gp.player.worldY;
-                }
-            }
-
-            gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-            gp.player.solidArea.y = gp.player.solidAreaDefaultY;
-            eventRect[mapIndex][col][row].x = eventRect[mapIndex][col][row].eventRectDefaultX;
-            eventRect[mapIndex][col][row].y = eventRect[mapIndex][col][row].eventRectDefaultY;
-        }
-
-        
-        return hit;
-    }
-
-
     public void checkEvent() {
 
         // Check if the player character is more than 1 tile away from the last event
@@ -128,6 +94,7 @@ public class EventHandler {
             // TO DUNGDEON B2
             else if (hit(Scene.DONGEON01, 8,7,Direction.ANY)) { teleport(Scene.DONGEON02, 26, 41, GamePanel.DUNGEON);} // To the Dungeon 02 / B2
             else if (hit(Scene.DONGEON02, 26,41,Direction.ANY)) { teleport(Scene.DONGEON01, 8, 7, GamePanel.DUNGEON);} // To the Dungeon 01 / B1
+            else if (hit(Scene.DONGEON02, 25,27,Direction.ANY)) { skeletonLord();} // Wake up the boss!!
         }
     }
 
@@ -137,6 +104,40 @@ public class EventHandler {
             gp.player.attackCanceled = true;
             entity.speak();
         }
+    }
+
+
+    // check the event collision
+    public boolean hit(Scene map, int col, int row, Direction requiredDirection) {
+        boolean hit = false;
+        int mapIndex = map.index;
+
+        if (mapIndex == gp.currentMap.index) {
+            gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
+            gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
+
+            eventRect[mapIndex][col][row].x = col * gp.tileSize + eventRect[mapIndex][col][row].x;
+            eventRect[mapIndex][col][row].y = row * gp.tileSize + eventRect[mapIndex][col][row].y;
+
+            // checking if player's solidArea is colliding with eventRect's solidArea
+            if (gp.player.solidArea.intersects(eventRect[mapIndex][col][row]) && 
+                eventRect[mapIndex][col][row].eventDone == false)  // happen one time only
+            {
+                if (gp.player.direction == requiredDirection || requiredDirection == Direction.ANY) {
+                    hit = true;
+
+                    previousEventX = gp.player.worldX;
+                    previousEventY = gp.player.worldY;
+                }
+            }
+
+            gp.player.solidArea.x = gp.player.solidAreaDefaultX;
+            gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+            eventRect[mapIndex][col][row].x = eventRect[mapIndex][col][row].eventRectDefaultX;
+            eventRect[mapIndex][col][row].y = eventRect[mapIndex][col][row].eventRectDefaultY;
+        }
+        
+        return hit;
     }
 
     // update player's position
@@ -175,6 +176,14 @@ public class EventHandler {
             gp.player.mana = gp.player.maxMana;
             gp.playSoundEffect(Sound.FX_COIN);
             gp.saveLoad.save();
+        }
+    }
+
+    public void skeletonLord() {
+        // start the cutsense
+        if(gp.bossBattleOn == false && Progress.skeletonLordDefeated == false) {
+            gp.gameState = GameState.CUTSENSE;
+            gp.csManager.sceneNum = gp.csManager.skeletonlord;
         }
     }
 }

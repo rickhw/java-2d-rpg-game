@@ -3,11 +3,14 @@ package gtcafe.rpg.entity.monster;
 import java.util.Random;
 
 import gtcafe.rpg.GamePanel;
+import gtcafe.rpg.data.Progress;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
 import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
+import gtcafe.rpg.entity.object.OBJ_Door_Iron;
 import gtcafe.rpg.entity.object.OBJ_Heart;
 import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
+import gtcafe.rpg.system.Sound;
 
 public class MON_SkeletonLord extends Entity {
     GamePanel gp;
@@ -28,6 +31,7 @@ public class MON_SkeletonLord extends Entity {
         defense = 2;
         exp = 100; // how much can get the exp
         knockBackPower = 5;
+        sleep = true;
 
         int size = gp.tileSize * 5;
         solidArea.x = 48;
@@ -45,6 +49,7 @@ public class MON_SkeletonLord extends Entity {
 
         getImage();
         getAttackImage();
+        setDialogue();
     }
 
     public void getImage() {
@@ -142,6 +147,25 @@ public class MON_SkeletonLord extends Entity {
 
     // called when monster die (GamePanel.update())
     public void checkDrop() {
+
+        gp.bossBattleOn = false;
+        Progress.skeletonLordDefeated = true;
+
+        // Restore the previous music
+        gp.stopBackgroundMusic();
+        gp.playBackgroundMusic(Sound.MUSIC__DUNGEON);
+
+        // Remove the iron doors
+        for (int i=0; i<gp.obj[1].length; i++) {
+            if(gp.obj[gp.currentMap.index][i] != null 
+                && gp.obj[gp.currentMap.index][i].name.equals(OBJ_Door_Iron.OBJ_NAME)
+            ) {
+                gp.obj[gp.currentMap.index][i] = null;
+                gp.playSoundEffect(Sound.FX__DOOR_OPEN);
+                break;
+            }
+        }
+
         // CAST A DIE
         int i = new Random().nextInt(100) + 1;
 
@@ -149,5 +173,11 @@ public class MON_SkeletonLord extends Entity {
         if (i < 50) { dropItem(new OBJ_Coin_Bronze(gp)); }
         if (i >= 50 && i < 75) { dropItem(new OBJ_Heart(gp)); }
         if (i >= 75 && i < 100) { dropItem(new OBJ_ManaCrystal(gp)); }
+    }
+
+    public void setDialogue() {
+        dialogues[0][0] = "No one can steal my treasure!";
+        dialogues[0][1] = "You will die here!";
+        dialogues[0][2] = "WELCOME TO YOUR DOOM!";
     }
 }

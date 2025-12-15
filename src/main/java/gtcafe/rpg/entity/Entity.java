@@ -58,6 +58,9 @@ public class Entity {
     public Entity loot;                 // for chest
     public boolean opened = false;      // for chest
     public boolean inRage = false;      // for monster (boss) rage mode
+    public boolean sleep = false;       // for boss: putting the boss to sleep
+    public boolean tempObj = false;     // means this entity for boss battle only
+    public boolean drawing = true;      // for cutsense, to stop drawing or not.
 
     // COUNTER
     public int spriteCounter = 0;
@@ -264,84 +267,88 @@ public class Entity {
 
     public void update() {
 
-        // 擊退效果
-        if(knockBack == true) {
-            
-            checkCollision();
+        if (sleep == false) {
 
-            if (collisionOn == true) {
-                knockBackCounter = 0;
-                knockBack = false;
-                speed = defaultSpeed;
-            } else if (collisionOn == false) {
-                switch (knockBackDirection) {
-                    case UP -> worldY -= speed;
-                    case DOWN -> worldY += speed;
-                    case LEFT -> worldX -= speed;
-                    case RIGHT -> worldX += speed;
-                    default -> throw new IllegalArgumentException("Unexpected value: " + direction);
-                }
+            // 擊退效果
+            if(knockBack == true) {
+                
+                checkCollision();
 
-                knockBackCounter++;
-                if (knockBackCounter == 10) {   // knockBack distance
+                if (collisionOn == true) {
                     knockBackCounter = 0;
                     knockBack = false;
                     speed = defaultSpeed;
+                } else if (collisionOn == false) {
+                    switch (knockBackDirection) {
+                        case UP -> worldY -= speed;
+                        case DOWN -> worldY += speed;
+                        case LEFT -> worldX -= speed;
+                        case RIGHT -> worldX += speed;
+                        default -> throw new IllegalArgumentException("Unexpected value: " + direction);
+                    }
+
+                    knockBackCounter++;
+                    if (knockBackCounter == 10) {   // knockBack distance
+                        knockBackCounter = 0;
+                        knockBack = false;
+                        speed = defaultSpeed;
+                    }
+                }
+            } 
+            else if (attacking == true) {
+                attacking();
+            } 
+            else {
+                setAction();
+                checkCollision();
+
+                // IF COLLISION IS FALSE, ENTITY CAN MOVE
+                if (collisionOn == false) {
+                    switch (direction) {
+                        case UP -> worldY -= speed;
+                        case DOWN -> worldY += speed;
+                        case LEFT -> worldX -= speed;
+                        case RIGHT -> worldX += speed;
+                        default -> throw new IllegalArgumentException("Unexpected value: " + direction);
+                    }
+                }
+
+                // ANIMATION
+                spriteCounter++;
+                if(spriteCounter > animationSpeed) {
+                    if (spriteNum == 1) {
+                        spriteNum = 2;
+                    } else if (spriteNum == 2) {
+                        spriteNum = 1;
+                    }
+                    spriteCounter = 0;
                 }
             }
-        } 
-        else if (attacking == true) {
-            attacking();
-        } 
-        else {
-            setAction();
-            checkCollision();
 
-            // IF COLLISION IS FALSE, ENTITY CAN MOVE
-            if (collisionOn == false) {
-                switch (direction) {
-                    case UP -> worldY -= speed;
-                    case DOWN -> worldY += speed;
-                    case LEFT -> worldX -= speed;
-                    case RIGHT -> worldX += speed;
-                    default -> throw new IllegalArgumentException("Unexpected value: " + direction);
+            // Keep the invincible state
+            if (invincible == true) {
+                invincibleCounter++;
+                if(invincibleCounter > 40) { // Default Frame Counter
+                    invincible = false;
+                    invincibleCounter = 0;
                 }
             }
 
-            // ANIMATION
-            spriteCounter++;
-            if(spriteCounter > animationSpeed) {
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else if (spriteNum == 2) {
-                    spriteNum = 1;
+            // to avoid double shoot the projectiles for next 30 frames
+            if (shotAvailableCounter < 30) {
+                shotAvailableCounter++;
+            }
+
+            // Parry
+            if (offBalance == true) {
+                offBalanceCounter++;
+                if(offBalanceCounter > 60) {    // 60 FPS (1 second)
+                    offBalance = false;
+                    offBalanceCounter = 0;
                 }
-                spriteCounter = 0;
             }
         }
 
-        // Keep the invincible state
-        if (invincible == true) {
-            invincibleCounter++;
-            if(invincibleCounter > 40) { // Default Frame Counter
-                invincible = false;
-                invincibleCounter = 0;
-            }
-        }
-
-        // to avoid double shoot the projectiles for next 30 frames
-        if (shotAvailableCounter < 30) {
-            shotAvailableCounter++;
-        }
-
-        // Parry
-        if (offBalance == true) {
-            offBalanceCounter++;
-            if(offBalanceCounter > 60) {    // 60 FPS (1 second)
-                offBalance = false;
-                offBalanceCounter = 0;
-            }
-        }
     }
 
     public void draw(Graphics2D g2) {

@@ -18,6 +18,7 @@ public class Sound {
     public final static int MUSIC__FANFARE = 2;
     public final static int MUSIC__MERCHANT = 3;
     public final static int MUSIC__DUNGEON = 4;
+    public final static int MUSIC__FINAL_BATTLE = 5;
 
     public final static int FX_COIN = 10;
     public final static int FX_POWER_UP= 11;
@@ -46,6 +47,7 @@ public class Sound {
         soundURL[MUSIC__FANFARE] = getClass().getResource("/gtcafe/rpg/assets/bgm/fanfare.wav");
         soundURL[MUSIC__MERCHANT] = getClass().getResource("/gtcafe/rpg/assets/bgm/Merchant.wav");
         soundURL[MUSIC__DUNGEON] = getClass().getResource("/gtcafe/rpg/assets/bgm/Dungeon.wav");
+        soundURL[MUSIC__FINAL_BATTLE] = getClass().getResource("/gtcafe/rpg/assets/bgm/FinalBattle.wav");
 
         soundURL[FX_COIN] = getClass().getResource("/gtcafe/rpg/assets/sound/coin.wav");
         soundURL[FX_POWER_UP] = getClass().getResource("/gtcafe/rpg/assets/sound/powerup.wav");

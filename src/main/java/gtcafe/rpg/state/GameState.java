@@ -12,6 +12,7 @@ public enum GameState {
     TRADE(8, "Trade"),
     SLEEP(9, "Sleep"),
     DISPLAY_MAP(10, "Map"),
+    CUTSENSE(11, "Cutsense"),
     
     ;
 
