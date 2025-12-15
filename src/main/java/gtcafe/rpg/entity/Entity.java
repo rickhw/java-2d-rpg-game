@@ -48,7 +48,7 @@ public class Entity {
     public boolean attacking = false;
     public boolean alive = true;
     public boolean dying = false;
-    boolean hpBarOn = false;
+    public boolean hpBarOn = false;
     public boolean onPath = false;
     public boolean knockBack = false;       // day42
     public Direction knockBackDirection;    // to avoid direction changed by player when player move quickly.
@@ -65,7 +65,7 @@ public class Entity {
     public int invincibleCounter = 0;
     public int shotAvailableCounter = 0;    // to avoid double shoot
     int dyingCounter = 0;
-    int hpBarCounter = 0;
+    public int hpBarCounter = 0;
     int knockBackCounter = 0;               // day42
     public int guardCounter = 0;            // for parry
     public int offBalanceCounter = 0;       // for parry
@@ -96,6 +96,7 @@ public class Entity {
     public Entity currentShield;
     public Entity currentLight;     // 目前手持的燈具
     public Projectile projectile;   // 拋射物
+    public boolean boss = false;    // 是否為 Boss
 
     // ITEM ATTRIBUTES
     public int value;
@@ -147,6 +148,8 @@ public class Entity {
         offBalanceCounter = 0;       // for parry 
     }
 
+    public int getScreenX() { return worldX - gp.player.worldX + gp.player.screenX; }
+    public int getScreenY() { return worldY - gp.player.worldY + gp.player.screenY; }   
     public int getLeftX() { return worldX + solidArea.x; }
     public int getRightX() { return worldX + solidArea.x + solidArea.width; }
     public int getTopY() { return worldY + solidArea.y; }
@@ -160,6 +163,19 @@ public class Entity {
     public int getTileDistance(Entity target) { return (getXdistance(target) + getYdistance(target))/gp.tileSize; }
     public int getGoalCol(Entity target) { return (target.worldX + target.solidArea.x) / gp.tileSize; }
     public int getGoalRow(Entity target) { return (target.worldY + target.solidArea.y) / gp.tileSize; }
+    public boolean inCamera() {
+        boolean inCamera = false;
+
+        // 增加 *5 是因為有些怪物尺寸比較大
+        if (worldX * gp.tileSize * 5 > gp.player.worldX - gp.player.screenX &&
+                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                worldY + gp.tileSize * 5 > gp.player.worldY - gp.player.screenY &&
+                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+            inCamera = true;
+        }
+
+        return inCamera;
+    }
 
     // overwirte by subclass
     public void setAction() {}
@@ -330,19 +346,12 @@ public class Entity {
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
-        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-        int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
         // only draw the entity when it is in the screen view
         // by checking the worldX/Y position comparing to player position
-        // 增加 *5 是因為有些怪物尺寸比較大
-        if (worldX * gp.tileSize * 5 > gp.player.worldX - gp.player.screenX &&
-                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                worldY + gp.tileSize * 5 > gp.player.worldY - gp.player.screenY &&
-                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-
-            int tempScreenX = screenX;
-            int tempScreenY = screenY;
+        if (inCamera() == true) {
+            int tempScreenX = getScreenX();
+            int tempScreenY = getScreenY();
 
             // Depends on direction and attacking status to pick specific image up.
             switch(direction) {
@@ -350,7 +359,7 @@ public class Entity {
                     if (attacking == false) image = (spriteNum == 1) ? up1 : up2;
                     if (attacking == true) {
                         // exception case for up image.
-                        tempScreenY = screenY - up1.getHeight();
+                        tempScreenY = getCenterX() - up1.getHeight();
                         image = (spriteNum == 1) ? attackUp1 : attackUp2;
                     }
                     break;
@@ -362,7 +371,7 @@ public class Entity {
                     if (attacking == false) image = (spriteNum == 1) ? left1 : left2;
                     if (attacking == true) {
                         // exception case for up image.
-                        tempScreenX = screenX - left1.getWidth();
+                        tempScreenX = getScreenX() - left1.getWidth();
                         image = (spriteNum == 1) ? attackLeft1 : attackLeft2;
                     }
                     break;
@@ -372,31 +381,10 @@ public class Entity {
                     break;
             }
 
-            // Monster HP Bar
-            if (type == EntityType.MONSTER && hpBarOn == true) {    // type 2 is monster
-
-                double oneScale = (double) gp.tileSize / maxLife;
-                double hpBarValue = oneScale * life;    // find the col length of bar
-
-                g2.setColor(new Color(35,35,30)); 
-                g2.fillRect(screenX - 1 , screenY - 16, gp.tileSize+2, 10+2);
-
-                g2.setColor(new Color(255,0,30)); 
-                g2.fillRect(screenX, screenY - 15, (int)hpBarValue, 10);
-
-                hpBarCounter ++;
-
-                // hpBar disapper after 5s
-                if (hpBarCounter > 300) {
-                    hpBarCounter = 0;
-                    hpBarOn = false;
-                }
-            }
-
             // 顯示已經被鎖定
             if (onPath == true) {
                 gp.g2.setColor(new Color(255, 100,100));
-                gp.g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
+                gp.g2.fillRect(getScreenX(), getScreenY(), gp.tileSize, gp.tileSize);
             }
 
             // Visual effect to transparent the entity for invincible state
