@@ -30,7 +30,8 @@ public class Projectile extends Entity {
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
             // player attack monster
             if (monsterIndex != 999) {
-                gp.player.damageMonster(monsterIndex, this, attack, knockBackPower);
+                gp.player.damageMonster(monsterIndex, this, attack * (gp.player.level/2), knockBackPower); // 50% of player's attack power
+                
                 generateParticle(user.projectile, gp.monster[mapIndex][monsterIndex]);
                 alive = false;
             }

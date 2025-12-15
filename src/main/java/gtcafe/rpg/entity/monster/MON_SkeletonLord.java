@@ -18,6 +18,7 @@ public class MON_SkeletonLord extends Entity {
         this.gp = gp;
         
         type = EntityType.MONSTER;
+        boss = true;
         name = OBJ_NAME;
         defaultSpeed = 1;
         speed = defaultSpeed;

@@ -4,6 +4,7 @@
 ### v2.15
 
 1. Debug: 顯示 SolidArea, AttackArea
+2. Boss Health Bar
 
 ### v2.14.x (20251213_6): https://www.youtube.com/watch?v=m5suX8MnUfU
 
