@@ -106,10 +106,10 @@ public class Player extends Entity {
         // worldY = gp.tileSize * 32;
 
         // 地下城 B2 入口
-        worldX = gp.tileSize * 9;
-        worldY = gp.tileSize * 9;
+        // worldX = gp.tileSize * 9;
+        // worldY = gp.tileSize * 9;
 
-        gp.currentMap = Scene.DONGEON01;
+        // gp.currentMap = Scene.DONGEON01;
 
         direction = Direction.DOWN; 
     }
