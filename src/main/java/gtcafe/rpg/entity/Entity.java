@@ -842,21 +842,29 @@ public class Entity {
 
     public void drawInteractiveArea(Graphics2D g2, int screenX, int screenY) {
         if (gp.keyHandler.showDebugText == true) {
-            // 畫出 solid area
+            int debugX = screenX;
+            int debugY = screenY;
+
+            // 畫出 attack area
             if(attacking == true) {
+                switch (direction) {
+                    case DOWN -> debugY = screenY + gp.tileSize;
+                    case RIGHT -> debugX = screenX + gp.tileSize;
+                    default -> {}
+                }
                 g2.setColor(Color.YELLOW);
-            } else {
+            } 
+            // 畫出 solid area
+            else {
                 g2.setColor(Color.RED);
             }
             g2.setStroke(new BasicStroke(2));
-            g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+            g2.drawRect(debugX + solidArea.x, debugY + solidArea.y, solidArea.width, solidArea.height);
 
-            // // attack area
-            // if(attacking == true) {
-            //     g2.setColor(Color.YELLOW);
-            //     // g2.setStroke(new BasicStroke(2));
-            //     // g2.drawRect(screenX + attackArea.x, screenY + attackArea.y, attackArea.width, attackArea.height);
-            // }
+            // 畫出 entity 座標
+            g2.setFont(g2.getFont().deriveFont(20f));
+            g2.setColor(Color.GREEN);
+            g2.drawString(getCol() +","+getRow(), screenX+10, screenY - 10);
         }
     }
 }

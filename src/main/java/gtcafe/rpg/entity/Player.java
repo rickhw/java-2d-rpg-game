@@ -97,8 +97,8 @@ public class Player extends Entity {
         // worldY = gp.tileSize * 41;
 
         // 地下城入口        
-        // worldX = gp.tileSize * 12;
-        // worldY = gp.tileSize * 10;
+        worldX = gp.tileSize * 12;
+        worldY = gp.tileSize * 10;
 
 
         direction = Direction.DOWN; 
@@ -446,7 +446,7 @@ public class Player extends Entity {
         g2.drawImage(image, tempScreenX, tempScreenY, null);
 
         // 畫出 solid area
-        drawInteractiveArea(g2, tempScreenX, tempScreenY);
+       drawInteractiveArea(g2, tempScreenX, tempScreenY);
 
         // reset alpha
         g2Utils.changeAlpha(g2, 1f);

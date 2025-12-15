@@ -213,6 +213,9 @@ public class GamePanel extends JPanel implements Runnable {
         long timer = 0;
         // int drawCount = 0;
 
+        int fpsCount = 0;
+        long totalDrawTime = 0;
+
         while(gameThread != null) {
 
             currentTime = System.nanoTime();
@@ -223,22 +226,37 @@ public class GamePanel extends JPanel implements Runnable {
 
             // 畫的時間在 FPS 範圍裡, 也就是 delta 大於 drawInterval
             if(delta >= 1) {
+                long drawStart = System.nanoTime();
                 update();
                 // repaint();  // call paintComponent by parent class
 
                 // for full screen
                 drawToBufferedScreen(); // draw everything to the buffered image
                 drawToScreen();     // draw the buffered image to screen
+                long drawEnd = System.nanoTime();
+                long drawTime = drawEnd - drawStart;
+
+                totalDrawTime += drawTime;
+                fpsCount++;
 
                 delta--;
                 drawCount++;
             }
 
             if (timer >= 1000000000) {
+                // average draw time in one second
+                long averageDrawTime = totalDrawTime / fpsCount;
+                long remainingTime = (long)(drawInterval - averageDrawTime);
+                // 剩下的時間百分比
+                double remainingPercent = (double)remainingTime / drawInterval * 100;
+
                 SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-                System.out.printf("%s [GameLoop] FPS: [%s], State: [%s], Scene: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), FPS, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
+                System.out.printf("%s [GameLoop] FPS: [%s], Remaining Percent: [%.2f], State: [%s], Scene: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), fpsCount, remainingPercent, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
                 // drawCount = 0;
                 timer = 0;
+
+                fpsCount = 0;
+                totalDrawTime = 0;
             }
         }
     }

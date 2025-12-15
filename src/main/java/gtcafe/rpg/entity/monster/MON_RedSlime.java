@@ -28,10 +28,10 @@ public class MON_RedSlime extends Entity {
         exp = 8; // how much can get the exp
         projectile = new OBJ_Rock(gp);
 
-        solidArea.x = 3;
-        solidArea.y = 18;
-        solidArea.width = 42;
-        solidArea.height = 30;
+        solidArea.x = solidAreaBaseUnit; // 3;
+        solidArea.y = solidAreaBaseUnit * 5; // 18;
+        solidArea.width = gp.tileSize - (solidAreaBaseUnit * 3); //42;
+        solidArea.height = gp.tileSize - (solidAreaBaseUnit * 6); //30;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
