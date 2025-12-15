@@ -14,6 +14,7 @@ import gtcafe.rpg.state.Direction;
 import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.system.KeyHandler;
 import gtcafe.rpg.system.Sound;
+import gtcafe.rpg.tile.Scene;
 
 public class Player extends Entity {
     KeyHandler keyHandler;
@@ -97,9 +98,18 @@ public class Player extends Entity {
         // worldY = gp.tileSize * 41;
 
         // 地下城入口        
-        worldX = gp.tileSize * 12;
-        worldY = gp.tileSize * 10;
+        // worldX = gp.tileSize * 12;
+        // worldY = gp.tileSize * 10;
 
+        // // 地下城 B2 入口  
+        // worldX = gp.tileSize * 25;
+        // worldY = gp.tileSize * 32;
+
+        // 地下城 B2 入口
+        worldX = gp.tileSize * 9;
+        worldY = gp.tileSize * 9;
+
+        gp.currentMap = Scene.DONGEON01;
 
         direction = Direction.DOWN; 
     }
@@ -443,7 +453,9 @@ public class Player extends Entity {
             g2Utils.changeAlpha(g2, 0.3f);
         }
 
-        g2.drawImage(image, tempScreenX, tempScreenY, null);
+        if (drawing == true) {
+            g2.drawImage(image, tempScreenX, tempScreenY, null);
+        }
 
         // 畫出 solid area
        drawInteractiveArea(g2, tempScreenX, tempScreenY);

@@ -1,10 +1,12 @@
 
 ## Release Notes
 
-### v2.15
+### v2.15.x (20251215_1)
 
-1. Debug: 顯示 SolidArea, AttackArea
+1. Debug: 顯示 SolidArea, AttackArea 座標
+2. 調整 Player Life Bar 的大小, 8 個換行
 2. Boss Health Bar
+3. 過場動畫 (Cutsense): Phase 0 - 4
 
 ### v2.14.x (20251213_6): https://www.youtube.com/watch?v=m5suX8MnUfU
 

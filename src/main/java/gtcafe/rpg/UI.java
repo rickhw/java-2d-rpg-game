@@ -879,7 +879,8 @@ public class UI {
 
                 charIdx = 0;
                 combinedText = "";
-                if(gp.gameState == GameState.DIALOGUE) {
+
+                if(gp.gameState == GameState.DIALOGUE || gp.gameState == GameState.CUTSENSE) {
                     npc.dialogueIndex++;
                     gp.keyHandler.enterPressed = false;
                 }
@@ -890,6 +891,10 @@ public class UI {
             npc.dialogueIndex = 0;
             if (gp.gameState == GameState.DIALOGUE) {
                 gp.gameState = GameState.PLAY;
+            }
+            // Cutsense 往下個 Phase 走
+            if (gp.gameState == GameState.CUTSENSE) {
+                gp.csManager.scenePhase++;
             }
         }
 

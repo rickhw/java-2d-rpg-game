@@ -77,6 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Map map = new Map(this);
     public EntityGenerator eGenerator = new EntityGenerator(this);
     public SaveLoad saveLoad = new SaveLoad(this, eGenerator);
+    public CutsenseManager csManager = new CutsenseManager(this);
     Thread gameThread;
 
     // ENTITY and OBJECT
@@ -92,6 +93,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // GAME STATE: for different purpose for game,
     public GameState gameState;
+    public boolean bossBattleOn = false;
 
     // AREA
     public int currentArea;
@@ -150,6 +152,11 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void resetGame(boolean restart) {
+        currentArea = OUTSIDE;
+
+        removeTempEntity();
+        bossBattleOn = false;
+        
         player.setDefaultPosition();
         player.restoreStatus();        
         player.resetCounter();
@@ -389,6 +396,9 @@ public class GamePanel extends JPanel implements Runnable {
             // MINIMAP
             map.drawMiniMap(g2);
             
+            // CUTSCENE
+            csManager.draw(g2);
+
             // UI
             ui.draw(g2);
         }
@@ -458,5 +468,16 @@ public class GamePanel extends JPanel implements Runnable {
         
         // Monsters respawn (重生)
         assetSetter.setMonster();
+    }
+
+    public void removeTempEntity() {
+        // scan the tempEntity, 例如 boss battle 暫時的 鐵門
+        for (int mapNum =0; mapNum < maxMap; mapNum++) {
+            for(int i=0; i<obj[1].length; i++) {
+                if(obj[mapNum][i] != null && obj[mapNum][i].tempObj == true) {
+                    obj[mapNum][i] = null;
+                }
+            }
+        }
     }
 }

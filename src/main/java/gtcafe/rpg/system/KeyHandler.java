@@ -41,7 +41,7 @@ public class KeyHandler implements KeyListener {
            pauseState(code);
         }
         // DIALOGUE STATE
-        else if (gp.gameState == GameState.DIALOGUE) {
+        else if (gp.gameState == GameState.DIALOGUE || gp.gameState == GameState.CUTSENSE) {
             dialogueState(code);
         }
         // CHARACTER STATE
@@ -240,7 +240,6 @@ public class KeyHandler implements KeyListener {
 
     private void dialogueState(int code) {
         if (code == KeyEvent.VK_ENTER) {
-            // gp.gameState = GameState.PLAYING;
             enterPressed = true;
         }
     }
