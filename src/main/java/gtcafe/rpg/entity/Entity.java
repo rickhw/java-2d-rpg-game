@@ -1,5 +1,6 @@
 package gtcafe.rpg.entity;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -25,8 +26,9 @@ public class Entity {
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
     public BufferedImage guardUp, guardDown, guardLeft, guardRight;
     public BufferedImage image, image2, image3;
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);   // 碰撞偵測
-    public Rectangle attackArea = new Rectangle(0, 0, 0, 0);    // Hit deteciton, be overwrite by subclass
+    public int solidAreaBaseUnit = 4;
+    public Rectangle solidArea; // = new Rectangle(0, 0, 48, 48);   // 碰撞偵測
+    public Rectangle attackArea; // = new Rectangle(0, 0, 0, 0);    // Hit deteciton, be overwrite by subclass
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collision = false;
     public String dialogues[][] = new String[20][20];
@@ -116,6 +118,9 @@ public class Entity {
 
     public Entity(GamePanel gp) {
         this.gp = gp;
+
+        this.solidArea = new Rectangle(0, 0, gp.tileSize, gp.tileSize);
+        this.attackArea = new Rectangle(0, 0, 0, 0);
     }
 
     public BufferedImage setup(String imagePath, int width, int height) {
@@ -366,13 +371,6 @@ public class Entity {
                     if (attacking == true) image = (spriteNum == 1) ? attackRight1 : attackRight2;
                     break;
             }
-            // switch(direction) {
-            //     case UP -> image = (spriteNum == 1) ? up1 : up2;
-            //     case DOWN -> image = (spriteNum == 1) ? down1 : down2;
-            //     case LEFT -> image = (spriteNum == 1) ? left1 : left2;
-            //     case RIGHT -> image = (spriteNum == 1) ? right1 : right2;
-            //     default -> throw new IllegalArgumentException("Unexpected value: " + direction);
-            // }
 
             // Monster HP Bar
             if (type == EntityType.MONSTER && hpBarOn == true) {    // type 2 is monster
@@ -395,9 +393,9 @@ public class Entity {
                 }
             }
 
-            // 顯示路徑
+            // 顯示已經被鎖定
             if (onPath == true) {
-                gp.g2.setColor(new Color(255, 0,75));
+                gp.g2.setColor(new Color(255, 100,100));
                 gp.g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
             }
 
@@ -415,6 +413,9 @@ public class Entity {
 
             g2.drawImage(image, tempScreenX, tempScreenY, null); // setup() has re-scale the image, we don't need pass weight and height any more.
 
+            // 畫出 solid area
+            drawInteractiveArea(g2, tempScreenX, tempScreenY);
+         
             // reset the alpha value for next frame
             g2Utils.changeAlpha(g2, 1f);
         }
@@ -599,7 +600,7 @@ public class Entity {
                     damagePlayer(attack);
                 } 
             }
-            // Player
+            // Player attack monster
             else {
                 // check monster collision with the updated worldX/Y and solidArea
                 int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
@@ -836,6 +837,34 @@ public class Entity {
                     // onPath = false; // Let it reach the goal
                 // }
             }
+        }
+    }
+
+    public void drawInteractiveArea(Graphics2D g2, int screenX, int screenY) {
+        if (gp.keyHandler.showDebugText == true) {
+            int debugX = screenX;
+            int debugY = screenY;
+
+            // 畫出 attack area
+            if(attacking == true) {
+                switch (direction) {
+                    case DOWN -> debugY = screenY + gp.tileSize;
+                    case RIGHT -> debugX = screenX + gp.tileSize;
+                    default -> {}
+                }
+                g2.setColor(Color.YELLOW);
+            } 
+            // 畫出 solid area
+            else {
+                g2.setColor(Color.RED);
+            }
+            g2.setStroke(new BasicStroke(2));
+            g2.drawRect(debugX + solidArea.x, debugY + solidArea.y, solidArea.width, solidArea.height);
+
+            // 畫出 entity 座標
+            g2.setFont(g2.getFont().deriveFont(20f));
+            g2.setColor(Color.GREEN);
+            g2.drawString(getCol() +","+getRow(), screenX+10, screenY - 10);
         }
     }
 }

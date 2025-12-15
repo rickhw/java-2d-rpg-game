@@ -18,8 +18,8 @@ public class OBJ_Pickaxe extends Entity {
         
         // Player 有預設的攻擊範圍, 但每個武器攻擊範圍不一樣.
         // 當 Player 拿起武器時, 在 Player.getAttack() 會改成 武器的攻擊範圍.
-        attackArea.width = 30;
-        attackArea.height = 30;
+        attackArea.width = gp.tileSize - (solidAreaBaseUnit * 2); // 30;
+        attackArea.height = gp.tileSize - (solidAreaBaseUnit * 2); // 30;
 
         knockBackPower = 10;
         motion1_duration = 10;

@@ -23,13 +23,12 @@ public class OBJ_Chest extends Entity {
         down1 = image;
         collision = true;
 
-        solidArea.x = 4;
-        solidArea.y = 16;
-        solidArea.width = 40;
-        solidArea.height = 32;
+        solidArea.x = solidAreaBaseUnit;
+        solidArea.y = solidAreaBaseUnit * 4;
+        solidArea.width = gp.tileSize - (solidAreaBaseUnit * 2);
+        solidArea.height = gp.tileSize - (solidAreaBaseUnit * 4);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-
     }
 
     public void setLoot(Entity loot) {

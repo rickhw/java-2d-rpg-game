@@ -26,10 +26,10 @@ public class MON_Bat extends Entity {
         defense = 0;
         exp = 10; // how much can get the exp
         
-        solidArea.x = 3;
-        solidArea.y = 15;
-        solidArea.width = 42;
-        solidArea.height = 21;
+        solidArea.x = solidAreaBaseUnit * 4;
+        solidArea.y = solidAreaBaseUnit * 7;
+        solidArea.width = gp.tileSize - (solidAreaBaseUnit * 7);
+        solidArea.height = gp.tileSize - (solidAreaBaseUnit * 11);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 

@@ -39,7 +39,7 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - (gp.tileSize/2);
 
         // SOLID AREA
-        solidArea = new Rectangle(8, 16, 32, 32);
+        solidArea = new Rectangle(8, 16, (gp.tileSize * 4) / 5, (gp.tileSize * 3) / 5);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
@@ -444,6 +444,9 @@ public class Player extends Entity {
         }
 
         g2.drawImage(image, tempScreenX, tempScreenY, null);
+
+        // 畫出 solid area
+       drawInteractiveArea(g2, tempScreenX, tempScreenY);
 
         // reset alpha
         g2Utils.changeAlpha(g2, 1f);

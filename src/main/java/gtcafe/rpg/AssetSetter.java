@@ -18,6 +18,7 @@ import gtcafe.rpg.entity.object.OBJ_Key;
 import gtcafe.rpg.entity.object.OBJ_Postion_Red;
 import gtcafe.rpg.entity.object.OBJ_Tent;
 import gtcafe.rpg.entity.shield.OBJ_Shield_Blue;
+import gtcafe.rpg.entity.weapon.OBJ_Axe;
 import gtcafe.rpg.entity.weapon.OBJ_Pickaxe;
 import gtcafe.rpg.entity.weapon.OBJ_Sword_Normal;
 import gtcafe.rpg.tile.Scene;
@@ -64,7 +65,7 @@ public class AssetSetter {
         gp.obj[mapIndex][i].worldY = gp.tileSize * 21;
 
         i++;
-        gp.obj[mapIndex][i] = new OBJ_Sword_Normal(gp);
+        gp.obj[mapIndex][i] = new OBJ_Axe(gp);
         gp.obj[mapIndex][i].worldX = gp.tileSize * 33;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 7;
 
@@ -119,7 +120,7 @@ public class AssetSetter {
         gp.obj[mapIndex][i].worldY = gp.tileSize * 16;
 
         i++;
-        gp.obj[mapIndex][i] = new OBJ_Postion_Red(gp);
+        gp.obj[mapIndex][i] = new OBJ_Shield_Blue(gp);
         gp.obj[mapIndex][i].worldX = gp.tileSize * 30;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 12;
 

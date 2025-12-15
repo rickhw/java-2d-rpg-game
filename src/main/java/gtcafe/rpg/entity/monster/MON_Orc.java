@@ -27,18 +27,18 @@ public class MON_Orc extends Entity {
         exp = 20; // how much can get the exp
         knockBackPower = 5;
 
-        solidArea.x = 4;
-        solidArea.y = 4;
-        solidArea.width = 40;
-        solidArea.height = 44;
+        solidArea.x = solidAreaBaseUnit;
+        solidArea.y = solidAreaBaseUnit;
+        solidArea.width = gp.tileSize - (solidAreaBaseUnit * 2);    // 40;
+        solidArea.height = gp.tileSize - solidAreaBaseUnit;   // 44;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        attackArea.width = 48;
-        attackArea.height = 48;
+        attackArea.width = gp.tileSize;     // 48;
+        attackArea.height = gp.tileSize;    // 48;
 
-        motion1_duration = 40;
-        motion2_duration = 85;
+        motion1_duration = 40; // fps
+        motion2_duration = 85; // fps
 
         getImage();
         getAttackImage();

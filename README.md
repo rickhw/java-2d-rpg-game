@@ -1,6 +1,10 @@
 
 ## Release Notes
 
+### v2.15
+
+1. Debug: 顯示 SolidArea, AttackArea
+
 ### v2.14.x (20251213_6): https://www.youtube.com/watch?v=m5suX8MnUfU
 
 1. 推磚塊 解謎小關卡的設計

@@ -19,10 +19,11 @@ public class NPC_OldMan extends Entity {
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
+        solidArea.width = (gp.tileSize * 4) / 5;    // 30;
+        solidArea.height = (gp.tileSize * 3) / 5;   // 30;
+
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        solidArea.width = 30;
-        solidArea.height = 30;
 
         getImages();
         setDialogue();

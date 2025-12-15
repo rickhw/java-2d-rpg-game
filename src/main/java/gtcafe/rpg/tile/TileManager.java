@@ -167,8 +167,9 @@ public class TileManager {
             }
         }
 
-        // 畫出 PathFinding 的路徑
         if (gp.keyHandler.showDebugText == true) {
+            
+            // 畫出 PathFinding 的路徑
             g2.setColor(new Color(255, 0,0, 70));
             for(int i=0; i<gp.pathFinder.pathList.size(); i++) {
                 int worldX = gp.pathFinder.pathList.get(i).col * gp.tileSize;
