@@ -15,7 +15,7 @@ public class Sound {
     public float volume;
 
     public final static int MUSIC__MAIN_THEME = 1;
-    public final static int MUSIC__FANFARE = 2;
+    public final static int MUSIC__FANFARE = 2;     //  號角
     public final static int MUSIC__MERCHANT = 3;
     public final static int MUSIC__DUNGEON = 4;
     public final static int MUSIC__FINAL_BATTLE = 5;
