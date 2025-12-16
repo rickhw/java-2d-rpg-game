@@ -71,9 +71,9 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter assetSetter = new AssetSetter(this); // day7-4 add
     public UI ui = new UI(this);
     public EventHandler eventHandler = new EventHandler(this);
-    Config config = new Config(this);
+    public Config config = new Config(this);
     public PathFinder pathFinder = new PathFinder(this);
-    EnvironmentManager eManager = new EnvironmentManager(this);
+    public EnvironmentManager eManager = new EnvironmentManager(this);
     public MapManager map = new MapManager(this);
     public EntityGenerator eGenerator = new EntityGenerator(this);
     public SaveLoad saveLoad = new SaveLoad(this, eGenerator);

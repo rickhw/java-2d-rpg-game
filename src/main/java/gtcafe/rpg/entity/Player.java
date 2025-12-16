@@ -111,9 +111,9 @@ public class Player extends Entity {
         // worldY = gp.tileSize * 9;
 
         // Dongeon02 treasure 前
-        gp.currentMap = Map.DONGEON02;
-        worldX = gp.tileSize * 25;
-        worldY = gp.tileSize * 9;
+        // gp.currentMap = Map.DONGEON02;
+        // worldX = gp.tileSize * 25;
+        // worldY = gp.tileSize * 9;
 
 
         direction = Direction.DOWN; 
@@ -637,7 +637,7 @@ public class Player extends Entity {
     // ------------------------------------------------------------------------
     // 選擇 Inventory 裡的東西
     public void selectItem() {
-        int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);
+        int itemIndex = gp.ui.uiUtil.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);
 
         if (itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);

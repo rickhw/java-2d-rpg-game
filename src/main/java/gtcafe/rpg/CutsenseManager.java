@@ -11,11 +11,12 @@ import gtcafe.rpg.entity.object.OBJ_Door_Iron;
 import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.state.Scene;
 import gtcafe.rpg.system.Sound;
+import gtcafe.rpg.ui.UiUtil;
 
 public class CutsenseManager {
     GamePanel gp;
     Graphics2D g2;
-    Graphics2DUtils g2utils = new Graphics2DUtils();
+    UiUtil uiUtil = new UiUtil();
     public Scene sceneNum = Scene.NA;
     public int scenePhase;
     int counter = 0;
@@ -113,7 +114,7 @@ public class CutsenseManager {
         // Phase 3: Letting the Boss Speak
         else if (scenePhase == 3) {
 
-            gp.ui.drawDialogusScreen();
+            gp.ui.dialogueScreen.draw(g2);
         }
         // Phase 4: return the camera to player
         else if (scenePhase == 4) {
@@ -150,7 +151,7 @@ public class CutsenseManager {
         }
         else if (scenePhase == 1) {
             // Display dialogues
-            gp.ui.drawDialogusScreen();
+            gp.ui.dialogueScreen.draw(g2);
         }
         else if (scenePhase == 2) {
             // Play the fanfare
@@ -257,7 +258,7 @@ public class CutsenseManager {
         g2.setFont(g2.getFont().deriveFont(fontSize));
 
         for(String line: text.split("\n")) {
-            int x = g2utils.getXforCenterText(g2, gp, line);
+            int x = uiUtil.getXforCenterText(g2, gp, line);
             g2.drawString(line, x, y);
             y += lineHeight;
         }
