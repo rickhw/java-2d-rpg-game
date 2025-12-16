@@ -20,7 +20,7 @@ public class Player extends Entity {
     KeyHandler keyHandler;
 
     // Animation
-    public final static int STANDING_ANIMATION_SPEED = 30;  // 越大越慢
+    public final static int STANDING_ANIMATION_SPEED = 30; // 越大越慢
     public final static int WALKING_ANIMATION_SPEED = 12;
 
     // camera position
@@ -36,8 +36,8 @@ public class Player extends Entity {
         this.keyHandler = keyHandler;
 
         // Player 在 Screen 的起始座標, 起始後不會改動. camera position
-        screenX = gp.screenWidth / 2 - (gp.tileSize/2);
-        screenY = gp.screenHeight / 2 - (gp.tileSize/2);
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
         // SOLID AREA
         solidArea = new Rectangle(8, 16, (gp.tileSize * 4) / 5, (gp.tileSize * 3) / 5);
@@ -53,20 +53,21 @@ public class Player extends Entity {
 
     public void setDefaultValues() {
 
-        setDefaultPosition();;
+        setDefaultPosition();
+        ;
 
         defaultSpeed = 5;
-        speed = defaultSpeed;  // 每個 Frame 移動 5 個 pixel, 每秒移動 5 * 60 = 300 pixel / 48 = 6 tiles
+        speed = defaultSpeed; // 每個 Frame 移動 5 個 pixel, 每秒移動 5 * 60 = 300 pixel / 48 = 6 tiles
 
         // PLAYER STATUS
         level = 1;
         maxLife = 6;
         maxMana = 4;
-        ammo = 10;          // for Demo the Rock
+        ammo = 10; // for Demo the Rock
         restoreStatus();
 
-        strength = 1;       // the more strength he has, the more damage he gives.
-        dexterity = 1;      // the more dexterity the has, the less damage he receives.
+        strength = 1; // the more strength he has, the more damage he gives.
+        dexterity = 1; // the more dexterity the has, the less damage he receives.
         exp = 0;
         nextLevelExp = 5;
         coin = 1000;
@@ -77,8 +78,8 @@ public class Player extends Entity {
         projectile = new OBJ_Fireball(gp);
         // projectiles = new OBJ_Rock(gp);
 
-        attack = getAttack();       // 計算攻擊力, 由 strength and weapon 決定
-        defense = getDefense();     // 計算防禦力, 由 dexterity and shield 決定
+        attack = getAttack(); // 計算攻擊力, 由 strength and weapon 決定
+        defense = getDefense(); // 計算防禦力, 由 dexterity and shield 決定
 
         getImages();
         getAttackImage();
@@ -97,11 +98,11 @@ public class Player extends Entity {
         // worldX = gp.tileSize * 10;
         // worldY = gp.tileSize * 41;
 
-        // 地下城入口        
+        // 地下城入口
         // worldX = gp.tileSize * 12;
         // worldY = gp.tileSize * 10;
 
-        // // 地下城 B2 入口  
+        // // 地下城 B2 入口
         // worldX = gp.tileSize * 25;
         // worldY = gp.tileSize * 32;
 
@@ -111,12 +112,11 @@ public class Player extends Entity {
         // worldY = gp.tileSize * 9;
 
         // Dongeon02 treasure 前
-        gp.currentMap = Map.DONGEON02;
-        worldX = gp.tileSize * 25;
-        worldY = gp.tileSize * 9;
+        // gp.currentMap = Map.DONGEON02;
+        // worldX = gp.tileSize * 25;
+        // worldY = gp.tileSize * 9;
 
-
-        direction = Direction.DOWN; 
+        direction = Direction.DOWN;
     }
 
     public void restoreStatus() {
@@ -133,7 +133,7 @@ public class Player extends Entity {
     }
 
     public void setItems() {
-        inventory.clear();  // for restart/retry the game
+        inventory.clear(); // for restart/retry the game
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
@@ -143,8 +143,8 @@ public class Player extends Entity {
     // current: currentWeapon or currentShield
     public int getCurrentSlot(Entity current) {
         int slot = 0;
-        for(int i=0; i<inventory.size(); i++) {
-            if(inventory.get(i) == current) {
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i) == current) {
                 slot = i;
                 break;
             }
@@ -180,37 +180,37 @@ public class Player extends Entity {
 
         if (currentWeapon.type == EntityType.SWORD) {
             String packagePath = "/gtcafe/rpg/assets/player/attacking/sword/";
-            attackUp1 = setup(packagePath + "boy_attack_up_1.png", gp.tileSize, gp.tileSize*2);
-            attackUp2 = setup(packagePath + "boy_attack_up_2.png", gp.tileSize, gp.tileSize*2);
-            attackDown1 = setup(packagePath + "boy_attack_down_1.png", gp.tileSize, gp.tileSize*2);
-            attackDown2 = setup(packagePath + "boy_attack_down_2.png", gp.tileSize, gp.tileSize*2);
-            attackLeft1 = setup(packagePath + "boy_attack_left_1.png", gp.tileSize*2, gp.tileSize);
-            attackLeft2 = setup(packagePath + "boy_attack_left_2.png", gp.tileSize*2, gp.tileSize);
-            attackRight1 = setup(packagePath + "boy_attack_right_1.png", gp.tileSize*2, gp.tileSize);
-            attackRight2 = setup(packagePath + "boy_attack_right_2.png", gp.tileSize*2, gp.tileSize);
+            attackUp1 = setup(packagePath + "boy_attack_up_1.png", gp.tileSize, gp.tileSize * 2);
+            attackUp2 = setup(packagePath + "boy_attack_up_2.png", gp.tileSize, gp.tileSize * 2);
+            attackDown1 = setup(packagePath + "boy_attack_down_1.png", gp.tileSize, gp.tileSize * 2);
+            attackDown2 = setup(packagePath + "boy_attack_down_2.png", gp.tileSize, gp.tileSize * 2);
+            attackLeft1 = setup(packagePath + "boy_attack_left_1.png", gp.tileSize * 2, gp.tileSize);
+            attackLeft2 = setup(packagePath + "boy_attack_left_2.png", gp.tileSize * 2, gp.tileSize);
+            attackRight1 = setup(packagePath + "boy_attack_right_1.png", gp.tileSize * 2, gp.tileSize);
+            attackRight2 = setup(packagePath + "boy_attack_right_2.png", gp.tileSize * 2, gp.tileSize);
         }
         if (currentWeapon.type == EntityType.AXE) {
             String packagePath = "/gtcafe/rpg/assets/player/attacking/axe/";
-            attackUp1 = setup(packagePath + "boy_axe_up_1.png", gp.tileSize, gp.tileSize*2);
-            attackUp2 = setup(packagePath + "boy_axe_up_2.png", gp.tileSize, gp.tileSize*2);
-            attackDown1 = setup(packagePath + "boy_axe_down_1.png", gp.tileSize, gp.tileSize*2);
-            attackDown2 = setup(packagePath + "boy_axe_down_2.png", gp.tileSize, gp.tileSize*2);
-            attackLeft1 = setup(packagePath + "boy_axe_left_1.png", gp.tileSize*2, gp.tileSize);
-            attackLeft2 = setup(packagePath + "boy_axe_left_2.png", gp.tileSize*2, gp.tileSize);
-            attackRight1 = setup(packagePath + "boy_axe_right_1.png", gp.tileSize*2, gp.tileSize);
-            attackRight2 = setup(packagePath + "boy_axe_right_2.png", gp.tileSize*2, gp.tileSize);
+            attackUp1 = setup(packagePath + "boy_axe_up_1.png", gp.tileSize, gp.tileSize * 2);
+            attackUp2 = setup(packagePath + "boy_axe_up_2.png", gp.tileSize, gp.tileSize * 2);
+            attackDown1 = setup(packagePath + "boy_axe_down_1.png", gp.tileSize, gp.tileSize * 2);
+            attackDown2 = setup(packagePath + "boy_axe_down_2.png", gp.tileSize, gp.tileSize * 2);
+            attackLeft1 = setup(packagePath + "boy_axe_left_1.png", gp.tileSize * 2, gp.tileSize);
+            attackLeft2 = setup(packagePath + "boy_axe_left_2.png", gp.tileSize * 2, gp.tileSize);
+            attackRight1 = setup(packagePath + "boy_axe_right_1.png", gp.tileSize * 2, gp.tileSize);
+            attackRight2 = setup(packagePath + "boy_axe_right_2.png", gp.tileSize * 2, gp.tileSize);
         }
         if (currentWeapon.type == EntityType.PICKAXE) {
             String packagePath = "/gtcafe/rpg/assets/player/attacking/pickaxe/";
-            attackUp1 = setup(packagePath + "boy_pick_up_1.png", gp.tileSize, gp.tileSize*2);
-            attackUp2 = setup(packagePath + "boy_pick_up_2.png", gp.tileSize, gp.tileSize*2);
-            attackDown1 = setup(packagePath + "boy_pick_down_1.png", gp.tileSize, gp.tileSize*2);
-            attackDown2 = setup(packagePath + "boy_pick_down_2.png", gp.tileSize, gp.tileSize*2);
-            attackLeft1 = setup(packagePath + "boy_pick_left_1.png", gp.tileSize*2, gp.tileSize);
-            attackLeft2 = setup(packagePath + "boy_pick_left_2.png", gp.tileSize*2, gp.tileSize);
-            attackRight1 = setup(packagePath + "boy_pick_right_1.png", gp.tileSize*2, gp.tileSize);
-            attackRight2 = setup(packagePath + "boy_pick_right_2.png", gp.tileSize*2, gp.tileSize);
-        } 
+            attackUp1 = setup(packagePath + "boy_pick_up_1.png", gp.tileSize, gp.tileSize * 2);
+            attackUp2 = setup(packagePath + "boy_pick_up_2.png", gp.tileSize, gp.tileSize * 2);
+            attackDown1 = setup(packagePath + "boy_pick_down_1.png", gp.tileSize, gp.tileSize * 2);
+            attackDown2 = setup(packagePath + "boy_pick_down_2.png", gp.tileSize, gp.tileSize * 2);
+            attackLeft1 = setup(packagePath + "boy_pick_left_1.png", gp.tileSize * 2, gp.tileSize);
+            attackLeft2 = setup(packagePath + "boy_pick_left_2.png", gp.tileSize * 2, gp.tileSize);
+            attackRight1 = setup(packagePath + "boy_pick_right_1.png", gp.tileSize * 2, gp.tileSize);
+            attackRight2 = setup(packagePath + "boy_pick_right_2.png", gp.tileSize * 2, gp.tileSize);
+        }
     }
 
     public void getGuardImage() {
@@ -234,8 +234,8 @@ public class Player extends Entity {
 
     public void update() {
 
-        if(knockBack == true) {
-            
+        if (knockBack == true) {
+
             // CHECK TILE COLLISION
             collisionOn = false;
             // CHECK COLLSISION to update collisionOn flag flag flag
@@ -243,7 +243,7 @@ public class Player extends Entity {
             gp.collisionChecker.checkObject(this, true);
             gp.collisionChecker.checkEntity(this, gp.npc);
             gp.collisionChecker.checkEntity(this, gp.monster);
-            gp.collisionChecker.checkEntity(this, gp.iTile);            
+            gp.collisionChecker.checkEntity(this, gp.iTile);
 
             if (collisionOn == true) {
                 knockBackCounter = 0;
@@ -259,30 +259,33 @@ public class Player extends Entity {
                 }
 
                 knockBackCounter++;
-                if (knockBackCounter == 10) {   // knockBack distance
+                if (knockBackCounter == 10) { // knockBack distance
                     knockBackCounter = 0;
                     knockBack = false;
                     speed = defaultSpeed;
                 }
             }
-        } 
+        }
 
         // attack animation
         else if (attacking == true) {
             attacking();
-        }
-        else if (keyHandler.spacePressed == true) {
+        } else if (keyHandler.spacePressed == true) {
             guarding = true;
             guardCounter++;
-        }
-        else if (keyHandler.upPressed || keyHandler.downPressed || 
+        } else if (keyHandler.upPressed || keyHandler.downPressed ||
                 keyHandler.leftPressed || keyHandler.rightPressed ||
                 keyHandler.enterPressed) {
 
-            if(keyHandler.upPressed) { direction = Direction.UP; } 
-            else if(keyHandler.downPressed) { direction = Direction.DOWN; } 
-            else if(keyHandler.leftPressed) { direction = Direction.LEFT; } 
-            else if(keyHandler.rightPressed) { direction = Direction.RIGHT; }
+            if (keyHandler.upPressed) {
+                direction = Direction.UP;
+            } else if (keyHandler.downPressed) {
+                direction = Direction.DOWN;
+            } else if (keyHandler.leftPressed) {
+                direction = Direction.LEFT;
+            } else if (keyHandler.rightPressed) {
+                direction = Direction.RIGHT;
+            }
 
             // CHECK TILE COLLISION
             collisionOn = false;
@@ -298,10 +301,10 @@ public class Player extends Entity {
 
             // CHECK MONSTER COLLISION
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
-            contactMonster(monsterIndex);   // player receives damage
+            contactMonster(monsterIndex); // player receives damage
 
             // CHECK INTERACTIVE TILES
-            int iTileIndex = gp.collisionChecker.checkEntity(this, gp.iTile);
+            gp.collisionChecker.checkEntity(this, gp.iTile);
 
             // CHECK EVENT
             gp.eventHandler.checkEvent();
@@ -331,18 +334,23 @@ public class Player extends Entity {
 
             // ANIMATION for walking
             spriteCounter++;
-            if(spriteCounter > WALKING_ANIMATION_SPEED) {
-                if (spriteNum == 1) { spriteNum = 2; } 
-                else if (spriteNum == 2) { spriteNum = 1; }
+            if (spriteCounter > WALKING_ANIMATION_SPEED) {
+                if (spriteNum == 1) {
+                    spriteNum = 2;
+                } else if (spriteNum == 2) {
+                    spriteNum = 1;
+                }
                 spriteCounter = 0;
             }
-        } 
-        else {
+        } else {
             // ANIMATION for Standing
             spriteCounter++;
-            if(spriteCounter > STANDING_ANIMATION_SPEED) {
-                if (spriteNum == 1) { spriteNum = 2; } 
-                else if (spriteNum == 2) { spriteNum = 1; }
+            if (spriteCounter > STANDING_ANIMATION_SPEED) {
+                if (spriteNum == 1) {
+                    spriteNum = 2;
+                } else if (spriteNum == 2) {
+                    spriteNum = 1;
+                }
                 spriteCounter = 0;
             }
 
@@ -355,10 +363,12 @@ public class Player extends Entity {
         // 2. 拋射物目前沒有發射
         // 3. 拋射物目前還沒有畫出來 (30 FPS)
         // 4. Player 目前的魔力值足夠發射 (根據 Mana 值以及 Projectiles 需要消耗的值判斷)
-        // System.out.printf("[Player#update()] shotKeyPressed: [%s], projectile.alive: [%s], shotAvailableCounter: [%s], haveResource: [%s]\n", 
-        //     gp.keyHandler.shotKeyPressed, projectile.alive, shotAvailableCounter, projectile.haveResource(this)
+        // System.out.printf("[Player#update()] shotKeyPressed: [%s], projectile.alive:
+        // [%s], shotAvailableCounter: [%s], haveResource: [%s]\n",
+        // gp.keyHandler.shotKeyPressed, projectile.alive, shotAvailableCounter,
+        // projectile.haveResource(this)
         // );
-        if (gp.keyHandler.shotKeyPressed == true && projectile.alive == false && 
+        if (gp.keyHandler.shotKeyPressed == true && projectile.alive == false &&
                 shotAvailableCounter == 30 && projectile.haveResource(this) == true) {
             System.out.println("[Player#update()] Shot the projectiles!!");
             // SET DEFAULT COORDINATES, DIRECTION AND USER
@@ -366,16 +376,11 @@ public class Player extends Entity {
 
             // SUBTRACT THE COST (MANA, AMMO 彈藥, etc.)
             projectile.subtractResource(this);
-            
-            // CHECK VACANCY
-            for(int i=0; i< gp.projectile[1].length; i++) {
-                if(gp.projectile[gp.currentMap.index][i] == null) {
-                    gp.projectile[gp.currentMap.index][i] = projectile;
-                    break;
-                }
-            } 
 
-            shotAvailableCounter = 0;   // reset counter once player shoot.
+            // Add to ArrayList
+            gp.projectile[gp.currentMap.index].add(projectile);
+
+            shotAvailableCounter = 0; // reset counter once player shoot.
 
             gp.ui.addMessage("Shot the " + projectile.name + "!!");
 
@@ -385,7 +390,7 @@ public class Player extends Entity {
         // This needs to be outside of key if statement!
         if (invincible == true) {
             invincibleCounter++;
-            if(invincibleCounter > 60) { // Frame Counter
+            if (invincibleCounter > 60) { // Frame Counter
                 invincible = false;
                 transparent = false;
                 invincibleCounter = 0;
@@ -399,14 +404,19 @@ public class Player extends Entity {
 
         // Check the life value to avoid grant to maxLife
         // such player pick the heart.
-        if (life > maxLife) { life = maxLife; }
-        if (mana > maxMana) { mana = maxMana; }
+        if (life > maxLife) {
+            life = maxLife;
+        }
+        if (mana > maxMana) {
+            mana = maxMana;
+        }
 
         if (gp.keyHandler.godModeOn == true) {
             life = maxLife;
             mana = maxMana;
-        };
-       
+        }
+        ;
+
         // Check if game over, 註解後可以變無敵
         if (life <= 0 && gp.keyHandler.godModeOn == false) {
             gp.gameState = GameState.GAME_OVER;
@@ -422,34 +432,48 @@ public class Player extends Entity {
         int tempScreenY = screenY;
 
         // Depends on direction and attacking status to pick specific image up.
-        switch(direction) {
+        switch (direction) {
             case UP:
-                if (attacking == false) image = (spriteNum == 1) ? up1 : up2;
+                if (attacking == false)
+                    image = (spriteNum == 1) ? up1 : up2;
                 if (attacking == true) {
                     // exception case for up image.
                     tempScreenY = screenY - gp.tileSize;
                     image = (spriteNum == 1) ? attackUp1 : attackUp2;
                 }
-                if (guarding == true) { image = guardUp; }
+                if (guarding == true) {
+                    image = guardUp;
+                }
                 break;
             case DOWN:
-                if (attacking == false) image = (spriteNum == 1) ? down1 : down2;
-                if (attacking == true) image = (spriteNum == 1) ? attackDown1 : attackDown2;
-                if (guarding == true) { image = guardDown; }
+                if (attacking == false)
+                    image = (spriteNum == 1) ? down1 : down2;
+                if (attacking == true)
+                    image = (spriteNum == 1) ? attackDown1 : attackDown2;
+                if (guarding == true) {
+                    image = guardDown;
+                }
                 break;
             case LEFT:
-                if (attacking == false) image = (spriteNum == 1) ? left1 : left2;
+                if (attacking == false)
+                    image = (spriteNum == 1) ? left1 : left2;
                 if (attacking == true) {
                     // exception case for up image.
                     tempScreenX = screenX - gp.tileSize;
                     image = (spriteNum == 1) ? attackLeft1 : attackLeft2;
                 }
-                if (guarding == true) { image = guardLeft; }
+                if (guarding == true) {
+                    image = guardLeft;
+                }
                 break;
             case RIGHT:
-                if (attacking == false) image = (spriteNum == 1) ? right1 : right2;
-                if (attacking == true) image = (spriteNum == 1) ? attackRight1 : attackRight2;
-                if (guarding == true) { image = guardRight; }
+                if (attacking == false)
+                    image = (spriteNum == 1) ? right1 : right2;
+                if (attacking == true)
+                    image = (spriteNum == 1) ? attackRight1 : attackRight2;
+                if (guarding == true) {
+                    image = guardRight;
+                }
                 break;
         }
 
@@ -463,7 +487,7 @@ public class Player extends Entity {
         }
 
         // 畫出 solid area
-       drawInteractiveArea(g2, tempScreenX, tempScreenY);
+        drawInteractiveArea(g2, tempScreenX, tempScreenY);
 
         // reset alpha
         g2Utils.changeAlpha(g2, 1f);
@@ -474,29 +498,32 @@ public class Player extends Entity {
         int mapIndex = gp.currentMap.index;
         // 999 MEANS NOT TOUCH ANY OBJECT
         if (index != 999) {
+
+            Entity obj = gp.obj[mapIndex].get(index);
+
             // PICKUP ONLY ITEMS, ex: Coin
-            if (gp.obj[mapIndex][index].type == EntityType.PICKUPONLY) {
-                System.out.printf("[Player#pickUpObject] The player picked up an item on the map: [%s]\n", gp.currentMap.name);
-                gp.obj[mapIndex][index].use(this);
-                gp.obj[mapIndex][index] = null;
-            } 
-            else if (gp.obj[mapIndex][index].type == EntityType.OBSTACLE) {
+            if (obj.type == EntityType.PICKUPONLY) {
+                System.out.printf("[Player#pickUpObject] The player picked up an item on the map: [%s]\n",
+                        gp.currentMap.name);
+                obj.use(this);
+                gp.obj[mapIndex].remove(index);
+            } else if (obj.type == EntityType.OBSTACLE) {
                 if (keyHandler.enterPressed == true) {
                     attackCanceled = true;
-                    gp.obj[gp.currentMap.index][index].interact();
+                    obj.interact();
                 }
             }
             // INVENTORY ITEMS
             else {
                 String text;
-                if (canObtainItem(gp.obj[mapIndex][index]) == true) {
+                if (canObtainItem(obj) == true) {
                     gp.playSoundEffect(Sound.FX_COIN);
-                    text = "Got a " + gp.obj[mapIndex][index].name + "!";
+                    text = "Got a " + obj.name + "!";
+                    gp.obj[mapIndex].remove(index);
                 } else {
                     text = "You cannot carry any more!";
                 }
                 gp.ui.addMessage(text);
-                gp.obj[mapIndex][index] = null;
             }
         }
     }
@@ -506,19 +533,19 @@ public class Player extends Entity {
         int mapIndex = gp.currentMap.index;
         if (index != 999) { // means player touch NPC
             if (gp.keyHandler.enterPressed == true) {
-            
+
                 System.out.println("[Player#interactNPC] You are interacting with an NPC.");
                 attackCanceled = true;
-                gp.npc[mapIndex][index].speak();
-            } 
+                gp.npc[mapIndex].get(index).speak();
+            }
 
-            gp.npc[gp.currentMap.index][index].move(direction);
+            gp.npc[gp.currentMap.index].get(index).move(direction);
         }
     }
 
     public void damageProjectile(int i) {
         if (i != 999) {
-            Entity projectile = gp.projectile[gp.currentMap.index][i];
+            Entity projectile = gp.projectile[gp.currentMap.index].get(i);
             projectile.alive = false;
             generateParticle(projectile, projectile);
         }
@@ -527,21 +554,27 @@ public class Player extends Entity {
     // 計算 Player 毀壞 Interactive Tiles 的邏輯
     public void damageInteractiveTiles(int i) {
         int mapIndex = gp.currentMap.index;
-        if (i != 999                                        // 1. Tile Index 是否在合理位置
-                && gp.iTile[mapIndex][i].destructible == true         // 2. 判斷 Tiles 是否已經宣告成可摧毀的物件
-                && gp.iTile[mapIndex][i].isCorrectItem(this) == true  // 3. 判斷目前 Entity (Player) 的武器，是否可以摧毀 Tiles
-                && gp.iTile[mapIndex][i].invincible == false          // 4. 是否在暫時無敵狀態
-            ) { 
-            gp.iTile[mapIndex][i].playSoundEffect();
-            gp.iTile[mapIndex][i].life --;
-            gp.iTile[mapIndex][i].invincible = true;
+        if (i != 999) { // 1. Tile Index 是否在合理位置
+            Entity entity = gp.iTile[mapIndex].get(i);
+            if (entity instanceof gtcafe.rpg.tile.interactive.InteractiveTile) {
+                gtcafe.rpg.tile.interactive.InteractiveTile tile = (gtcafe.rpg.tile.interactive.InteractiveTile) entity;
 
-            // PARTICAL 粒子效果
-            generateParticle(gp.iTile[mapIndex][i], gp.iTile[mapIndex][i]);
+                if (tile.destructible == true // 2. 判斷 Tiles 是否已經宣告成可摧毀的物件
+                        && tile.isCorrectItem(this) == true // 3. 判斷目前 Entity (Player) 的武器，是否可以摧毀 Tiles
+                        && tile.invincible == false // 4. 是否在暫時無敵狀態
+                ) {
+                    tile.playSoundEffect();
+                    tile.life--;
+                    tile.invincible = true;
 
-            if (gp.iTile[mapIndex][i].life == 0) {
-                gp.iTile[mapIndex][i].checkDrop();
-                gp.iTile[mapIndex][i] = gp.iTile[mapIndex][i].getDestroyedForm();
+                    // PARTICAL 粒子效果
+                    generateParticle(tile, tile);
+
+                    if (tile.life == 0) {
+                        tile.checkDrop();
+                        gp.iTile[mapIndex].set(i, tile.getDestroyedForm());
+                    }
+                }
             }
         }
     }
@@ -550,7 +583,7 @@ public class Player extends Entity {
     public void damageMonster(int index, Entity attacker, int attack, int knockBackPower) {
         int mapIndex = gp.currentMap.index;
         if (index != 999) {
-            Entity monster = gp.monster[mapIndex][index];
+            Entity monster = gp.monster[mapIndex].get(index);
             // give some damge
             if (monster.invincible == false) {
                 System.out.println("[Player#damageMonster] The player is attacking the monster!!");
@@ -561,12 +594,14 @@ public class Player extends Entity {
                 }
 
                 // Parry
-                if (gp.monster[gp.currentMap.index][index].offBalance == true) {
+                if (monster.offBalance == true) {
                     attack *= 5;
                 }
 
                 int damage = attack - monster.defense;
-                if (damage <= 0) { damage = 1; }    // 至少會有 1 的傷害
+                if (damage <= 0) {
+                    damage = 1;
+                } // 至少會有 1 的傷害
 
                 monster.life -= damage;
                 gp.ui.addMessage(damage + " damage!");
@@ -574,7 +609,7 @@ public class Player extends Entity {
                 monster.damageReaction();
 
                 // handling monster dying
-                if(monster.life <= 0) {
+                if (monster.life <= 0) {
                     monster.dying = true;
                     exp += monster.exp;
 
@@ -593,13 +628,16 @@ public class Player extends Entity {
     public void contactMonster(int index) {
         int mapIndex = gp.currentMap.index;
         if (index != 999) {
-            if (invincible == false && gp.monster[mapIndex][index].dying == false) {
+            Entity monster = gp.monster[mapIndex].get(index);
+            if (invincible == false && monster.dying == false) {
                 System.out.println("[Player#contactMonster] The monster is attacking the player!!");
                 gp.playSoundEffect(Sound.FX_RECEIVE_DAMAGE);
-                
+
                 // Monster 攻擊力 - Player 的防禦力
-                int damage = gp.monster[mapIndex][index].attack - defense;
-                if (damage < 1) { damage = 1; }     // 至少會損失 1
+                int damage = monster.attack - defense;
+                if (damage < 1) {
+                    damage = 1;
+                } // 至少會損失 1
 
                 life -= damage;
                 invincible = true;
@@ -641,32 +679,31 @@ public class Player extends Entity {
 
         if (itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);
-            if (selectedItem.type == EntityType.SWORD 
-                    || selectedItem.type == EntityType.AXE 
+            if (selectedItem.type == EntityType.SWORD
+                    || selectedItem.type == EntityType.AXE
                     || selectedItem.type == EntityType.PICKAXE) {
                 currentWeapon = selectedItem;
                 attack = getAttack();
                 getAttackImage();
             }
             if (selectedItem.type == EntityType.SHIELD) {
-                currentShield= selectedItem;
+                currentShield = selectedItem;
                 defense = getDefense();
             }
             // if (selectedItem.type == EntityType.SHOE) {
-            //     speed += 5;
+            // speed += 5;
             // }
             if (selectedItem.type == EntityType.LIGHT) {
-                if(currentLight == selectedItem) {
-                    currentLight = null;    // un-equip this item
-                }
-                else {
+                if (currentLight == selectedItem) {
+                    currentLight = null; // un-equip this item
+                } else {
                     currentLight = selectedItem;
                 }
                 lightUpdated = true;
             }
             if (selectedItem.type == EntityType.CONSUMABLE) {
                 if (selectedItem.use(this) == true) {
-                    if(selectedItem.amount > 1) {
+                    if (selectedItem.amount > 1) {
                         selectedItem.amount--;
                     } else {
                         inventory.remove(itemIndex);
@@ -677,11 +714,12 @@ public class Player extends Entity {
     }
 
     // day43
-    // This method also can be used when you want to check if player has a certain quest item tec.
+    // This method also can be used when you want to check if player has a certain
+    // quest item tec.
     public int searchItemInInventory(String itemName) {
 
         int itemIndex = 999;
-        for (int i=0; i<inventory.size(); i++) {
+        for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i).name.equals(itemName)) {
                 itemIndex = i;
                 break;
@@ -699,22 +737,21 @@ public class Player extends Entity {
         Entity newItem = gp.eGenerator.getObject(item.name);
 
         // CHECK IF STACKABLE
-        if(newItem.stackable == true) {
+        if (newItem.stackable == true) {
             int index = searchItemInInventory(newItem.name);
             if (index != 999) {
                 inventory.get(index).amount++;
                 canObtain = true;
-            }
-            else { // this is a new item, need to check vacancy
-                if(inventory.size() != maxInventorySize) {
+            } else { // this is a new item, need to check vacancy
+                if (inventory.size() != maxInventorySize) {
                     inventory.add(newItem);
                     canObtain = true;
                 }
             }
-        } 
+        }
         // NOT STACKABLE
         else {
-            if(inventory.size() != maxInventorySize) {
+            if (inventory.size() != maxInventorySize) {
                 inventory.add(newItem);
                 canObtain = true;
             }

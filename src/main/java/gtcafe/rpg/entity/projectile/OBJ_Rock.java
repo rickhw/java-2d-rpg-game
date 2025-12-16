@@ -8,16 +8,17 @@ import gtcafe.rpg.entity.Entity;
 public class OBJ_Rock extends Projectile {
     public static final String OBJ_NAME = "Rock";
     GamePanel gp;
+
     public OBJ_Rock(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
         name = OBJ_NAME;
         speed = 3;
-        maxLife = 80;   // N frame 後會消失
+        maxLife = 80; // N frame 後會消失
         life = maxLife;
         attack = 2;
-        useCost = 1;    // 花費 1 個魔力
+        useCost = 1; // 花費 1 個魔力
         alive = false;
 
         getImage();
@@ -39,7 +40,7 @@ public class OBJ_Rock extends Projectile {
     // 判斷是否有足夠的彈藥數可以使用
     public boolean haveResource(Entity user) {
         boolean haveResource = false;
-        if (user.ammo >= useCost) {
+        if (user.getAmmo() >= useCost) {
             haveResource = true;
         }
 
@@ -48,13 +49,12 @@ public class OBJ_Rock extends Projectile {
 
     // 減去使用者的彈藥數
     public void subtractResource(Entity user) {
-        user.ammo -= useCost;
+        user.setAmmo(user.getAmmo() - useCost);
     }
-
 
     // Particle 粒子效果的參數
     public Color getParticleColor() {
-        Color color = new Color(40,50,0);
+        Color color = new Color(40, 50, 0);
         return color;
     }
 

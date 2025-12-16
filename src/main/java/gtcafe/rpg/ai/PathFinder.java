@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 
-/** 
+/**
  * - https://en.wikipedia.org/wiki/A*_search_algorithm
- * - [Step by Step Explanation of A* Pathfinding Algorithm in Java](https://www.youtube.com/watch?v=2JNEme00ZFA)
+ * - [Step by Step Explanation of A* Pathfinding Algorithm in
+ * Java](https://www.youtube.com/watch?v=2JNEme00ZFA)
  */
 public class PathFinder {
     GamePanel gp;
@@ -29,7 +30,7 @@ public class PathFinder {
         int col = 0;
         int row = 0;
 
-        while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
             node[col][row] = new Node(col, row);
 
             col++;
@@ -44,7 +45,7 @@ public class PathFinder {
         int col = 0;
         int row = 0;
 
-        while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
             // Reset open, checked and solid state
             node[col][row].open = false;
             node[col][row].checked = false;
@@ -76,7 +77,7 @@ public class PathFinder {
         int col = 0;
         int row = 0;
 
-        while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
             // SET SOLIDE NODE
             int tileNum = gp.tileManager.mapTileNum[gp.currentMap.index][col][row];
             if (gp.tileManager.tiles[tileNum].collision == true) {
@@ -87,43 +88,48 @@ public class PathFinder {
             getCost(node[col][row]);
 
             col++;
-            if(col == gp.maxWorldCol) {
+            if (col == gp.maxWorldCol) {
                 col = 0;
                 row++;
             }
         }
 
         // CHECK INTERACTIVE TILES
-        for (int i=0; i<gp.iTile[1].length; i++) {
-            if(gp.iTile[gp.currentMap.index][i] != null && gp.iTile[gp.currentMap.index][i].destructible == true) {
-                int itCol = gp.iTile[gp.currentMap.index][i].worldX / gp.tileSize;
-                int itRow = gp.iTile[gp.currentMap.index][i].worldY / gp.tileSize;
-                node[itCol][itRow].solid = true;
+        for (int i = 0; i < gp.iTile[gp.currentMap.index].size(); i++) {
+            Entity it = gp.iTile[gp.currentMap.index].get(i);
+            if (it != null && it instanceof gtcafe.rpg.tile.interactive.InteractiveTile) { // Check type
+                if (((gtcafe.rpg.tile.interactive.InteractiveTile) it).destructible == true) {
+                    int itCol = it.getWorldX() / gp.tileSize;
+                    int itRow = it.getWorldY() / gp.tileSize;
+                    node[itCol][itRow].solid = true;
+                }
             }
         }
 
         // CHECK NPC
-        for (int i=0; i<gp.npc[1].length; i++) {
-            if(gp.npc[gp.currentMap.index][i] != null && gp.npc[gp.currentMap.index][i] != entity) {
-                int itCol = gp.npc[gp.currentMap.index][i].worldX / gp.tileSize;
-                int itRow = gp.npc[gp.currentMap.index][i].worldY / gp.tileSize;
+        for (int i = 0; i < gp.npc[gp.currentMap.index].size(); i++) {
+            Entity npc = gp.npc[gp.currentMap.index].get(i);
+            if (npc != null && npc != entity) {
+                int itCol = npc.getWorldX() / gp.tileSize;
+                int itRow = npc.getWorldY() / gp.tileSize;
                 node[itCol][itRow].solid = true;
             }
         }
 
         // CHECK MONSTER
-        for (int i=0; i<gp.monster[1].length; i++) {
-            if(gp.monster[gp.currentMap.index][i] != null && gp.monster[gp.currentMap.index][i] != entity) {
-                int itCol = gp.monster[gp.currentMap.index][i].worldX / gp.tileSize;
-                int itRow = gp.monster[gp.currentMap.index][i].worldY / gp.tileSize;
+        for (int i = 0; i < gp.monster[gp.currentMap.index].size(); i++) {
+            Entity monster = gp.monster[gp.currentMap.index].get(i);
+            if (monster != null && monster != entity) {
+                int itCol = monster.getWorldX() / gp.tileSize;
+                int itRow = monster.getWorldY() / gp.tileSize;
                 node[itCol][itRow].solid = true;
             }
         }
 
         // CHECK PLAYER
         if (gp.player != entity) {
-            int itCol = gp.player.worldX / gp.tileSize;
-            int itRow = gp.player.worldY / gp.tileSize;
+            int itCol = gp.player.getWorldX() / gp.tileSize;
+            int itRow = gp.player.getWorldY() / gp.tileSize;
             node[itCol][itRow].solid = true;
         }
     }
@@ -137,7 +143,7 @@ public class PathFinder {
         // H cost
         xDistance = Math.abs(node.col - goalNode.col);
         yDistance = Math.abs(node.row - goalNode.row);
-        node.hCost= xDistance + yDistance;
+        node.hCost = xDistance + yDistance;
 
         // F cost
         node.fCost = node.gCost + node.hCost;
@@ -145,7 +151,7 @@ public class PathFinder {
 
     public boolean search() {
 
-        while(goalReached == false && step < 500) { // limited steps
+        while (goalReached == false && step < 500) { // limited steps
 
             int col = currentNode.col;
             int row = currentNode.row;
@@ -156,28 +162,28 @@ public class PathFinder {
 
             // Open the Up node
             if (row - 1 >= 0) {
-                openNode(node[col][row-1]);
+                openNode(node[col][row - 1]);
             }
             // Open the left node
             if (col - 1 >= 0) {
-                openNode(node[col-1][row]);
+                openNode(node[col - 1][row]);
             }
             // Open the down node
             if (row + 1 < gp.maxWorldRow) {
-                openNode(node[col][row+1]);
+                openNode(node[col][row + 1]);
             }
             // Open the right node
             if (col + 1 < gp.maxWorldCol) {
-                openNode(node[col+1][row]);
+                openNode(node[col + 1][row]);
             }
 
             // Find the best node
             int bestNodeIndex = 0;
             int bestNodefCost = 999;
 
-            for(int i=0; i<openList.size(); i++) {
+            for (int i = 0; i < openList.size(); i++) {
                 // Check if this node's F cost is better
-                if(openList.get(i).fCost < bestNodefCost) {
+                if (openList.get(i).fCost < bestNodefCost) {
                     bestNodeIndex = i;
                     bestNodefCost = openList.get(i).fCost;
                 }
@@ -222,7 +228,7 @@ public class PathFinder {
         Node current = goalNode;
 
         while (current != startNode) {
-            // Always adding to the first slot, 
+            // Always adding to the first slot,
             // so the lasst added node is in the [0]
             pathList.add(0, current); // with this pathList, NPC / Monster can track the player
             current = current.parent;

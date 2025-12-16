@@ -7,7 +7,7 @@ import gtcafe.rpg.system.Sound;
 
 public class OBJ_Coin_Bronze extends Entity {
     public static final String OBJ_NAME = "Bronze Coin";
-    
+
     public OBJ_Coin_Bronze(GamePanel gp) {
         super(gp);
         name = OBJ_NAME;
@@ -19,8 +19,8 @@ public class OBJ_Coin_Bronze extends Entity {
     public boolean use(Entity entity) {
         gp.playSoundEffect(Sound.FX_COIN);
         gp.ui.addMessage("Coin +" + value);
-        entity.coin += value;
+        entity.setCoin(entity.getCoin() + value);
 
-        return true;    // means delete it.
+        return true; // means delete it.
     }
 }

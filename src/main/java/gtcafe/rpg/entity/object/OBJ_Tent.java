@@ -8,6 +8,7 @@ import gtcafe.rpg.system.Sound;
 
 public class OBJ_Tent extends Entity {
     public static final String OBJ_NAME = "Tent";
+
     public OBJ_Tent(GamePanel gp) {
         super(gp);
         name = OBJ_NAME;
@@ -21,8 +22,8 @@ public class OBJ_Tent extends Entity {
     public boolean use(Entity entity) {
         gp.gameState = GameState.SLEEP;
         gp.playSoundEffect(Sound.FX__SLEEP);
-        gp.player.life = gp.player.maxLife;
-        gp.player.mana = gp.player.maxMana;
+        gp.player.setLife(gp.player.getMaxLife());
+        gp.player.setMana(gp.player.getMaxMana());
         gp.player.getSleepingImage(down1);
 
         return true; // diseaper after using

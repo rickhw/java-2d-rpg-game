@@ -8,16 +8,17 @@ import gtcafe.rpg.entity.Entity;
 public class OBJ_Fireball extends Projectile {
     public static final String OBJ_NAME = "Fireball";
     GamePanel gp;
+
     public OBJ_Fireball(GamePanel gp) {
         super(gp);
         this.gp = gp;
 
         name = OBJ_NAME;
         speed = 8;
-        maxLife = 120;   // 80 frame 後會消失
+        maxLife = 120; // 80 frame 後會消失
         life = maxLife;
         attack = 3;
-        useCost = 1;    // 花費 1 個魔力
+        useCost = 1; // 花費 1 個魔力
         alive = false;
         knockBackPower = 3;
 
@@ -40,7 +41,7 @@ public class OBJ_Fireball extends Projectile {
     // 判斷是否有足夠的魔力值可以使用
     public boolean haveResource(Entity user) {
         boolean haveResource = false;
-        if (user.mana >= useCost) {
+        if (user.getMana() >= useCost) {
             haveResource = true;
         }
 
@@ -49,12 +50,12 @@ public class OBJ_Fireball extends Projectile {
 
     // 減去使用者的魔力值
     public void subtractResource(Entity user) {
-        user.mana -= useCost;
+        user.setMana(user.getMana() - useCost);
     }
 
     // Particle 粒子效果的參數
     public Color getParticleColor() {
-        Color color = new Color(240,50,0);
+        Color color = new Color(240, 50, 0);
         return color;
     }
 

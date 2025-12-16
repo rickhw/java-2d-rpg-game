@@ -9,9 +9,9 @@ import gtcafe.rpg.state.Scene;
 import gtcafe.rpg.tile.Map;
 
 public class EventHandler {
-    
+
     GamePanel gp;
-    public EventRect eventRect[][][];  // mapIndex:row:col
+    public EventRect eventRect[][][]; // mapIndex:row:col
     Entity eventSource;
 
     // prevent the event happen repeatly.
@@ -30,7 +30,7 @@ public class EventHandler {
         int col = 0;
         int row = 0;
         int map = 0;
-        while( map < gp.maxMap && col < gp.maxWorldCol && row < gp.maxWorldRow) {
+        while (map < gp.maxMap && col < gp.maxWorldCol && row < gp.maxWorldRow) {
             // 用來判斷是否觸發事件的範圍
             eventRect[map][col][row] = new EventRect();
             eventRect[map][col][row].x = 23;
@@ -41,13 +41,13 @@ public class EventHandler {
             eventRect[map][col][row].eventRectDefaultY = eventRect[map][col][row].y;
 
             col++;
-            if( col == gp.maxWorldCol) {
+            if (col == gp.maxWorldCol) {
                 col = 0;
                 row++;
 
                 // reset event for each map
                 if (row == gp.maxWorldRow) {
-                    row = 0; 
+                    row = 0;
                     map++;
                 }
             }
@@ -66,8 +66,8 @@ public class EventHandler {
     public void checkEvent() {
 
         // Check if the player character is more than 1 tile away from the last event
-        int xDistance = Math.abs(gp.player.worldX - previousEventX);
-        int yDistance = Math.abs(gp.player.worldY - previousEventY);
+        int xDistance = Math.abs(gp.player.getWorldX() - previousEventX);
+        int yDistance = Math.abs(gp.player.getWorldY() - previousEventY);
         int distance = Math.max(xDistance, yDistance);
         if (distance > gp.tileSize) {
             canTouchEvent = true;
@@ -75,27 +75,46 @@ public class EventHandler {
 
         if (canTouchEvent) {
             // damagePit
-            // if (hit(Map.WORLD_MAP, 27,16,Direction.RIGHT)) { damagePit(GameState.DIALOGUE_STATE); }
-            // else if (hit(Map.WORLD_MAP, 23,19,Direction.ANY)) { damagePit(GameState.DIALOGUE_STATE); }
+            // if (hit(Map.WORLD_MAP, 27,16,Direction.RIGHT)) {
+            // damagePit(GameState.DIALOGUE_STATE); }
+            // else if (hit(Map.WORLD_MAP, 23,19,Direction.ANY)) {
+            // damagePit(GameState.DIALOGUE_STATE); }
 
             // water side
-            if (hit(Map.WORLD_MAP, 23,12,Direction.UP)) { healingPool(GameState.DIALOGUE); }
+            if (hit(Map.WORLD_MAP, 23, 12, Direction.UP)) {
+                healingPool(GameState.DIALOGUE);
+            }
 
             // Speak to NPC in store
-            else if (hit(Map.STORE, 12,9,Direction.UP)) { speak(gp.npc[1][0]); } // TODO
+            else if (hit(Map.STORE, 12, 9, Direction.UP)) {
+                speak(gp.npc[1].get(0));
+            } // TODO
 
-            // TRANSITE TO STORE 
-            else if (hit(Map.WORLD_MAP, 10,39,Direction.ANY)) { teleport(Map.STORE, 12, 13, GamePanel.INDOOR); }
-            else if (hit(Map.STORE, 12,13,Direction.ANY)) { teleport(Map.WORLD_MAP, 10, 39, GamePanel.OUTSIDE); }
+            // TRANSITE TO STORE
+            else if (hit(Map.WORLD_MAP, 10, 39, Direction.ANY)) {
+                teleport(Map.STORE, 12, 13, GamePanel.INDOOR);
+            } else if (hit(Map.STORE, 12, 13, Direction.ANY)) {
+                teleport(Map.WORLD_MAP, 10, 39, GamePanel.OUTSIDE);
+            }
 
             // TO DUNGDEON B1
-            else if (hit(Map.WORLD_MAP, 12,9,Direction.ANY)) { teleport(Map.DONGEON01, 9, 41, GamePanel.DUNGEON);} // To the Dungeon
-            else if (hit(Map.DONGEON01, 9,41,Direction.ANY)) { teleport(Map.WORLD_MAP, 12, 9, GamePanel.OUTSIDE);} // To the World
+            else if (hit(Map.WORLD_MAP, 12, 9, Direction.ANY)) {
+                teleport(Map.DONGEON01, 9, 41, GamePanel.DUNGEON);
+            } // To the Dungeon
+            else if (hit(Map.DONGEON01, 9, 41, Direction.ANY)) {
+                teleport(Map.WORLD_MAP, 12, 9, GamePanel.OUTSIDE);
+            } // To the World
 
             // TO DUNGDEON B2
-            else if (hit(Map.DONGEON01, 8,7,Direction.ANY)) { teleport(Map.DONGEON02, 26, 41, GamePanel.DUNGEON);} // To the Dungeon 02 / B2
-            else if (hit(Map.DONGEON02, 26,41,Direction.ANY)) { teleport(Map.DONGEON01, 8, 7, GamePanel.DUNGEON);} // To the Dungeon 01 / B1
-            else if (hit(Map.DONGEON02, 25,27,Direction.ANY)) { skeletonLord();} // Wake up the boss!!
+            else if (hit(Map.DONGEON01, 8, 7, Direction.ANY)) {
+                teleport(Map.DONGEON02, 26, 41, GamePanel.DUNGEON);
+            } // To the Dungeon 02 / B2
+            else if (hit(Map.DONGEON02, 26, 41, Direction.ANY)) {
+                teleport(Map.DONGEON01, 8, 7, GamePanel.DUNGEON);
+            } // To the Dungeon 01 / B1
+            else if (hit(Map.DONGEON02, 25, 27, Direction.ANY)) {
+                skeletonLord();
+            } // Wake up the boss!!
         }
     }
 
@@ -107,28 +126,27 @@ public class EventHandler {
         }
     }
 
-
     // check the event collision
     public boolean hit(Map map, int col, int row, Direction requiredDirection) {
         boolean hit = false;
         int mapIndex = map.index;
 
         if (mapIndex == gp.currentMap.index) {
-            gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-            gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
+            gp.player.solidArea.x = gp.player.getWorldX() + gp.player.solidArea.x;
+            gp.player.solidArea.y = gp.player.getWorldY() + gp.player.solidArea.y;
 
             eventRect[mapIndex][col][row].x = col * gp.tileSize + eventRect[mapIndex][col][row].x;
             eventRect[mapIndex][col][row].y = row * gp.tileSize + eventRect[mapIndex][col][row].y;
 
             // checking if player's solidArea is colliding with eventRect's solidArea
-            if (gp.player.solidArea.intersects(eventRect[mapIndex][col][row]) && 
-                eventRect[mapIndex][col][row].eventDone == false)  // happen one time only
+            if (gp.player.solidArea.intersects(eventRect[mapIndex][col][row]) &&
+                    eventRect[mapIndex][col][row].eventDone == false) // happen one time only
             {
                 if (gp.player.direction == requiredDirection || requiredDirection == Direction.ANY) {
                     hit = true;
 
-                    previousEventX = gp.player.worldX;
-                    previousEventY = gp.player.worldY;
+                    previousEventX = gp.player.getWorldX();
+                    previousEventY = gp.player.getWorldY();
                 }
             }
 
@@ -137,7 +155,7 @@ public class EventHandler {
             eventRect[mapIndex][col][row].x = eventRect[mapIndex][col][row].eventRectDefaultX;
             eventRect[mapIndex][col][row].y = eventRect[mapIndex][col][row].eventRectDefaultY;
         }
-        
+
         return hit;
     }
 
@@ -156,15 +174,16 @@ public class EventHandler {
         gp.playSoundEffect(Sound.FX__STAIRS);
     }
 
+    @SuppressWarnings("unused")
     private void damagePit(GameState gameState) {
         gp.gameState = gameState;
         gp.ui.currentDialogue = "You fall into a pit!";
         eventSource.startDialogue(eventSource, 0);
-        gp.player.life -= 1;
+        gp.player.setLife(gp.player.getLife() - 1);
 
         canTouchEvent = false;
         System.out.println("[EventHandler#damagePit] Player are hit! Lost helf heart!");
-        System.out.printf("[EventHandler#damagePit] Player.Life: [%s]\n", gp.player.life);
+        System.out.printf("[EventHandler#damagePit] Player.Life: [%s]\n", gp.player.getLife());
 
     }
 
@@ -173,8 +192,8 @@ public class EventHandler {
             gp.gameState = gameState;
             gp.player.attackCanceled = true;
             eventSource.startDialogue(eventSource, 1);
-            gp.player.life = gp.player.maxLife;
-            gp.player.mana = gp.player.maxMana;
+            gp.player.setLife(gp.player.getMaxLife());
+            gp.player.setMana(gp.player.getMaxMana());
             gp.playSoundEffect(Sound.FX_COIN);
             gp.saveLoad.save();
         }
@@ -182,7 +201,7 @@ public class EventHandler {
 
     public void skeletonLord() {
         // start the cutsense
-        if(gp.bossBattleOn == false && Progress.skeletonLordDefeated == false) {
+        if (gp.bossBattleOn == false && Progress.skeletonLordDefeated == false) {
             gp.gameState = GameState.CUTSENSE;
             gp.csManager.sceneNum = Scene.SKELETON_LORD;
         }

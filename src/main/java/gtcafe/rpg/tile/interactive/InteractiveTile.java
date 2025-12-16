@@ -17,17 +17,18 @@ public class InteractiveTile extends Entity {
     }
 
     // overwrite by subclass
-    public void update() { }
+    public void update() {
+    }
 
     // overwrite parent to ignore the invicible effect.
-    public void draw(Graphics2D g2) { 
-        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+    public void draw(Graphics2D g2) {
+        int screenX = getWorldX() - gp.player.getWorldX() + gp.player.screenX;
+        int screenY = getWorldY() - gp.player.getWorldY() + gp.player.screenY;
 
-        if (worldX * gp.tileSize > gp.player.worldX - gp.player.screenX
-            && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX 
-            && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY 
-            && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+        if (getWorldX() * gp.tileSize > gp.player.getWorldX() - gp.player.screenX
+                && getWorldX() - gp.tileSize < gp.player.getWorldX() + gp.player.screenX
+                && getWorldY() + gp.tileSize > gp.player.getWorldY() - gp.player.screenY
+                && getWorldY() - gp.tileSize < gp.player.getWorldY() + gp.player.screenY) {
 
             g2.drawImage(down1, screenX, screenY, null);
             drawInteractiveArea(g2, screenX, screenY);
@@ -41,7 +42,8 @@ public class InteractiveTile extends Entity {
     }
 
     // overwrite by subclass
-    public void playSoundEffect() {}
+    public void playSoundEffect() {
+    }
 
     // overwrite by subclass
     public InteractiveTile getDestroyedForm() {

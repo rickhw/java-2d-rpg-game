@@ -17,7 +17,7 @@ public class TileManager {
 
     GamePanel gp;
     public Tile[] tiles;
-    public int mapTileNum[][][];    // first dimension to store the map name
+    public int mapTileNum[][][]; // first dimension to store the map name
     boolean showInfo = false;
     int drawCounter = 0;
     // boolean drawPath = true;
@@ -34,7 +34,7 @@ public class TileManager {
         // GETTING TILE NAMES AND COLLSION INFO FROM THE FILE
         String line;
         try {
-            while( (line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 fileNames.add(line);
                 collsionStatus.add(br.readLine());
             }
@@ -72,7 +72,7 @@ public class TileManager {
 
     public void getTileImage() {
 
-        for(int i=0; i<fileNames.size(); i++) {
+        for (int i = 0; i < fileNames.size(); i++) {
             String filename = fileNames.get(i);
             boolean collision = collsionStatus.get(i).equals("true") ? true : false;
 
@@ -84,7 +84,8 @@ public class TileManager {
         Graphics2DUtils uTools = new Graphics2DUtils();
         try {
             tiles[index] = new Tile();
-            tiles[index].image = ImageIO.read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tilesV3/" + imageName));
+            tiles[index].image = ImageIO
+                    .read(getClass().getResourceAsStream("/gtcafe/rpg/assets/tilesV3/" + imageName));
             tiles[index].image = uTools.scaleImage(tiles[index].image, gp.tileSize, gp.tileSize);
             tiles[index].collision = collision;
         } catch (IOException e) {
@@ -108,7 +109,7 @@ public class TileManager {
                     mapTileNum[map.index][col][row] = num;
                     col++;
                 }
-                if(col == gp.maxWorldCol) {
+                if (col == gp.maxWorldCol) {
                     col = 0;
                     row++;
                 }
@@ -121,7 +122,8 @@ public class TileManager {
         }
     }
 
-    // see: https://www.youtube.com/watch?v=Ny_YHoTYcxo&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq&index=6
+    // see:
+    // https://www.youtube.com/watch?v=Ny_YHoTYcxo&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq&index=6
     public void draw(Graphics2D g2) {
 
         int worldCol = 0;
@@ -143,18 +145,19 @@ public class TileManager {
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
             // 計算 攝影機角度 的 螢幕座標
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
+            int screenX = worldX - gp.player.getWorldX() + gp.player.screenX;
+            int screenY = worldY - gp.player.getWorldY() + gp.player.screenY;
 
             // 增加條件, 只畫 screen 的部分, 而不是整個大地圖
             // 畫的時候，往外延伸一格，避免畫面不順的感覺
-            if ((worldX + gp.tileSize) > (gp.player.worldX - gp.player.screenX) &&
-                (worldX - gp.tileSize) < (gp.player.worldX + gp.player.screenX) &&
-                (worldY + gp.tileSize) > (gp.player.worldY - gp.player.screenY) &&
-                (worldY - gp.tileSize) < (gp.player.worldY + gp.player.screenY)) {
+            if ((worldX + gp.tileSize) > (gp.player.getWorldX() - gp.player.screenX) &&
+                    (worldX - gp.tileSize) < (gp.player.getWorldX() + gp.player.screenX) &&
+                    (worldY + gp.tileSize) > (gp.player.getWorldY() - gp.player.screenY) &&
+                    (worldY - gp.tileSize) < (gp.player.getWorldY() + gp.player.screenY)) {
 
                 // if (showInfo && gp.debugMode) {
-                //     System.out.printf("tileNum: [%s], worldCol:[%s], worldRow: [%s], screenX: [%s], screenY: [%s]\n", tileNum, worldCol, worldRow, screenX, screenY);
+                // System.out.printf("tileNum: [%s], worldCol:[%s], worldRow: [%s], screenX:
+                // [%s], screenY: [%s]\n", tileNum, worldCol, worldRow, screenX, screenY);
                 // }
 
                 g2.drawImage(tiles[tileNum].image, screenX, screenY, null);
@@ -168,14 +171,14 @@ public class TileManager {
         }
 
         if (gp.keyHandler.showDebugText == true) {
-            
+
             // 畫出 PathFinding 的路徑
-            g2.setColor(new Color(255, 0,0, 70));
-            for(int i=0; i<gp.pathFinder.pathList.size(); i++) {
+            g2.setColor(new Color(255, 0, 0, 70));
+            for (int i = 0; i < gp.pathFinder.pathList.size(); i++) {
                 int worldX = gp.pathFinder.pathList.get(i).col * gp.tileSize;
                 int worldY = gp.pathFinder.pathList.get(i).row * gp.tileSize;
-                int screenX = worldX - gp.player.worldX + gp.player.screenX;
-                int screenY = worldY - gp.player.worldY + gp.player.screenY;
+                int screenX = worldX - gp.player.getWorldX() + gp.player.screenX;
+                int screenY = worldY - gp.player.getWorldY() + gp.player.screenY;
 
                 g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
             }

@@ -38,7 +38,7 @@ public class KeyHandler implements KeyListener {
         }
         // PAUSE STATE
         else if (gp.gameState == GameState.PAUSE) {
-           pauseState(code);
+            pauseState(code);
         }
         // DIALOGUE STATE
         else if (gp.gameState == GameState.DIALOGUE || gp.gameState == GameState.CUTSENSE) {
@@ -72,17 +72,22 @@ public class KeyHandler implements KeyListener {
         // For Debugging
         // refresh the map data
         if (code == KeyEvent.VK_R) {
-            switch(gp.currentMap) {
+            switch (gp.currentMap) {
                 case WORLD_MAP:
                     gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Map.WORLD_MAP);
                     break;
                 case STORE:
-                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Map.STORE); 
+                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Map.STORE);
+                    break;
+                case DONGEON01:
+                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/dungeon01.txt", Map.DONGEON01);
+                    break;
+                case DONGEON02:
+                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/dungeon02.txt", Map.DONGEON02);
                     break;
             }
         }
     }
-
 
     private void mapState(int code) {
         if (code == KeyEvent.VK_M) {
@@ -197,7 +202,7 @@ public class KeyHandler implements KeyListener {
             gp.gameState = GameState.DISPLAY_MAP;
         }
         if (code == KeyEvent.VK_V) {
-            if(gp.map.miniMapOn == false) {
+            if (gp.map.miniMapOn == false) {
                 gp.map.miniMapOn = true;
             } else {
                 gp.map.miniMapOn = false;
@@ -206,7 +211,7 @@ public class KeyHandler implements KeyListener {
 
         // DEBUG
         if (code == KeyEvent.VK_T) {
-            if(showDebugText == false) {
+            if (showDebugText == false) {
                 showDebugText = true;
                 // gp.debugMode = true;
             } else if (showDebugText = true) {
@@ -309,7 +314,6 @@ public class KeyHandler implements KeyListener {
         }
     }
 
-
     private void optionsState(int code) {
         if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = GameState.PLAY;
@@ -321,8 +325,12 @@ public class KeyHandler implements KeyListener {
 
         int maxCommandNum = 0;
         switch (gp.ui.subState) {
-            case 0: maxCommandNum = 5; break; // max 
-            case 3: maxCommandNum = 1; break; // max 
+            case 0:
+                maxCommandNum = 5;
+                break; // max
+            case 3:
+                maxCommandNum = 1;
+                break; // max
         }
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
             gp.ui.commandNum--;
@@ -334,7 +342,7 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
             gp.ui.commandNum++;
             gp.playSoundEffect(Sound.FX__CURSOR);
-            if (gp.ui.commandNum > maxCommandNum) { 
+            if (gp.ui.commandNum > maxCommandNum) {
                 gp.ui.commandNum = 0;
             }
         }
@@ -397,7 +405,7 @@ public class KeyHandler implements KeyListener {
             }
             // Restore
             else if (gp.ui.commandNum == 1) {
-                gp.ui.commandNum = 0;  //
+                gp.ui.commandNum = 0; //
                 gp.gameState = GameState.TITLE;
                 gp.resetGame(true);
             }
@@ -412,7 +420,7 @@ public class KeyHandler implements KeyListener {
         if (gp.ui.subState == 0) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                 gp.ui.commandNum--;
-                if(gp.ui.commandNum < 0) {
+                if (gp.ui.commandNum < 0) {
                     gp.ui.commandNum = 2;
                 }
                 gp.playSoundEffect(Sound.FX__CURSOR);

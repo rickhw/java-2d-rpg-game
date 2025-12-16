@@ -15,11 +15,11 @@ import gtcafe.rpg.system.Sound;
 public class MON_SkeletonLord extends Entity {
     GamePanel gp;
     public static final String OBJ_NAME = "Skeleton Lord";
-    
+
     public MON_SkeletonLord(GamePanel gp) {
         super(gp);
         this.gp = gp;
-        
+
         type = EntityType.MONSTER;
         boss = true;
         name = OBJ_NAME;
@@ -65,8 +65,7 @@ public class MON_SkeletonLord extends Entity {
             left2 = setup(path + "skeletonlord_left_2.png", gp.tileSize * i, gp.tileSize * i);
             right1 = setup(path + "skeletonlord_right_1.png", gp.tileSize * i, gp.tileSize * i);
             right2 = setup(path + "skeletonlord_right_2.png", gp.tileSize * i, gp.tileSize * i);
-        }
-        else {
+        } else {
             String path = "/gtcafe/rpg/assets/monster/skeletonlord/walking_phase2/";
             up1 = setup(path + "skeletonlord_phase2_up_1.png", gp.tileSize * i, gp.tileSize * i);
             up2 = setup(path + "skeletonlord_phase2_up_2.png", gp.tileSize * i, gp.tileSize * i);
@@ -75,7 +74,7 @@ public class MON_SkeletonLord extends Entity {
             left1 = setup(path + "skeletonlord_phase2_left_1.png", gp.tileSize * i, gp.tileSize * i);
             left2 = setup(path + "skeletonlord_phase2_left_2.png", gp.tileSize * i, gp.tileSize * i);
             right1 = setup(path + "skeletonlord_phase2_right_1.png", gp.tileSize * i, gp.tileSize * i);
-            right2 = setup(path + "skeletonlord_phase2_right_2.png", gp.tileSize * i, gp.tileSize * i);    
+            right2 = setup(path + "skeletonlord_phase2_right_2.png", gp.tileSize * i, gp.tileSize * i);
         }
     }
 
@@ -83,29 +82,36 @@ public class MON_SkeletonLord extends Entity {
         // size
         int i = 5;
 
-        if(inRage == false) {
+        if (inRage == false) {
             String packagePath = "/gtcafe/rpg/assets/monster/skeletonlord/attacking/";
 
-            attackUp1 = setup(packagePath + "skeletonlord_attack_up_1.png", gp.tileSize * i, gp.tileSize * i*2);
-            attackUp2 = setup(packagePath + "skeletonlord_attack_up_2.png", gp.tileSize * i, gp.tileSize * i*2);
-            attackDown1 = setup(packagePath + "skeletonlord_attack_down_1.png", gp.tileSize * i, gp.tileSize * i*2);
-            attackDown2 = setup(packagePath + "skeletonlord_attack_down_2.png", gp.tileSize * i, gp.tileSize * i*2);
-            attackLeft1 = setup(packagePath + "skeletonlord_attack_left_1.png", gp.tileSize * i*2, gp.tileSize * i);
-            attackLeft2 = setup(packagePath + "skeletonlord_attack_left_2.png", gp.tileSize * i*2, gp.tileSize * i);
-            attackRight1 = setup(packagePath + "skeletonlord_attack_right_1.png", gp.tileSize * i*2, gp.tileSize * i);
-            attackRight2 = setup(packagePath + "skeletonlord_attack_right_2.png", gp.tileSize * i*2, gp.tileSize * i);
-        }
-        else {
+            attackUp1 = setup(packagePath + "skeletonlord_attack_up_1.png", gp.tileSize * i, gp.tileSize * i * 2);
+            attackUp2 = setup(packagePath + "skeletonlord_attack_up_2.png", gp.tileSize * i, gp.tileSize * i * 2);
+            attackDown1 = setup(packagePath + "skeletonlord_attack_down_1.png", gp.tileSize * i, gp.tileSize * i * 2);
+            attackDown2 = setup(packagePath + "skeletonlord_attack_down_2.png", gp.tileSize * i, gp.tileSize * i * 2);
+            attackLeft1 = setup(packagePath + "skeletonlord_attack_left_1.png", gp.tileSize * i * 2, gp.tileSize * i);
+            attackLeft2 = setup(packagePath + "skeletonlord_attack_left_2.png", gp.tileSize * i * 2, gp.tileSize * i);
+            attackRight1 = setup(packagePath + "skeletonlord_attack_right_1.png", gp.tileSize * i * 2, gp.tileSize * i);
+            attackRight2 = setup(packagePath + "skeletonlord_attack_right_2.png", gp.tileSize * i * 2, gp.tileSize * i);
+        } else {
             String packagePath = "/gtcafe/rpg/assets/monster/skeletonlord/attacking_phase2/";
 
-            attackUp1 = setup(packagePath + "skeletonlord_phase2_attack_up_1.png", gp.tileSize * i, gp.tileSize * i*2);
-            attackUp2 = setup(packagePath + "skeletonlord_phase2_attack_up_2.png", gp.tileSize * i, gp.tileSize * i*2);
-            attackDown1 = setup(packagePath + "skeletonlord_phase2_attack_down_1.png", gp.tileSize * i, gp.tileSize * i*2);
-            attackDown2 = setup(packagePath + "skeletonlord_phase2_attack_down_2.png", gp.tileSize * i, gp.tileSize * i*2);
-            attackLeft1 = setup(packagePath + "skeletonlord_phase2_attack_left_1.png", gp.tileSize * i*2, gp.tileSize * i);
-            attackLeft2 = setup(packagePath + "skeletonlord_phase2_attack_left_2.png", gp.tileSize * i*2, gp.tileSize * i);
-            attackRight1 = setup(packagePath + "skeletonlord_phase2_attack_right_1.png", gp.tileSize * i*2, gp.tileSize * i);
-            attackRight2 = setup(packagePath + "skeletonlord_phase2_attack_right_2.png", gp.tileSize * i*2, gp.tileSize * i); 
+            attackUp1 = setup(packagePath + "skeletonlord_phase2_attack_up_1.png", gp.tileSize * i,
+                    gp.tileSize * i * 2);
+            attackUp2 = setup(packagePath + "skeletonlord_phase2_attack_up_2.png", gp.tileSize * i,
+                    gp.tileSize * i * 2);
+            attackDown1 = setup(packagePath + "skeletonlord_phase2_attack_down_1.png", gp.tileSize * i,
+                    gp.tileSize * i * 2);
+            attackDown2 = setup(packagePath + "skeletonlord_phase2_attack_down_2.png", gp.tileSize * i,
+                    gp.tileSize * i * 2);
+            attackLeft1 = setup(packagePath + "skeletonlord_phase2_attack_left_1.png", gp.tileSize * i * 2,
+                    gp.tileSize * i);
+            attackLeft2 = setup(packagePath + "skeletonlord_phase2_attack_left_2.png", gp.tileSize * i * 2,
+                    gp.tileSize * i);
+            attackRight1 = setup(packagePath + "skeletonlord_phase2_attack_right_1.png", gp.tileSize * i * 2,
+                    gp.tileSize * i);
+            attackRight2 = setup(packagePath + "skeletonlord_phase2_attack_right_2.png", gp.tileSize * i * 2,
+                    gp.tileSize * i);
         }
     }
 
@@ -124,10 +130,10 @@ public class MON_SkeletonLord extends Entity {
 
         // Check the distance to the player
         if (getTileDistance(gp.player) < 10) {
-            
+
             // Move toward the player, every 60 frames
             moveTowardPlayer(60);
-            
+
         } else {
 
             // Get a random direction
@@ -156,13 +162,12 @@ public class MON_SkeletonLord extends Entity {
         gp.playBackgroundMusic(Sound.MUSIC__DUNGEON);
 
         // Remove the iron doors
-        for (int i=0; i<gp.obj[1].length; i++) {
-            if(gp.obj[gp.currentMap.index][i] != null 
-                && gp.obj[gp.currentMap.index][i].name.equals(OBJ_Door_Iron.OBJ_NAME)
-            ) {
-                gp.obj[gp.currentMap.index][i] = null;
+        for (int i = 0; i < gp.obj[gp.currentMap.index].size(); i++) {
+            Entity obj = gp.obj[gp.currentMap.index].get(i);
+            if (obj != null && obj.name.equals(OBJ_Door_Iron.OBJ_NAME)) {
+                gp.obj[gp.currentMap.index].remove(i);
+                i--;
                 gp.playSoundEffect(Sound.FX__DOOR_OPEN);
-                break;
             }
         }
 
@@ -170,9 +175,15 @@ public class MON_SkeletonLord extends Entity {
         int i = new Random().nextInt(100) + 1;
 
         // SET THE MONSTER DROP
-        if (i < 50) { dropItem(new OBJ_Coin_Bronze(gp)); }
-        if (i >= 50 && i < 75) { dropItem(new OBJ_Heart(gp)); }
-        if (i >= 75 && i < 100) { dropItem(new OBJ_ManaCrystal(gp)); }
+        if (i < 50) {
+            dropItem(new OBJ_Coin_Bronze(gp));
+        }
+        if (i >= 50 && i < 75) {
+            dropItem(new OBJ_Heart(gp));
+        }
+        if (i >= 75 && i < 100) {
+            dropItem(new OBJ_ManaCrystal(gp));
+        }
     }
 
     public void setDialogue() {

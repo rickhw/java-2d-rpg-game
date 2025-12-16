@@ -1,6 +1,6 @@
 package gtcafe.rpg;
 
-import gtcafe.rpg.data.Progress;
+import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.equipable.OBJ_Lantern;
 import gtcafe.rpg.entity.monster.MON_Bat;
 import gtcafe.rpg.entity.monster.MON_GreenSlime;
@@ -22,7 +22,7 @@ import gtcafe.rpg.entity.object.OBJ_Tent;
 import gtcafe.rpg.entity.shield.OBJ_Shield_Blue;
 import gtcafe.rpg.entity.weapon.OBJ_Axe;
 import gtcafe.rpg.entity.weapon.OBJ_Pickaxe;
-import gtcafe.rpg.entity.weapon.OBJ_Sword_Normal;
+
 import gtcafe.rpg.tile.Map;
 import gtcafe.rpg.tile.interactive.IT_DestructibleWall;
 import gtcafe.rpg.tile.interactive.IT_DryTree;
@@ -38,388 +38,168 @@ public class AssetSetter {
 
     // instantiate objects
     public void setObject() {
-        int i = 0;
         int mapIndex = Map.WORLD_MAP.index;
-        
-        gp.obj[mapIndex][i] = new OBJ_Coin_Bronze(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 25;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 23;
 
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Coin_Bronze(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 21;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 19;
-
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Lantern(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 18;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 20;
-
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Tent(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 19;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 20;
-
-
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Coin_Bronze(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 26;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 21;
-
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Axe(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 33;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 7;
-
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Shield_Blue(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 10;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 34;
-
-
+        addObj(mapIndex, new OBJ_Coin_Bronze(gp), 25, 23);
+        addObj(mapIndex, new OBJ_Coin_Bronze(gp), 21, 19);
+        addObj(mapIndex, new OBJ_Lantern(gp), 18, 20);
+        addObj(mapIndex, new OBJ_Tent(gp), 19, 20);
+        addObj(mapIndex, new OBJ_Coin_Bronze(gp), 26, 21);
+        addObj(mapIndex, new OBJ_Axe(gp), 33, 7);
+        addObj(mapIndex, new OBJ_Shield_Blue(gp), 10, 34);
 
         // Door
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Door(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 14;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 28;
-
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Door(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 12;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 12;
-
+        addObj(mapIndex, new OBJ_Door(gp), 14, 28);
+        addObj(mapIndex, new OBJ_Door(gp), 12, 12);
 
         // 寶箱
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
-        gp.obj[mapIndex][i].setLoot(new OBJ_Key(gp));
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 30;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 28;
+        OBJ_Chest chest;
+        chest = new OBJ_Chest(gp);
+        chest.setLoot(new OBJ_Key(gp));
+        addObj(mapIndex, chest, 30, 28);
 
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
-        gp.obj[mapIndex][i].setLoot(new OBJ_Heart(gp));
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 12;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 8;
+        chest = new OBJ_Chest(gp);
+        chest.setLoot(new OBJ_Heart(gp));
+        addObj(mapIndex, chest, 12, 8);
 
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
-        gp.obj[mapIndex][i].setLoot(new OBJ_Key(gp));
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 17;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 22;
+        chest = new OBJ_Chest(gp);
+        chest.setLoot(new OBJ_Key(gp));
+        addObj(mapIndex, chest, 17, 22);
 
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
-        gp.obj[mapIndex][i].setLoot(new OBJ_Heart(gp));
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 16;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 22;
+        chest = new OBJ_Chest(gp);
+        chest.setLoot(new OBJ_Heart(gp));
+        addObj(mapIndex, chest, 16, 22);
 
         // Postion
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Postion_Red(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 27;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 16;
-
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Shield_Blue(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 30;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 12;
-
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Postion_Red(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 21;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 20;
-
+        addObj(mapIndex, new OBJ_Postion_Red(gp), 27, 16);
+        addObj(mapIndex, new OBJ_Shield_Blue(gp), 30, 12);
+        addObj(mapIndex, new OBJ_Postion_Red(gp), 21, 20);
 
         // DONGEON01
         mapIndex = Map.DONGEON01.index;
-        i=0;
 
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
-        gp.obj[mapIndex][i].setLoot(new OBJ_Pickaxe(gp));
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 40;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 41;
+        chest = new OBJ_Chest(gp);
+        chest.setLoot(new OBJ_Pickaxe(gp));
+        addObj(mapIndex, chest, 40, 41);
 
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
-        gp.obj[mapIndex][i].setLoot(new OBJ_Postion_Red(gp));
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 13;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 16;
+        chest = new OBJ_Chest(gp);
+        chest.setLoot(new OBJ_Postion_Red(gp));
+        addObj(mapIndex, chest, 13, 16);
 
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
-        gp.obj[mapIndex][i].setLoot(new OBJ_Postion_Red(gp));
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 26;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 34;
+        chest = new OBJ_Chest(gp);
+        chest.setLoot(new OBJ_Postion_Red(gp));
+        addObj(mapIndex, chest, 26, 34);
 
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
-        gp.obj[mapIndex][i].setLoot(new OBJ_Postion_Red(gp));
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 27;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 15;
+        chest = new OBJ_Chest(gp);
+        chest.setLoot(new OBJ_Postion_Red(gp));
+        addObj(mapIndex, chest, 27, 15);
 
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Door_Iron(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 18;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 23;
-
+        addObj(mapIndex, new OBJ_Door_Iron(gp), 18, 23);
 
         // DONGEON02
         mapIndex = Map.DONGEON02.index;
-        i=0;
 
-        gp.obj[mapIndex][i] = new OBJ_BlueHeart(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 25;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 8;
+        addObj(mapIndex, new OBJ_BlueHeart(gp), 25, 8);
+        addObj(mapIndex, new OBJ_Door_Iron(gp), 25, 15);
+    }
 
-        // gp.obj[mapIndex][i] = new OBJ_Chest(gp);
-        // gp.obj[mapIndex][i].setLoot(new OBJ_BlueHeart(gp));
-        // gp.obj[mapIndex][i].worldX = gp.tileSize * 25;
-        // gp.obj[mapIndex][i].worldY = gp.tileSize * 8;
+    public void addObj(int mapIndex, Entity obj, int col, int row) {
+        obj.setWorldX(gp.tileSize * col);
+        obj.setWorldY(gp.tileSize * row);
+        gp.obj[mapIndex].add(obj);
+    }
 
-        // 上面的鐵門，關起寶藏
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Door_Iron(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 25;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 15;
-        // for Testing
-        // gp.obj[0] = new OBJ_Door(gp);
-        // gp.obj[0].worldX = gp.tileSize * 25;
-        // gp.obj[0].worldY = gp.tileSize * 19;
-
-        // gp.obj[1] = new OBJ_Door(gp);
-        // gp.obj[1].worldX = gp.tileSize * 23;
-        // gp.obj[1].worldY = gp.tileSize * 25;
+    public void addEntity(java.util.ArrayList<Entity>[] list, int mapIndex, Entity entity, int col, int row) {
+        entity.setWorldX(gp.tileSize * col);
+        entity.setWorldY(gp.tileSize * row);
+        list[mapIndex].add(entity);
     }
 
     public void setNPC() {
-        int i = 0;
         int mapIndex = Map.WORLD_MAP.index;
+        addEntity(gp.npc, mapIndex, new NPC_OldMan(gp, "Steve"), 21, 21);
 
-        gp.npc[mapIndex][i] = new NPC_OldMan(gp, "Steve");
-        gp.npc[mapIndex][i].worldX = gp.tileSize * 18;
-        gp.npc[mapIndex][i].worldY = gp.tileSize * 20;
-
-        // i++;
-        // gp.npc[mapIndex][i] = new NPC_OldMan(gp, "Erica");
-        // gp.npc[mapIndex][i].worldX = gp.tileSize * 28;
-        // gp.npc[mapIndex][i].worldY = gp.tileSize * 20;
-
-
-        // NPC in Scense.STORE
-        i = 0;
         mapIndex = Map.STORE.index;
-        gp.npc[mapIndex][i] = new NPC_Merchant(gp);
-        gp.npc[mapIndex][i].worldX = gp.tileSize * 12;
-        gp.npc[mapIndex][i].worldY = gp.tileSize * 7;
+        addEntity(gp.npc, mapIndex, new NPC_Merchant(gp), 12, 7);
 
-                // NPC in Scense.STORE
-        i = 0;
         mapIndex = Map.DONGEON01.index;
-        
-        gp.npc[mapIndex][i] = new NPC_BigRock(gp);
-        gp.npc[mapIndex][i].worldX = gp.tileSize * 20;
-        gp.npc[mapIndex][i].worldY = gp.tileSize * 25;
+        addEntity(gp.npc, mapIndex, new NPC_BigRock(gp), 20, 25);
+        addEntity(gp.npc, mapIndex, new NPC_BigRock(gp), 11, 18);
+        addEntity(gp.npc, mapIndex, new NPC_BigRock(gp), 23, 14);
 
-        i++;
-        gp.npc[mapIndex][i] = new NPC_BigRock(gp);
-        gp.npc[mapIndex][i].worldX = gp.tileSize * 11;
-        gp.npc[mapIndex][i].worldY = gp.tileSize * 18;
-
-        i++;
-        gp.npc[mapIndex][i] = new NPC_BigRock(gp);
-        gp.npc[mapIndex][i].worldX = gp.tileSize * 23;
-        gp.npc[mapIndex][i].worldY = gp.tileSize * 14;
-
-        // gp.npc[3] = new NPC_OldMan(gp);
-        // gp.npc[3].worldX = gp.tileSize * 21;
-        // gp.npc[3].worldY = gp.tileSize * 11;
-
-        // gp.npc[4] = new NPC_OldMan(gp);
-        // gp.npc[4].worldX = gp.tileSize * 21;
-        // gp.npc[4].worldY = gp.tileSize * 31;
+        mapIndex = Map.DONGEON02.index;
+        // none
     }
 
     public void setMonster() {
-        int i = 0;
         int mapIndex = Map.WORLD_MAP.index;
+        addEntity(gp.monster, mapIndex, new MON_GreenSlime(gp), 23, 36);
+        addEntity(gp.monster, mapIndex, new MON_GreenSlime(gp), 23, 37);
+        addEntity(gp.monster, mapIndex, new MON_GreenSlime(gp), 24, 37);
+        addEntity(gp.monster, mapIndex, new MON_GreenSlime(gp), 38, 42);
+        addEntity(gp.monster, mapIndex, new MON_GreenSlime(gp), 34, 42);
 
-        // 中下
-        gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 23;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 36;
+        addEntity(gp.monster, mapIndex, new MON_RedSlime(gp), 30, 6);
+        addEntity(gp.monster, mapIndex, new MON_RedSlime(gp), 30, 7);
+        addEntity(gp.monster, mapIndex, new MON_RedSlime(gp), 30, 8);
+        addEntity(gp.monster, mapIndex, new MON_RedSlime(gp), 30, 9);
 
-        i++;
-        gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 23;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 37;
+        addEntity(gp.monster, mapIndex, new MON_Orc(gp), 12, 33);
 
-        i++;
-        gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 23;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 38;
-
-        i++;
-        gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 23;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 39;
-
-
-
-        // 右上角
-        i++;
-        gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 37;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 9;
-
-        i++;
-        gp.monster[mapIndex][i] = new MON_RedSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 36;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 9;
-
-        // for testing
-        // i++;
-        // gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        // gp.monster[mapIndex][i].worldX = gp.tileSize * 11;
-        // gp.monster[mapIndex][i].worldY = gp.tileSize * 8;
-
-        // i++;
-        // gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        // gp.monster[mapIndex][i].worldX = gp.tileSize * 11;
-        // gp.monster[mapIndex][i].worldY = gp.tileSize * 9;
-
-        // 右下角
-        i++;
-        gp.monster[mapIndex][i] = new MON_RedSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 35;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 40;
-
-
-        i++;
-        gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 33;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 39;
-
-        i++;
-        gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 34;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 39;
-
-        i++;
-        gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 35;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 39;
-
-        // 左中
-        i++;
-        gp.monster[mapIndex][i] = new MON_Orc(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 12;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 33;
-
-        i++;
-        gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 12;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 32;
-
-
-        i = 0;
         mapIndex = Map.DONGEON01.index;
+        addEntity(gp.monster, mapIndex, new MON_Bat(gp), 26, 31);
+        addEntity(gp.monster, mapIndex, new MON_Bat(gp), 26, 30);
+        addEntity(gp.monster, mapIndex, new MON_Bat(gp), 26, 29);
 
-        gp.monster[mapIndex][i] = new MON_Bat(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 34;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 39;
-
-        i++;
-        gp.monster[mapIndex][i] = new MON_Bat(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 36;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 25;
-
-        i++;
-        gp.monster[mapIndex][i] = new MON_Bat(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 39;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 26;
-
-        i++;
-        gp.monster[mapIndex][i] = new MON_Bat(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 28;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 11;
-
-        i++;
-        gp.monster[mapIndex][i] = new MON_Bat(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 10;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 19;
-
-
-        i = 0;
         mapIndex = Map.DONGEON02.index;
-
-        if (Progress.skeletonLordDefeated == false) {
-            gp.monster[mapIndex][i] = new MON_SkeletonLord(gp);
-            gp.monster[mapIndex][i].worldX = gp.tileSize * 23;
-            gp.monster[mapIndex][i].worldY = gp.tileSize * 16;
-        }
+        addEntity(gp.monster, mapIndex, new MON_Bat(gp), 17, 19);
+        addEntity(gp.monster, mapIndex, new MON_SkeletonLord(gp), 23, 16);
     }
 
     public void setInteractiveTiles() {
-        int i = 0;
         int mapIndex = Map.WORLD_MAP.index;
-
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 27, 12);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 28, 12);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 29, 12);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 12);    // postion
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 31, 12);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 32, 12);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 33, 12);
-
+        addEntity(gp.iTile, mapIndex, new IT_DryTree(gp, 27, 12), 27, 12);
+        addEntity(gp.iTile, mapIndex, new IT_DryTree(gp, 28, 12), 28, 12);
+        addEntity(gp.iTile, mapIndex, new IT_DryTree(gp, 29, 12), 29, 12);
+        addEntity(gp.iTile, mapIndex, new IT_DryTree(gp, 31, 12), 31, 12);
+        addEntity(gp.iTile, mapIndex, new IT_DryTree(gp, 32, 12), 32, 12);
+        addEntity(gp.iTile, mapIndex, new IT_DryTree(gp, 33, 12), 33, 12);
         // for testing
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 20);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 21);
+        addEntity(gp.iTile, mapIndex, new IT_DryTree(gp, 30, 21), 30, 21);
 
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 14, 40);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 40);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 41);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 12, 41);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 11, 41);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 41);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 40);
-
-        // chest
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 29);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 29, 29);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 28, 29);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 27, 29);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 27, 28);
-        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 27, 27);
+        // Destructible Wall
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 18, 21), 18, 21);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 18, 22), 18, 22);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 17, 22), 17, 22);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 10, 31), 10, 31);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 10, 32), 10, 32);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 10, 33), 10, 33);
 
         // Dungeon 01
-        i = 0;
         mapIndex = Map.DONGEON01.index;
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 18, 30), 18, 30);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 17, 30), 17, 30);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 17, 31), 17, 31);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 17, 32), 17, 32);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 18, 34), 18, 34);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 18, 33), 18, 33);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 10, 22), 10, 22);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 10, 24), 10, 24);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 38, 18), 38, 18);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 38, 19), 38, 19);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 38, 20), 38, 20);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 38, 21), 38, 21);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 18, 13), 18, 13);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 18, 14), 18, 14);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 22, 28), 22, 28);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 30, 28), 30, 28);
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 32, 28), 32, 28);
 
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 18, 30);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 17, 30);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 17, 31);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 17, 32);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 18, 34);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 18, 33);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 10, 22);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 10, 24);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 38, 18);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 38, 19);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 38, 20);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 38, 21);
-
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 18, 13);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 18, 14);
-       
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 22, 28);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 30, 28);
-        gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 32, 28);
-
-        // Metal Plate
-        gp.iTile[mapIndex][i++] = new IT_MetalPlate(gp, 20, 22);
-        gp.iTile[mapIndex][i++] = new IT_MetalPlate(gp, 8, 17);
-        gp.iTile[mapIndex][i++] = new IT_MetalPlate(gp, 39, 31);
+        // Dungeon 02
+        mapIndex = Map.DONGEON02.index;
+        addEntity(gp.iTile, mapIndex, new IT_DestructibleWall(gp, 18, 30), 18, 30);
+        addEntity(gp.iTile, mapIndex, new IT_MetalPlate(gp, 20, 22), 20, 22);
+        addEntity(gp.iTile, mapIndex, new IT_MetalPlate(gp, 8, 17), 8, 17);
+        addEntity(gp.iTile, mapIndex, new IT_MetalPlate(gp, 39, 31), 39, 31);
     }
 }

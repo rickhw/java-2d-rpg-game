@@ -23,14 +23,14 @@ public class MapManager extends TileManager {
         int worldMapWidth = gp.tileSize * gp.maxWorldCol;
         int worldMapHeight = gp.tileSize * gp.maxWorldRow;
 
-        for(int i=0; i<gp.maxMap; i++) {
+        for (int i = 0; i < gp.maxMap; i++) {
 
             worldMap[i] = new BufferedImage(worldMapWidth, worldMapHeight, BufferedImage.TYPE_INT_ARGB_PRE);
-            Graphics2D g2 = (Graphics2D)worldMap[i].createGraphics();
+            Graphics2D g2 = (Graphics2D) worldMap[i].createGraphics();
 
             int col = 0;
             int row = 0;
-            while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+            while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
                 int tileNum = mapTileNum[i][col][row];
                 int x = gp.tileSize * col;
                 int y = gp.tileSize * row;
@@ -38,8 +38,8 @@ public class MapManager extends TileManager {
                 g2.drawImage(tiles[tileNum].image, x, y, null);
 
                 col++;
-                if(col == gp.maxWorldCol) {
-                    col=0;
+                if (col == gp.maxWorldCol) {
+                    col = 0;
                     row++;
                 }
             }
@@ -57,13 +57,13 @@ public class MapManager extends TileManager {
         int width = 500;
         int height = 500;
         int x = gp.screenWidth / 2 - width / 2;
-        int y = gp.screenHeight/ 2 - height / 2;
+        int y = gp.screenHeight / 2 - height / 2;
         g2.drawImage(worldMap[gp.currentMap.index], x, y, width, height, null);
 
         // Draw Player
         double scale = (double) (gp.tileSize * gp.maxWorldCol) / width;
-        int playerX = (int) (x + gp.player.worldX / scale);
-        int playerY = (int) (y + gp.player.worldY / scale);
+        int playerX = (int) (x + gp.player.getWorldX() / scale);
+        int playerY = (int) (y + gp.player.getWorldY() / scale);
         int playerSize = (int) (gp.tileSize / scale);
         g2.drawImage(gp.player.down1, playerX, playerY, playerSize, playerSize, null);
 
@@ -88,10 +88,10 @@ public class MapManager extends TileManager {
 
             // Draw Player
             double scale = (double) (gp.tileSize * gp.maxWorldCol) / width;
-            int playerX = (int) (x + gp.player.worldX / scale);
-            int playerY = (int) (y + gp.player.worldY / scale);
+            int playerX = (int) (x + gp.player.getWorldX() / scale);
+            int playerY = (int) (y + gp.player.getWorldY() / scale);
             int playerSize = (int) (gp.tileSize / 3);
-            g2.drawImage(gp.player.down1, playerX-6, playerY-6, playerSize, playerSize, null);
+            g2.drawImage(gp.player.down1, playerX - 6, playerY - 6, playerSize, playerSize, null);
 
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 

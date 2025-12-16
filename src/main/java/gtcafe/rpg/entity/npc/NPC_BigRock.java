@@ -13,7 +13,7 @@ import gtcafe.rpg.tile.interactive.IT_MetalPlate;
 public class NPC_BigRock extends Entity {
 
     public static final String OBJ_NAME = "Big Rock";
-    
+
     public NPC_BigRock(GamePanel gp) {
         super(gp);
 
@@ -57,16 +57,16 @@ public class NPC_BigRock extends Entity {
         if (collisionOn == false) {
             switch (direction) {
                 case UP:
-                    worldY -= speed;
+                    setWorldY(getWorldY() - getSpeed());
                     break;
                 case DOWN:
-                    worldY += speed;
+                    setWorldY(getWorldY() + getSpeed());
                     break;
                 case LEFT:
-                    worldX -= speed;
+                    setWorldX(getWorldX() - getSpeed());
                     break;
                 case RIGHT:
-                    worldX += speed;
+                    setWorldX(getWorldX() + getSpeed());
                     break;
             }
 
@@ -77,61 +77,61 @@ public class NPC_BigRock extends Entity {
     public void detectPlate() {
         ArrayList<Entity> plateList = new ArrayList<>();
         ArrayList<Entity> rockList = new ArrayList<>();
-        
-        // Create a plate list
-        for(int i=0; i<gp.iTile[1].length; i++) {
-            if (gp.iTile[gp.currentMap.index][i] != null 
-                    && gp.iTile[gp.currentMap.index][i].name != null 
-                    && gp.iTile[gp.currentMap.index][i].name.equals(IT_MetalPlate.OBJ_NAME)) {
-                plateList.add(gp.iTile[gp.currentMap.index][i]);                
+
+        // Handle iTile (Plates)
+        for (int i = 0; i < gp.iTile[gp.currentMap.index].size(); i++) {
+            Entity e = gp.iTile[gp.currentMap.index].get(i);
+            // IT_MetalPlate.OBJ_NAME based on previous code
+            if (e != null && e.name != null && e.name.equals(IT_MetalPlate.OBJ_NAME)) {
+                plateList.add(e);
             }
         }
 
-        // Create a rock list
-        for(int i=0; i<gp.npc[1].length; i++) {
-            if (gp.npc[gp.currentMap.index][i] != null 
-                    && gp.npc[gp.currentMap.index][i].name != null
-                    && gp.npc[gp.currentMap.index][i].name.equals(NPC_BigRock.OBJ_NAME)) {
-                rockList.add(gp.npc[gp.currentMap.index][i]);                
+        // Handle NPC (BigRock)
+        for (int i = 0; i < gp.npc[gp.currentMap.index].size(); i++) {
+            Entity e = gp.npc[gp.currentMap.index].get(i);
+            if (e != null && e.name != null && e.name.equals(NPC_BigRock.OBJ_NAME)) {
+                rockList.add(e);
             }
         }
 
         int count = 0;
 
-        // Scan the plate list
-        for(int i=0; i<plateList.size(); i++) {
-            int xDistance = Math.abs(worldX - plateList.get(i).worldX);
-            int yDistance = Math.abs(worldY - plateList.get(i).worldY);
+        // Scan plate list
+        for (int i = 0; i < plateList.size(); i++) {
+            int xDistance = Math.abs(getWorldX() - plateList.get(i).getWorldX());
+            int yDistance = Math.abs(getWorldY() - plateList.get(i).getWorldY());
             int distance = Math.max(xDistance, yDistance);
 
             if (distance < 8) {
-                if(linkedEntity == null) {
+                if (linkedEntity == null) {
                     linkedEntity = plateList.get(i);
                     gp.playSoundEffect(Sound.FX_UNLOCK);
                 }
             }
-            else {
-                if(linkedEntity == plateList.get(i)) {
-                    linkedEntity = null;
-                }
-            }
         }
 
-        // Scan the rock list
-        for(int i=0; i<rockList.size(); i++) {
-            // Count the rocks on the plate
-            if (rockList.get(i).linkedEntity != null) {
+        // Count rocks on plates
+        for (int i = 0; i < rockList.size(); i++) {
+            NPC_BigRock rock = (NPC_BigRock) rockList.get(i);
+            if (rock.linkedEntity != null) {
                 count++;
             }
         }
 
-        // If all the rocks area on the plates, the iron door opens
         if (count == rockList.size()) {
-            for (int i=0; i<gp.obj[1].length; i++) {
-                if (gp.obj[gp.currentMap.index][i] != null 
-                        && gp.obj[gp.currentMap.index][i].name.equals(OBJ_Door_Iron.OBJ_NAME)) {
-                    gp.obj[gp.currentMap.index][i] = null;
+            // open the door
+            int mapIndex = gp.currentMap.index;
+            for (int i = 0; i < gp.obj[mapIndex].size(); i++) {
+                Entity obj = gp.obj[mapIndex].get(i);
+                if (obj != null && obj.name != null && obj.name.equals(OBJ_Door_Iron.OBJ_NAME)) {
+                    gp.obj[mapIndex].remove(i);
                     gp.playSoundEffect(Sound.FX__DOOR_OPEN);
+                    // break? removing from list while iterating is risky if we don't adjust i/break
+                    // Since we remove and maybe there are multiple doors?
+                    // assume one door or multiple, removing all?
+                    // The original code set it to null.
+                    i--;
                 }
             }
         }
@@ -147,7 +147,7 @@ public class NPC_BigRock extends Entity {
 
     public void speak() {
         facePlayer();
-        startDialogue(this, dialogueSet);        
+        startDialogue(this, dialogueSet);
     }
 
 }

@@ -8,6 +8,7 @@ import gtcafe.rpg.system.Sound;
 public class OBJ_Key extends Entity {
     public static final String OBJ_NAME = "Key";
     GamePanel gp;
+
     public OBJ_Key(GamePanel gp) {
         super(gp);
         this.gp = gp;
@@ -32,12 +33,12 @@ public class OBJ_Key extends Entity {
         if (objIndex != 999) {
             startDialogue(this, 0);
             gp.playSoundEffect(Sound.FX_UNLOCK);
-            gp.obj[gp.currentMap.index][objIndex] = null;
-            
-            return true;    // means delete it.
+            gp.obj[gp.currentMap.index].remove(objIndex);
+
+            return true; // means delete it.
         } else {
             startDialogue(this, 1);
-            return false;   
+            return false;
         }
     }
 }

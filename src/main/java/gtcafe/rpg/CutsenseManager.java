@@ -11,6 +11,7 @@ import gtcafe.rpg.entity.object.OBJ_Door_Iron;
 import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.state.Scene;
 import gtcafe.rpg.system.Sound;
+import gtcafe.rpg.entity.Entity;
 
 public class CutsenseManager {
     GamePanel gp;
@@ -27,25 +28,26 @@ public class CutsenseManager {
         this.gp = gp;
 
         endCredit = "Program/Music/Art/Story\n"
-            + "RyiSnow"
-            + "\n\n\n\n\n\n\n\n\n\n\n"
-            + "Special Thanks\n"
-            + "Someone\n"
-            + "Someone\n"
-            + "Someone\n"
-            + "Thank you for playing!";
-            // + "\n\n\n\n\n\n\n\n\n\n\n"
-            // + Main.GAME_TITLE;
+                + "RyiSnow"
+                + "\n\n\n\n\n\n\n\n\n\n\n"
+                + "Special Thanks\n"
+                + "Someone\n"
+                + "Someone\n"
+                + "Someone\n"
+                + "Thank you for playing!";
+        // + "\n\n\n\n\n\n\n\n\n\n\n"
+        // + Main.GAME_TITLE;
     }
 
     public void draw(Graphics2D g2) {
         this.g2 = g2;
 
         // for multiple sense
-        switch(sceneNum) {
-            case SKELETON_LORD -> scene_skeletonLord(); 
+        switch (sceneNum) {
+            case SKELETON_LORD -> scene_skeletonLord();
             case ENDING -> scene_ending();
-            default -> {}
+            default -> {
+            }
         }
     }
 
@@ -55,32 +57,25 @@ public class CutsenseManager {
             gp.bossBattleOn = true;
 
             // Shut the iron door
-            for(int i=0; i<gp.obj[1].length; i++) {
-                if (gp.obj[gp.currentMap.index][i] == null) {
-                    gp.obj[gp.currentMap.index][i] = new OBJ_Door_Iron(gp);
-                    gp.obj[gp.currentMap.index][i].worldX = gp.tileSize * 25;
-                    gp.obj[gp.currentMap.index][i].worldY = gp.tileSize * 28;
-                    gp.obj[gp.currentMap.index][i].tempObj = true;  // 暫時的物件，只有在 boss battle 才會出現
-                    gp.playSoundEffect(Sound.FX__DOOR_OPEN);
-                    break;
-                }
-            }
+            OBJ_Door_Iron door = new OBJ_Door_Iron(gp);
+            door.setWorldX(gp.tileSize * 25);
+            door.setWorldY(gp.tileSize * 28);
+            door.tempObj = true;
+            gp.obj[gp.currentMap.index].add(door);
+            gp.playSoundEffect(Sound.FX__DOOR_OPEN);
 
-            // Search a vacant slot for the dummy
-            for(int i=0; i<gp.npc[1].length; i++) {
-                if(gp.npc[gp.currentMap.index][i] == null) {
-                    gp.npc[gp.currentMap.index][i] = new PlayerDummy(gp);
-                    gp.npc[gp.currentMap.index][i].worldX = gp.player.worldX;
-                    gp.npc[gp.currentMap.index][i].worldY = gp.player.worldY;
-                    gp.npc[gp.currentMap.index][i].direction = gp.player.direction;
-                    break;
-                }
-            }
+            // Add dummy player
+            PlayerDummy dummy = new PlayerDummy(gp);
+            dummy.setWorldX(gp.player.getWorldX());
+            dummy.setWorldY(gp.player.getWorldY());
+            dummy.direction = gp.player.direction;
+            gp.npc[gp.currentMap.index].add(dummy);
 
             gp.player.drawing = false;
             scenePhase++;
             // Music
-            gp.stopBackgroundMusic();;
+            gp.stopBackgroundMusic();
+            ;
             gp.playBackgroundMusic(Sound.MUSIC__FINAL_BATTLE);
 
         }
@@ -89,22 +84,23 @@ public class CutsenseManager {
         // 1.2 moving the camera
         else if (scenePhase == 1) {
 
-            gp.player.worldY -= 2; // 讓 Player 繼續走, 然後把 Player 影像暫時消失，行程移動 Camera 的效果
+            gp.player.setWorldY(gp.player.getWorldY() - 2); // 讓他 Player 繼續走, 然後把 Player 影像暫時消失，行程移動 Camera 的效果
 
-            if (gp.player.worldY < gp.tileSize * 16) {
-                scenePhase ++;
+            if (gp.player.getWorldY() < gp.tileSize * 16) {
+                scenePhase++;
             }
         }
         // Phase 2: Wake up the boss, and speak
         else if (scenePhase == 2) {
             // Search the boss
-            for (int i=0; i<gp.monster[1].length; i++) {
-                if (gp.monster[gp.currentMap.index][i] != null
-                        && gp.monster[gp.currentMap.index][i].name.equals(MON_SkeletonLord.OBJ_NAME)) {
-                    
-                    gp.monster[gp.currentMap.index][i].sleep = false;
+            for (int i = 0; i < gp.monster[gp.currentMap.index].size(); i++) {
+                Entity monster = gp.monster[gp.currentMap.index].get(i);
+                if (monster != null
+                        && monster.name.equals(MON_SkeletonLord.OBJ_NAME)) {
+
+                    monster.sleep = false;
                     // speak
-                    gp.ui.npc = gp.monster[gp.currentMap.index][i];
+                    gp.ui.npc = monster;
                     scenePhase++;
                     break;
                 }
@@ -118,15 +114,16 @@ public class CutsenseManager {
         // Phase 4: return the camera to player
         else if (scenePhase == 4) {
             // Search the dummy
-            for(int i=0; i<gp.npc[1].length; i++) {
-                if(gp.npc[gp.currentMap.index][i] != null 
-                    && gp.npc[gp.currentMap.index][i].name.equals(PlayerDummy.OBJ_NAME) ) {
+            for (int i = 0; i < gp.npc[gp.currentMap.index].size(); i++) {
+                Entity npc = gp.npc[gp.currentMap.index].get(i);
+                if (npc != null
+                        && npc.name.equals(PlayerDummy.OBJ_NAME)) {
                     // Restore the Player Position
-                    gp.player.worldX = gp.npc[gp.currentMap.index][i].worldX;
-                    gp.player.worldY = gp.npc[gp.currentMap.index][i].worldY;
-                    
+                    gp.player.setWorldX(npc.getWorldX());
+                    gp.player.setWorldY(npc.getWorldY());
+
                     // Delete the dummy
-                    gp.npc[gp.currentMap.index][i] = null;
+                    gp.npc[gp.currentMap.index].remove(i);
                     break;
                 }
             }
@@ -147,25 +144,21 @@ public class CutsenseManager {
             gp.stopBackgroundMusic();
             gp.ui.npc = new OBJ_BlueHeart(gp);
             scenePhase++;
-        }
-        else if (scenePhase == 1) {
+        } else if (scenePhase == 1) {
             // Display dialogues
             gp.ui.drawDialogusScreen();
-        }
-        else if (scenePhase == 2) {
+        } else if (scenePhase == 2) {
             // Play the fanfare
             gp.playSoundEffect(Sound.MUSIC__FANFARE);
             scenePhase++;
-        }
-        else if (scenePhase == 3) {
+        } else if (scenePhase == 3) {
 
             // Wait until the seound effect ends
             // 300 fps = 5 s
-            if(counterReached(300) == true) {
-                scenePhase ++;
+            if (counterReached(300) == true) {
+                scenePhase++;
             }
-        }
-        else if (scenePhase == 4) {
+        } else if (scenePhase == 4) {
             // The screen gets darker
 
             alpha += 0.005f;
@@ -176,10 +169,9 @@ public class CutsenseManager {
 
             if (alpha == 1f) {
                 alpha = 0;
-                scenePhase ++;
+                scenePhase++;
             }
-        }
-        else if (scenePhase == 5) {
+        } else if (scenePhase == 5) {
             drawBlackBackground(1f);
 
             alpha += 0.005f;
@@ -188,9 +180,9 @@ public class CutsenseManager {
             }
 
             String text = "After the fierce battle with the Skeleton Lord,\n"
-                + "the Blue Boy finally found the legendary treasure.\n"
-                + "Bue this is not the end of his joureny.\n"
-                + "The Blue Boy's adventure has just begun.";
+                    + "the Blue Boy finally found the legendary treasure.\n"
+                    + "Bue this is not the end of his joureny.\n"
+                    + "The Blue Boy's adventure has just begun.";
             drawString(alpha, 38f, 200, text, 70);
 
             // Waiting for 10 second
@@ -198,8 +190,7 @@ public class CutsenseManager {
                 gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
                 scenePhase++;
             }
-        }
-        else if (scenePhase == 6) {
+        } else if (scenePhase == 6) {
             // Diaply the game title
             drawBlackBackground(1f);
             drawString(1f, 120f, gp.screenHeight / 2, Main.GAME_TITLE, 40);
@@ -207,9 +198,8 @@ public class CutsenseManager {
             // Waiting for 8 second
             if (counterReached(480) == true) {
                 scenePhase++;
-            } 
-        }
-        else if (scenePhase == 7) {
+            }
+        } else if (scenePhase == 7) {
             drawBlackBackground(1f);
 
             y = gp.screenHeight / 2;
@@ -218,9 +208,8 @@ public class CutsenseManager {
             // Waiting for 8 second
             if (counterReached(480) == true) {
                 scenePhase++;
-            } 
-        }
-        else if (scenePhase == 8) {
+            }
+        } else if (scenePhase == 8) {
             drawBlackBackground(1f);
 
             // Scrolling the credit
@@ -230,11 +219,11 @@ public class CutsenseManager {
         }
     }
 
-    // Waiting for N second    
+    // Waiting for N second
     private boolean counterReached(int target) {
         boolean counterReached = false;
         counter++;
-        if(counter > target) {
+        if (counter > target) {
             counterReached = true;
             counter = 0;
         }
@@ -256,7 +245,7 @@ public class CutsenseManager {
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(fontSize));
 
-        for(String line: text.split("\n")) {
+        for (String line : text.split("\n")) {
             int x = g2utils.getXforCenterText(g2, gp, line);
             g2.drawString(line, x, y);
             y += lineHeight;

@@ -7,6 +7,7 @@ public class Main {
 
     public static JFrame window;
     public final static String GAME_TITLE = "M/A Legend";
+
     public static void main(String[] args) {
         window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,7 +20,7 @@ public class Main {
         window.add(gamePanel);
 
         gamePanel.config.loadConfig();
-        if(gamePanel.fullScreenOn == true) {
+        if (gamePanel.fullScreenOn == true) {
             window.setUndecorated(true);
         }
 
@@ -33,7 +34,8 @@ public class Main {
     }
 
     public void setIcon() {
-        ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("gtcafe/rpg/assets/player/walking/boy_up_1.png"));
+        ImageIcon icon = new ImageIcon(
+                getClass().getClassLoader().getResource("gtcafe/rpg/assets/player/walking/boy_up_1.png"));
         window.setIconImage(icon.getImage());
     }
 }

@@ -7,9 +7,10 @@ import gtcafe.rpg.state.Direction;
 // 拋射物: 弓箭, 火球, 魔法 ... etc.
 public class Projectile extends Entity {
     Entity user;
+
     public Projectile(GamePanel gp) {
         super(gp);
-    } 
+    }
 
     // reset the life to the max value every time your shoot it.
     public void set(int worldX, int worldY, Direction direction, boolean alive, Entity user) {
@@ -30,13 +31,16 @@ public class Projectile extends Entity {
             int monsterIndex = gp.collisionChecker.checkEntity(this, gp.monster);
             // player attack monster
             if (monsterIndex != 999) {
-                gp.player.damageMonster(monsterIndex, this, attack * (gp.player.level/2), knockBackPower); // 50% of player's attack power
-                
-                generateParticle(user.projectile, gp.monster[mapIndex][monsterIndex]);
+                gp.player.damageMonster(monsterIndex, this, attack * (gp.player.getLevel() / 2), knockBackPower); // 50%
+                                                                                                                  // of
+                // player's
+                // attack
+                // power
+
+                generateParticle(user.projectile, gp.monster[mapIndex].get(monsterIndex));
                 alive = false;
             }
-        } 
-        else {
+        } else {
             boolean contacPlayer = gp.collisionChecker.checkPlayer(this);
             // monster attack player
             if (gp.player.invincible == false && contacPlayer == true) {
