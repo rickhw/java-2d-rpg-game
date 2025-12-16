@@ -760,7 +760,7 @@ public class UI {
             // TITLE NAME
             g2.setFont(purisaB);
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
-            String text = "M/A Legend";
+            String text = Main.GAME_TITLE;
             int x = g2Utils.getXforCenterText(g2, gp, text);
             int y = gp.tileSize * 3;
 

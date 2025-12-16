@@ -1,25 +1,41 @@
 package gtcafe.rpg;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import gtcafe.rpg.entity.PlayerDummy;
 import gtcafe.rpg.entity.monster.MON_SkeletonLord;
+import gtcafe.rpg.entity.object.OBJ_BlueHeart;
 import gtcafe.rpg.entity.object.OBJ_Door_Iron;
 import gtcafe.rpg.state.GameState;
+import gtcafe.rpg.state.Scene;
 import gtcafe.rpg.system.Sound;
 
 public class CutsenseManager {
     GamePanel gp;
     Graphics2D g2;
-    public int sceneNum;
+    Graphics2DUtils g2utils = new Graphics2DUtils();
+    public Scene sceneNum = Scene.NA;
     public int scenePhase;
-
-    // Scene Number;
-    public final int NA = 0;
-    public final int skeletonlord = 1;
+    int counter = 0;
+    float alpha = 0f;
+    int y = 0;
+    String endCredit;
 
     public CutsenseManager(GamePanel gp) {
         this.gp = gp;
+
+        endCredit = "Program/Music/Art/Story\n"
+            + "RyiSnow"
+            + "\n\n\n\n\n\n\n\n\n\n\n"
+            + "Special Thanks\n"
+            + "Someone\n"
+            + "Someone\n"
+            + "Someone\n"
+            + "Thank you for playing!";
+            // + "\n\n\n\n\n\n\n\n\n\n\n"
+            // + Main.GAME_TITLE;
     }
 
     public void draw(Graphics2D g2) {
@@ -27,11 +43,13 @@ public class CutsenseManager {
 
         // for multiple sense
         switch(sceneNum) {
-            case skeletonlord: sense_skeletonLord(); break;
+            case SKELETON_LORD -> scene_skeletonLord(); 
+            case ENDING -> scene_ending();
+            default -> {}
         }
     }
 
-    private void sense_skeletonLord() {
+    private void scene_skeletonLord() {
         // Phase 0: Placing Iron Doors
         if (scenePhase == 0) {
             gp.bossBattleOn = true;
@@ -117,10 +135,133 @@ public class CutsenseManager {
             gp.player.drawing = true;
 
             // Reset
-            sceneNum = NA;
+            sceneNum = Scene.NA;
             scenePhase = 0;
             gp.gameState = GameState.PLAY;
 
         }
     }
+
+    private void scene_ending() {
+        if (scenePhase == 0) {
+            gp.stopBackgroundMusic();
+            gp.ui.npc = new OBJ_BlueHeart(gp);
+            scenePhase++;
+        }
+        else if (scenePhase == 1) {
+            // Display dialogues
+            gp.ui.drawDialogusScreen();
+        }
+        else if (scenePhase == 2) {
+            // Play the fanfare
+            gp.playSoundEffect(Sound.MUSIC__FANFARE);
+            scenePhase++;
+        }
+        else if (scenePhase == 3) {
+
+            // Wait until the seound effect ends
+            // 300 fps = 5 s
+            if(counterReached(300) == true) {
+                scenePhase ++;
+            }
+        }
+        else if (scenePhase == 4) {
+            // The screen gets darker
+
+            alpha += 0.005f;
+            if (alpha > 1f) {
+                alpha = 1f;
+            }
+            drawBlackBackground(alpha);
+
+            if (alpha == 1f) {
+                alpha = 0;
+                scenePhase ++;
+            }
+        }
+        else if (scenePhase == 5) {
+            drawBlackBackground(1f);
+
+            alpha += 0.005f;
+            if (alpha > 1f) {
+                alpha = 1f;
+            }
+
+            String text = "After the fierce battle with the Skeleton Lord,\n"
+                + "the Blue Boy finally found the legendary treasure.\n"
+                + "Bue this is not the end of his joureny.\n"
+                + "The Blue Boy's adventure has just begun.";
+            drawString(alpha, 38f, 200, text, 70);
+
+            // Waiting for 10 second
+            if (counterReached(600) == true) {
+                gp.playBackgroundMusic(Sound.MUSIC__MAIN_THEME);
+                scenePhase++;
+            }
+        }
+        else if (scenePhase == 6) {
+            // Diaply the game title
+            drawBlackBackground(1f);
+            drawString(1f, 120f, gp.screenHeight / 2, Main.GAME_TITLE, 40);
+
+            // Waiting for 8 second
+            if (counterReached(480) == true) {
+                scenePhase++;
+            } 
+        }
+        else if (scenePhase == 7) {
+            drawBlackBackground(1f);
+
+            y = gp.screenHeight / 2;
+            drawString(1f, 38f, y, endCredit, 40);
+
+            // Waiting for 8 second
+            if (counterReached(480) == true) {
+                scenePhase++;
+            } 
+        }
+        else if (scenePhase == 8) {
+            drawBlackBackground(1f);
+
+            // Scrolling the credit
+            y--;
+            drawString(1f, 38f, y, endCredit, 40);
+
+        }
+    }
+
+    // Waiting for N second    
+    private boolean counterReached(int target) {
+        boolean counterReached = false;
+        counter++;
+        if(counter > target) {
+            counterReached = true;
+            counter = 0;
+        }
+
+        return counterReached;
+    }
+
+    // Make the screen go to dark
+    private void drawBlackBackground(float alpha) {
+
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+    }
+
+    private void drawString(float alpha, float fontSize, int y, String text, int lineHeight) {
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(fontSize));
+
+        for(String line: text.split("\n")) {
+            int x = g2utils.getXforCenterText(g2, gp, line);
+            g2.drawString(line, x, y);
+            y += lineHeight;
+        }
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+    }
+
 }

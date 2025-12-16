@@ -1,5 +1,6 @@
 package gtcafe.rpg;
 
+import gtcafe.rpg.data.Progress;
 import gtcafe.rpg.entity.equipable.OBJ_Lantern;
 import gtcafe.rpg.entity.monster.MON_Bat;
 import gtcafe.rpg.entity.monster.MON_GreenSlime;
@@ -9,6 +10,7 @@ import gtcafe.rpg.entity.monster.MON_SkeletonLord;
 import gtcafe.rpg.entity.npc.NPC_BigRock;
 import gtcafe.rpg.entity.npc.NPC_Merchant;
 import gtcafe.rpg.entity.npc.NPC_OldMan;
+import gtcafe.rpg.entity.object.OBJ_BlueHeart;
 import gtcafe.rpg.entity.object.OBJ_Chest;
 import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
 import gtcafe.rpg.entity.object.OBJ_Door;
@@ -21,7 +23,7 @@ import gtcafe.rpg.entity.shield.OBJ_Shield_Blue;
 import gtcafe.rpg.entity.weapon.OBJ_Axe;
 import gtcafe.rpg.entity.weapon.OBJ_Pickaxe;
 import gtcafe.rpg.entity.weapon.OBJ_Sword_Normal;
-import gtcafe.rpg.tile.Scene;
+import gtcafe.rpg.tile.Map;
 import gtcafe.rpg.tile.interactive.IT_DestructibleWall;
 import gtcafe.rpg.tile.interactive.IT_DryTree;
 import gtcafe.rpg.tile.interactive.IT_MetalPlate;
@@ -37,7 +39,7 @@ public class AssetSetter {
     // instantiate objects
     public void setObject() {
         int i = 0;
-        int mapIndex = Scene.WORLD_MAP.index;
+        int mapIndex = Map.WORLD_MAP.index;
         
         gp.obj[mapIndex][i] = new OBJ_Coin_Bronze(gp);
         gp.obj[mapIndex][i].worldX = gp.tileSize * 25;
@@ -131,7 +133,7 @@ public class AssetSetter {
 
 
         // DONGEON01
-        mapIndex = Scene.DONGEON01.index;
+        mapIndex = Map.DONGEON01.index;
         i=0;
 
         gp.obj[mapIndex][i] = new OBJ_Chest(gp);
@@ -164,13 +166,17 @@ public class AssetSetter {
 
 
         // DONGEON02
-        mapIndex = Scene.DONGEON02.index;
+        mapIndex = Map.DONGEON02.index;
         i=0;
 
-        gp.obj[mapIndex][i] = new OBJ_Chest(gp);
-        gp.obj[mapIndex][i].setLoot(new OBJ_Heart(gp));
+        gp.obj[mapIndex][i] = new OBJ_BlueHeart(gp);
         gp.obj[mapIndex][i].worldX = gp.tileSize * 25;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 8;
+
+        // gp.obj[mapIndex][i] = new OBJ_Chest(gp);
+        // gp.obj[mapIndex][i].setLoot(new OBJ_BlueHeart(gp));
+        // gp.obj[mapIndex][i].worldX = gp.tileSize * 25;
+        // gp.obj[mapIndex][i].worldY = gp.tileSize * 8;
 
         // 上面的鐵門，關起寶藏
         i++;
@@ -189,7 +195,7 @@ public class AssetSetter {
 
     public void setNPC() {
         int i = 0;
-        int mapIndex = Scene.WORLD_MAP.index;
+        int mapIndex = Map.WORLD_MAP.index;
 
         gp.npc[mapIndex][i] = new NPC_OldMan(gp, "Steve");
         gp.npc[mapIndex][i].worldX = gp.tileSize * 18;
@@ -203,14 +209,14 @@ public class AssetSetter {
 
         // NPC in Scense.STORE
         i = 0;
-        mapIndex = Scene.STORE.index;
+        mapIndex = Map.STORE.index;
         gp.npc[mapIndex][i] = new NPC_Merchant(gp);
         gp.npc[mapIndex][i].worldX = gp.tileSize * 12;
         gp.npc[mapIndex][i].worldY = gp.tileSize * 7;
 
                 // NPC in Scense.STORE
         i = 0;
-        mapIndex = Scene.DONGEON01.index;
+        mapIndex = Map.DONGEON01.index;
         
         gp.npc[mapIndex][i] = new NPC_BigRock(gp);
         gp.npc[mapIndex][i].worldX = gp.tileSize * 20;
@@ -237,7 +243,7 @@ public class AssetSetter {
 
     public void setMonster() {
         int i = 0;
-        int mapIndex = Scene.WORLD_MAP.index;
+        int mapIndex = Map.WORLD_MAP.index;
 
         // 中下
         gp.monster[mapIndex][i] = new MON_GreenSlime(gp);
@@ -318,7 +324,7 @@ public class AssetSetter {
 
 
         i = 0;
-        mapIndex = Scene.DONGEON01.index;
+        mapIndex = Map.DONGEON01.index;
 
         gp.monster[mapIndex][i] = new MON_Bat(gp);
         gp.monster[mapIndex][i].worldX = gp.tileSize * 34;
@@ -346,16 +352,18 @@ public class AssetSetter {
 
 
         i = 0;
-        mapIndex = Scene.DONGEON02.index;
+        mapIndex = Map.DONGEON02.index;
 
-        gp.monster[mapIndex][i] = new MON_SkeletonLord(gp);
-        gp.monster[mapIndex][i].worldX = gp.tileSize * 23;
-        gp.monster[mapIndex][i].worldY = gp.tileSize * 16;
+        if (Progress.skeletonLordDefeated == false) {
+            gp.monster[mapIndex][i] = new MON_SkeletonLord(gp);
+            gp.monster[mapIndex][i].worldX = gp.tileSize * 23;
+            gp.monster[mapIndex][i].worldY = gp.tileSize * 16;
+        }
     }
 
     public void setInteractiveTiles() {
         int i = 0;
-        int mapIndex = Scene.WORLD_MAP.index;
+        int mapIndex = Map.WORLD_MAP.index;
 
         gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 27, 12);
         gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 28, 12);
@@ -387,7 +395,7 @@ public class AssetSetter {
 
         // Dungeon 01
         i = 0;
-        mapIndex = Scene.DONGEON01.index;
+        mapIndex = Map.DONGEON01.index;
 
         gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 18, 30);
         gp.iTile[mapIndex][i++] = new IT_DestructibleWall(gp, 17, 30);

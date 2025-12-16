@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.state.GameState;
-import gtcafe.rpg.tile.Scene;
+import gtcafe.rpg.tile.Map;
 
 public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, musicPressed;
@@ -74,10 +74,10 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_R) {
             switch(gp.currentMap) {
                 case WORLD_MAP:
-                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Scene.WORLD_MAP);
+                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/worldV3.txt", Map.WORLD_MAP);
                     break;
                 case STORE:
-                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Scene.STORE); 
+                    gp.tileManager.loadMap("/gtcafe/rpg/assets/maps/interior01.txt", Map.STORE); 
                     break;
             }
         }

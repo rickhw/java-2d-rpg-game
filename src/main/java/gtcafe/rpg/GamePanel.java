@@ -27,8 +27,8 @@ import gtcafe.rpg.system.Config;
 import gtcafe.rpg.system.EventHandler;
 import gtcafe.rpg.system.KeyHandler;
 import gtcafe.rpg.system.Sound;
+import gtcafe.rpg.tile.MapManager;
 import gtcafe.rpg.tile.Map;
-import gtcafe.rpg.tile.Scene;
 import gtcafe.rpg.tile.TileManager;
 import gtcafe.rpg.tile.interactive.InteractiveTile;
 
@@ -49,7 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int maxWorldCol ;
     public int maxWorldRow ;
     public final int maxMap = 10; // map list
-    public Scene currentMap = Scene.WORLD_MAP;      // indicate current map number
+    public Map currentMap = Map.WORLD_MAP;      // indicate current map number
 
     // FOR FULL SCREEN
     int screenWidth2 = screenWidth;
@@ -74,7 +74,7 @@ public class GamePanel extends JPanel implements Runnable {
     Config config = new Config(this);
     public PathFinder pathFinder = new PathFinder(this);
     EnvironmentManager eManager = new EnvironmentManager(this);
-    public Map map = new Map(this);
+    public MapManager map = new MapManager(this);
     public EntityGenerator eGenerator = new EntityGenerator(this);
     public SaveLoad saveLoad = new SaveLoad(this, eGenerator);
     public CutsenseManager csManager = new CutsenseManager(this);
@@ -152,6 +152,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void resetGame(boolean restart) {
+        stopBackgroundMusic();
         currentArea = OUTSIDE;
 
         removeTempEntity();
@@ -258,7 +259,7 @@ public class GamePanel extends JPanel implements Runnable {
                 double remainingPercent = (double)remainingTime / drawInterval * 100;
 
                 SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-                System.out.printf("%s [GameLoop] FPS: [%s], Remaining Percent: [%.2f], State: [%s], Scene: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), fpsCount, remainingPercent, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
+                System.out.printf("%s [GameLoop] FPS: [%s], Remaining Percent: [%.2f], State: [%s], Map: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), fpsCount, remainingPercent, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
                 // drawCount = 0;
                 timer = 0;
 

@@ -1,6 +1,13 @@
 
 ## Release Notes
 
+### v2.16.x
+
+1. Bug fix
+    - return to dungeon B2, boss become sleep states
+    - return to title screen, the music keep playing
+2. Ending Scene
+
 ### v2.15.x (20251215_1): https://www.youtube.com/watch?v=IsNZ4z4wEOo
 
 1. Debug: 顯示 SolidArea, AttackArea 座標
