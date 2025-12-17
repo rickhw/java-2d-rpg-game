@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://rwkr7y8cjysh"]
+
+[ext_resource type="PackedScene" uid="uid://cjk8xhdq5qk2u" path="res://scenes/entities/player.tscn" id="1"]
+[ext_resource type="Script" uid="uid://7gqfn7ahwpb4" path="res://scripts/systems/debug_grid.gd" id="2"]
+
+[node name="TestWorld" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(480, 300)
+
+[node name="DebugGrid" type="Node2D" parent="."]
+z_index = 1000
+script = ExtResource("2")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="HUD"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 400.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "玩家測試場景
+WASD - 移動 | Enter - 攻擊 | Space - 格擋 | F - 發射
+T - 切換格線顯示"

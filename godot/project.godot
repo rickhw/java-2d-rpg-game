@@ -12,7 +12,7 @@ config_version=5
 
 config/name="M/A Legend"
 config/description="2D Adventure RPG - Godot 4 Port"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="uid://rwkr7y8cjysh"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.png"
 
