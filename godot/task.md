@@ -15,10 +15,10 @@
 - [x] 設定碰撞圖層
 
 ### Phase 3: 玩家系統 (Player System)
-- [ ] 建立 Player 場景與腳本
-- [ ] 實作移動控制 (WASD/方向鍵)
-- [ ] 實作精靈動畫 (walking, attacking, guarding)
-- [ ] 實作攝影機跟隨
+- [x] 建立 Player 場景與腳本
+- [x] 實作移動控制 (WASD/方向鍵)
+- [x] 實作精靈動畫 (walking, attacking, guarding)
+- [x] 實作攝影機跟隨
 
 ### Phase 4: 實體系統 (Entity System)
 - [ ] 建立 Entity 基礎類別

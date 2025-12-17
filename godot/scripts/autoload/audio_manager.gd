@@ -54,6 +54,7 @@ func _ready() -> void:
 func _setup_bgm_player() -> void:
 	bgm_player = AudioStreamPlayer.new()
 	bgm_player.bus = "Master"
+	bgm_player.finished.connect(_on_bgm_finished)
 	add_child(bgm_player)
 
 
@@ -116,3 +117,9 @@ func set_bgm_volume(volume: float) -> void:
 
 func set_sfx_volume(volume: float) -> void:
 	sfx_volume = clamp(volume, 0.0, 1.0)
+
+
+func _on_bgm_finished() -> void:
+	"""BGM 播放完畢後重新播放 (循環)"""
+	if current_bgm != "":
+		bgm_player.play()

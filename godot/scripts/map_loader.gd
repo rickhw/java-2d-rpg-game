@@ -52,7 +52,7 @@ static func create_tileset_from_tiles(tile_dir: String) -> TileSet:
 	var tileset = TileSet.new()
 	tileset.tile_size = Vector2i(TILE_SIZE, TILE_SIZE)
 	
-	# 建立物理層 (用於碰撞)
+	# 建立物理層 (用於碰撞) - 必須在 add_source 之前設定
 	tileset.add_physics_layer()
 	tileset.set_physics_layer_collision_layer(0, 1 << 4)  # tiles layer (layer 5)
 	tileset.set_physics_layer_collision_mask(0, 0)
@@ -91,27 +91,34 @@ static func create_tileset_from_tiles(tile_dir: String) -> TileSet:
 	atlas_source.texture = atlas_texture
 	atlas_source.texture_region_size = Vector2i(TILE_SIZE, TILE_SIZE)
 	
-	# 為每個 tile 建立 atlas 座標
+	# 先建立所有 tiles
 	for i in range(38):
 		var atlas_coords = Vector2i(i, 0)
 		atlas_source.create_tile(atlas_coords)
-		
-		# 設定碰撞
+	
+	# 先將 source 加入 tileset (這樣 physics layer 才會生效)
+	var source_id = tileset.add_source(atlas_source)
+	
+	# 現在設定碰撞 (在 source 加入 tileset 之後)
+	for i in range(38):
 		if TILE_COLLISION.get(i, false):
+			var atlas_coords = Vector2i(i, 0)
 			var tile_data = atlas_source.get_tile_data(atlas_coords, 0)
 			if tile_data:
-				# 建立碰撞多邊形 (整個 tile，大小為 TILE_SIZE)
+				# 設定碰撞多邊形 (整個 tile)
+				tile_data.set_collision_polygons_count(0, 1)
 				var polygon = PackedVector2Array([
 					Vector2(0, 0),
 					Vector2(TILE_SIZE, 0),
 					Vector2(TILE_SIZE, TILE_SIZE),
 					Vector2(0, TILE_SIZE)
 				])
-				tile_data.add_collision_polygon(0)
 				tile_data.set_collision_polygon_points(0, 0, polygon)
 	
-	tileset.add_source(atlas_source)
-	print("[MapLoader] Created TileSet with %d tiles (size: %dx%d)" % [tile_images.size(), TILE_SIZE, TILE_SIZE])
+	print("[MapLoader] Created TileSet with %d tiles (size: %dx%d), collision tiles: %d" % [
+		tile_images.size(), TILE_SIZE, TILE_SIZE, 
+		TILE_COLLISION.values().count(true)
+	])
 	return tileset
 
 
