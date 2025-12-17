@@ -1,0 +1,102 @@
+[gd_scene load_steps=2 format=3 uid="uid://main_scene"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="TitleScreen" type="Control" parent="CanvasLayer"]
+visible = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/TitleScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.1, 0.15, 1)
+
+[node name="Title" type="Label" parent="CanvasLayer/TitleScreen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 150.0
+offset_right = 200.0
+offset_bottom = 250.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 72
+text = "M/A Legend"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="CanvasLayer/TitleScreen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 250.0
+offset_right = 200.0
+offset_bottom = 290.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "2D Adventure RPG"
+horizontal_alignment = 1
+
+[node name="MenuContainer" type="VBoxContainer" parent="CanvasLayer/TitleScreen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 400.0
+offset_right = 100.0
+offset_bottom = 550.0
+grow_horizontal = 2
+theme_override_constants/separation = 20
+
+[node name="NewGame" type="Label" parent="CanvasLayer/TitleScreen/MenuContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "> NEW GAME"
+horizontal_alignment = 1
+
+[node name="LoadGame" type="Label" parent="CanvasLayer/TitleScreen/MenuContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "  LOAD GAME"
+horizontal_alignment = 1
+
+[node name="Quit" type="Label" parent="CanvasLayer/TitleScreen/MenuContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "  QUIT"
+horizontal_alignment = 1
+
+[node name="VersionLabel" type="Label" parent="CanvasLayer/TitleScreen"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 16
+text = "v1.0.0 - Godot 4.5"
+horizontal_alignment = 1
