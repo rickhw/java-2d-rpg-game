@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3qvnpxeaymgj"]
+
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_test"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_test")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 940.0
+offset_bottom = 200.0
+theme_override_font_sizes/font_size = 32
+text = "M/A Legend - Godot 4 Port
+第一階段：基礎框架建立完成！
+
+請用 Godot 引擎開啟此專案進行驗證。
+應該可以看到自動載入的腳本已正確初始化。
+檢查 Output 視窗應該會看到初始化訊息。"
