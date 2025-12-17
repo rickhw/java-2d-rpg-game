@@ -83,8 +83,12 @@ func start_new_game() -> void:
 	# 切換到遊玩狀態
 	GameManager.change_state(GameManager.GameState.PLAY)
 	
-	# TODO: 載入世界地圖場景
-	print("[Main] New game started - World map will be loaded in Phase 2")
+	# 載入世界地圖場景
+	var world_map_scene = load("res://scenes/maps/world_map.tscn")
+	var world_map = world_map_scene.instantiate()
+	add_child(world_map)
+	
+	print("[Main] World map loaded")
 
 
 func load_game() -> void:

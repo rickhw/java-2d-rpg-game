@@ -9,10 +9,10 @@
 - [x] 設定專案基本參數 (解析度、縮放)
 
 ### Phase 2: 地圖系統 (Tile System)
-- [ ] 建立 TileSet 資源
-- [ ] 實作 TileMap 載入機制
-- [ ] 實作 4 張地圖 (worldmap, indoor01, dungeon01, dungeon02)
-- [ ] 設定碰撞圖層
+- [x] 建立 TileSet 資源
+- [x] 實作 TileMap 載入機制
+- [x] 實作 4 張地圖 (worldmap, indoor01, dungeon01, dungeon02)
+- [x] 設定碰撞圖層
 
 ### Phase 3: 玩家系統 (Player System)
 - [ ] 建立 Player 場景與腳本
