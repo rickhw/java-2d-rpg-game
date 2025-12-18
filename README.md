@@ -1,11 +1,29 @@
 ## 學習心得
 
-1. 學到很多遊戲或者小說才會看得英文
-2. 寫程式過程的思考：過度思考，簡單可用，然後再來思考技術面。
-3. 為什麼純手工？沒考慮過 GameEngine? Unity, Unreal？
-    - 了解遊戲運作原理
+紀錄從 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，手工完成 RPG Game 的歷程與心得，相關紀錄放在 [Game Learning and DevLog](https://www.youtube.com/playlist?list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO) 這個播放清單裡。
+
+
+寫一個 RPG Game 是小時候的夢想，家裡還沒有電腦，只有紅白機的時候，玩吞食天地的時候，就在想以後能不能自己寫類似的遊戲。後來因緣際會玩到了 Final Fantasy 3 (台灣當時翻譯：太空戰士)，對整個遊戲的玩法、音樂、畫面震撼到不行，尤其是音樂。永遠忘不了駕著飛空艇，從空浮大陸飛出去的音樂與畫面，那感覺深深烙印在腦海裡，而整個故事的安排與起伏，至今都難以忘懷。從那個時候 (應該是小五？)，我就拿起紙筆寫一些天馬行空的劇本，然後幻想有一天可以寫寫自己的遊戲。
+
+後來國二的時候，因緣機會玩到超任上的 Final Fantasy 5，又再一次的被音樂、故事震撼，國三畢業後，終於買到自己的超任，那時候超任上好像就只玩 FF5 了，其他遊戲玩得很少。
+
+再往下就是第一次接觸電腦的時候了，學習了 QBasic，才知道這東西是可以寫出可以用的工具，或者遊戲。
+
+之後唸書，到工作，一直都在寫商用應用程式、大型的 SaaS 系統，但「寫遊戲」一直都是在心裡的深處。
+
 
 ### 遊戲運作原理
+
+為什麼純手工？沒考慮過 GameEngine? Unity, Unreal？
+
+Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複雜，而且我沒有想做那麼「擬真」的遊戲。
+相對比較好上手的則是 Godot，所以有稍微研究過。
+
+但最核心的，手工做遊戲的目的是：
+
+> 了解遊戲運作原理
+
+像是底下的東西：
 
 1. GameLoop
 2. 座標系統
@@ -176,29 +194,3 @@
 
 - Prototype
 
-
-
----
-## Youtube Template
-
-Title: `[GameDevLog][v2.2.0]Custom Font, Title Screen, Player Life, Event (20251121)`
-
-Content: 
-```bash
-Game Learning & DevLog - 2D Adventure RPG
-#第九藝術
-
-純手工的 遊戲開發 & 練習紀錄
-Version: v2.7.0 20251201
-
-## DevLog
-
-- ...
-- ...
-- ...
-
-## Reference
-
-- All Playerlist: https://www.youtube.com/playlist?list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO
-- Learning from RyiSnow https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq
-```
