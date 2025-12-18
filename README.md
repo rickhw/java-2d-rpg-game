@@ -1,3 +1,27 @@
+## 學習心得
+
+1. 學到很多遊戲或者小說才會看得英文
+2. 寫程式過程的思考：過度思考，簡單可用，然後再來思考技術面。
+3. 為什麼純手工？沒考慮過 GameEngine? Unity, Unreal？
+    - 了解遊戲運作原理
+
+### 遊戲運作原理
+
+1. GameLoop
+2. 座標系統
+3. Graphics2D
+4. Collision
+5. PathFinding
+6. Practicle (粒子效果)
+
+### 遊戲的四個面向
+
+1. 技術/遊戲性: GameEngine
+2. 故事/劇本
+3. 美術/視覺
+4. 音樂/氛圍
+
+
 
 ## Release Notes
 
