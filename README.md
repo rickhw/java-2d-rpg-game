@@ -1,9 +1,9 @@
-## 學習心得
+# 學習心得
 
 紀錄從 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，手工完成 RPG Game 的歷程與心得，相關紀錄放在 [Game Learning and DevLog](https://www.youtube.com/playlist?list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO) 這個播放清單裡。
 
 
-寫一個 RPG Game 是小時候的夢想，家裡還沒有電腦，只有紅白機的時候，玩吞食天地的時候，就在想以後能不能自己寫類似的遊戲。後來因緣際會玩到了 Final Fantasy 3 (台灣當時翻譯：太空戰士)，對整個遊戲的玩法、音樂、畫面震撼到不行，尤其是音樂。永遠忘不了駕著飛空艇，從空浮大陸飛出去的音樂與畫面，那感覺深深烙印在腦海裡，而整個故事的安排與起伏，至今都難以忘懷。從那個時候 (應該是小五？)，我就拿起紙筆寫一些天馬行空的劇本，然後幻想有一天可以寫寫自己的遊戲。
+寫一個 RPG Game 是小時候的夢想。小時候家裡還沒有電腦，只有紅白機可以玩吞食天地的時候，就在想以後能不能自己寫類似的遊戲。後來因緣際會玩到了 Final Fantasy 3 (台灣當時翻譯：太空戰士)，對整個遊戲的玩法、音樂、畫面震撼到不行，尤其是音樂。永遠忘不了駕著飛空艇，從空浮大陸飛出去的音樂與畫面，那感覺深深烙印在腦海裡，而整個故事的安排與起伏，至今都難以忘懷。從那個時候 (應該是小五？)，我就拿起紙筆寫一些天馬行空的劇本，然後幻想有一天可以寫寫自己的遊戲。
 
 後來國二的時候，因緣機會玩到超任上的 Final Fantasy 5，又再一次的被音樂、故事震撼，國三畢業後，終於買到自己的超任，那時候超任上好像就只玩 FF5 了，其他遊戲玩得很少。
 
@@ -12,9 +12,9 @@
 之後唸書，到工作，一直都在寫商用應用程式、大型的 SaaS 系統，但「寫遊戲」一直都是在心裡的深處。
 
 
-### 遊戲運作原理
+## 遊戲運作原理
 
-為什麼純手工？沒考慮過 GameEngine? Unity, Unreal？
+為什麼純手工？沒考慮過 GameEngine？Unity、Unreal？
 
 Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複雜，而且我沒有想做那麼「擬真」的遊戲。
 相對比較好上手的則是 Godot，所以有稍微研究過。
@@ -32,32 +32,35 @@ Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複�
 5. PathFinding
 6. Practicle (粒子效果)
 
-### 遊戲的四個面向
+## 遊戲製作的四個面向
+
+撇除營運面的，像是銷售、行銷 ... 等，遊戲製作 (開發) 我把它分成以下四個部分：
 
 1. 技術/遊戲性: GameEngine
 2. 故事/劇本
 3. 美術/視覺
 4. 音樂/氛圍
 
+而這次學習的部分，主要是 1) 的部分。
 
+---
+# Release Notes
 
-## Release Notes
-
-### v2.16.x
+## v2.16.x
 
 1. Bug fix
     - return to dungeon B2, boss become sleep states
     - return to title screen, the music keep playing
 2. Ending Scene
 
-### v2.15.x (20251215_1): https://www.youtube.com/watch?v=IsNZ4z4wEOo
+## v2.15.x (20251215_1): https://www.youtube.com/watch?v=IsNZ4z4wEOo
 
 1. Debug: 顯示 SolidArea, AttackArea 座標
 2. 調整 Player Life Bar 的大小, 8 個換行
 2. Boss Health Bar
 3. 過場動畫 (Cutsense): Phase 0 - 4
 
-### v2.14.x (20251213_6): https://www.youtube.com/watch?v=m5suX8MnUfU
+## v2.14.x (20251213_6): https://www.youtube.com/watch?v=m5suX8MnUfU
 
 1. 推磚塊 解謎小關卡的設計
     - 計算 BigRock 和 MetalPlate 的交互
@@ -74,7 +77,7 @@ Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複�
     - Bat (蝙蝠): 移動速度快, 靈活的怪物
 4. 改善：重構, 新增 GodMode (無敵 + 開燈)
 
-### v2.13.x (20251211_4): https://www.youtube.com/watch?v=w_LL6W3BYFc
+## v2.13.x (20251211_4): https://www.youtube.com/watch?v=w_LL6W3BYFc
 
 - Advacned Dialogues: Multiple Lines, Letter by Letter Effect
 - Add New Monster: Red Slime
@@ -82,7 +85,7 @@ Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複�
 - Day and Night Mechanism: Outside, Indoor, Dungeon
 
 
-### v2.12.x (20251209_2): https://www.youtube.com/watch?v=lmCcBFZLBqQ
+## v2.12.x (20251209_2): https://www.youtube.com/watch?v=lmCcBFZLBqQ
 
 - Map Screen and Minimap
     - 按下 M 切換到世界地圖，同時標記 Player 座標
@@ -98,7 +101,7 @@ Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複�
 - Save and Load
     - Player Status, Inventory Status, Object Status
 
-### v2.11.x (20251205_5): https://www.youtube.com/watch?v=g3Il4LmMGh0
+## v2.11.x (20251205_5): https://www.youtube.com/watch?v=g3Il4LmMGh0
 
 - 新增日夜切換循環效果，分成 Day, Dusk (黃昏), Night, Dawn (黎明) 四個狀態循環
 - 新增物件 Lantern (燈籠)，裝備後玩家會在固定範圍有照明效果 (Lighting Effect )
@@ -106,7 +109,7 @@ Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複�
     - 玩家 life & mana 恢復。
     - 跑過場效果：漸進式變成 Night，然後恢復成 Day
 
-### v2.10.x (20251204_4): https://www.youtube.com/watch?v=le5aBmtu5eE
+## v2.10.x (20251204_4): https://www.youtube.com/watch?v=le5aBmtu5eE
 
 - 實作格擋與擊退效果
     - 回擊 Projectiles, 例如 Player 回擊 Monster 丟出來的石頭
@@ -120,24 +123,24 @@ Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複�
     - 在商店買入同樣物品，計數增加
     - 在商店賣出同樣物品，計數減少
 
-### v2.9.x (20251203_3): https://www.youtube.com/watch?v=KWlkeeyyT28
+## v2.9.x (20251203_3): https://www.youtube.com/watch?v=KWlkeeyyT28
 
 - Pathfinding: NPC follows player, aggro monsters
 
 
-### v2.8.x (20251202_2): https://www.youtube.com/watch?v=GMPD_8nK_8A
+## v2.8.x (20251202_2): https://www.youtube.com/watch?v=GMPD_8nK_8A
 
 - Transition between maps.
     - Transition effect
 - Trade System: Buy and Sell
 
-### v2.7.x (20251201_1): https://www.youtube.com/watch?v=R6vzTUGXtBA
+## v2.7.x (20251201_1): https://www.youtube.com/watch?v=R6vzTUGXtBA
 
 - Full Screen Mode
 - Options Menu and Saving Config
 - Game Over State
 
-### v2.6.x (20251128_5): https://www.youtube.com/watch?v=i9osbYkOLnw
+## v2.6.x (20251128_5): https://www.youtube.com/watch?v=i9osbYkOLnw
 
 - Monster Item Drops
     - Coin, Heart, Mana
@@ -151,12 +154,12 @@ Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複�
         - Play attacks monster with projectiles (fireball)
         - monster attacks player with projectiles (rock)
 
-### v2.5.x (20251127_4): https://www.youtube.com/watch?v=N0-kIh-zbuM
+## v2.5.x (20251127_4): https://www.youtube.com/watch?v=N0-kIh-zbuM
 
 - Add projectlies (拋射物), the example is fireball.
 - Monster Projectiles and Mana
 
-### v2.4.x (20251125_2): https://www.youtube.com/watch?v=JOQ75xBeIJk
+## v2.4.x (20251125_2): https://www.youtube.com/watch?v=JOQ75xBeIJk
 
 - Scrolling Message
 - Leveling Up
@@ -168,7 +171,7 @@ Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複�
     - Set the equip: sword or shield
     - Use the Potion to recovery life.
 
-### v2.3.0 (20251124_1): https://www.youtube.com/watch?v=F2ePhZjxBxc
+## v2.3.0 (20251124_1): https://www.youtube.com/watch?v=F2ePhZjxBxc
 
 - Monster: Green Slime
     - Collision Detection of Player/Monster/NPC/Tiles
@@ -178,19 +181,19 @@ Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複�
 - Event: Advanced Mechanics
 - Rendering Optimization
 
-### v2.2.0 (20251121_5): https://www.youtube.com/watch?v=JREH7K-hf68
+## v2.2.0 (20251121_5): https://www.youtube.com/watch?v=JREH7K-hf68
 
 - Custom Font, set the dialog text using pixel font by https://00ff.booth.pm/items/2958237
 - Title Screen and Scense
 - Player Life
 - Event for Damage Pit, Healing Pool, Teleport Tile
 
-### v2.1.0
+## v2.1.0
 
 - Pause Screen, House Keeping
 - Add NPC_OldMan, including collision detection with Tiles and Player.
 
-### v1.0.0 (20251115_6): https://www.youtube.com/watch?v=i6CVVRV-nkI
+## v1.0.0 (20251115_6): https://www.youtube.com/watch?v=i6CVVRV-nkI
 
 - Prototype
 
