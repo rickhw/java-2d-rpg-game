@@ -3,10 +3,14 @@ extends Node2D
 
 const MapLoader = preload("res://scripts/map_loader.gd")
 const PlayerScene = preload("res://scenes/player/player.tscn")
+const OldManScene = preload("res://scenes/entities/npcs/npc_oldman.tscn")
+const GreenSlimeScene = preload("res://scenes/entities/monsters/monster_greenslime.tscn")
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
 @onready var entities_node: Node2D = $Entities
 @onready var player_container: Node2D = $Entities/Player
+@onready var npcs_container: Node2D = $Entities/NPCs
+@onready var monsters_container: Node2D = $Entities/Monsters
 
 var map_data: Array = []
 var tileset: TileSet
@@ -31,6 +35,12 @@ func _ready() -> void:
 	# 生成玩家
 	_spawn_player()
 	
+	# 生成 NPC
+	_spawn_npcs()
+	
+	# 生成怪物
+	_spawn_monsters()
+	
 	# 通知 GameManager 地圖已載入
 	GameManager.change_map(GameManager.MapType.WORLD_MAP)
 
@@ -38,9 +48,9 @@ func _ready() -> void:
 func _spawn_player() -> void:
 	"""在起始位置生成玩家"""
 	player = PlayerScene.instantiate()
+	player.add_to_group("player")
 	
 	# 設定起始位置 (根據原始 Java 版本: 23*TILE_SIZE, 21*TILE_SIZE)
-	# 對應 worldmap 的道路位置
 	var start_tile_x = 23
 	var start_tile_y = 21
 	player.position = Vector2(
@@ -64,3 +74,38 @@ func _spawn_player() -> void:
 		print("[WorldMap] Camera limits set: %d x %d" % [camera.limit_right, camera.limit_bottom])
 	
 	print("[WorldMap] Player spawned at tile (%d, %d)" % [start_tile_x, start_tile_y])
+
+
+func _spawn_npcs() -> void:
+	"""生成 NPC"""
+	# Old Man - 在玩家起始位置附近
+	var oldman = OldManScene.instantiate()
+	oldman.position = _tile_to_pos(21, 21)
+	npcs_container.add_child(oldman)
+	print("[WorldMap] NPC Old Man spawned")
+
+
+func _spawn_monsters() -> void:
+	"""生成怪物"""
+	# 在道路區域生成幾隻史萊姆
+	var slime_positions = [
+		Vector2i(26, 20),
+		Vector2i(28, 22),
+		Vector2i(30, 24),
+		Vector2i(25, 26),
+	]
+	
+	for pos in slime_positions:
+		var slime = GreenSlimeScene.instantiate()
+		slime.position = _tile_to_pos(pos.x, pos.y)
+		monsters_container.add_child(slime)
+	
+	print("[WorldMap] %d Green Slimes spawned" % slime_positions.size())
+
+
+func _tile_to_pos(tile_x: int, tile_y: int) -> Vector2:
+	"""將 Tile 座標轉換為世界座標"""
+	return Vector2(
+		tile_x * GameManager.tile_size + GameManager.tile_size / 2,
+		tile_y * GameManager.tile_size + GameManager.tile_size / 2
+	)

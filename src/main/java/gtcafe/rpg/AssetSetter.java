@@ -60,7 +60,6 @@ public class AssetSetter {
         gp.obj[mapIndex][i].worldX = gp.tileSize * 19;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 20;
 
-
         i++;
         gp.obj[mapIndex][i] = new OBJ_Coin_Bronze(gp);
         gp.obj[mapIndex][i].worldX = gp.tileSize * 26;
@@ -75,8 +74,6 @@ public class AssetSetter {
         gp.obj[mapIndex][i] = new OBJ_Shield_Blue(gp);
         gp.obj[mapIndex][i].worldX = gp.tileSize * 10;
         gp.obj[mapIndex][i].worldY = gp.tileSize * 34;
-
-
 
         // Door
         i++;

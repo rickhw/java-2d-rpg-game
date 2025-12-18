@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://npc_oldman"]
+
+[ext_resource type="Script" path="res://scripts/entities/npc_oldman.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(40, 40)
+
+[node name="NPCOldMan" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 17
+script = ExtResource("1_script")
+entity_name = "Old Man"
+dialogue_lines = ["Hello, adventurer!", "Be careful in the dungeon.", "Good luck on your journey!"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(4, 4)
+offset = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 16)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("RectangleShape2D_1")

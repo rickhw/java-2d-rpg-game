@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://mon_greenslime"]
+
+[ext_resource type="Script" path="res://scripts/entities/monster_greenslime.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(40, 40)
+
+[node name="GreenSlime" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 21
+script = ExtResource("1_script")
+entity_name = "Green Slime"
+max_life = 4
+attack_value = 1
+exp_reward = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(4, 4)
+offset = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 16)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("RectangleShape2D_1")

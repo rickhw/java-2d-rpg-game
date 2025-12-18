@@ -21,11 +21,11 @@
 - [x] 實作攝影機跟隨
 
 ### Phase 4: 實體系統 (Entity System)
-- [ ] 建立 Entity 基礎類別
-- [ ] 實作 NPC 類別 (OldMan, Merchant, BigRock)
-- [ ] 實作 Monster 類別 (GreenSlime, RedSlime, Orc, Bat, SkeletonLord)
-- [ ] 實作 Object 類別 (Door, Chest, Key, Potion 等)
-- [ ] 實作 Projectile 類別 (Fireball, Rock)
+- [x] 建立 Entity 基礎類別
+- [x] 實作 NPC 類別 (OldMan, Merchant, BigRock)
+- [x] 實作 Monster 類別 (GreenSlime, RedSlime, Orc, Bat, SkeletonLord)
+- [x] 實作 Object 類別 (Door, Chest, Key, Potion 等)
+- [x] 實作 Projectile 類別 (Fireball, Rock)
 
 ### Phase 5: 碰撞與互動系統
 - [ ] 設定 Physics Layers
