@@ -111,9 +111,9 @@ public class Player extends Entity {
         // worldY = gp.tileSize * 9;
 
         // Dongeon02 treasure 前
-        gp.currentMap = Map.DONGEON02;
-        worldX = gp.tileSize * 25;
-        worldY = gp.tileSize * 9;
+        // gp.currentMap = Map.DONGEON02;
+        // worldX = gp.tileSize * 25;
+        // worldY = gp.tileSize * 9;
 
 
         direction = Direction.DOWN; 
