@@ -12,17 +12,17 @@
 之後唸書，到工作，一直都在寫商用應用程式、大型的 SaaS 系統，但「寫遊戲」一直都是在心裡的深處。
 
 
-## 遊戲運作原理
+## 為什麼要手刻遊戲？
 
-為什麼純手工？沒考慮過 GameEngine？Unity、Unreal？
+為什麼純手工？沒考慮過使用 Game Engine？像是Unity、Unreal、RPG Maker ... etc.
 
-Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不到重點。Unreal 更複雜，而且我沒有想做那麼「擬真」的遊戲。相對比較好上手的則是 Godot，所以有稍微研究過。
+Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不到重點。Unreal 更複雜，而且我沒有想做那麼「擬真」的遊戲。相對比較好上手的則是 Godot，所以有稍微研究過。RPG Maker 很久以前就研究過，但他做了我想做的事。
 
-但最核心的，手工做遊戲的目的是：
+為什麼想自己刻遊戲？最核心的目的是：
 
 1. 了解遊戲運作原理
 2. 計算機科學的應用
-3. 我本身就很喜歡研究科學與應用
+3. 我本身就很喜歡研究科學與應用，也就是 1) + 2)
 
 `遊戲運作原理` 像是底下的東西：
 
@@ -35,7 +35,9 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 5. PathFinding 路徑規劃
 6. Practicle 粒子效果
 
-還有其他更多就不列了，但這些在 2D RPG 裡算是很基本的概念。
+還有其他更多就不列了，但這些在 2D RPG 裡算是很重要的概念，而且也是很有趣的東西。
+
+其實寫遊戲的過程，對我來說就是享受，甚至比玩遊戲還有趣～
 
 
 ## 遊戲製作的四個面向
@@ -49,6 +51,7 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 
 而這次學習的部分，主要是 1) 的部分。
 
+也就是，有趣的部分，除了技術面的，還有很多可以玩，而這四個面向之中的 1) / 2) / 4) 都是我本來就有在涉略的領域，3) 美術則是我小時候很喜歡的，所以做遊戲需要參與的面向，都是我喜歡且有興趣的。
 
 ## 原始碼 
 
@@ -76,7 +79,11 @@ OpenJDK 64-Bit Server VM GraalVM CE 17.0.9+9.1 (build 17.0.9+9-jvmci-23.0-b22, m
 # 初始 config 
 cp config.sample.txt config.txt
 
-❯ gradle clean build run
+## 編譯
+❯ gradle clean build
+
+## 啟動遊戲
+❯ gradle run
 
 $ Task :run
 [TileManager#loadMap] finished to load map: [World1], index: [0]
@@ -94,7 +101,7 @@ $ Task :run
 
 ### Key Event
 
-- WASD/UP/DOWN/LEFT/RIGHT: 移動
+- W/A/S/D/UP/DOWN/LEFT/RIGHT: 移動
 - Enter: 攻擊
 - Space: 防禦
 - F/J: Projectiles
