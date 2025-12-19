@@ -50,7 +50,7 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 而這次學習的部分，主要是 1) 的部分。
 
 
-## 原始碼
+## 原始碼 
 
 這次的學習都來自於 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，大部分的 Coding Style 都保留 RyiSnow 的寫法，我很少把個人的想法置入，保留存粹感。
 
@@ -68,6 +68,47 @@ OpenJDK Runtime Environment GraalVM CE 17.0.9+9.1 (build 17.0.9+9-jvmci-23.0-b22
 OpenJDK 64-Bit Server VM GraalVM CE 17.0.9+9.1 (build 17.0.9+9-jvmci-23.0-b22, mixed mode, sharing)
 ```
 
+### 執行
+
+需要 Gradle 8.x 以上才可以跑，可以參考 [SDKMan](https://rickhw.github.io/2019/04/07/Coding/Java-Version-Manager/) 的介紹，準備 Java 生態系的工具。
+
+```bash
+# 初始 config 
+cp config.sample.txt config.txt
+
+❯ gradle clean build run
+
+$ Task :run
+[TileManager#loadMap] finished to load map: [World1], index: [0]
+[TileManager#loadMap] finished to load map: [Store], index: [1]
+[TileManager#loadMap] finished to load map: [Dungeon01], index: [2]
+[TileManager#loadMap] finished to load map: [Dungeon02], index: [3]
+[TileManager#loadMap] finished to load map: [World1], index: [0]
+[TileManager#loadMap] finished to load map: [Store], index: [1]
+[TileManager#loadMap] finished to load map: [Dungeon01], index: [2]
+[TileManager#loadMap] finished to load map: [Dungeon02], index: [3]
+18:46:32.001 [GameLoop] FPS: [60], Remaining Percent: [92.83], State: [Title Screen], Map: [World1], Position: [23,21]
+18:46:33.000 [GameLoop] FPS: [60], Remaining Percent: [93.98], State: [Title Screen], Map: [World1], Position: [23,21]
+18:46:34.000 [GameLoop] FPS: [60], Remaining Percent: [94.12], State: [Title Screen], Map: [World1], Position: [23,21]
+```
+
+### Key Event
+
+- WASD/UP/DOWN/LEFT/RIGHT: 移動
+- Enter: 攻擊
+- Space: 防禦
+- F/J: Projectiles
+- V: 顯示 MiniMap
+- M: 顯示 Current Map
+- ESC: Options, 音量/音效/全螢幕
+
+### Debug
+
+- T: Debug Mode, 顯示座標
+- X: God Mode
+- Z: Reset Monster
+
+ 
 ### Branch
 
 整個課程過程，在 Branch 有保留所有的紀錄，對應到 RyiSnow 的內容，學習上比較好查閱與理解。
@@ -77,11 +118,12 @@ OpenJDK 64-Bit Server VM GraalVM CE 17.0.9+9.1 (build 17.0.9+9-jvmci-23.0-b22, m
 
 ### 用 AI 重寫: Java to Godot
 
-整個課程完成後，我嘗試在 Antigravity (Google 的 AI IDE) 做類似逆向工程的事情，使用不同的 LLM，讓他們從理解現在的 Java 程式，然後在 Godo做完整的 Remake (復刻版)，不過目前為止都還沒有讓我感到很滿意的結果。有興趣可以看看底下的 Branch:
+整個課程完成後，我嘗試在 Antigravity (Google 的 AI IDE) 做類似復刻版 (Remake) 的事情，使用不同的 LLM，讓他們從理解現在的 Java 程式，然後在 Godot 做完整的 Remake，不過目前為止都還沒有讓我感到很滿意的結果。
+
+有興趣可以看看底下的 Branch:
 
 - day57_java-to-godot-by-antigravity-claude-opus-4.5-thinking
-- day57_java-to-godot-by-antigravity-v2-claude-sonnet-45
-- day57_refactor-by-antigravity
+- day57_to-godot-by-antigravity-claude-sonnet-4.5-thinking
 
 底下是 prmopt:
 
@@ -110,6 +152,11 @@ OpenJDK 64-Bit Server VM GraalVM CE 17.0.9+9.1 (build 17.0.9+9-jvmci-23.0-b22, m
 5. 長文本上下文關聯 (Long Context Reasoning)
 
 > 驗證模型在軟體開發上，必須是是「工程師思維」而非單純的「翻譯機功能」。
+
+底下這兩個則是相對單純的重構，但效果也沒有覺得很好：
+
+- day57_refactor-by-antigravity
+- day57_refactor-by-gemini_ui-class
 
 
 ---
