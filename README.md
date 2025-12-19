@@ -3,9 +3,9 @@
 紀錄從 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，手工完成 RPG Game 的歷程與心得，相關紀錄放在 [Game Learning and DevLog](https://www.youtube.com/playlist?list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO) 這個播放清單裡。
 
 
-寫一個 RPG Game 是小時候的夢想。小時候家裡還沒有電腦，只有紅白機可以玩吞食天地的時候，就在想以後能不能自己寫類似的遊戲。後來因緣際會玩到了 Final Fantasy 3 (台灣當時翻譯：太空戰士)，對整個遊戲的玩法、音樂、畫面震撼到不行，尤其是音樂。永遠忘不了駕著飛空艇，從空浮大陸飛出去的音樂與畫面，那感覺深深烙印在腦海裡，而整個故事的安排與起伏，至今都難以忘懷。從那個時候 (應該是小五？)，我就拿起紙筆寫一些天馬行空的劇本，然後幻想有一天可以寫寫自己的遊戲。
+寫一個 RPG Game 是小時候的夢想。小時候家裡還沒有電腦，只有紅白機可以玩吞食天地的時候，就在想以後能不能自己寫類似的遊戲。後來因緣際會玩到了 Final Fantasy 3 (FF3，台灣當時翻譯：太空戰士)，對整個遊戲的玩法、音樂、畫面震撼到不行，尤其是音樂。永遠忘不了駕著飛空艇，從空浮大陸飛出去的音樂與畫面，那感覺深深烙印在腦海裡，而整個故事的安排與起伏，至今都難以忘懷。從那個時候 (應該是小五？)，我就拿起紙筆寫一些天馬行空的劇本，然後幻想有一天可以寫寫自己的遊戲。
 
-後來國二的時候，因緣機會玩到超任上的 Final Fantasy 5，又再一次的被音樂、故事震撼，國三畢業後，終於買到自己的超任，那時候超任上好像就只玩 FF5 了，其他遊戲玩得很少。
+後來國二的時候，因緣機會玩到超任上的 Final Fantasy 5 (FF5)，又再一次的被音樂、故事震撼，國三畢業後，終於買到自己的超任，那時候超任上好像就只玩 FF5 了，其他遊戲玩得很少。
 
 再往下就是第一次接觸電腦的時候了，學習了 QBasic，才知道這東西是可以寫出可以用的工具，或者遊戲。
 
@@ -16,27 +16,30 @@
 
 為什麼純手工？沒考慮過 GameEngine？Unity、Unreal？
 
-Unity 有研究過，但是太複雜，或者說抓不到重點。Unreal 更複雜，而且我沒有想做那麼「擬真」的遊戲。
-相對比較好上手的則是 Godot，所以有稍微研究過。
+Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不到重點。Unreal 更複雜，而且我沒有想做那麼「擬真」的遊戲。相對比較好上手的則是 Godot，所以有稍微研究過。
 
 但最核心的，手工做遊戲的目的是：
 
-> 了解遊戲運作原理
+1. 了解遊戲運作原理
+2. 計算機科學的應用
+3. 我本身就很喜歡研究科學與應用
 
 像是底下的東西：
 
 1. GameLoop
-2. 座標系統
-3. Graphics2D
-4. Collision
-5. PathFinding
-6. Practicle (粒子效果)
+2. TileMap (瓦片地圖), 座標系統
+    - https://yorubox.eu/what-is-tile-tileset-or-tilemap-game-terms-explaination/
+    - https://www.mapeditor.org/
+3. Graphics2D 2D 繪圖
+4. Collision 碰撞偵測
+5. PathFinding 路徑規劃
+6. Practicle 粒子效果
 
 ## 遊戲製作的四個面向
 
 撇除營運面的，像是銷售、行銷 ... 等，遊戲製作 (開發) 我把它分成以下四個部分：
 
-1. 技術/遊戲性: GameEngine
+1. 技術/遊戲性: GameEngine / Game Development
 2. 故事/劇本
 3. 美術/視覺
 4. 音樂/氛圍
