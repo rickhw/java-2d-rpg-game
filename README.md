@@ -24,7 +24,7 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 2. 計算機科學的應用
 3. 我本身就很喜歡研究科學與應用
 
-像是底下的東西：
+`遊戲運作原理` 像是底下的東西：
 
 1. GameLoop
 2. TileMap (瓦片地圖), 座標系統
@@ -34,6 +34,9 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 4. Collision 碰撞偵測
 5. PathFinding 路徑規劃
 6. Practicle 粒子效果
+
+還有其他更多就不列了，但這些在 2D RPG 裡算是很基本的概念。
+
 
 ## 遊戲製作的四個面向
 
@@ -49,7 +52,7 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 
 ## 原始碼
 
-這次的學習都來自於 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，大部分的 Coding Style 都保留 RyiSnow 的寫法，我很少把個人的想法置入。
+這次的學習都來自於 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，大部分的 Coding Style 都保留 RyiSnow 的寫法，我很少把個人的想法置入，保留存粹感。
 
 程式主要開發環境是在 MacOS Tahoe，Java 環境則是 Java 17/21 都有。
 
@@ -64,6 +67,21 @@ openjdk version "17.0.9" 2023-10-17
 OpenJDK Runtime Environment GraalVM CE 17.0.9+9.1 (build 17.0.9+9-jvmci-23.0-b22)
 OpenJDK 64-Bit Server VM GraalVM CE 17.0.9+9.1 (build 17.0.9+9-jvmci-23.0-b22, mixed mode, sharing)
 ```
+
+### Branch
+
+整個課程過程，在 Branch 有保留所有的紀錄，對應到 RyiSnow 的內容，學習上比較好查閱與理解。
+
+其中有透過 gemini 幫忙重構 (branch: day57_refactor-by-gemini_ui-class, day57_refactor-by-antigravity)，但效果沒有預期得好。
+
+
+### 用 AI 重寫: Java to Godot
+
+整個課程完成後，我嘗試在 Antigravity (Google 的 AI IED) 做類似逆向工程的事情，使用不同的 LLM，讓他們從理解現在的 Java 程式，然後在 Godo做完整的 Remake (復刻版)，不過目前為止都還沒有讓我感到很滿意的結果。有興趣可以看看底下的 Branch:
+
+- day57_java-to-godot-by-antigravity-claude-opus-4.5-thinking
+- day57_java-to-godot-by-antigravity-v2-claude-sonnet-45
+- day57_refactor-by-antigravity
 
 
 ---
