@@ -77,7 +77,7 @@ OpenJDK 64-Bit Server VM GraalVM CE 17.0.9+9.1 (build 17.0.9+9-jvmci-23.0-b22, m
 
 ### 用 AI 重寫: Java to Godot
 
-整個課程完成後，我嘗試在 Antigravity (Google 的 AI IED) 做類似逆向工程的事情，使用不同的 LLM，讓他們從理解現在的 Java 程式，然後在 Godo做完整的 Remake (復刻版)，不過目前為止都還沒有讓我感到很滿意的結果。有興趣可以看看底下的 Branch:
+整個課程完成後，我嘗試在 Antigravity (Google 的 AI IDE) 做類似逆向工程的事情，使用不同的 LLM，讓他們從理解現在的 Java 程式，然後在 Godo做完整的 Remake (復刻版)，不過目前為止都還沒有讓我感到很滿意的結果。有興趣可以看看底下的 Branch:
 
 - day57_java-to-godot-by-antigravity-claude-opus-4.5-thinking
 - day57_java-to-godot-by-antigravity-v2-claude-sonnet-45
