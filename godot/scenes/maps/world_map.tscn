@@ -1,13 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://b7w4hx5gy3g8v"]
+[gd_scene load_steps=5 format=3 uid="uid://b7w4hx5gy3g8v"]
 
 [ext_resource type="Script" path="res://scripts/systems/tilemap_loader.gd" id="1_qg2ih"]
-[ext_resource type="Script" path="res://scripts/temp_camera_controller.gd" id="2_camera"]
+[ext_resource type="PackedScene" uid="uid://c5w7x2jm8qpno" path="res://scenes/entities/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/debug/tile_debug_overlay.gd" id="3_debug"]
 
 [sub_resource type="GDScript" id="GDScript_world_map"]
 script/source = "extends Node2D
 
 @onready var tilemap_loader = $TilemapLoader
 @onready var tilemap_layer = $TileMapLayer
+@onready var player = $Player
+@onready var debug_overlay = $CanvasLayer/TileDebugOverlay
 
 func _ready():
 \tprint(\"[WorldMap] Loading world map...\")
@@ -27,6 +30,12 @@ func _ready():
 \t\tprint(\"[WorldMap] World map loaded successfully\")
 \telse:
 \t\tprint(\"[WorldMap] ERROR: Failed to get tileset\")
+\t
+\t# Set up debug overlay
+\tdebug_overlay.set_camera(player.player_camera)
+\tdebug_overlay.set_map_size(50, 50)
+\t
+\tprint(\"[WorldMap] Player starting at: %v\" % player.position)
 "
 
 [node name="WorldMap" type="Node2D"]
@@ -37,6 +46,16 @@ script = ExtResource("1_qg2ih")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(640, 384)
-script = ExtResource("2_camera")
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TileDebugOverlay" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_debug")
