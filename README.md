@@ -43,9 +43,19 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 
 除了學到技術，最有趣的是學到一些 `單字` 或者說 `術語`，整理如下：
 
-- 精靈 Sprites
-- 磚塊 Tiles 
-- Game Loop 
+- Sprites: 精靈
+- Tiles: 磚塊, Interactive Tile: 互動式磚塊
+- Game Loop
+- Projectile: 拋射物
+- Particle: 粒子效果
+- Scene: 場景
+- CutSense: 轉場
+- Mana: 魔力值
+- Dungeon: 地下城
+- Orc: 獸人
+- Invincible: 無敵狀態
+- Knock Back: 擊退
+
 
 ## 遊戲製作的四個面向
 
