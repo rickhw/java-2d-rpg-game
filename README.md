@@ -83,6 +83,30 @@ OpenJDK 64-Bit Server VM GraalVM CE 17.0.9+9.1 (build 17.0.9+9-jvmci-23.0-b22, m
 - day57_java-to-godot-by-antigravity-v2-claude-sonnet-45
 - day57_refactor-by-antigravity
 
+底下是 prmopt:
+
+```bash
+請了解現在的程式碼的架構與功能，了解之後，使用原本的素材，包含圖檔、音效、字型等資源 (放在 resources 目錄裡)，用 godot 復刻一模一樣功能的遊戲出來。
+
+復刻的時候，要利用 godot v4.5 遊戲引擎的特性，避免使用原本自己圖形計算的方法，像是原本 Java 有很多計算座標、縮放比例 (Scale)、計算碰撞 ... 等邏輯，這我想像應該是使用 Godot 有現成的 "機制" 即可。
+
+請建立一個 godot 目錄，將復刻的程式碼以及素材放在 godot 目錄中。
+
+請分析完之後，展開工作階段計劃、以及每個階段的驗收流程，把這些文件放在 godot 目錄裡。
+
+沒問題後我們就開始。
+```
+
+測試 AI 模型在以下 5 個關鍵維度 的指標能力：
+
+1. 跨語言與跨範式的「語義翻譯」能力 (Semantic Translation)
+2. 架構重構能力 (Architectural Refactoring)
+3. API 映射與領域知識 (Domain Knowledge Mapping)
+4. 知識庫的時效性與幻覺 (Knowledge Cutoff & Hallucination)
+5. 長文本上下文關聯 (Long Context Reasoning)
+
+> 驗證模型在軟體開發上，必須是是「工程師思維」而非單純的「翻譯機功能」。
+
 
 ---
 # Release Notes
