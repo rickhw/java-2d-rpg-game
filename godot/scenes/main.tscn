@@ -1,17 +1,30 @@
-[gd_scene load_steps=0 format=3 uid="uid://cspfx1n8qxjhd"]
+[gd_scene load_steps=2 format=3 uid="uid://cspfx1n8qxjhd"]
+
+[sub_resource type="GDScript" id="GDScript_main"]
+script/source = "extends Node2D
+
+# Test tilemap system - load a map scene
+func _ready():
+\tprint(\"[Main] Starting...\")
+\t
+\t# Load world map scene for testing
+\tvar world_map = load(\"res://scenes/maps/world_map.tscn\").instantiate()
+\tadd_child(world_map)
+\t
+\tprint(\"[Main] Scene loaded\")
+"
 
 [node name="Main" type="Node2D"]
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(640, 384)
+script = SubResource("GDScript_main")
 
 [node name="Label" type="Label" parent="."]
 offset_left = 440.0
-offset_top = 344.0
+offset_top = 24.0
 offset_right = 840.0
-offset_bottom = 424.0
-theme_override_font_sizes/font_size = 32
-text = "M/A Legend - Godot Edition
-Phase 2: 準備中..."
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 24
+text = "Phase 2: Tilemap System Test
+Press ESC to quit"
 horizontal_alignment = 1
 vertical_alignment = 1
+

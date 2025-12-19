@@ -1,6 +1,7 @@
 72322a848ab928aa5c89f0cb78209805
-::res://::1766127950
+::res://::1766128261
 implementation_plan.md::TextFile::-1::1766127537::0::1::::<><><>0<>0<><>::
+PHASE2_PROGRESS.md::TextFile::-1::1766128193::0::1::::<><><>0<>0<><>::
 README.md::TextFile::-1::1766127665::0::1::::<><><>0<>0<><>::
 ::res://assets/::1766127543
 ::res://assets/backup/::1766127543
@@ -292,9 +293,13 @@ metalplate.png::CompressedTexture2D::2384865120002854020::1766127543::1766127871
 trunk.png::CompressedTexture2D::6044731867596618068::1766127543::1766127871::1::::<><><>0<>0<>0fc76b9ffeb34661a77f310de0ca4283<>res://.godot/imported/trunk.png-905d9fec174a17bebb047cd0685067ac.ctex::
 ::res://data/::1766127539
 ::res://scenes/::1766127937
-main.tscn::PackedScene::6067552264616552749::1766127937::0::1::::<><><>0<>0<><>::
+main.tscn::PackedScene::6067552264616552749::1766128130::0::1::::<><><>0<>0<><>::
 ::res://scenes/entities/::1766127542
-::res://scenes/maps/::1766127542
+::res://scenes/maps/::1766128135
+dungeon_01.tscn::PackedScene::5122978158606199176::1766128135::0::1::::<><><>0<>0<><>::res://scripts/systems/tilemap_loader.gd
+dungeon_02.tscn::PackedScene::5722240933846945968::1766128135::0::1::::<><><>0<>0<><>::res://scripts/systems/tilemap_loader.gd
+indoor.tscn::PackedScene::8224250042153279522::1766128135::0::1::::<><><>0<>0<><>::res://scripts/systems/tilemap_loader.gd
+world_map.tscn::PackedScene::4679654538733993135::1766128135::0::1::::<><><>0<>0<><>::res://scripts/systems/tilemap_loader.gd
 ::res://scenes/ui/::1766127542
 ::res://scripts/::1766127602
 ::res://scripts/autoload/::1766127871
@@ -304,5 +309,6 @@ save_manager.gd::GDScript::5313119892243225071::1766127663::0::1::::<>Node<><>0<
 ::res://scripts/data/::1766127871
 constants.gd::GDScript::1134131285385852575::1766127602::0::1::::<>Node<><>0<>0<><>::
 ::res://scripts/entities/::1766127541
-::res://scripts/systems/::1766127541
+::res://scripts/systems/::1766128135
+tilemap_loader.gd::GDScript::8593639849702843197::1766128101::0::1::::<>Node<><>0<>0<><>::
 ::res://scripts/ui/::1766127541

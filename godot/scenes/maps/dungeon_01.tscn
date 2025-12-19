@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://ce8ux4jm7jpf1"]
+
+[ext_resource type="Script" path="res://scripts/systems/tilemap_loader.gd" id="1_dungeon01"]
+
+[sub_resource type="GDScript" id="GDScript_dungeon01"]
+script/source = "extends Node2D
+
+@onready var tilemap_loader = $TilemapLoader
+@onready var tilemap_layer = $TileMapLayer
+
+func _ready():
+\tprint(\"[Dungeon01] Loading dungeon B1 map...\")
+\t
+\t# Wait for tilemap loader to finish
+\tawait get_tree().process_frame
+\t
+\t# Get the tileset
+\tvar tileset = tilemap_loader.get_tileset()
+\tif tileset:
+\t\ttilemap_layer.tile_set = tileset
+\t\t
+\t\t# Load and apply map data
+\t\tvar map_data = tilemap_loader.load_map(\"dungeon01.txt\")
+\t\ttilemap_loader.apply_map_to_tilemap(tilemap_layer, map_data)
+\t\t
+\t\tprint(\"[Dungeon01] Dungeon B1 map loaded successfully\")
+\telse:
+\t\tprint(\"[Dungeon01] ERROR: Failed to get tileset\")
+"
+
+[node name="Dungeon01" type="Node2D"]
+script = SubResource("GDScript_dungeon01")
+
+[node name="TilemapLoader" type="Node" parent="."]
+script = ExtResource("1_dungeon01")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 384)
