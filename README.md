@@ -39,6 +39,14 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 其實寫遊戲的過程，對我來說就是享受，甚至比玩遊戲還有趣～
 
 
+## 術語
+
+除了學到技術，最有趣的是學到一些 `單字` 或者說 `術語`，整理如下：
+
+- 精靈 Sprites
+- 磚塊 Tiles 
+- Game Loop 
+
 ## 遊戲製作的四個面向
 
 撇除營運面的，像是銷售、行銷 ... 等，這次的學習歷程，我很粗淺的分析遊戲製作 (開發) 可以分成以下四個部分：
@@ -122,7 +130,7 @@ $ Task :run
 其中有透過 gemini 幫忙重構 (branch: day57_refactor-by-gemini_ui-class, day57_refactor-by-antigravity)，但效果沒有預期得好。
 
 
-### 用 AI 重寫: Java to Godot
+## 用 AI 重寫: Remake - Java to Godot
 
 整個課程完成後，我嘗試在 Antigravity (Google 的 AI IDE) 做類似復刻版 (Remake) 的事情，使用不同的 LLM，讓他們從理解現在的 Java 程式，然後在 Godot 做完整的 Remake，不過目前為止都還沒有讓我感到很滿意的結果。
 
@@ -163,6 +171,11 @@ $ Task :run
 
 - day57_refactor-by-antigravity
 - day57_refactor-by-gemini_ui-class
+
+---
+# 總要有個開始
+
+學生時代我的唸書讀完了的標準，就是自己出一份考卷，出完了考卷就讀完了 (自我感覺良好?)。工作後，大部分的人寫程式總要用 IDE，但我做的一些案子，卻是在開發 IDE。讀了很多經典小說 (金庸、艾希莫夫、朱少麟 ...)，就想寫寫小說。玩了經典遊戲 (FF、Zelda)，寫個遊戲應該也是理所當然了，但這只能算入門而已。
 
 
 ---
