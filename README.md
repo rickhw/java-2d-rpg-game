@@ -3,7 +3,7 @@
 紀錄從 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，手工完成 RPG Game 的歷程與心得，相關紀錄放在 [Game Learning and DevLog](https://www.youtube.com/playlist?list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO) 這個播放清單裡。
 
 
-寫一個 RPG Game 是小時候的夢想。小時候家裡還沒有電腦，只有紅白機可以玩 [吞食天地](https://zh.wikipedia.org/zh-tw/%E5%90%9E%E9%A3%9F%E5%A4%A9%E5%9C%B0_(%E7%BA%A2%E7%99%BD%E6%9C%BA)) 的時候，就在想以後能不能自己寫類似的遊戲。後來因緣際會玩到了 [Final Fantasy 3 (FF3，台灣當時翻譯：太空戰士)](https://zh.wikipedia.org/zh-tw/%E6%9C%80%E7%BB%88%E5%B9%BB%E6%83%B3III)，對整個遊戲的玩法、音樂、畫面震撼到不行，尤其是音樂。永遠忘不了駕著飛空艇，從空浮大陸飛出去的音樂與畫面，那感覺深深烙印在腦海裡，而整個故事的安排與起伏，至今都難以忘懷。從那個時候 (應該是小五？)，我就拿起紙筆寫一些天馬行空的劇本，然後幻想有一天可以寫寫自己的遊戲。
+寫 RPG Game 一直是從小時候就有的夢想。小時候家裡還沒有電腦，只有紅白機可以玩 [吞食天地](https://zh.wikipedia.org/zh-tw/%E5%90%9E%E9%A3%9F%E5%A4%A9%E5%9C%B0_(%E7%BA%A2%E7%99%BD%E6%9C%BA)) 的時候，就在想以後能不能自己寫類似的遊戲。後來因緣際會玩到了 [Final Fantasy 3 (FF3，台灣當時翻譯：太空戰士)](https://zh.wikipedia.org/zh-tw/%E6%9C%80%E7%BB%88%E5%B9%BB%E6%83%B3III)，對整個遊戲的玩法、音樂、畫面震撼到不行，尤其是音樂。永遠忘不了駕著飛空艇，從空浮大陸飛出去的音樂與畫面，那感覺深深烙印在腦海裡，而整個故事的安排與起伏，至今都難以忘懷。從那個時候 (應該是小五？)，我就拿起紙筆寫一些天馬行空的劇本，然後幻想有一天可以寫寫自己的遊戲。
 
 後來國二的時候，因緣機會玩到超任上的 [Final Fantasy 5 (FF5)](https://zh.wikipedia.org/zh-tw/%E6%9C%80%E7%BB%88%E5%B9%BB%E6%83%B3V) ，又再一次的被音樂、故事震撼，國三畢業後，終於買到自己的超任，那時候超任上好像就只玩 FF5 了，其他遊戲玩得很少。
 
@@ -26,14 +26,13 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 
 `遊戲運作原理` 像是底下的東西：
 
-1. GameLoop
+1. GameLoop, FPS
 2. TileMap (瓦片地圖), 座標系統
-    - https://yorubox.eu/what-is-tile-tileset-or-tilemap-game-terms-explaination/
-    - https://www.mapeditor.org/
-3. Graphics2D 2D 繪圖
-4. Collision 碰撞偵測
-5. PathFinding 路徑規劃
-6. Practicle 粒子效果
+3. 2D 繪圖
+3. Collision 碰撞偵測
+4. PathFinding 路徑規劃
+5. Particle 粒子效果
+
 
 還有其他更多就不列了，但這些在 2D RPG 裡算是很重要的概念，而且也是很有趣的東西。
 
@@ -44,10 +43,10 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 
 撇除營運面的，像是銷售、行銷 ... 等，這次的學習歷程，我很粗淺的分析遊戲製作 (開發) 可以分成以下四個部分：
 
-1. 技術/遊戲性: GameEngine / Game Development
-2. 故事/劇本
-3. 美術/視覺
-4. 音樂/氛圍
+1. 技術 / 遊戲性：包含前面提到的遊戲原理，以及遊戲種類，像是打擊、動作、角色、戰棋、養成 ... etc 不同領域的遊戲性
+2. 故事 / 劇本：大部分的遊戲都會有個背景設定，像是 CyberPunk 2077 科幻背景、FF 系列的水晶系列、薩爾達傳說 ... 等，故事是整個「玩」的理由與動機。
+3. 美術 / 視覺：呈現出遊戲的視覺風格，2D 像素 (Pixel)、像宮崎駿的風格、3D 寫實風格 ... etc
+4. 音樂 / 氛圍：讓玩家最有帶入感的音樂，跟電影配樂一樣，針對角色、劇情事件、主題曲等角度而設計的音樂，都是影響遊戲好壞的關鍵。
 
 而這次學習的部分，主要是 1) 的部分。
 
@@ -55,9 +54,9 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
 
 ## 原始碼 
 
-這次的學習都來自於 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，大部分的 Coding Style 都保留 RyiSnow 的寫法，我很少把個人的想法置入，保留存粹感。
+我把學習的歷程放在 GitHub 上，大部分的 Coding Style 都保留 RyiSnow 的寫法，我很少把個人的想法置入，保留純粹感，避免一些技術炫技污染。
 
-程式主要開發環境是在 MacOS Tahoe，Java 環境則是 Java 17/21 都有。
+程式主要開發環境是在 MacOS Tahoe / VSCode，Java 環境則是 Java 17 / 21 以及 Gradle。
 
 ```bash
 ❯ java -version
@@ -132,7 +131,7 @@ $ Task :run
 - day57_java-to-godot-by-antigravity-claude-opus-4.5-thinking
 - day57_to-godot-by-antigravity-claude-sonnet-4.5-thinking
 
-底下是 prmopt:
+底下是 prompt:
 
 ```bash
 請了解現在的程式碼的架構與功能，了解之後，使用原本的素材，包含圖檔、音效、字型等資源 (放在 resources 目錄裡)，用 godot 復刻一模一樣功能的遊戲出來。
@@ -169,7 +168,7 @@ $ Task :run
 ---
 # Release Notes
 
-## v2.16.x
+## v2.16.x (20251219_5): 
 
 1. Bug fix
     - return to dungeon B2, boss become sleep states
