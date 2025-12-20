@@ -193,7 +193,7 @@ $ Task :run
 ---
 # Release Notes
 
-## v2.16.x (20251219_5): 
+## v2.16.x (20251219_5): https://www.youtube.com/watch?v=6X7ej7ghFDg
 
 1. Bug fix
     - return to dungeon B2, boss become sleep states
