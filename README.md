@@ -1,7 +1,9 @@
 # 學習心得
 
-紀錄從 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，手工完成 RPG Game 的歷程與心得，相關紀錄放在 [Game Learning and DevLog](https://www.youtube.com/playlist?list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO) 這個播放清單裡。
+紀錄從 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，手工完成 RPG Game 的歷程與心得，相關紀錄放在 Youtube 播放清單: [Game Learning and DevLog](https://www.youtube.com/playlist?list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO)、以及 [Source Code](https://github.com/rickhw/java-2d-rpg-game)。
 
+
+## 關於角色扮演遊戲 (RPG Game)
 
 寫 RPG Game 一直是從小時候就有的夢想。小時候家裡還沒有電腦，只有紅白機可以玩 [吞食天地](https://zh.wikipedia.org/zh-tw/%E5%90%9E%E9%A3%9F%E5%A4%A9%E5%9C%B0_(%E7%BA%A2%E7%99%BD%E6%9C%BA)) 的時候，就在想以後能不能自己寫類似的遊戲。後來因緣際會玩到了 [Final Fantasy 3 (FF3，台灣當時翻譯：太空戰士)](https://zh.wikipedia.org/zh-tw/%E6%9C%80%E7%BB%88%E5%B9%BB%E6%83%B3III)，對整個遊戲的玩法、音樂、畫面震撼到不行，尤其是音樂。永遠忘不了駕著飛空艇，從空浮大陸飛出去的音樂與畫面，那感覺深深烙印在腦海裡，而整個故事的安排與起伏，至今都難以忘懷。從那個時候 (應該是小五？)，我就拿起紙筆寫一些天馬行空的劇本，然後幻想有一天可以寫寫自己的遊戲。
 
@@ -66,7 +68,7 @@ Unity 有研究過，但是太複雜，或者說花的時間太少，也抓不�
     - 種類像是打擊、動作、角色、戰棋、養成 ... etc 不同領域的遊戲性
 2. `故事 / 劇本`：大部分的遊戲都會有個背景設定，像是 CyberPunk 2077 科幻背景、FF 系列的水晶系列、薩爾達傳說 ... 等，故事是整個「玩」的理由與動機。
 3. `美術 / 視覺`：呈現出遊戲的視覺風格，2D 像素 (Pixel)、像宮崎駿的風格、3D 寫實風格 ... etc
-4. `音樂 / 氛圍`：讓玩家最有帶入感的音樂，跟電影配樂一樣，針對角色、劇情事件、主題曲等角度而設計的音樂，都是影響遊戲好壞的關鍵。
+4. `音樂 / 氛圍`：讓玩家最有帶入感的音樂，跟電影配樂一樣，針對角色、劇情事件、主題曲等角度而設計的音樂，都是影響遊戲體驗的關鍵。
 
 而這次學習的部分，主要是 1) 的部分。
 
