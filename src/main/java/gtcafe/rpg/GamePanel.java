@@ -260,7 +260,7 @@ public class GamePanel extends JPanel implements Runnable {
                 double remainingPercent = (double)remainingTime / drawInterval * 100;
 
                 SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-                System.out.printf("%s [GameLoop] FPS: [%s], Remaining Percent: [%.2f], State: [%s], Map: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), fpsCount, remainingPercent, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
+                System.out.printf("%s [GameLoop] FPS: [%s], Idle: [%.2f], State: [%s], Map: [%s], Position: [%s,%s]\n", sdFormat.format(new Date()), fpsCount, remainingPercent, gameState.name, currentMap.name, (player.worldX + player.solidArea.x)/tileSize, (player.worldY + player.solidArea.y)/tileSize);
                 // drawCount = 0;
                 timer = 0;
 

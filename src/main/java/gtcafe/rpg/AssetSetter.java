@@ -40,10 +40,10 @@ public class AssetSetter {
         int i = 0;
         int mapIndex = Map.WORLD_MAP.index;
         
-        // i++;
-        // gp.obj[mapIndex][i] = new OBJ_Lantern(gp);
-        // gp.obj[mapIndex][i].worldX = gp.tileSize * 18;
-        // gp.obj[mapIndex][i].worldY = gp.tileSize * 20;
+        i++;
+        gp.obj[mapIndex][i] = new OBJ_Lantern(gp);
+        gp.obj[mapIndex][i].worldX = gp.tileSize * 27;
+        gp.obj[mapIndex][i].worldY = gp.tileSize * 16;
 
         i++;
         gp.obj[mapIndex][i] = new OBJ_Tent(gp);
@@ -100,10 +100,10 @@ public class AssetSetter {
         // gp.obj[mapIndex][i].worldY = gp.tileSize * 22;
 
         // Postion
-        i++;
-        gp.obj[mapIndex][i] = new OBJ_Postion_Red(gp);
-        gp.obj[mapIndex][i].worldX = gp.tileSize * 27;
-        gp.obj[mapIndex][i].worldY = gp.tileSize * 16;
+        // i++;
+        // gp.obj[mapIndex][i] = new OBJ_Postion_Red(gp);
+        // gp.obj[mapIndex][i].worldX = gp.tileSize * 27;
+        // gp.obj[mapIndex][i].worldY = gp.tileSize * 16;
 
         // i++;
         // gp.obj[mapIndex][i] = new OBJ_Postion_Red(gp);
@@ -356,13 +356,14 @@ public class AssetSetter {
         // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 20);
         gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 30, 21);
 
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 14, 40);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 40);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 41);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 12, 41);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 11, 41);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 41);
-        // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 40);
+        // Merchant
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 14, 40);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 40);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 13, 41);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 12, 41);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 11, 41);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 41);
+        gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 10, 40);
 
         // chest
         // gp.iTile[mapIndex][i++] = new IT_DryTree(gp, 0, 29);

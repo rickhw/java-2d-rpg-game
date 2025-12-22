@@ -140,8 +140,8 @@ public class Player extends Entity {
         inventory.clear();  // for restart/retry the game
         inventory.add(currentWeapon);
         inventory.add(currentShield);
-        inventory.add(new OBJ_Key(gp));
-        inventory.add(new OBJ_Lantern(gp));
+        // inventory.add(new OBJ_Key(gp));
+        // inventory.add(new OBJ_Lantern(gp));
     }
 
     // current: currentWeapon or currentShield
