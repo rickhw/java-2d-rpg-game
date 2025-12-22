@@ -7,8 +7,6 @@ import gtcafe.rpg.GamePanel;
 import gtcafe.rpg.entity.Entity;
 import gtcafe.rpg.entity.EntityType;
 import gtcafe.rpg.entity.object.OBJ_Coin_Bronze;
-import gtcafe.rpg.entity.object.OBJ_Heart;
-import gtcafe.rpg.entity.object.OBJ_ManaCrystal;
 import gtcafe.rpg.system.Sound;
 
 public class IT_DestructibleWall extends InteractiveTile {

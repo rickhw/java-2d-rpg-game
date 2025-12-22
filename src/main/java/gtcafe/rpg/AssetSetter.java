@@ -22,7 +22,6 @@ import gtcafe.rpg.entity.object.OBJ_Tent;
 import gtcafe.rpg.entity.shield.OBJ_Shield_Blue;
 import gtcafe.rpg.entity.weapon.OBJ_Axe;
 import gtcafe.rpg.entity.weapon.OBJ_Pickaxe;
-import gtcafe.rpg.entity.weapon.OBJ_Sword_Normal;
 import gtcafe.rpg.tile.Map;
 import gtcafe.rpg.tile.interactive.IT_DestructibleWall;
 import gtcafe.rpg.tile.interactive.IT_DryTree;

@@ -3,6 +3,9 @@
 紀錄從 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，手工完成 RPG Game 的歷程與心得，相關紀錄放在 Youtube 播放清單: [Game Learning and DevLog](https://www.youtube.com/playlist?list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO)、以及 [Source Code](https://github.com/rickhw/java-2d-rpg-game)。
 
 
+![](/docs/screenshot/attack_dynamic-combat.png)
+
+
 ## 關於角色扮演遊戲 (RPG Game)
 
 寫 RPG Game 一直是從小時候就有的夢想。小時候家裡還沒有電腦，只有紅白機可以玩 [吞食天地](https://zh.wikipedia.org/zh-tw/%E5%90%9E%E9%A3%9F%E5%A4%A9%E5%9C%B0_(%E7%BA%A2%E7%99%BD%E6%9C%BA)) 的時候，就在想以後能不能自己寫類似的遊戲。後來因緣際會玩到了 [Final Fantasy 3 (FF3，台灣當時翻譯：太空戰士)](https://zh.wikipedia.org/zh-tw/%E6%9C%80%E7%BB%88%E5%B9%BB%E6%83%B3III)，對整個遊戲的玩法、音樂、畫面震撼到不行，尤其是音樂。永遠忘不了駕著飛空艇，從空浮大陸飛出去的音樂與畫面，那感覺深深烙印在腦海裡，而整個故事的安排與起伏，至今都難以忘懷。從那個時候 (應該是小五？)，我就拿起紙筆寫一些天馬行空的劇本，然後幻想有一天可以寫寫自己的遊戲。
@@ -142,6 +145,26 @@ $ Task :run
 整個課程過程，在 Branch 有保留所有的紀錄，對應到 RyiSnow 的內容，學習上比較好查閱與理解。
 
 其中有透過 gemini 幫忙重構 (branch: day57_refactor-by-gemini_ui-class, day57_refactor-by-antigravity)，但效果沒有預期得好。
+
+### 截圖
+
+
+![](/docs/screenshot/attack_dynamic-combat.png)
+![](/docs/screenshot/attack_monster-and-hp.png)
+![](/docs/screenshot/attack_parry.png)
+![](/docs/screenshot/attack_guarding.png)
+![](/docs/screenshot/attack_projectiles-fireball.png)
+![](/docs/screenshot/map-world.png)
+![](/docs/screenshot/map-gundeon.png)
+![](/docs/screenshot/mini-map.png)
+![](/docs/screenshot/monster_bat.png)
+![](/docs/screenshot/trade.png)
+![](/docs/screenshot/inventory.png)
+![](/docs/screenshot/destructible-tree.png)
+![](/docs/screenshot/interactive_bigrock.png)
+![](/docs/screenshot/day-night-mode.png)
+![](/docs/screenshot/boss.png)
+![](/docs/screenshot/debug-mode.png)
 
 
 ## 用 AI 重寫: Remake - Java to Godot
