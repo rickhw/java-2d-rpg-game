@@ -1,9 +1,12 @@
+
+全文: [Blog 版本](https://rickhw.github.io/2025/12/19/About/Java-2D-RPG-Game/)
+
 # 學習心得
 
 紀錄從 RyiSnow 的 [Java 2D Game](https://www.youtube.com/playlist?list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq) 課程，手工完成 RPG Game 的歷程與心得，相關紀錄放在 Youtube 播放清單: [Game Learning and DevLog](https://www.youtube.com/playlist?list=PL63J1r2PBvogQ2Un01ytl2bQ1OIrlrnLO)、以及 [Source Code](https://github.com/rickhw/java-2d-rpg-game)。
 
 
-![](/docs/screenshot/attack_dynamic-combat.png)
+![](/docs/screenshot/attack_projectiles-fireball.png)
 
 
 ## 關於角色扮演遊戲 (RPG Game)
