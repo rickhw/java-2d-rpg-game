@@ -40,7 +40,11 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - (gp.tileSize/2);
 
         // SOLID AREA
-        solidArea = new Rectangle(8, 16, (gp.tileSize * 4) / 5, (gp.tileSize * 3) / 5);
+        // solidArea = new Rectangle(solidAreaBaseUnit * 2, solidAreaBaseUnit * 4, , );
+        solidArea.x = solidAreaBaseUnit * 2;
+        solidArea.y = solidAreaBaseUnit * 4;
+        solidArea.width = gp.tileSize - (solidArea.x * 2);
+        solidArea.height = gp.tileSize - solidArea.y - (solidAreaBaseUnit * 2);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
@@ -73,7 +77,7 @@ public class Player extends Entity {
         currentWeapon = new OBJ_Sword_Normal(gp);
         // currentWeapon = new OBJ_Pickaxe(gp);
         currentShield = new OBJ_Shield_Wood(gp);
-        currentLight = new OBJ_Lantern(gp);
+        // currentLight = new OBJ_Lantern(gp);
         projectile = new OBJ_Fireball(gp);
         // projectiles = new OBJ_Rock(gp);
 

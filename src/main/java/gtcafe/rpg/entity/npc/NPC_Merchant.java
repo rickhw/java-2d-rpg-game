@@ -22,13 +22,13 @@ public class NPC_Merchant extends Entity {
         super(gp);
 
         direction = Direction.DOWN;
-        speed = 1;
+        speed = 0;
 
         solidArea = new Rectangle();
-        solidArea.x = 8;
-        solidArea.y = 16;
-        solidArea.width = 32;
-        solidArea.height = 32;
+        solidArea.x = solidAreaBaseUnit * 2;
+        solidArea.y = solidAreaBaseUnit * 4;
+        solidArea.width = gp.tileSize - solidArea.x * 2;
+        solidArea.height = solidArea.x - solidArea.y;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 

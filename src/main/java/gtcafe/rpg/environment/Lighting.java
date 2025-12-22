@@ -2,6 +2,7 @@ package gtcafe.rpg.environment;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
 import java.awt.image.BufferedImage;
@@ -127,8 +128,8 @@ public class Lighting {
         if (gp.currentArea == GamePanel.OUTSIDE) {
             String situation = dayState.name;
             g2.setColor(Color.white);
-            g2.setFont(g2.getFont().deriveFont(50f));
-            g2.drawString(situation, 800, 500);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 50f));
+            g2.drawString(situation, gp.tileSize * (gp.maxScreenCol - 2), gp.tileSize * (gp.maxScreenRow - 1));
         }
     }
 

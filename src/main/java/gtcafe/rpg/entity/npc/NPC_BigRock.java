@@ -22,12 +22,13 @@ public class NPC_BigRock extends Entity {
         this.speed = 4;
 
         solidArea = new Rectangle();
-        solidArea.x = 2;
-        solidArea.y = 6;
+        solidArea.x = solidAreaBaseUnit;
+        solidArea.y = solidAreaBaseUnit;
+        solidArea.width = gp.tileSize - (solidAreaBaseUnit * 2);
+        solidArea.height = gp.tileSize - (solidAreaBaseUnit * 2);
+
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        solidArea.width = 44;
-        solidArea.height = 40;
 
         getImages();
         setDialogue();
