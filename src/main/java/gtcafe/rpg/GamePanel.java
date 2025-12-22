@@ -2,6 +2,7 @@ package gtcafe.rpg;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
@@ -409,19 +410,21 @@ public class GamePanel extends JPanel implements Runnable {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
 
-            g2.setFont(g2.getFont().deriveFont(24f));
-            g2.setColor(Color.red);
+            g2.setFont(ui.maruMonica);
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 24f));
+            g2.setColor(Color.YELLOW);
+            // g2.setBackground(Color.BLACK);
 
-            int x = 11;
-            int y = 400;
+            int x = tileSize / 2;
+            int y = tileSize * 7;
             int lineHeight = 20;
             g2.drawString("Map: " + currentMap.name, x, y); y += lineHeight;
+            g2.drawString("State: " + gameState.name, x, y); y += lineHeight;
+            g2.drawString("God Mode: " + keyHandler.godModeOn, x, y); y += lineHeight;
             g2.drawString("WorldX: " + player.worldX, x, y); y += lineHeight;
             g2.drawString("WorldY: " + player.worldY, x, y); y += lineHeight;
             g2.drawString("Col: " + (player.worldX + player.solidArea.x)/tileSize, x, y); y += lineHeight;
             g2.drawString("Row: " + (player.worldY + player.solidArea.y)/tileSize, x, y); y += lineHeight;
-            g2.drawString("State: " + gameState.name, x, y); y += lineHeight;
-            g2.drawString("God Mode: " + keyHandler.godModeOn, x, y); y += lineHeight;
             // g2.drawString("Draw Count: " + drawCount, x, y);
             // System.out.println("[GamePanel#paintComponent] Draw Time: "+passed);
         }

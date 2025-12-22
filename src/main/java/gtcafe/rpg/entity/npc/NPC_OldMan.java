@@ -17,10 +17,10 @@ public class NPC_OldMan extends Entity {
         this.name = name;
 
         solidArea = new Rectangle();
-        solidArea.x = 8;
-        solidArea.y = 16;
-        solidArea.width = (gp.tileSize * 4) / 5;    // 30;
-        solidArea.height = (gp.tileSize * 3) / 5;   // 30;
+        solidArea.x = solidAreaBaseUnit * 2;
+        solidArea.y = solidAreaBaseUnit * 4;
+        solidArea.width = gp.tileSize - (solidArea.x * 2);    // 30;
+        solidArea.height = gp.tileSize - solidArea.y;   // 30;
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
