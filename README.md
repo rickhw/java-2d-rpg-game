@@ -146,7 +146,22 @@ $ Task :run
 
 其中有透過 gemini 幫忙重構 (branch: day57_refactor-by-gemini_ui-class, day57_refactor-by-antigravity)，但效果沒有預期得好。
 
-## 截圖
+## 截圖與紀錄
+
+### 錄影
+
+開發過程的完整錄影與紀錄，放在這個 [Game Learning and DevLog][2] YouTube PlayList，每個錄影長度約在 10 分鐘以內，內容是大概是原作者的 2-3 個章節的速度。
+
+我沒有額外花時間剪接，所以錄影內容都是 One Take 的解說與 Demo。
+
+![](/docs/screenshot/YouTube-PlayList.png)
+
+
+### A* Search Algorithm
+
+過程有趣的其中一塊是讓 Monster or NPC 跟著 Player 走的實作，使用的是 [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm)，底下 Demo 是用一個更簡單的例子，針對這個演算法額外的說明與解說。
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/lcPzFYIfcXA?si=9ihUd-oY7esfi78z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### 攻擊與怪物
 
