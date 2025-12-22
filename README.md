@@ -146,26 +146,36 @@ $ Task :run
 
 其中有透過 gemini 幫忙重構 (branch: day57_refactor-by-gemini_ui-class, day57_refactor-by-antigravity)，但效果沒有預期得好。
 
-### 截圖
+## 截圖
 
+### 攻擊與怪物
 
 ![](/docs/screenshot/attack_dynamic-combat.png)
 ![](/docs/screenshot/attack_monster-and-hp.png)
 ![](/docs/screenshot/attack_parry.png)
 ![](/docs/screenshot/attack_guarding.png)
 ![](/docs/screenshot/attack_projectiles-fireball.png)
+![](/docs/screenshot/monster_bat.png)
+![](/docs/screenshot/boss.png)
+
+### 環境與互動
+
 ![](/docs/screenshot/map-world.png)
 ![](/docs/screenshot/map-gundeon.png)
 ![](/docs/screenshot/mini-map.png)
-![](/docs/screenshot/monster_bat.png)
-![](/docs/screenshot/trade.png)
-![](/docs/screenshot/inventory.png)
+![](/docs/screenshot/day-night-mode.png)
 ![](/docs/screenshot/destructible-tree.png)
 ![](/docs/screenshot/interactive_bigrock.png)
-![](/docs/screenshot/day-night-mode.png)
-![](/docs/screenshot/boss.png)
+![](/docs/screenshot/trade.png)
+![](/docs/screenshot/inventory.png)
+
+
+### Debug
+
 ![](/docs/screenshot/debug-mode.png)
 
+
+---
 
 ## 用 AI 重寫: Remake - Java to Godot
 
