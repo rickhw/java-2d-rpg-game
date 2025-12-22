@@ -161,6 +161,8 @@ $ Task :run
 
 過程有趣的其中一塊是讓 Monster or NPC 跟著 Player 走的實作，使用的是 [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm)，底下 Demo 是用一個更簡單的例子，針對這個演算法額外的說明與解說。
 
+![](/docs/screenshot/a-star-seach-algorithm.png)
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/lcPzFYIfcXA?si=9ihUd-oY7esfi78z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### 攻擊與怪物
