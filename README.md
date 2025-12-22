@@ -204,6 +204,20 @@ $ Task :run
 沒問題後我們就開始。
 ```
 
+### 截圖 (未完成)
+
+底下是我測試的部分截圖
+
+![](/docs/godot/sa.png)
+![](/docs/godot/tile-issue.png)
+![](/docs/godot/debug-mode-collision-1.png)
+![](/docs/godot/debug-mode-collision-2.png)
+![](/docs/godot/world-map-1.png)
+![](/docs/godot/world-map-2.png)
+
+
+### 指標
+
 測試 AI 模型在以下 5 個關鍵維度 的指標能力：
 
 1. 跨語言與跨範式的「語義翻譯」能力 (Semantic Translation)
