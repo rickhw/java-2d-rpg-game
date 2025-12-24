@@ -59,15 +59,8 @@ public class MON_Bat extends Entity {
 
             // // Search the direction to gp (==> follow the player)
             searchPath(getGoalCol(gp.player), getGoalRow(gp.player));
-
-            // Check if it shoots a projectile (shooting the player when aggro (侵略))
-            // checkShootOrNot(200, 30);
             
         } else {
-
-            // Check if it starts chasing (Player 距離 N 格以內, Monster 就主動跟蹤)
-            // checkStartChasingOrNot(gp.player, 3, 100, "You've been targeted by Slime!");
-
             // Get a random direction, 蝙蝠飛得比較快, 所以改成每 10 幀換方向, 會比較靈活，符合他的特性
             getRandomDirection(10);
         }
@@ -76,7 +69,6 @@ public class MON_Bat extends Entity {
     // monster receive damage/attack
     public void damageReaction() {
         actionLockCounter = 0;
-        // direction = gp.player.direction;
 
         onPath = true;
     }

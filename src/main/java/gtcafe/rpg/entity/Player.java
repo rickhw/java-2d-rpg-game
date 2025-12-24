@@ -1,12 +1,9 @@
 package gtcafe.rpg.entity;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import gtcafe.rpg.GamePanel;
-import gtcafe.rpg.entity.equipable.OBJ_Lantern;
-import gtcafe.rpg.entity.object.OBJ_Key;
 import gtcafe.rpg.entity.projectile.OBJ_Fireball;
 import gtcafe.rpg.entity.shield.OBJ_Shield_Wood;
 import gtcafe.rpg.entity.weapon.OBJ_Sword_Normal;
@@ -14,7 +11,6 @@ import gtcafe.rpg.state.Direction;
 import gtcafe.rpg.state.GameState;
 import gtcafe.rpg.system.KeyHandler;
 import gtcafe.rpg.system.Sound;
-import gtcafe.rpg.tile.Map;
 
 public class Player extends Entity {
     KeyHandler keyHandler;

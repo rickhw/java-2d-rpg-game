@@ -69,7 +69,6 @@ public class MON_Orc extends Entity {
         attackRight2 = setup(packagePath + "orc_attack_right_2.png", gp.tileSize*2, gp.tileSize);
     }
 
-    // Setting Slime's behavior
     // call 60 times per second
     public void setAction() {
 
@@ -80,7 +79,6 @@ public class MON_Orc extends Entity {
 
             // Search the direction to gp (==> follow the player)
             searchPath(getGoalCol(gp.player), getGoalRow(gp.player));
-
             
         } else {
 

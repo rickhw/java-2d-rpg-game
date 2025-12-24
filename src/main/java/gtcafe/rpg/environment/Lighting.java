@@ -132,6 +132,4 @@ public class Lighting {
             g2.drawString(situation, gp.tileSize * (gp.maxScreenCol - 2), gp.tileSize * (gp.maxScreenRow - 1));
         }
     }
-
-
 }

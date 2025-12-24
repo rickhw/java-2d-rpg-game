@@ -19,6 +19,4 @@ public class OBJ_Lantern extends Entity {
         price = 200;
         lightRadius = 250;
     }
-
-    
 }

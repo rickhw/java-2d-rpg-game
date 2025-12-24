@@ -14,13 +14,4 @@ public class OBJ_Boots extends Entity {
         down1 = setup("/gtcafe/rpg/assets/objects/boots.png", gp.tileSize, gp.tileSize);
         price = 150;
     }
-
-    // public boolean use(Entity entity) {
-    //     gp.playSoundEffect(Sound.FX_POWER_UP);
-    //     // gp.ui.addMessage("ife +" + value);
-    //     entity.speed += 5;
-
-    //     return false;    // means delete it.
-    // }
-
 }

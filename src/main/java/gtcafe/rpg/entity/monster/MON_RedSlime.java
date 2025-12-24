@@ -50,7 +50,6 @@ public class MON_RedSlime extends Entity {
         right2 = setup(path + "redslime_down_2.png", gp.tileSize, gp.tileSize);
     }
 
-    // Setting Slime's behavior
     // call 60 times per second
     public void setAction() {
 

@@ -53,7 +53,6 @@ public class MON_SkeletonLord extends Entity {
     }
 
     public void getImage() {
-        // size
         int i = 5;
         if (inRage == false) {
             String path = "/gtcafe/rpg/assets/monster/skeletonlord/walking/";
@@ -80,7 +79,6 @@ public class MON_SkeletonLord extends Entity {
     }
 
     public void getAttackImage() {
-        // size
         int i = 5;
 
         if(inRage == false) {
