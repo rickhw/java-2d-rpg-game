@@ -1,0 +1,146 @@
+/* ============================================
+ * RPG Game - Global Styles
+ * ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;600&display=swap');
+
+:root {
+  --color-bg-dark: #0a0a1a;
+  --color-bg-surface: #12122a;
+  --color-accent-gold: #ffd700;
+  --color-accent-blue: #4488ff;
+  --color-text-primary: #e0e0e0;
+  --color-text-muted: #666;
+  --color-health: #e74c3c;
+  --color-mana: #3498db;
+  --color-connected: #2ecc71;
+  --color-disconnected: #e74c3c;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================
+ * App Layout
+ * ============================================ */
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    var(--color-bg-surface) 0%,
+    var(--color-bg-dark) 70%
+  );
+}
+
+.game-wrapper {
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    0 0 40px rgba(68, 136, 255, 0.1),
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    inset 0 0 1px rgba(255, 255, 255, 0.1);
+  background: #000;
+}
+
+.game-wrapper canvas {
+  display: block;
+}
+
+/* ============================================
+ * Status Bar
+ * ============================================ */
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 1280px;
+  max-width: 100%;
+  padding: 8px 16px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-family: 'Inter', monospace;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.connected {
+  background: var(--color-connected);
+  box-shadow: 0 0 6px var(--color-connected);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.dot.disconnected {
+  background: var(--color-disconnected);
+  box-shadow: 0 0 6px var(--color-disconnected);
+  animation: pulse-glow 1s ease-in-out infinite;
+}
+
+.version-label {
+  opacity: 0.5;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+/* ============================================
+ * Animations
+ * ============================================ */
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ============================================
+ * Responsive
+ * ============================================ */
+
+@media (max-width: 1300px) {
+  .game-wrapper canvas {
+    width: 100vw;
+    height: auto;
+  }
+
+  .status-bar {
+    width: 100%;
+    padding: 8px 12px;
+  }
+}
