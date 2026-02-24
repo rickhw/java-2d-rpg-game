@@ -1,0 +1,39 @@
+services:
+  backend:
+    build: ./backend
+    container_name: rpg-backend
+    restart: unless-stopped
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/game/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  frontend:
+    build: ./frontend
+    container_name: rpg-frontend-build
+    volumes:
+      - frontend-dist:/output
+    # Runs once: copies built files to shared volume then exits
+    restart: "no"
+
+  nginx:
+    image: nginx:alpine
+    container_name: rpg-nginx
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    volumes:
+      - frontend-dist:/usr/share/nginx/html:ro
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      frontend:
+        condition: service_completed_successfully
+      backend:
+        condition: service_healthy
+
+volumes:
+  frontend-dist:
