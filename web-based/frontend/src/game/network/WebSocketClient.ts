@@ -9,8 +9,7 @@ export class WebSocketClient {
     private onStateUpdate: (state: GameFullState) => void;
     private onConnect: () => void;
     private onDisconnect: () => void;
-    private reconnectAttempts = 0;
-    private maxReconnectAttempts = 5;
+    private intentionalClose = false;
 
     constructor(
         url: string,
@@ -25,17 +24,18 @@ export class WebSocketClient {
     }
 
     connect() {
+        // Don't connect if intentionally closed
+        if (this.intentionalClose) return;
+
         try {
-            // Use relative WebSocket URL via Vite proxy
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsUrl = `${protocol}//${window.location.host}${this.url}`;
-            console.log(`[WebSocket] Connecting to ${wsUrl}`);
+            const wsUrl = protocol + '//' + window.location.host + this.url;
+            console.log('[WS] Connecting to ' + wsUrl);
 
             this.ws = new WebSocket(wsUrl);
 
             this.ws.onopen = () => {
-                console.log('[WebSocket] Connected');
-                this.reconnectAttempts = 0;
+                console.log('[WS] Connected');
                 this.onConnect();
             };
 
@@ -44,22 +44,24 @@ export class WebSocketClient {
                     const data = JSON.parse(event.data) as GameFullState;
                     this.onStateUpdate(data);
                 } catch (e) {
-                    console.error('[WebSocket] Failed to parse message:', e);
+                    console.error('[WS] Parse error:', e);
                 }
             };
 
-            this.ws.onclose = (event) => {
-                console.log(`[WebSocket] Disconnected (code: ${event.code})`);
+            this.ws.onclose = () => {
                 this.onDisconnect();
-                this.tryReconnect();
+                // Only reconnect if not intentionally closed
+                if (!this.intentionalClose) {
+                    console.log('[WS] Disconnected, reconnecting in 2s...');
+                    setTimeout(() => this.connect(), 2000);
+                }
             };
 
-            this.ws.onerror = (error) => {
-                console.error('[WebSocket] Error:', error);
+            this.ws.onerror = () => {
+                // Error is followed by onclose, which handles reconnection
             };
         } catch (e) {
-            console.error('[WebSocket] Connection failed:', e);
-            this.tryReconnect();
+            console.error('[WS] Connection failed:', e);
         }
     }
 
@@ -70,6 +72,7 @@ export class WebSocketClient {
     }
 
     disconnect() {
+        this.intentionalClose = true; // Prevent reconnection
         if (this.ws) {
             this.ws.close();
             this.ws = null;
@@ -78,14 +81,5 @@ export class WebSocketClient {
 
     isConnected(): boolean {
         return this.ws !== null && this.ws.readyState === WebSocket.OPEN;
-    }
-
-    private tryReconnect() {
-        if (this.reconnectAttempts < this.maxReconnectAttempts) {
-            this.reconnectAttempts++;
-            const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 10000);
-            console.log(`[WebSocket] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`);
-            setTimeout(() => this.connect(), delay);
-        }
     }
 }

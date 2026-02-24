@@ -13,22 +13,22 @@ export class AssetLoader {
      */
     async loadTiles(tileData: TileInfo[]): Promise<void> {
         const promises = tileData.map((tile) => {
-            return new Promise<void>((resolve, _reject) => {
+            return new Promise<void>((resolve) => {
                 const img = new Image();
                 img.onload = () => {
                     this.tileImages.set(tile.index, img);
                     resolve();
                 };
                 img.onerror = () => {
-                    console.warn(`[AssetLoader] Failed to load tile: ${tile.fileName}`);
+                    console.warn('[AssetLoader] Failed to load tile: ' + tile.fileName);
                     resolve(); // Don't fail the whole load
                 };
-                img.src = `/api/assets/tiles/images/${tile.fileName}`;
+                img.src = '/api/assets/tiles/images/' + tile.fileName;
             });
         });
 
         await Promise.all(promises);
-        console.log(`[AssetLoader] Loaded ${this.tileImages.size}/${tileData.length} tile images`);
+        console.log('[AssetLoader] Loaded ' + this.tileImages.size + '/' + tileData.length + ' tile images');
     }
 
     /**
@@ -42,8 +42,7 @@ export class AssetLoader {
                 resolve(img);
             };
             img.onerror = () => {
-                console.warn(`[AssetLoader] Failed to load sprite: ${path}`);
-                reject(new Error(`Failed to load sprite: ${path}`));
+                reject(new Error('Failed to load sprite: ' + path));
             };
             img.src = path;
         });
@@ -51,51 +50,64 @@ export class AssetLoader {
 
     /**
      * Load all player sprites.
+     * File structure: assets/sprites/player/walking/boy_{dir}_{num}.png
+     *                 assets/sprites/player/attacking/{weapon}/boy_attack_{dir}_{num}.png
+     *                 assets/sprites/player/guarding/boy_guard_{dir}.png
      */
     async loadPlayerSprites(): Promise<void> {
         const directions = ['up', 'down', 'left', 'right'];
-        const basePath = '/api/assets/sprites/player/walking';
 
+        // Walking sprites
         for (const dir of directions) {
             for (let i = 1; i <= 2; i++) {
-                const key = `player_${dir}_${i}`;
-                const path = `${basePath}/boy_${dir}_${i}.png`;
+                const key = 'player_' + dir + '_' + i;
+                const path = '/api/assets/sprites/player/walking/boy_' + dir + '_' + i + '.png';
                 try {
                     await this.loadSprite(key, path);
-                } catch (e) {
-                    console.warn(`[AssetLoader] Missing player sprite: ${key}`);
+                } catch (_e) {
+                    console.warn('[AssetLoader] Missing player walking sprite: ' + key);
                 }
             }
         }
 
-        // Attack sprites
-        const weapons = ['sword', 'axe', 'pickaxe'];
-        for (const weapon of weapons) {
-            for (const dir of directions) {
-                for (let i = 1; i <= 2; i++) {
-                    const key = `player_attack_${weapon}_${dir}_${i}`;
-                    const path = `/api/assets/sprites/player/attacking/${weapon}/boy_${dir}_${i}.png`;
-                    try {
-                        await this.loadSprite(key, path);
-                    } catch (e) {
-                        // OK - not all weapons may exist
-                    }
-                }
-            }
-        }
-
-        // Guard sprites
+        // Sword attack sprites (boy_attack_{dir}_{num})
         for (const dir of directions) {
-            const key = `player_guard_${dir}`;
-            const path = `/api/assets/sprites/player/guarding/boy_guard_${dir}.png`;
+            for (let i = 1; i <= 2; i++) {
+                const key = 'player_attack_sword_' + dir + '_' + i;
+                const path = '/api/assets/sprites/player/attacking/sword/boy_attack_' + dir + '_' + i + '.png';
+                try {
+                    await this.loadSprite(key, path);
+                } catch (_e) {
+                    // OK - may not exist
+                }
+            }
+        }
+
+        // Axe attack sprites (boy_axe_{dir}_{num})
+        for (const dir of directions) {
+            for (let i = 1; i <= 2; i++) {
+                const key = 'player_attack_axe_' + dir + '_' + i;
+                const path = '/api/assets/sprites/player/attacking/axe/boy_axe_' + dir + '_' + i + '.png';
+                try {
+                    await this.loadSprite(key, path);
+                } catch (_e) {
+                    // OK
+                }
+            }
+        }
+
+        // Guard sprites (boy_guard_{dir})
+        for (const dir of directions) {
+            const key = 'player_guard_' + dir;
+            const path = '/api/assets/sprites/player/guarding/boy_guard_' + dir + '.png';
             try {
                 await this.loadSprite(key, path);
-            } catch (e) {
+            } catch (_e) {
                 // OK
             }
         }
 
-        console.log(`[AssetLoader] Loaded ${this.spriteImages.size} sprite images`);
+        console.log('[AssetLoader] Loaded ' + this.spriteImages.size + ' sprite images');
     }
 
     /**
@@ -103,15 +115,15 @@ export class AssetLoader {
      */
     async loadMonsterSprites(monsterName: string): Promise<void> {
         const directions = ['up', 'down', 'left', 'right'];
-        const basePath = `/api/assets/sprites/monster/${monsterName}/walking`;
+        const basePath = '/api/assets/sprites/monster/' + monsterName + '/walking';
 
         for (const dir of directions) {
             for (let i = 1; i <= 2; i++) {
-                const key = `${monsterName}_${dir}_${i}`;
-                const path = `${basePath}/${monsterName}_${dir}_${i}.png`;
+                const key = monsterName + '_' + dir + '_' + i;
+                const path = basePath + '/' + monsterName + '_' + dir + '_' + i + '.png';
                 try {
                     await this.loadSprite(key, path);
-                } catch (e) {
+                } catch (_e) {
                     // OK
                 }
             }

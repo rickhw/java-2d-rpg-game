@@ -98,6 +98,14 @@ public class GameEngine {
     }
 
     /**
+     * Remove a session (called when WebSocket connection closes).
+     */
+    public void removeSession(String sessionId) {
+        sessions.remove(sessionId);
+        System.out.printf("[GameEngine] Session removed: %s%n", sessionId);
+    }
+
+    /**
      * Get the full game state for initial sync or reconnection.
      */
     public Map<String, Object> getFullState(String sessionId) {
@@ -230,6 +238,8 @@ public class GameEngine {
         if (session == null)
             return;
 
+        session.incrementTick();
+
         if (session.getGameState() == GameState.PLAY) {
             updatePlayer(session);
             // TODO: updateNPCs, updateMonsters, updateProjectiles, etc.
@@ -239,7 +249,23 @@ public class GameEngine {
     private void updatePlayer(GameSession session) {
         GameEntity player = session.getPlayer();
 
-        if (session.isMoving() && !player.isAttacking()) {
+        // Attack animation processing
+        if (player.isAttacking()) {
+            int counter = player.getSpriteCounter() + 1;
+            player.setSpriteCounter(counter);
+            if (counter <= player.getMotion1Duration()) {
+                player.setSpriteNum(1);
+            } else if (counter <= player.getMotion2Duration()) {
+                player.setSpriteNum(2);
+            } else {
+                // Attack finished
+                player.setAttacking(false);
+                player.setSpriteNum(1);
+                player.setSpriteCounter(0);
+            }
+        }
+        // Movement processing
+        else if (session.isMoving() && !player.isGuarding()) {
             Direction dir = session.getMoveDirection();
             player.setDirection(dir);
 
@@ -263,7 +289,7 @@ public class GameEngine {
                 player.setWorldY(nextY);
             }
 
-            // Animation
+            // Walking animation
             int counter = player.getSpriteCounter() + 1;
             player.setSpriteCounter(counter);
             if (counter > 12) { // walking animation speed
@@ -325,6 +351,49 @@ public class GameEngine {
             return true;
 
         return false;
+    }
+
+    // === Session management for game loop ===
+
+    /**
+     * Get all active session IDs.
+     */
+    public java.util.Set<String> getAllSessionIds() {
+        return sessions.keySet();
+    }
+
+    /**
+     * Get a compact delta state suitable for broadcasting each tick.
+     * Only includes data that changes frequently (position, direction, animation,
+     * combat state).
+     */
+    public Map<String, Object> getDeltaState(String sessionId) {
+        GameSession session = sessions.get(sessionId);
+        if (session == null)
+            return null;
+
+        // Only send delta when in PLAY state (or TITLE for initial state)
+        Map<String, Object> state = new HashMap<>();
+        state.put("sessionId", sessionId);
+        state.put("gameState", session.getGameState().name());
+        state.put("tick", session.getTick());
+
+        GameEntity player = session.getPlayer();
+        Map<String, Object> playerDelta = new HashMap<>();
+        playerDelta.put("worldX", player.getWorldX());
+        playerDelta.put("worldY", player.getWorldY());
+        playerDelta.put("direction", player.getDirection().name());
+        playerDelta.put("spriteNum", player.getSpriteNum());
+        playerDelta.put("attacking", player.isAttacking());
+        playerDelta.put("guarding", player.isGuarding());
+        playerDelta.put("invincible", player.isInvincible());
+        playerDelta.put("life", player.getLife());
+        playerDelta.put("maxLife", player.getMaxLife());
+        playerDelta.put("mana", player.getMana());
+        playerDelta.put("maxMana", player.getMaxMana());
+
+        state.put("player", playerDelta);
+        return state;
     }
 
     private Map<String, Object> entityToMap(GameEntity e) {

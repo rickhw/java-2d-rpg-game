@@ -1,0 +1,31 @@
+# Gradle
+.gradle/
+/build/
+
+# Java
+*.class
+/bin/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Gradle wrapper
+!gradle-wrapper.jar
+!gradlew
+!gradlew.bat
+
+# Config
+config.txt
+save.data

@@ -1,6 +1,5 @@
 package gtcafe.rpg.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,13 +77,15 @@ public class AssetController {
     }
 
     /**
-     * Get sprite images
+     * Get sprite images - supports deep paths like
+     * /sprites/player/walking/boy_down_1.png
      */
-    @GetMapping("/sprites/{category}/{name}")
-    public ResponseEntity<Resource> getSpriteImage(
-            @PathVariable String category,
-            @PathVariable String name) {
-        return serveImage("assets/sprites/" + category + "/" + name);
+    @GetMapping("/sprites/**")
+    public ResponseEntity<Resource> getSpriteImage(HttpServletRequest request) {
+        String fullPath = request.getRequestURI();
+        // Extract the path after /api/assets/sprites/
+        String spritePath = fullPath.substring(fullPath.indexOf("/sprites/") + "/sprites/".length());
+        return serveImage("assets/sprites/" + spritePath);
     }
 
     /**
