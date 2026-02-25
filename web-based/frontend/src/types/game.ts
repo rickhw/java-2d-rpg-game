@@ -29,6 +29,10 @@ export interface EntityState {
     alive?: boolean;
     dying?: boolean;
     spriteKey?: string;
+    solidAreaX?: number;
+    solidAreaY?: number;
+    solidAreaWidth?: number;
+    solidAreaHeight?: number;
 }
 
 export interface PlayerState extends EntityState {
@@ -65,6 +69,22 @@ export interface TileInfo {
     collision: boolean;
 }
 
+export interface NpcState {
+    id: string;
+    name?: string;
+    worldX: number;
+    worldY: number;
+    direction: Direction;
+    spriteNum: 1 | 2;
+    spriteKey: string;
+}
+
+export interface DialogueState {
+    speaker: string;
+    line: string;
+    hasNext: boolean;
+}
+
 export interface GameFullState {
     type: 'FULL_STATE' | 'DELTA_STATE';
     sessionId: string;
@@ -74,6 +94,8 @@ export interface GameFullState {
     dayState: DayStateType;
     player: PlayerState;
     mapData: MapData;
+    npcs?: NpcState[];
+    dialogue?: DialogueState;
     entities?: EntityState[];
     projectiles?: EntityState[];
     particles?: any[];

@@ -15,7 +15,7 @@ const App: React.FC = () => {
           <span className="dot connected"></span>
           <span>Blue Boy Adventure</span>
         </span>
-        <span className="version-label">v0.1.0</span>
+        <span className="version-label">v1.3.0</span>
       </div>
     </div>
   );

@@ -6,10 +6,12 @@ import { TileRenderer } from '../game/renderer/TileRenderer';
 import type {
     GameFullState,
     TileInfo,
+    NpcState,
 } from '../types/game';
 import {
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
+    EFFECTIVE_TILE_SIZE,
 } from '../types/game';
 
 /**
@@ -25,6 +27,8 @@ const GameCanvas: React.FC = () => {
     const gameStateRef = useRef<GameFullState | null>(null);
     const animFrameRef = useRef<number>(0);
     const connectedRef = useRef(false);
+    const debugRef = useRef(false);
+    const fpsRef = useRef({ frames: 0, lastTime: performance.now(), fps: 0 });
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -54,6 +58,11 @@ const GameCanvas: React.FC = () => {
                     if (state.player && current.player) {
                         merged.player = { ...current.player, ...state.player };
                     }
+                    // Merge NPCs and dialogue from delta
+                    if (state.npcs) {
+                        merged.npcs = state.npcs;
+                    }
+                    merged.dialogue = state.dialogue ?? undefined;
                     gameStateRef.current = merged;
                 }
                 // Ignore DELTA_STATE if no current state yet (wait for FULL_STATE)
@@ -65,6 +74,15 @@ const GameCanvas: React.FC = () => {
         // --- Keyboard input ---
         const keyboard = new KeyboardInput(wsClient);
         keyboard.attach(document.body);
+
+        // Debug toggle (T key) — handled client-side only
+        const onDebugKey = (e: KeyboardEvent) => {
+            if (e.code === 'KeyT' && !e.repeat) {
+                debugRef.current = !debugRef.current;
+                console.log('[Debug] Mode:', debugRef.current ? 'ON' : 'OFF');
+            }
+        };
+        window.addEventListener('keydown', onDebugKey);
 
         // --- 60 FPS render loop ---
         const renderLoop = () => {
@@ -78,8 +96,15 @@ const GameCanvas: React.FC = () => {
                     drawTitleScreen(ctx);
                 } else if (state.gameState === 'PLAY') {
                     renderer.drawTiles(state);
+                    renderer.drawNPCs(state);
                     renderer.drawPlayer(state);
+                    if (debugRef.current) {
+                        drawDebugOverlay(ctx, state);
+                    }
                     drawHUD(ctx, state);
+                    if (state.dialogue) {
+                        drawDialogueBox(ctx, state.dialogue.speaker, state.dialogue.line, state.dialogue.hasNext);
+                    }
                 }
             } else {
                 // Waiting for connection / state
@@ -95,6 +120,15 @@ const GameCanvas: React.FC = () => {
                 );
             }
 
+            // FPS counter
+            const now = performance.now();
+            fpsRef.current.frames++;
+            if (now - fpsRef.current.lastTime >= 1000) {
+                fpsRef.current.fps = fpsRef.current.frames;
+                fpsRef.current.frames = 0;
+                fpsRef.current.lastTime = now;
+            }
+
             animFrameRef.current = requestAnimationFrame(renderLoop);
         };
 
@@ -108,6 +142,7 @@ const GameCanvas: React.FC = () => {
         return () => {
             cancelAnimationFrame(animFrameRef.current);
             keyboard.detach();
+            window.removeEventListener('keydown', onDebugKey);
             wsClient.disconnect();
         };
     }, []); // Empty deps = run once
@@ -138,6 +173,7 @@ async function loadAssets(assetLoader: AssetLoader) {
             await assetLoader.loadTiles(data.tiles as TileInfo[]);
         }
         await assetLoader.loadPlayerSprites();
+        await assetLoader.loadNpcSprites();
         assetLoader.setLoaded(true);
         console.log('[GameCanvas] Assets loaded');
     } catch (e) {
@@ -185,8 +221,15 @@ function drawTitleScreen(ctx: CanvasRenderingContext2D) {
     // Instructions
     ctx.fillStyle = '#556';
     ctx.font = '16px "Courier New", monospace';
-    ctx.fillText('Press ENTER to start', SCREEN_WIDTH / 2, SCREEN_HEIGHT - 60);
-    ctx.fillText('WASD / Arrow Keys to move | ENTER to attack | SPACE to guard', SCREEN_WIDTH / 2, SCREEN_HEIGHT - 35);
+    ctx.fillText('Press ENTER to start', SCREEN_WIDTH / 2, SCREEN_HEIGHT - 80);
+    ctx.fillText('WASD / Arrow Keys to move | ENTER to attack | SPACE to guard', SCREEN_WIDTH / 2, SCREEN_HEIGHT - 55);
+
+    // Version (bottom-right)
+    ctx.fillStyle = '#ffd700';
+    ctx.font = 'bold 18px "Courier New", monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText('v1.3.0 / 20260225', SCREEN_WIDTH - 40, SCREEN_HEIGHT - 20);
+    ctx.textAlign = 'center';
 }
 
 function drawHUD(ctx: CanvasRenderingContext2D, state: GameFullState) {
@@ -257,6 +300,127 @@ function drawHUD(ctx: CanvasRenderingContext2D, state: GameFullState) {
     ctx.textAlign = 'right';
     ctx.fillText((state.currentMap || '') + ' | ' + (state.dayState || ''), SCREEN_WIDTH - 16, 25);
     ctx.textAlign = 'left';
+}
+
+function drawDialogueBox(ctx: CanvasRenderingContext2D, speaker: string, line: string, hasNext: boolean) {
+    const boxX = 40;
+    const boxY = SCREEN_HEIGHT - 220;
+    const boxW = SCREEN_WIDTH - 80;
+    const boxH = 120;
+
+    // Semi-transparent dark background
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+    ctx.beginPath();
+    ctx.roundRect(boxX, boxY, boxW, boxH, 12);
+    ctx.fill();
+
+    // Border
+    ctx.strokeStyle = '#ffd700';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.roundRect(boxX, boxY, boxW, boxH, 12);
+    ctx.stroke();
+
+    // Speaker name tag
+    ctx.fillStyle = '#ffd700';
+    ctx.font = 'bold 18px "Courier New", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(speaker, boxX + 20, boxY + 28);
+
+    // Separator line
+    ctx.strokeStyle = 'rgba(255, 215, 0, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(boxX + 16, boxY + 38);
+    ctx.lineTo(boxX + boxW - 16, boxY + 38);
+    ctx.stroke();
+
+    // Dialogue text (supports \n line breaks)
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '16px "Courier New", monospace';
+    const lines = line.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+        ctx.fillText(lines[i], boxX + 24, boxY + 62 + i * 24);
+    }
+
+    // Blinking "next" indicator
+    const pulse = Math.sin(Date.now() * 0.005) * 0.3 + 0.7;
+    ctx.fillStyle = 'rgba(255, 255, 255, ' + pulse + ')';
+    ctx.font = '14px monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(hasNext ? '▼ ENTER' : '■ CLOSE', boxX + boxW - 20, boxY + boxH - 16);
+    ctx.textAlign = 'left';
+}
+
+function drawDebugOverlay(ctx: CanvasRenderingContext2D, state: GameFullState) {
+    const player = state.player;
+    if (!player) return;
+
+    const playerScreenX = SCREEN_WIDTH / 2 - EFFECTIVE_TILE_SIZE / 2;
+    const playerScreenY = SCREEN_HEIGHT / 2 - EFFECTIVE_TILE_SIZE / 2;
+
+    // === Player collision rect (red) ===
+    ctx.strokeStyle = '#ff0000';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(
+        playerScreenX + (player.solidAreaX ?? 8),
+        playerScreenY + (player.solidAreaY ?? 16),
+        player.solidAreaWidth ?? 32,
+        player.solidAreaHeight ?? 32
+    );
+
+    // Player tile coordinates (green)
+    const pCol = Math.floor((player.worldX + (player.solidAreaX ?? 8)) / EFFECTIVE_TILE_SIZE);
+    const pRow = Math.floor((player.worldY + (player.solidAreaY ?? 16)) / EFFECTIVE_TILE_SIZE);
+    ctx.fillStyle = '#00ff00';
+    ctx.font = 'bold 14px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(pCol + ',' + pRow, playerScreenX + 10, playerScreenY - 6);
+
+    // === NPC collision rects (green) + coordinates ===
+    if (state.npcs) {
+        for (const npc of state.npcs as NpcState[]) {
+            const sx = npc.worldX - player.worldX + playerScreenX;
+            const sy = npc.worldY - player.worldY + playerScreenY;
+
+            // Only draw if on screen
+            if (sx > -EFFECTIVE_TILE_SIZE && sx < SCREEN_WIDTH + EFFECTIVE_TILE_SIZE &&
+                sy > -EFFECTIVE_TILE_SIZE && sy < SCREEN_HEIGHT + EFFECTIVE_TILE_SIZE) {
+
+                // NPC collision rect (lime green)
+                ctx.strokeStyle = '#44ff44';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(sx + 8, sy + 16, 48, 48);
+
+                // NPC tile coordinates
+                const nCol = Math.floor((npc.worldX + 8) / EFFECTIVE_TILE_SIZE);
+                const nRow = Math.floor((npc.worldY + 16) / EFFECTIVE_TILE_SIZE);
+                ctx.fillStyle = '#44ff44';
+                ctx.font = '12px monospace';
+                ctx.fillText(nCol + ',' + nRow, sx + 10, sy - 4);
+            }
+        }
+    }
+
+    // === Debug info panel (bottom-left, like original GamePanel) ===
+    const panelX = 16;
+    const panelY = SCREEN_HEIGHT - 180;
+    const lineH = 18;
+
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+    ctx.fillRect(panelX - 4, panelY - 16, 260, lineH * 7 + 20);
+
+    ctx.fillStyle = '#ffff00';
+    ctx.font = 'bold 14px monospace';
+    ctx.textAlign = 'left';
+
+    let y = panelY;
+    ctx.fillText('Map: ' + (state.currentMap || ''), panelX, y); y += lineH;
+    ctx.fillText('State: ' + (state.gameState || ''), panelX, y); y += lineH;
+    ctx.fillText('WorldX: ' + player.worldX, panelX, y); y += lineH;
+    ctx.fillText('WorldY: ' + player.worldY, panelX, y); y += lineH;
+    ctx.fillText('Col: ' + pCol + '  Row: ' + pRow, panelX, y); y += lineH;
+    ctx.fillText('Direction: ' + player.direction, panelX, y); y += lineH;
 }
 
 export default GameCanvas;

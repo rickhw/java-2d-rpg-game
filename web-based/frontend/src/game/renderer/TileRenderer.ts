@@ -1,6 +1,7 @@
 import { AssetLoader } from '../assets/AssetLoader';
 import type {
   GameFullState,
+  NpcState,
 } from '../../types/game';
 import {
   EFFECTIVE_TILE_SIZE,
@@ -145,6 +146,48 @@ export class TileRenderer {
       // Fallback: draw a colored rectangle
       this.ctx.fillStyle = '#4488ff';
       this.ctx.fillRect(screenX + 8, screenY + 8, EFFECTIVE_TILE_SIZE - 16, EFFECTIVE_TILE_SIZE - 16);
+    }
+  }
+
+  /**
+   * Draw all NPCs visible on screen.
+   */
+  drawNPCs(state: GameFullState) {
+    if (!state.npcs || !state.player) return;
+
+    const player = state.player;
+    const playerScreenX = SCREEN_WIDTH / 2 - EFFECTIVE_TILE_SIZE / 2;
+    const playerScreenY = SCREEN_HEIGHT / 2 - EFFECTIVE_TILE_SIZE / 2;
+
+    for (const npc of state.npcs as NpcState[]) {
+      const screenX = npc.worldX - player.worldX + playerScreenX;
+      const screenY = npc.worldY - player.worldY + playerScreenY;
+
+      // Only draw if on screen
+      if (
+        screenX + EFFECTIVE_TILE_SIZE > 0 &&
+        screenX < SCREEN_WIDTH &&
+        screenY + EFFECTIVE_TILE_SIZE > 0 &&
+        screenY < SCREEN_HEIGHT
+      ) {
+        const dir = npc.direction.toLowerCase();
+        const spriteKey = npc.spriteKey + '_' + dir + '_' + npc.spriteNum;
+        const img = this.assetLoader.getSpriteImage(spriteKey);
+
+        if (img) {
+          this.ctx.drawImage(
+            img,
+            screenX,
+            screenY,
+            EFFECTIVE_TILE_SIZE,
+            EFFECTIVE_TILE_SIZE
+          );
+        } else {
+          // Fallback: draw a colored rectangle for NPC
+          this.ctx.fillStyle = '#88cc44';
+          this.ctx.fillRect(screenX + 8, screenY + 8, EFFECTIVE_TILE_SIZE - 16, EFFECTIVE_TILE_SIZE - 16);
+        }
+      }
     }
   }
 }

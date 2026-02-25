@@ -1,5 +1,8 @@
 package gtcafe.rpg.engine;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gtcafe.rpg.model.entity.GameEntity;
 import gtcafe.rpg.model.map.MapId;
 import gtcafe.rpg.model.state.AreaType;
@@ -21,6 +24,15 @@ public class GameSession {
 
     // Player entity
     private GameEntity player;
+
+    // NPCs on the current map
+    private List<GameEntity> npcs = new ArrayList<>();
+
+    // Dialogue state
+    private boolean inDialogue = false;
+    private String dialogueSpeakerName;
+    private String[] dialogueLines; // All lines in the current dialogue set
+    private int dialogueLineIndex; // Current line being shown
 
     // Input state
     private boolean moving = false;
@@ -78,6 +90,46 @@ public class GameSession {
 
     public void setPlayer(GameEntity player) {
         this.player = player;
+    }
+
+    public List<GameEntity> getNpcs() {
+        return npcs;
+    }
+
+    public void setNpcs(List<GameEntity> npcs) {
+        this.npcs = npcs;
+    }
+
+    public boolean isInDialogue() {
+        return inDialogue;
+    }
+
+    public void setInDialogue(boolean inDialogue) {
+        this.inDialogue = inDialogue;
+    }
+
+    public String getDialogueSpeakerName() {
+        return dialogueSpeakerName;
+    }
+
+    public void setDialogueSpeakerName(String name) {
+        this.dialogueSpeakerName = name;
+    }
+
+    public String[] getDialogueLines() {
+        return dialogueLines;
+    }
+
+    public void setDialogueLines(String[] lines) {
+        this.dialogueLines = lines;
+    }
+
+    public int getDialogueLineIndex() {
+        return dialogueLineIndex;
+    }
+
+    public void setDialogueLineIndex(int index) {
+        this.dialogueLineIndex = index;
     }
 
     public boolean isMoving() {

@@ -111,6 +111,30 @@ export class AssetLoader {
     }
 
     /**
+     * Load NPC sprites.
+     * File structure: assets/sprites/npc/{npcName}_{dir}_{num}.png
+     */
+    async loadNpcSprites(): Promise<void> {
+        const npcNames = ['oldman'];
+        const directions = ['up', 'down', 'left', 'right'];
+
+        for (const npcName of npcNames) {
+            for (const dir of directions) {
+                for (let i = 1; i <= 2; i++) {
+                    const key = npcName + '_' + dir + '_' + i;
+                    const path = '/api/assets/sprites/npc/' + npcName + '_' + dir + '_' + i + '.png';
+                    try {
+                        await this.loadSprite(key, path);
+                    } catch (_e) {
+                        // OK
+                    }
+                }
+            }
+        }
+        console.log('[AssetLoader] NPC sprites loaded');
+    }
+
+    /**
      * Load monster sprites.
      */
     async loadMonsterSprites(monsterName: string): Promise<void> {
