@@ -284,27 +284,23 @@ function drawTitleScreen(ctx: CanvasRenderingContext2D) {
     ctx.fillText('A 2D RPG Game', SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 + 40);
 
     // Menu
-    const menuY = SCREEN_HEIGHT / 2 + 40;
-    ctx.font = '28px "Courier New", monospace';
+    const menuY = SCREEN_HEIGHT / 2 + 30;
+    ctx.textBaseline = 'top';
+    ctx.font = 'bold 28px monospace';
     const pulse = Math.sin(Date.now() * 0.004) * 0.2 + 0.8;
     ctx.fillStyle = 'rgba(255, 255, 255, ' + pulse + ')';
     ctx.fillText('\u25b6 NEW GAME', SCREEN_WIDTH / 2, menuY);
     ctx.fillStyle = '#888';
-    ctx.fillText('  LOAD GAME', SCREEN_WIDTH / 2, menuY + 40);
-    ctx.fillText('  QUIT', SCREEN_WIDTH / 2, menuY + 80);
+    ctx.fillText('  LOAD GAME', SCREEN_WIDTH / 2, menuY + 45);
+    ctx.fillText('  QUIT', SCREEN_WIDTH / 2, menuY + 90);
 
     // Instructions
-    ctx.fillStyle = '#556';
-    ctx.font = '16px "Courier New", monospace';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 16px "Courier New", monospace';
     ctx.fillText('Press ENTER to start', SCREEN_WIDTH / 2, SCREEN_HEIGHT - 80);
     ctx.fillText('WASD / Arrow Keys to move | ENTER to attack | SPACE to guard', SCREEN_WIDTH / 2, SCREEN_HEIGHT - 55);
 
-    // Version (bottom-right)
-    ctx.fillStyle = '#ffd700';
-    ctx.font = 'bold 18px "Courier New", monospace';
-    ctx.textAlign = 'right';
-    ctx.fillText('v1.4.0 / 20260226', SCREEN_WIDTH - 40, SCREEN_HEIGHT - 20);
-    ctx.textAlign = 'center';
 }
 
 /**
