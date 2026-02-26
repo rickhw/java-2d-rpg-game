@@ -49,11 +49,7 @@ export interface PlayerState extends EntityState {
     inventory?: InventoryItem[];
 }
 
-export interface InventoryItem {
-    name: string;
-    amount: number;
-    equipped?: boolean;
-}
+
 
 export interface MapData {
     mapId: string;
@@ -85,6 +81,16 @@ export interface DialogueState {
     hasNext: boolean;
 }
 
+export interface MapObjectState {
+    id: string;
+    type: string;
+    spriteKey: string;
+    worldX: number;
+    worldY: number;
+    collision: boolean;
+    active: boolean;
+}
+
 export interface GameFullState {
     type: 'FULL_STATE' | 'DELTA_STATE';
     sessionId: string;
@@ -96,9 +102,24 @@ export interface GameFullState {
     mapData: MapData;
     npcs?: NpcState[];
     dialogue?: DialogueState;
+    transitionProgress?: number;
+    mapObjects?: MapObjectState[];
+    inventory?: InventoryItem[];
+    inventoryRow?: number;
+    inventoryCol?: number;
     entities?: EntityState[];
     projectiles?: EntityState[];
     particles?: any[];
+}
+
+export interface InventoryItem {
+    id: string;
+    name: string;
+    type: string; // WEAPON, SHIELD, CONSUMABLE, TOOL, KEY_ITEM
+    spriteKey: string;
+    description: string;
+    quantity: number;
+    equipped: boolean;
 }
 
 export interface ClientMessage {

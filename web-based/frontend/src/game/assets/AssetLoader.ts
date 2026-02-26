@@ -154,6 +154,33 @@ export class AssetLoader {
         }
     }
 
+    /**
+     * Load map object sprites.
+     * File structure: assets/sprites/objects/{name}.png
+     */
+    async loadObjectSprites(): Promise<void> {
+        const objectNames = [
+            'door', 'door_iron', 'chest', 'chest_opened',
+            'key', 'axe', 'pickaxe', 'sword_normal',
+            'shield_blue', 'shield_wood', 'lantern', 'tent',
+            'potion_red', 'blueheart', 'coin_bronze',
+            'heart_full', 'heart_half', 'heart_blank',
+            'manacrystal_full', 'manacrystal_blank',
+            'boots'
+        ];
+
+        for (const name of objectNames) {
+            const key = 'obj_' + name;
+            const path = '/api/assets/sprites/objects/' + name + '.png';
+            try {
+                await this.loadSprite(key, path);
+            } catch (_e) {
+                // OK - not all may exist
+            }
+        }
+        console.log('[AssetLoader] Object sprites loaded');
+    }
+
     getTileImage(index: number): HTMLImageElement | undefined {
         return this.tileImages.get(index);
     }

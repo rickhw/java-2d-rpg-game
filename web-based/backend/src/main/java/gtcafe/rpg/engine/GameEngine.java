@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import gtcafe.rpg.model.entity.EntityType;
 import gtcafe.rpg.model.entity.GameEntity;
+import gtcafe.rpg.model.entity.MapObject;
 import gtcafe.rpg.model.map.MapId;
 import gtcafe.rpg.model.state.AreaType;
 import gtcafe.rpg.model.state.DayState;
@@ -21,7 +22,7 @@ import gtcafe.rpg.service.MapService;
 
 /**
  * Core game engine - manages game sessions and the server-side game loop.
- * Phase 3: Added NPC system with random movement AI and dialogue.
+ * Phase 4: Added map transition system with teleport events.
  */
 @Component
 public class GameEngine {
@@ -58,6 +59,22 @@ public class GameEngine {
     public GameEngine(MapService mapService) {
         this.mapService = mapService;
     }
+
+    // === Teleport event definitions (from original EventHandler.java) ===
+    private record TeleportEvent(MapId fromMap, int fromCol, int fromRow,
+            MapId toMap, int toCol, int toRow, AreaType toArea) {
+    }
+
+    private static final List<TeleportEvent> TELEPORT_EVENTS = List.of(
+            // World Map ↔ Store
+            new TeleportEvent(MapId.WORLD_MAP, 10, 39, MapId.STORE, 12, 13, AreaType.INDOOR),
+            new TeleportEvent(MapId.STORE, 12, 13, MapId.WORLD_MAP, 10, 39, AreaType.OUTSIDE),
+            // World Map ↔ Dungeon B1
+            new TeleportEvent(MapId.WORLD_MAP, 12, 9, MapId.DUNGEON01, 9, 41, AreaType.DUNGEON),
+            new TeleportEvent(MapId.DUNGEON01, 9, 41, MapId.WORLD_MAP, 12, 9, AreaType.OUTSIDE),
+            // Dungeon B1 ↔ Dungeon B2
+            new TeleportEvent(MapId.DUNGEON01, 8, 7, MapId.DUNGEON02, 26, 41, AreaType.DUNGEON),
+            new TeleportEvent(MapId.DUNGEON02, 26, 41, MapId.DUNGEON01, 8, 7, AreaType.DUNGEON));
 
     /**
      * Create a new game session with initial state.
@@ -113,6 +130,13 @@ public class GameEngine {
         // Initialize NPCs for the world map
         session.setNpcs(createWorldMapNPCs());
 
+        // Initialize map objects
+        session.setMapObjects(createMapObjects(MapId.WORLD_MAP));
+
+        // Initial inventory
+        session.addToInventory(session.getEquippedWeaponId());
+        session.addToInventory(session.getEquippedShieldId());
+
         sessions.put(sessionId, session);
         System.out.printf("[GameEngine] New session created: %s%n", sessionId);
         return sessionId;
@@ -143,6 +167,109 @@ public class GameEngine {
         return npcs;
     }
 
+    /**
+     * Create NPCs for a given map.
+     */
+    private List<GameEntity> createNpcsForMap(MapId mapId) {
+        return switch (mapId) {
+            case WORLD_MAP -> createWorldMapNPCs();
+            // TODO: STORE → Merchant NPC, DUNGEON01 → BigRock NPCs
+            default -> new ArrayList<>();
+        };
+    }
+
+    /**
+     * Create map objects for a given map (from original AssetSetter.setObject).
+     */
+    private List<MapObject> createMapObjects(MapId mapId) {
+        List<MapObject> objects = new ArrayList<>();
+        int t = EFFECTIVE_TILE_SIZE;
+
+        switch (mapId) {
+            case WORLD_MAP -> {
+                // Doors
+                MapObject door1 = new MapObject("obj_door_1", "door", "door", 14 * t, 28 * t);
+                door1.setCollision(true);
+                objects.add(door1);
+
+                MapObject door2 = new MapObject("obj_door_2", "door", "door", 12 * t, 12 * t);
+                door2.setCollision(true);
+                objects.add(door2);
+
+                // Chest with key
+                MapObject chest1 = new MapObject("obj_chest_1", "chest", "chest", 30 * t, 29 * t);
+                chest1.setCollision(true);
+                chest1.setInteractable(true);
+                chest1.setLootType("key");
+                chest1.setLootSpriteKey("key");
+                objects.add(chest1);
+
+                // Pickupable items
+                MapObject axe = new MapObject("obj_axe_1", "axe", "axe", 33 * t, 7 * t);
+                axe.setPickupable(true);
+                objects.add(axe);
+
+                MapObject shield = new MapObject("obj_shield_1", "shield_blue", "shield_blue", 10 * t, 34 * t);
+                shield.setPickupable(true);
+                objects.add(shield);
+
+                MapObject lantern = new MapObject("obj_lantern_1", "lantern", "lantern", 27 * t, 16 * t);
+                lantern.setPickupable(true);
+                objects.add(lantern);
+
+                MapObject tent = new MapObject("obj_tent_1", "tent", "tent", 30 * t, 12 * t);
+                tent.setPickupable(true);
+                objects.add(tent);
+            }
+            case DUNGEON01 -> {
+                MapObject chest2 = new MapObject("obj_chest_d1_1", "chest", "chest", 40 * t, 41 * t);
+                chest2.setCollision(true);
+                chest2.setInteractable(true);
+                chest2.setLootType("pickaxe");
+                chest2.setLootSpriteKey("pickaxe");
+                objects.add(chest2);
+
+                MapObject chest3 = new MapObject("obj_chest_d1_2", "chest", "chest", 13 * t, 16 * t);
+                chest3.setCollision(true);
+                chest3.setInteractable(true);
+                chest3.setLootType("potion_red");
+                chest3.setLootSpriteKey("potion_red");
+                objects.add(chest3);
+
+                MapObject chest4 = new MapObject("obj_chest_d1_3", "chest", "chest", 26 * t, 34 * t);
+                chest4.setCollision(true);
+                chest4.setInteractable(true);
+                chest4.setLootType("potion_red");
+                chest4.setLootSpriteKey("potion_red");
+                objects.add(chest4);
+
+                MapObject chest5 = new MapObject("obj_chest_d1_4", "chest", "chest", 27 * t, 15 * t);
+                chest5.setCollision(true);
+                chest5.setInteractable(true);
+                chest5.setLootType("potion_red");
+                chest5.setLootSpriteKey("potion_red");
+                objects.add(chest5);
+
+                MapObject ironDoor = new MapObject("obj_iron_door_1", "door_iron", "door_iron", 18 * t, 23 * t);
+                ironDoor.setCollision(true);
+                objects.add(ironDoor);
+            }
+            case DUNGEON02 -> {
+                MapObject blueHeart = new MapObject("obj_blueheart_1", "blueheart", "blueheart", 25 * t, 8 * t);
+                blueHeart.setPickupable(true);
+                objects.add(blueHeart);
+
+                MapObject ironDoor2 = new MapObject("obj_iron_door_2", "door_iron", "door_iron", 25 * t, 15 * t);
+                ironDoor2.setCollision(true);
+                objects.add(ironDoor2);
+            }
+            default -> {
+            }
+        }
+
+        return objects;
+    }
+
     public GameSession getSession(String sessionId) {
         return sessions.get(sessionId);
     }
@@ -163,11 +290,18 @@ public class GameEngine {
         Map<String, Object> state = new HashMap<>();
         state.put("sessionId", sessionId);
         state.put("gameState", session.getGameState().name());
+        state.put("inventoryRow", session.getInventorySlotRow());
+        state.put("inventoryCol", session.getInventorySlotCol());
         state.put("currentMap", session.getCurrentMap().name());
         state.put("currentArea", session.getCurrentArea().name());
         state.put("dayState", session.getDayState().name());
         state.put("player", entityToMap(session.getPlayer()));
         state.put("mapData", mapService.getMapDataForClient(session.getCurrentMap()));
+
+        // Include transition progress if in transition
+        if (session.getGameState() == GameState.TRANSITION) {
+            state.put("transitionProgress", session.getTransitionTimer() / 60.0);
+        }
 
         // Include NPCs
         List<Map<String, Object>> npcList = new ArrayList<>();
@@ -185,6 +319,18 @@ public class GameEngine {
             state.put("dialogue", dialogue);
         }
 
+        // Include map objects
+        List<Map<String, Object>> objList = new ArrayList<>();
+        for (MapObject obj : session.getMapObjects()) {
+            if (obj.isActive()) {
+                objList.add(mapObjectToMap(obj));
+            }
+        }
+        state.put("mapObjects", objList);
+
+        // Include detailed inventory
+        state.put("inventory", buildInventoryList(session));
+
         return state;
     }
 
@@ -199,12 +345,36 @@ public class GameEngine {
         GameEntity player = session.getPlayer();
 
         switch (type) {
+            case "INVENTORY_TOGGLE" -> {
+                if (session.getGameState() == GameState.PLAY) {
+                    session.setGameState(GameState.CHARACTER);
+                    session.setMoving(false);
+                    session.setNeedsFullState(true);
+                } else if (session.getGameState() == GameState.CHARACTER) {
+                    session.setGameState(GameState.PLAY);
+                    session.setNeedsFullState(true);
+                }
+            }
             case "MOVE" -> {
+                String dirStr = (String) data.get("direction");
+                Direction dir = Direction.valueOf(dirStr);
+
                 if (session.getGameState() == GameState.PLAY && !session.isInDialogue()) {
-                    String dirStr = (String) data.get("direction");
-                    Direction dir = Direction.valueOf(dirStr);
                     session.setMoving(true);
                     session.setMoveDirection(dir);
+                } else if (session.getGameState() == GameState.CHARACTER) {
+                    // Move inventory cursor
+                    int col = session.getInventorySlotCol();
+                    int row = session.getInventorySlotRow();
+                    if (dir == Direction.UP && row > 0)
+                        session.setInventorySlotRow(row - 1);
+                    else if (dir == Direction.DOWN && row < 3)
+                        session.setInventorySlotRow(row + 1);
+                    else if (dir == Direction.LEFT && col > 0)
+                        session.setInventorySlotCol(col - 1);
+                    else if (dir == Direction.RIGHT && col < 4)
+                        session.setInventorySlotCol(col + 1);
+                    session.setNeedsFullState(true);
                 }
             }
             case "MOVE_STOP" -> {
@@ -216,6 +386,10 @@ public class GameEngine {
                         session.setGameState(GameState.PLAY);
                         System.out.printf("[GameEngine] Session %s: Starting new game%n", session.getId());
                     }
+                    case CHARACTER -> {
+                        int slotIndex = session.getInventorySlotCol() + (session.getInventorySlotRow() * 5);
+                        handleInventoryAction(session, slotIndex);
+                    }
                     case PLAY -> {
                         if (session.isInDialogue()) {
                             // Advance or close dialogue
@@ -226,10 +400,16 @@ public class GameEngine {
                             if (nearbyNpc != null) {
                                 startDialogue(session, nearbyNpc);
                             } else {
-                                // Attack
-                                player.setAttacking(true);
-                                player.setSpriteNum(1);
-                                player.setSpriteCounter(0);
+                                // Check if facing an interactable object (chest)
+                                MapObject obj = findObjectInFront(session);
+                                if (obj != null) {
+                                    interactWithObject(session, obj);
+                                } else {
+                                    // Attack
+                                    player.setAttacking(true);
+                                    player.setSpriteNum(1);
+                                    player.setSpriteCounter(0);
+                                }
                             }
                         }
                     }
@@ -259,10 +439,55 @@ public class GameEngine {
             case "DEBUG_TOGGLE" -> {
                 session.setDebugMode(!session.isDebugMode());
             }
+            case "INVENTORY_ACTION" -> {
+                Number slotObj = (Number) data.get("slot");
+                if (slotObj != null) {
+                    handleInventoryAction(session, slotObj.intValue());
+                }
+            }
             default -> {
                 System.out.printf("[GameEngine] Unknown input type: %s%n", type);
             }
         }
+    }
+
+    private void handleInventoryAction(GameSession session, int slotIndex) {
+        var inventory = session.getInventory();
+        if (slotIndex < 0 || slotIndex >= inventory.size())
+            return;
+
+        var item = inventory.get(slotIndex);
+        gtcafe.rpg.model.item.ItemData data = gtcafe.rpg.model.item.ItemRegistry.get(item.itemId());
+        if (data == null)
+            return;
+
+        switch (data.type()) {
+            case WEAPON -> session.setEquippedWeaponId(item.itemId());
+            case SHIELD -> session.setEquippedShieldId(item.itemId());
+            case TOOL -> {
+                if ("lantern".equals(item.itemId())) {
+                    if (item.itemId().equals(session.getEquippedLightId())) {
+                        session.setEquippedLightId(null);
+                    } else {
+                        session.setEquippedLightId(item.itemId());
+                    }
+                }
+            }
+            case CONSUMABLE -> {
+                if (data.healValue() > 0) {
+                    GameEntity p = session.getPlayer();
+                    if (p.getLife() < p.getMaxLife()) {
+                        p.setLife(Math.min(p.getMaxLife(), p.getLife() + data.healValue()));
+                        session.decreaseInventoryAmount(slotIndex);
+                    }
+                }
+            }
+            default -> {
+                // Key items usually cannot be "used" from the menu, just passively.
+            }
+        }
+
+        session.setNeedsFullState(true);
     }
 
     // ======================== NPC Interaction ========================
@@ -297,8 +522,61 @@ public class GameEngine {
     }
 
     /**
-     * Start a dialogue with an NPC.
+     * Find an interactable object in front of the player.
      */
+    private MapObject findObjectInFront(GameSession session) {
+        GameEntity player = session.getPlayer();
+        int px = player.getWorldX();
+        int py = player.getWorldY();
+
+        int checkX = px, checkY = py;
+        switch (player.getDirection()) {
+            case UP -> checkY -= EFFECTIVE_TILE_SIZE;
+            case DOWN -> checkY += EFFECTIVE_TILE_SIZE;
+            case LEFT -> checkX -= EFFECTIVE_TILE_SIZE;
+            case RIGHT -> checkX += EFFECTIVE_TILE_SIZE;
+            default -> {
+            }
+        }
+
+        for (MapObject obj : session.getMapObjects()) {
+            if (!obj.isActive() || !obj.isInteractable())
+                continue;
+            int dx = Math.abs(obj.getWorldX() - checkX);
+            int dy = Math.abs(obj.getWorldY() - checkY);
+            if (dx < EFFECTIVE_TILE_SIZE && dy < EFFECTIVE_TILE_SIZE) {
+                return obj;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Interact with a map object (open chest, etc.).
+     */
+    private void interactWithObject(GameSession session, MapObject obj) {
+        if ("chest".equals(obj.getType())) {
+            // Open chest: change sprite, remove collision, show loot
+            obj.setSpriteKey("chest_opened");
+            obj.setCollision(false);
+            obj.setInteractable(false);
+
+            String lootName = obj.getLootType() != null ? obj.getLootType() : "something";
+            String lootSprite = obj.getLootSpriteKey() != null ? obj.getLootSpriteKey() : lootName;
+
+            // Add loot to inventory
+            boolean success = session.addToInventory(lootName);
+            session.setInDialogue(true);
+            session.setDialogueSpeakerName("Chest");
+            session.setDialogueLines(new String[] {
+                    "You opened the chest and\nfound a " + lootName + "!"
+            });
+            session.setDialogueLineIndex(0);
+
+            System.out.printf("[GameEngine] Opened chest %s, loot: %s%n", obj.getId(), lootName);
+        }
+    }
+
     private void startDialogue(GameSession session, GameEntity npc) {
         // NPC faces the player
         GameEntity player = session.getPlayer();
@@ -357,6 +635,169 @@ public class GameEngine {
         if (session.getGameState() == GameState.PLAY) {
             updatePlayer(session);
             updateNPCs(session);
+            checkTeleportEvents(session);
+            checkPickupObjects(session);
+            checkHealingPool(session);
+        } else if (session.getGameState() == GameState.CHARACTER) {
+            // In character menu, NPCs should still move or animate, player might need to
+            // finish animation
+            updatePlayer(session);
+            updateNPCs(session);
+        } else if (session.getGameState() == GameState.TRANSITION) {
+            updateTransition(session);
+        }
+    }
+
+    /**
+     * Check if player is standing on a teleport tile.
+     */
+    private void checkTeleportEvents(GameSession session) {
+        GameEntity player = session.getPlayer();
+        int playerCol = (player.getWorldX() + player.getSolidAreaX() + player.getSolidAreaWidth() / 2)
+                / EFFECTIVE_TILE_SIZE;
+        int playerRow = (player.getWorldY() + player.getSolidAreaY() + player.getSolidAreaHeight() / 2)
+                / EFFECTIVE_TILE_SIZE;
+
+        // Position-based re-trigger prevention: skip if player is still on the last
+        // teleport tile
+        if (session.getLastTeleportMap() == session.getCurrentMap()
+                && session.getLastTeleportCol() == playerCol
+                && session.getLastTeleportRow() == playerRow) {
+            return;
+        }
+        // Player has moved off the last teleport tile, clear it
+        if (session.getLastTeleportCol() != -1) {
+            session.setLastTeleportCol(-1);
+            session.setLastTeleportRow(-1);
+            session.setLastTeleportMap(null);
+        }
+
+        for (TeleportEvent evt : TELEPORT_EVENTS) {
+            if (evt.fromMap() == session.getCurrentMap()
+                    && evt.fromCol() == playerCol
+                    && evt.fromRow() == playerRow) {
+                // Start transition
+                session.setGameState(GameState.TRANSITION);
+                session.setTransitionTimer(0);
+                session.setTargetMap(evt.toMap());
+                session.setTargetCol(evt.toCol());
+                session.setTargetRow(evt.toRow());
+                session.setTargetArea(evt.toArea());
+                session.setMoving(false);
+                System.out.printf("[GameEngine] Teleport: %s(%d,%d) → %s(%d,%d)%n",
+                        evt.fromMap(), evt.fromCol(), evt.fromRow(),
+                        evt.toMap(), evt.toCol(), evt.toRow());
+                break;
+            }
+        }
+    }
+
+    /**
+     * Auto-pickup objects the player walks over.
+     */
+    private void checkPickupObjects(GameSession session) {
+        GameEntity player = session.getPlayer();
+        int pCenterX = player.getWorldX() + player.getSolidAreaX() + player.getSolidAreaWidth() / 2;
+        int pCenterY = player.getWorldY() + player.getSolidAreaY() + player.getSolidAreaHeight() / 2;
+
+        for (MapObject obj : session.getMapObjects()) {
+            if (!obj.isActive() || !obj.isPickupable())
+                continue;
+
+            int oCenterX = obj.getWorldX() + EFFECTIVE_TILE_SIZE / 2;
+            int oCenterY = obj.getWorldY() + EFFECTIVE_TILE_SIZE / 2;
+
+            if (Math.abs(pCenterX - oCenterX) < EFFECTIVE_TILE_SIZE / 2
+                    && Math.abs(pCenterY - oCenterY) < EFFECTIVE_TILE_SIZE / 2) {
+                obj.setActive(false);
+
+                // Add to inventory
+                boolean success = session.addToInventory(obj.getType());
+
+                session.setInDialogue(true);
+                session.setDialogueSpeakerName("Item");
+                session.setDialogueLines(new String[] {
+                        "You obtained a " + obj.getType() + "!"
+                });
+                session.setDialogueLineIndex(0);
+
+                System.out.printf("[GameEngine] Picked up %s (%s)%n", obj.getId(), obj.getType());
+                break; // One pickup per tick
+            }
+        }
+    }
+
+    /**
+     * Healing pool event at World Map (23, 12) — facing UP.
+     * Restores full HP and MP.
+     */
+    private void checkHealingPool(GameSession session) {
+        if (session.getCurrentMap() != MapId.WORLD_MAP)
+            return;
+        if (session.isInDialogue())
+            return;
+
+        GameEntity player = session.getPlayer();
+        int playerCol = (player.getWorldX() + player.getSolidAreaX() + player.getSolidAreaWidth() / 2)
+                / EFFECTIVE_TILE_SIZE;
+        int playerRow = (player.getWorldY() + player.getSolidAreaY() + player.getSolidAreaHeight() / 2)
+                / EFFECTIVE_TILE_SIZE;
+
+        if (playerCol == 23 && playerRow == 12 && player.getDirection() == Direction.UP) {
+            // Only heal if not at full health
+            if (player.getLife() < player.getMaxLife() || player.getMana() < player.getMaxMana()) {
+                player.setLife(player.getMaxLife());
+                player.setMana(player.getMaxMana());
+
+                session.setInDialogue(true);
+                session.setDialogueSpeakerName("Healing Pool");
+                session.setDialogueLines(new String[] {
+                        "Your HP and MP have been\\nfully restored!"
+                });
+                session.setDialogueLineIndex(0);
+
+                System.out.println("[GameEngine] Healing pool activated");
+            }
+        }
+    }
+
+    /**
+     * Handle TRANSITION state: fade out (30 ticks) → switch map → fade in (30
+     * ticks) → PLAY.
+     */
+    private void updateTransition(GameSession session) {
+        int timer = session.getTransitionTimer() + 1;
+        session.setTransitionTimer(timer);
+
+        // At halfway point (30 ticks = 0.5s), do the actual map switch
+        if (timer == 30) {
+            session.setCurrentMap(session.getTargetMap());
+            session.setCurrentArea(session.getTargetArea());
+
+            // Move player to target position
+            GameEntity player = session.getPlayer();
+            player.setWorldX(session.getTargetCol() * EFFECTIVE_TILE_SIZE);
+            player.setWorldY(session.getTargetRow() * EFFECTIVE_TILE_SIZE);
+
+            // Reload NPCs and objects for the new map
+            session.setNpcs(createNpcsForMap(session.getTargetMap()));
+            session.setMapObjects(createMapObjects(session.getTargetMap()));
+
+            // Flag for FULL_STATE broadcast (new mapData needed)
+            session.setNeedsFullState(true);
+
+            System.out.printf("[GameEngine] Map switched to %s, player at (%d,%d)%n",
+                    session.getTargetMap(), session.getTargetCol(), session.getTargetRow());
+        }
+
+        // Transition complete after 60 ticks (1 second)
+        if (timer >= 60) {
+            session.setGameState(GameState.PLAY);
+            session.setTransitionTimer(0);
+            // Remember destination to prevent re-trigger while standing on it
+            session.setLastTeleportMap(session.getCurrentMap());
+            session.setLastTeleportCol(session.getTargetCol());
+            session.setLastTeleportRow(session.getTargetRow());
         }
     }
 
@@ -395,9 +836,10 @@ public class GameEngine {
                 }
             }
 
-            // Check tile collision AND NPC collision
+            // Check tile collision, NPC collision, AND object collision
             if (!checkTileCollision(session, player, nextX, nextY)
-                    && !checkNpcCollision(session, player, nextX, nextY)) {
+                    && !checkNpcCollision(session, player, nextX, nextY)
+                    && !checkObjectCollision(session, nextX, nextY)) {
                 player.setWorldX(nextX);
                 player.setWorldY(nextY);
             }
@@ -561,6 +1003,33 @@ public class GameEngine {
         return false;
     }
 
+    /**
+     * Check if a position collides with any active map object that has collision.
+     */
+    private boolean checkObjectCollision(GameSession session, int nextX, int nextY) {
+        GameEntity player = session.getPlayer();
+        int pLeft = nextX + player.getSolidAreaX();
+        int pRight = nextX + player.getSolidAreaX() + player.getSolidAreaWidth();
+        int pTop = nextY + player.getSolidAreaY();
+        int pBottom = nextY + player.getSolidAreaY() + player.getSolidAreaHeight();
+
+        for (MapObject obj : session.getMapObjects()) {
+            if (!obj.isActive() || !obj.isCollision())
+                continue;
+
+            // Object occupies a full tile
+            int oLeft = obj.getWorldX();
+            int oRight = obj.getWorldX() + EFFECTIVE_TILE_SIZE;
+            int oTop = obj.getWorldY();
+            int oBottom = obj.getWorldY() + EFFECTIVE_TILE_SIZE;
+
+            if (pLeft < oRight && pRight > oLeft && pTop < oBottom && pBottom > oTop) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // ======================== State Broadcasting ========================
 
     public java.util.Set<String> getAllSessionIds() {
@@ -578,7 +1047,14 @@ public class GameEngine {
         Map<String, Object> state = new HashMap<>();
         state.put("sessionId", sessionId);
         state.put("gameState", session.getGameState().name());
+        state.put("inventoryRow", session.getInventorySlotRow());
+        state.put("inventoryCol", session.getInventorySlotCol());
         state.put("tick", session.getTick());
+
+        // Transition progress (0.0 → 1.0 for fade effect)
+        if (session.getGameState() == GameState.TRANSITION) {
+            state.put("transitionProgress", session.getTransitionTimer() / 60.0);
+        }
 
         // Player delta
         GameEntity player = session.getPlayer();
@@ -619,7 +1095,36 @@ public class GameEngine {
             state.put("dialogue", dialogue);
         }
 
+        // Include detailed inventory
+        state.put("inventory", buildInventoryList(session));
+
         return state;
+    }
+
+    private List<Map<String, Object>> buildInventoryList(GameSession session) {
+        List<Map<String, Object>> invList = new ArrayList<>();
+        for (var item : session.getInventory()) {
+            gtcafe.rpg.model.item.ItemData itemData = gtcafe.rpg.model.item.ItemRegistry.get(item.itemId());
+            if (itemData == null)
+                continue;
+
+            Map<String, Object> invMap = new HashMap<>();
+            invMap.put("id", itemData.id());
+            invMap.put("name", itemData.name());
+            invMap.put("type", itemData.type().name());
+            invMap.put("spriteKey", itemData.spriteKey());
+            invMap.put("description", itemData.description());
+            invMap.put("quantity", item.quantity());
+
+            // Check if equipped
+            boolean equipped = itemData.id().equals(session.getEquippedWeaponId())
+                    || itemData.id().equals(session.getEquippedShieldId())
+                    || itemData.id().equals(session.getEquippedLightId());
+            invMap.put("equipped", equipped);
+
+            invList.add(invMap);
+        }
+        return invList;
     }
 
     private Map<String, Object> entityToMap(GameEntity e) {
@@ -643,6 +1148,18 @@ public class GameEngine {
         map.put("invincible", e.isInvincible());
         map.put("alive", e.isAlive());
         map.put("spriteKey", e.getSpriteKey());
+        return map;
+    }
+
+    private Map<String, Object> mapObjectToMap(MapObject obj) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", obj.getId());
+        map.put("type", obj.getType());
+        map.put("spriteKey", obj.getSpriteKey());
+        map.put("worldX", obj.getWorldX());
+        map.put("worldY", obj.getWorldY());
+        map.put("collision", obj.isCollision());
+        map.put("active", obj.isActive());
         return map;
     }
 }

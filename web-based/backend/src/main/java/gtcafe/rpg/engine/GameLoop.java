@@ -56,7 +56,7 @@ public class GameLoop {
     }
 
     /**
-     * One game tick - only process sessions that are in PLAY state.
+     * One game tick - process sessions in PLAY or TRANSITION state.
      */
     private void tick() {
         try {
@@ -65,18 +65,31 @@ public class GameLoop {
                 if (session == null)
                     continue;
 
-                // Only tick and broadcast for sessions in PLAY state
-                if (session.getGameState() != GameState.PLAY)
+                GameState state = session.getGameState();
+
+                // Only tick PLAY, TRANSITION, CHARACTER, and DIALOGUE states
+                if (state != GameState.PLAY && state != GameState.TRANSITION && state != GameState.CHARACTER
+                        && state != GameState.DIALOGUE)
                     continue;
 
                 // Update game logic
                 gameEngine.tick(sessionId);
 
-                // Broadcast delta state to the client
-                Map<String, Object> state = gameEngine.getDeltaState(sessionId);
-                if (state != null) {
-                    state.put("type", "DELTA_STATE");
-                    webSocketHandler.sendStateUpdate(sessionId, state);
+                // Check if we need to send FULL_STATE (after map switch)
+                if (session.isNeedsFullState()) {
+                    session.setNeedsFullState(false);
+                    Map<String, Object> fullState = gameEngine.getFullState(sessionId);
+                    if (fullState != null) {
+                        fullState.put("type", "FULL_STATE");
+                        webSocketHandler.sendStateUpdate(sessionId, fullState);
+                    }
+                } else {
+                    // Broadcast delta state to the client
+                    Map<String, Object> delta = gameEngine.getDeltaState(sessionId);
+                    if (delta != null) {
+                        delta.put("type", "DELTA_STATE");
+                        webSocketHandler.sendStateUpdate(sessionId, delta);
+                    }
                 }
             }
         } catch (Exception e) {

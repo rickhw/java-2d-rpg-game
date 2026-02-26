@@ -96,6 +96,11 @@ export class KeyboardInput {
             case 'Escape':
                 this.send({ type: 'MENU_TOGGLE' });
                 break;
+
+            // Inventory
+            case 'KeyI':
+                this.send({ type: 'INVENTORY_TOGGLE' });
+                break;
         }
     };
 

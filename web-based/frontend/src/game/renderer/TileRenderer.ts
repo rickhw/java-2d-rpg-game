@@ -2,12 +2,14 @@ import { AssetLoader } from '../assets/AssetLoader';
 import type {
   GameFullState,
   NpcState,
+  MapObjectState,
 } from '../../types/game';
 import {
   EFFECTIVE_TILE_SIZE,
   SCREEN_WIDTH,
   SCREEN_HEIGHT,
 } from '../../types/game';
+
 
 /**
  * Renders the game world onto an HTML5 Canvas.
@@ -186,6 +188,49 @@ export class TileRenderer {
           // Fallback: draw a colored rectangle for NPC
           this.ctx.fillStyle = '#88cc44';
           this.ctx.fillRect(screenX + 8, screenY + 8, EFFECTIVE_TILE_SIZE - 16, EFFECTIVE_TILE_SIZE - 16);
+        }
+      }
+    }
+  }
+
+  /**
+   * Draw all map objects visible on screen (doors, chests, items).
+   */
+  drawObjects(state: GameFullState) {
+    if (!state.mapObjects || !state.player) return;
+
+    const player = state.player;
+    const playerScreenX = SCREEN_WIDTH / 2 - EFFECTIVE_TILE_SIZE / 2;
+    const playerScreenY = SCREEN_HEIGHT / 2 - EFFECTIVE_TILE_SIZE / 2;
+
+    for (const obj of state.mapObjects as MapObjectState[]) {
+      if (!obj.active) continue;
+
+      const screenX = obj.worldX - player.worldX + playerScreenX;
+      const screenY = obj.worldY - player.worldY + playerScreenY;
+
+      // Only draw if on screen
+      if (
+        screenX + EFFECTIVE_TILE_SIZE > 0 &&
+        screenX < SCREEN_WIDTH &&
+        screenY + EFFECTIVE_TILE_SIZE > 0 &&
+        screenY < SCREEN_HEIGHT
+      ) {
+        const spriteKey = 'obj_' + obj.spriteKey;
+        const img = this.assetLoader.getSpriteImage(spriteKey);
+
+        if (img) {
+          this.ctx.drawImage(
+            img,
+            screenX,
+            screenY,
+            EFFECTIVE_TILE_SIZE,
+            EFFECTIVE_TILE_SIZE
+          );
+        } else {
+          // Fallback: draw a yellow rectangle
+          this.ctx.fillStyle = '#ccaa22';
+          this.ctx.fillRect(screenX + 16, screenY + 16, 32, 32);
         }
       }
     }

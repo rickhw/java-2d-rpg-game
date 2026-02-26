@@ -54,6 +54,8 @@ const GameCanvas: React.FC = () => {
                     const merged: GameFullState = {
                         ...current,
                         gameState: state.gameState ?? current.gameState,
+                        inventoryRow: state.inventoryRow ?? current.inventoryRow,
+                        inventoryCol: state.inventoryCol ?? current.inventoryCol
                     };
                     if (state.player && current.player) {
                         merged.player = { ...current.player, ...state.player };
@@ -63,6 +65,13 @@ const GameCanvas: React.FC = () => {
                         merged.npcs = state.npcs;
                     }
                     merged.dialogue = state.dialogue ?? undefined;
+                    merged.transitionProgress = (state as any).transitionProgress;
+                    if (state.mapObjects) {
+                        merged.mapObjects = state.mapObjects;
+                    }
+                    if (state.inventory) {
+                        merged.inventory = state.inventory;
+                    }
                     gameStateRef.current = merged;
                 }
                 // Ignore DELTA_STATE if no current state yet (wait for FULL_STATE)
@@ -94,17 +103,41 @@ const GameCanvas: React.FC = () => {
             if (state) {
                 if (state.gameState === 'TITLE') {
                     drawTitleScreen(ctx);
-                } else if (state.gameState === 'PLAY') {
+                } else if (state.gameState === 'PLAY' || state.gameState === 'CHARACTER' || state.gameState === 'DIALOGUE') {
                     renderer.drawTiles(state);
+                    renderer.drawObjects(state);
                     renderer.drawNPCs(state);
                     renderer.drawPlayer(state);
                     if (debugRef.current) {
                         drawDebugOverlay(ctx, state);
                     }
                     drawHUD(ctx, state);
-                    if (state.dialogue) {
-                        drawDialogueBox(ctx, state.dialogue.speaker, state.dialogue.line, state.dialogue.hasNext);
+
+                    if (state.dialogue || state.gameState === 'DIALOGUE') {
+                        // Backend actually sets PLAY when dialogue happens but we leave the fallback.
+                        if (state.dialogue) {
+                            drawDialogueBox(ctx, state.dialogue.speaker, state.dialogue.line, state.dialogue.hasNext);
+                        }
                     }
+
+                    if (state.gameState === 'CHARACTER') {
+                        drawInventory(ctx, state, assetLoader);
+                    }
+                } else if (state.gameState === 'TRANSITION') {
+                    // Draw current scene underneath
+                    renderer.drawTiles(state);
+                    renderer.drawObjects(state);
+                    renderer.drawNPCs(state);
+                    renderer.drawPlayer(state);
+                    drawHUD(ctx, state);
+
+                    // Fade overlay: 0→1 (fade out) then 1→0 (fade in)
+                    const progress = state.transitionProgress ?? 0;
+                    const alpha = progress <= 0.5
+                        ? progress * 2       // 0 → 1 during first half
+                        : (1 - progress) * 2; // 1 → 0 during second half
+                    ctx.fillStyle = 'rgba(0, 0, 0, ' + Math.min(1, Math.max(0, alpha)) + ')';
+                    ctx.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
                 }
             } else {
                 // Waiting for connection / state
@@ -138,8 +171,49 @@ const GameCanvas: React.FC = () => {
             animFrameRef.current = requestAnimationFrame(renderLoop);
         });
 
+        // --- Canvas click (Inventory interaction) ---
+        const onCanvasClick = (e: MouseEvent) => {
+            const state = gameStateRef.current;
+            if (!state || state.gameState !== 'CHARACTER' || !state.inventory) return;
+
+            const rect = canvas.getBoundingClientRect();
+            // Calculate scale in case canvas is scaled via CSS
+            const scaleX = SCREEN_WIDTH / rect.width;
+            const scaleY = SCREEN_HEIGHT / rect.height;
+
+            const mouseX = (e.clientX - rect.left) * scaleX;
+            const mouseY = (e.clientY - rect.top) * scaleY;
+
+            // Inventory coordinates
+            const panelW = 320;
+            const panelH = 280;
+            const panelX = (SCREEN_WIDTH - panelW) / 2;
+            const panelY = (SCREEN_HEIGHT - panelH) / 2;
+            const cols = 5;
+            const cellSize = 52;
+            const gridStartX = panelX + (panelW - cols * cellSize) / 2;
+            const gridStartY = panelY + 60;
+
+            // Check if clicked inside a slot
+            for (let i = 0; i < state.inventory.length; i++) {
+                const col = i % cols;
+                const row = Math.floor(i / cols);
+                const cx = gridStartX + col * cellSize;
+                const cy = gridStartY + row * cellSize;
+
+                if (mouseX >= cx && mouseX <= cx + cellSize &&
+                    mouseY >= cy && mouseY <= cy + cellSize) {
+                    // Send equip/use action
+                    wsClient.send({ type: 'INVENTORY_ACTION', slot: i });
+                    break;
+                }
+            }
+        };
+        canvas.addEventListener('mousedown', onCanvasClick);
+
         // --- Cleanup on unmount ---
         return () => {
+            canvas.removeEventListener('mousedown', onCanvasClick);
             cancelAnimationFrame(animFrameRef.current);
             keyboard.detach();
             window.removeEventListener('keydown', onDebugKey);
@@ -174,6 +248,7 @@ async function loadAssets(assetLoader: AssetLoader) {
         }
         await assetLoader.loadPlayerSprites();
         await assetLoader.loadNpcSprites();
+        await assetLoader.loadObjectSprites();
         assetLoader.setLoaded(true);
         console.log('[GameCanvas] Assets loaded');
     } catch (e) {
@@ -228,8 +303,122 @@ function drawTitleScreen(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = '#ffd700';
     ctx.font = 'bold 18px "Courier New", monospace';
     ctx.textAlign = 'right';
-    ctx.fillText('v1.3.0 / 20260225', SCREEN_WIDTH - 40, SCREEN_HEIGHT - 20);
+    ctx.fillText('v1.4.0 / 20260226', SCREEN_WIDTH - 40, SCREEN_HEIGHT - 20);
     ctx.textAlign = 'center';
+}
+
+/**
+ * Draw the inventory panel overlay.
+ */
+function drawInventory(ctx: CanvasRenderingContext2D, state: GameFullState, assetLoader: AssetLoader) {
+    const items = state.inventory;
+    if (!items) return;
+
+    const panelW = 320;
+    const panelH = 280;
+    const panelX = (SCREEN_WIDTH - panelW) / 2;
+    const panelY = (SCREEN_HEIGHT - panelH) / 2;
+
+    // Semi-transparent background
+    ctx.fillStyle = 'rgba(10, 10, 40, 0.92)';
+    ctx.fillRect(panelX, panelY, panelW, panelH);
+
+    // Border
+    ctx.strokeStyle = '#c8a832';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(panelX + 2, panelY + 2, panelW - 4, panelH - 4);
+    ctx.strokeStyle = '#8a7020';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(panelX + 6, panelY + 6, panelW - 12, panelH - 12);
+
+    // Title
+    ctx.fillStyle = '#c8a832';
+    ctx.font = 'bold 18px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('INVENTORY', SCREEN_WIDTH / 2, panelY + 30);
+
+    // Subtitle
+    ctx.fillStyle = '#888';
+    ctx.font = '12px monospace';
+    ctx.fillText('Press I to close', SCREEN_WIDTH / 2, panelY + 48);
+
+    if (items.length === 0) {
+        ctx.fillStyle = '#666';
+        ctx.font = '14px monospace';
+        ctx.fillText('Empty', SCREEN_WIDTH / 2, panelY + panelH / 2 + 10);
+        ctx.textAlign = 'left';
+        return;
+    }
+
+    // Grid layout: 5 columns, 4 rows = 20 max slots
+    const cols = 5;
+    const maxSlots = 20;
+    const cellSize = 52;
+    const gridStartX = panelX + (panelW - cols * cellSize) / 2;
+    const gridStartY = panelY + 60;
+
+    ctx.textAlign = 'left';
+
+    for (let i = 0; i < maxSlots; i++) {
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+        const cx = gridStartX + col * cellSize;
+        const cy = gridStartY + row * cellSize;
+
+        const isCursor = (col === state.inventoryCol && row === state.inventoryRow);
+        const item = i < items.length ? items[i] : null;
+
+        // Cell background
+        ctx.fillStyle = (item && item.equipped) ? 'rgba(200, 168, 50, 0.25)' : 'rgba(255, 255, 255, 0.06)';
+        if (isCursor) ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+
+        ctx.fillRect(cx + 2, cy + 2, cellSize - 4, cellSize - 4);
+        ctx.strokeStyle = (item && item.equipped) ? 'rgba(255, 215, 0, 0.8)' : 'rgba(200, 168, 50, 0.3)';
+
+        if (isCursor) {
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+        } else {
+            ctx.lineWidth = (item && item.equipped) ? 2 : 1;
+        }
+        ctx.strokeRect(cx + 2, cy + 2, cellSize - 4, cellSize - 4);
+
+        if (item) {
+            // Item sprite
+            const spriteKey = 'obj_' + item.spriteKey;
+            const img = assetLoader.getSpriteImage(spriteKey);
+            if (img) {
+                ctx.drawImage(img, cx + 6, cy + 4, 36, 36);
+            } else {
+                // Fallback
+                ctx.fillStyle = '#ccaa22';
+                ctx.fillRect(cx + 14, cy + 12, 20, 20);
+            }
+
+            // Quantity badge
+            if (item.quantity > 1) {
+                ctx.fillStyle = '#c8a832';
+                ctx.font = 'bold 12px monospace';
+                ctx.fillText('×' + item.quantity, cx + 28, cy + 48);
+            }
+
+            // Equipped badge "E"
+            if (item.equipped) {
+                ctx.fillStyle = '#ffd700';
+                ctx.font = 'bold 10px monospace';
+                ctx.fillText('E', cx + 40, cy + 14);
+            }
+
+            // Item name tooltip (small) when cursor is on it
+            if (isCursor) {
+                ctx.fillStyle = '#fff';
+                ctx.font = '10px monospace';
+                ctx.fillText(item.name, panelX + 20, panelY + panelH - 20);
+            }
+        }
+    }
+
+    ctx.textAlign = 'left';
 }
 
 function drawHUD(ctx: CanvasRenderingContext2D, state: GameFullState) {
