@@ -56,17 +56,16 @@ export class AssetLoader {
      */
     async loadPlayerSprites(): Promise<void> {
         const directions = ['up', 'down', 'left', 'right'];
+        const promises: Promise<any>[] = [];
 
         // Walking sprites
         for (const dir of directions) {
             for (let i = 1; i <= 2; i++) {
                 const key = 'player_' + dir + '_' + i;
                 const path = '/api/assets/sprites/player/walking/boy_' + dir + '_' + i + '.png';
-                try {
-                    await this.loadSprite(key, path);
-                } catch (_e) {
+                promises.push(this.loadSprite(key, path).catch(() => {
                     console.warn('[AssetLoader] Missing player walking sprite: ' + key);
-                }
+                }));
             }
         }
 
@@ -75,11 +74,7 @@ export class AssetLoader {
             for (let i = 1; i <= 2; i++) {
                 const key = 'player_attack_sword_' + dir + '_' + i;
                 const path = '/api/assets/sprites/player/attacking/sword/boy_attack_' + dir + '_' + i + '.png';
-                try {
-                    await this.loadSprite(key, path);
-                } catch (_e) {
-                    // OK - may not exist
-                }
+                promises.push(this.loadSprite(key, path).catch(() => { }));
             }
         }
 
@@ -88,11 +83,7 @@ export class AssetLoader {
             for (let i = 1; i <= 2; i++) {
                 const key = 'player_attack_axe_' + dir + '_' + i;
                 const path = '/api/assets/sprites/player/attacking/axe/boy_axe_' + dir + '_' + i + '.png';
-                try {
-                    await this.loadSprite(key, path);
-                } catch (_e) {
-                    // OK
-                }
+                promises.push(this.loadSprite(key, path).catch(() => { }));
             }
         }
 
@@ -100,13 +91,10 @@ export class AssetLoader {
         for (const dir of directions) {
             const key = 'player_guard_' + dir;
             const path = '/api/assets/sprites/player/guarding/boy_guard_' + dir + '.png';
-            try {
-                await this.loadSprite(key, path);
-            } catch (_e) {
-                // OK
-            }
+            promises.push(this.loadSprite(key, path).catch(() => { }));
         }
 
+        await Promise.all(promises);
         console.log('[AssetLoader] Loaded ' + this.spriteImages.size + ' sprite images');
     }
 
@@ -117,20 +105,18 @@ export class AssetLoader {
     async loadNpcSprites(): Promise<void> {
         const npcNames = ['oldman'];
         const directions = ['up', 'down', 'left', 'right'];
+        const promises: Promise<any>[] = [];
 
         for (const npcName of npcNames) {
             for (const dir of directions) {
                 for (let i = 1; i <= 2; i++) {
                     const key = npcName + '_' + dir + '_' + i;
                     const path = '/api/assets/sprites/npc/' + npcName + '_' + dir + '_' + i + '.png';
-                    try {
-                        await this.loadSprite(key, path);
-                    } catch (_e) {
-                        // OK
-                    }
+                    promises.push(this.loadSprite(key, path).catch(() => { }));
                 }
             }
         }
+        await Promise.all(promises);
         console.log('[AssetLoader] NPC sprites loaded');
     }
 
@@ -140,18 +126,16 @@ export class AssetLoader {
     async loadMonsterSprites(monsterName: string): Promise<void> {
         const directions = ['up', 'down', 'left', 'right'];
         const basePath = '/api/assets/sprites/monster/' + monsterName + '/walking';
+        const promises: Promise<any>[] = [];
 
         for (const dir of directions) {
             for (let i = 1; i <= 2; i++) {
                 const key = monsterName + '_' + dir + '_' + i;
                 const path = basePath + '/' + monsterName + '_' + dir + '_' + i + '.png';
-                try {
-                    await this.loadSprite(key, path);
-                } catch (_e) {
-                    // OK
-                }
+                promises.push(this.loadSprite(key, path).catch(() => { }));
             }
         }
+        await Promise.all(promises);
     }
 
     /**
@@ -168,16 +152,14 @@ export class AssetLoader {
             'manacrystal_full', 'manacrystal_blank',
             'boots'
         ];
+        const promises: Promise<any>[] = [];
 
         for (const name of objectNames) {
             const key = 'obj_' + name;
             const path = '/api/assets/sprites/objects/' + name + '.png';
-            try {
-                await this.loadSprite(key, path);
-            } catch (_e) {
-                // OK - not all may exist
-            }
+            promises.push(this.loadSprite(key, path).catch(() => { }));
         }
+        await Promise.all(promises);
         console.log('[AssetLoader] Object sprites loaded');
     }
 
