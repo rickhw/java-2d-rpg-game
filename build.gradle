@@ -5,6 +5,15 @@ plugins {
 
 version = '2.16.0'
 
+def packagedAppName = 'MALegendSmall'
+def packagedRuntimeModules = 'java.base,java.desktop'
+def requiredPackagingTools = ['jpackage', 'jdeps', 'jlink']
+
+def jdkTool = { String toolName ->
+    def executableName = System.getProperty('os.name').toLowerCase().contains('windows') ? "${toolName}.exe" : toolName
+    file("${System.getProperty('java.home')}/bin/${executableName}")
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
@@ -32,4 +41,59 @@ jar {
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
+}
+
+tasks.register('checkPackagingJdk') {
+    group = 'verification'
+    description = 'Checks that Gradle is running on a JDK that can build the bundled app image.'
+
+    doLast {
+        if (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
+            throw new org.gradle.api.GradleException("Packaging requires JDK 21 or newer. Current Gradle JVM is ${JavaVersion.current()} at ${System.getProperty('java.home')}. Run: sdk use java 21.0.2-graalce")
+        }
+
+        requiredPackagingTools.each { toolName ->
+            def tool = jdkTool(toolName)
+            if (!tool.isFile()) {
+                throw new org.gradle.api.GradleException("Packaging requires '${toolName}' in the active JDK, but it was not found at ${tool}. Run: sdk use java 21.0.2-graalce")
+            }
+        }
+    }
+}
+
+tasks.register('printRuntimeModules', Exec) {
+    group = 'help'
+    description = 'Prints the Java modules required by the game jar.'
+    dependsOn jar, checkPackagingJdk
+
+    executable = jdkTool('jdeps').absolutePath
+    args '--print-module-deps',
+         '--ignore-missing-deps',
+         jar.archiveFile.get().asFile.absolutePath
+}
+
+tasks.register('jpackageAppImage', Exec) {
+    group = 'distribution'
+    description = 'Builds a macOS app image with a bundled runtime, so players do not need an installed JRE.'
+    dependsOn jar, checkPackagingJdk
+
+    def destinationDir = layout.buildDirectory.dir('jpackage')
+    def appImageDir = destinationDir.map { it.dir("${packagedAppName}.app") }
+
+    inputs.file(jar.archiveFile)
+    outputs.dir(appImageDir)
+
+    doFirst {
+        delete appImageDir
+    }
+
+    executable = jdkTool('jpackage').absolutePath
+    args '--type', 'app-image',
+         '--name', packagedAppName,
+         '--input', layout.buildDirectory.dir('libs').get().asFile.absolutePath,
+         '--main-jar', jar.archiveFileName.get(),
+         '--main-class', application.mainClass.get(),
+         '--add-modules', packagedRuntimeModules,
+         '--jlink-options', '--strip-debug --no-header-files --no-man-pages --compress=zip-9',
+         '--dest', destinationDir.get().asFile.absolutePath
 }
